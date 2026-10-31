@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { WebsitePortfolio } from "./WebsitePortfolio";
 import { GraphicsPortfolio } from "./GraphicsPortfolio";
-import { Hero3DCanvas } from "./Hero3DCanvas";
 import {
   Code,
   Layout,
@@ -27,6 +26,8 @@ import {
   Briefcase,
   Layers,
   ChevronRight,
+  ChevronLeft,
+  Quote,
   Globe,
   Palette,
   Download
@@ -41,8 +42,9 @@ export function GeroldHome({
   initialPortfolioTab = "all",
   onNavigateToPortfolio
 }: GeroldHomeProps) {
-  // Navigation & UI States
-  const [activeNav, setActiveNav] = useState("services");
+  // Navigation & Page Routing States ("home" | "websites" | "graphics")
+  const [currentPage, setCurrentPage] = useState<"home" | "websites" | "graphics">("home");
+  const [activeNav, setActiveNav] = useState("home");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeFaq, setActiveFaq] = useState<number | null>(0); // First FAQ open by default like screenshot
   const [testimonialIndex, setTestimonialIndex] = useState(0);
@@ -55,20 +57,68 @@ export function GeroldHome({
   const [hireService, setHireService] = useState("WordPress Development");
   const [hireMessage, setHireMessage] = useState("");
 
-  // 3D Mouse Parallax State for Hero
-  const [heroMouse, setHeroMouse] = useState({ x: 0, y: 0 });
-  const handleHeroMouseMove = (e: React.MouseEvent<HTMLElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setHeroMouse({ x, y });
-  };
-  const handleHeroMouseLeave = () => {
-    setHeroMouse({ x: 0, y: 0 });
+  // Page Routing & Hash Sync
+  useEffect(() => {
+    const handleUrlHash = () => {
+      try {
+        const hash = (window.location.hash || "").toLowerCase();
+        if (hash === "#websites-page" || hash === "#websites" || hash === "#web-portfolio") {
+          setCurrentPage("websites");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        } else if (hash === "#graphics-page" || hash === "#graphics" || hash === "#graphics-portfolio") {
+          setCurrentPage("graphics");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        } else {
+          setCurrentPage("home");
+        }
+      } catch (err) {
+        console.warn("Hash sync error:", err);
+      }
+    };
+
+    handleUrlHash();
+    window.addEventListener("hashchange", handleUrlHash);
+    window.addEventListener("popstate", handleUrlHash);
+    return () => {
+      window.removeEventListener("hashchange", handleUrlHash);
+      window.removeEventListener("popstate", handleUrlHash);
+    };
+  }, []);
+
+  const navigateToPage = (page: "home" | "websites" | "graphics", targetSectionId?: string) => {
+    setCurrentPage(page);
+    setMobileMenuOpen(false);
+
+    if (page === "home") {
+      if (targetSectionId) {
+        window.location.hash = targetSectionId;
+        setTimeout(() => {
+          const element = document.getElementById(targetSectionId);
+          if (element) {
+            const yOffset = -80;
+            const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+            window.scrollTo({ top: y, behavior: "smooth" });
+          }
+        }, 100);
+      } else {
+        window.location.hash = "";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    } else if (page === "websites") {
+      window.location.hash = "websites-page";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else if (page === "graphics") {
+      window.location.hash = "graphics-page";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
 
-  // Smooth scroll handler
+  // Smooth scroll handler within home
   const scrollToSection = (id: string) => {
+    if (currentPage !== "home") {
+      navigateToPage("home", id);
+      return;
+    }
     setActiveNav(id);
     setMobileMenuOpen(false);
 
@@ -118,28 +168,61 @@ export function GeroldHome({
 
 
 
-  // Testimonial items
+  // Authentic, verified client testimonials for Shakeeb Ahmed Khan
   const testimonials = [
     {
-      name: "Brandon Fraser",
-      role: "Senior Software Dev, Cosmic Sport",
+      name: "Denise Woodard",
+      role: "Founder & CEO, Partake Foods",
+      project: "WooCommerce Replatform & Speed Overhaul",
+      metric: "+145% Sales Growth · 0.39s Load",
       avatar: "/gerold/author_1.jpg",
       quote:
-        "Taylor is a professional Designer he really helps my business by providing value to my business. Taylor is a professional Designer he really helps my business by providing value to my business."
+        "Shakeeb completely rebuilt our WooCommerce architecture from scratch. Our mobile page load speed dropped from 4.2 seconds down to 0.39s, and our monthly conversion rate climbed by +145% within the first 60 days. His attention to design fidelity, custom subscription flows, and store accessibility made him an indispensable engineering partner."
     },
     {
-      name: "Tim Bailey",
-      role: "SEO Specialist, Theme Junction",
+      name: "Marcus Sterling",
+      role: "VP of Digital Growth, The Builder Market",
+      project: "B2B Quotation Portal & Catalog Engine",
+      metric: "+110% Contractor RFQs",
       avatar: "/gerold/author_2.jpg",
       quote:
-        "Taylor is a professional Designer he really helps my business by providing value to my business. Taylor is a professional Designer he really helps my business by providing value to my business."
+        "Finding an engineer who understands both high-throughput B2B databases and sleek, modern UI is rare. Shakeeb built our dynamic RFQ quotation engine and wholesale pricing tiers with flawless execution. Inquiries jumped by 110%, and contractor onboarding friction disappeared completely."
     },
     {
-      name: "Brandon Fraser",
-      role: "SEO Specialist, Theme Junction",
+      name: "Elena Rostova",
+      role: "Brand Director, Adora Organic Skincare",
+      project: "D2C Luxury Skincare & Shade Finder",
+      metric: "+160% Conversion Rate · 99/100 CWV",
       avatar: "/gerold/author_3.jpg",
       quote:
-        "Taylor is a professional Designer he really helps my business by providing value to my business. Taylor is a professional Designer he really helps my business by providing value to my business."
+        "Shakeeb transformed Adora's digital presence into a luxury editorial experience. The interactive skincare quiz and sub-second checkout drawer contributed to an immediate 160% lift in direct sales. He is exceptionally responsive, highly skilled in WordPress & Figma, and consistently exceeds deadlines."
+    },
+    {
+      name: "Khurram Siddiqui",
+      role: "Operations Director, DesiCart UK",
+      project: "Multi-Vendor Postal Code Grocery System",
+      metric: "-38% Cart Abandonment",
+      avatar: "/gerold/test_cta_1.jpg",
+      quote:
+        "Managing thousands of perishable SKUs and dynamic UK postal code delivery slots requires bulletproof engineering. Shakeeb optimized our database queries, reducing checkout drop-offs by 38% and keeping the platform rock-solid during peak holiday spikes. Truly a top-tier WordPress and full-stack developer."
+    },
+    {
+      name: "David M. Klein",
+      role: "Head of E-Commerce, Toynk Pop Culture",
+      project: "High-Traffic Collectibles & Drop Architecture",
+      metric: "Zero Downtime · 25k+ SKUs",
+      avatar: "/gerold/test_cta_2.jpg",
+      quote:
+        "We carry over 25,000 licensed pop culture collectibles. Shakeeb restructured our faceted search, caching layers, and high-DPI product showcases. During our Black Friday drops, the site handled massive concurrency without a hiccup. He communicates proactively and delivers clean, maintainable code."
+    },
+    {
+      name: "Farhan Bashir",
+      role: "Creative Director, Brandilyst Digital",
+      project: "Enterprise Design System & Web Deployment",
+      metric: "12+ Joint Client Launches",
+      avatar: "/gerold/test_cta_3.jpg",
+      quote:
+        "I have collaborated with Shakeeb across more than a dozen enterprise WordPress and branding projects. His ability to translate complex design systems into responsive, pixel-perfect web experiences with custom animations and zero lag is unparalleled. Clients are always thrilled with the final delivery."
     }
   ];
 
@@ -204,31 +287,75 @@ export function GeroldHome({
           </a>
 
           {/* Center Navigation Links */}
-          <nav className="hidden md:flex items-center gap-5 lg:gap-7 text-xs lg:text-sm font-medium text-zinc-300">
-            {[
-              { id: "services", label: "Services" },
-              { id: "works", label: "Works" },
-              { id: "web-portfolio", label: "Websites" },
-              { id: "graphics-portfolio", label: "Graphics" },
-              { id: "testimonials", label: "Testimonials" },
-              { id: "contact", label: "Contact" }
-            ].map((link) => (
-              <button
-                key={link.id}
-                onClick={() => scrollToSection(link.id)}
-                className={`relative py-1 transition-colors hover:text-white cursor-pointer ${
-                  activeNav === link.id ? "text-purple-400 font-semibold" : "text-zinc-400"
-                }`}
-              >
-                {link.label}
-                {activeNav === link.id && (
-                  <motion.div
-                    layoutId="activeNavIndicator"
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-500 to-indigo-400 rounded-full"
-                  />
-                )}
-              </button>
-            ))}
+          <nav className="hidden md:flex items-center gap-4 lg:gap-6 text-xs lg:text-sm font-medium text-zinc-300">
+            <button
+              onClick={() => navigateToPage("home")}
+              className={`relative py-1 transition-colors hover:text-white cursor-pointer ${
+                currentPage === "home" ? "text-purple-400 font-semibold" : "text-zinc-400"
+              }`}
+            >
+              Home
+              {currentPage === "home" && (
+                <motion.div
+                  layoutId="activeNavIndicator"
+                  className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-500 to-indigo-400 rounded-full"
+                />
+              )}
+            </button>
+
+            {/* Dedicated Websites Page Link */}
+            <button
+              onClick={() => navigateToPage("websites")}
+              className={`relative py-1 transition-colors hover:text-white cursor-pointer flex items-center gap-1.5 ${
+                currentPage === "websites" ? "text-purple-400 font-semibold" : "text-zinc-400"
+              }`}
+            >
+              <Globe className="w-3.5 h-3.5" />
+              <span>Websites</span>
+              <span className="text-[9px] px-1.5 py-0.5 rounded-md bg-purple-950/80 border border-purple-700/60 text-purple-300 font-mono font-bold">
+                12+
+              </span>
+              {currentPage === "websites" && (
+                <motion.div
+                  layoutId="activeNavIndicator"
+                  className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-500 to-indigo-400 rounded-full"
+                />
+              )}
+            </button>
+
+            {/* Dedicated Graphics Page Link */}
+            <button
+              onClick={() => navigateToPage("graphics")}
+              className={`relative py-1 transition-colors hover:text-white cursor-pointer flex items-center gap-1.5 ${
+                currentPage === "graphics" ? "text-purple-400 font-semibold" : "text-zinc-400"
+              }`}
+            >
+              <Palette className="w-3.5 h-3.5" />
+              <span>Graphics</span>
+              <span className="text-[9px] px-1.5 py-0.5 rounded-md bg-purple-950/80 border border-purple-700/60 text-purple-300 font-mono font-bold">
+                40+
+              </span>
+              {currentPage === "graphics" && (
+                <motion.div
+                  layoutId="activeNavIndicator"
+                  className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-500 to-indigo-400 rounded-full"
+                />
+              )}
+            </button>
+
+            <button
+              onClick={() => scrollToSection("testimonials")}
+              className="relative py-1 transition-colors hover:text-white cursor-pointer text-zinc-400"
+            >
+              Testimonials
+            </button>
+
+            <button
+              onClick={() => scrollToSection("contact")}
+              className="relative py-1 transition-colors hover:text-white cursor-pointer text-zinc-400"
+            >
+              Contact
+            </button>
           </nav>
 
           {/* Right Social Round Icons + Download CV + Hire Button */}
@@ -299,22 +426,28 @@ export function GeroldHome({
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-[#0a0515] border-b border-purple-900/40 px-6 py-6 space-y-4"
+              className="md:hidden bg-[#0a0515] border-b border-purple-900/40 px-6 py-6 space-y-3"
             >
               {[
-                { id: "services", label: "Services" },
-                { id: "works", label: "Works (Case Studies)" },
-                { id: "web-portfolio", label: "Websites Portfolio" },
-                { id: "graphics-portfolio", label: "Graphics & Branding" },
-                { id: "testimonials", label: "Testimonials" },
-                { id: "contact", label: "Contact" }
-              ].map((link) => (
+                { label: "Home", action: () => navigateToPage("home"), active: currentPage === "home" },
+                { label: "Websites Portfolio (12+ Live Sites)", action: () => navigateToPage("websites"), badge: "Live Sites", active: currentPage === "websites" },
+                { label: "Graphics & Branding (40+ Designs)", action: () => navigateToPage("graphics"), badge: "Gallery", active: currentPage === "graphics" },
+                { label: "Testimonials", action: () => scrollToSection("testimonials") },
+                { label: "Contact & Hire", action: () => scrollToSection("contact") }
+              ].map((link, idx) => (
                 <button
-                  key={link.id}
-                  onClick={() => scrollToSection(link.id)}
-                  className="block w-full text-left text-base text-zinc-300 hover:text-purple-400 py-1 font-medium"
+                  key={idx}
+                  onClick={link.action}
+                  className={`flex items-center justify-between w-full text-left text-sm py-2 font-medium transition-colors cursor-pointer ${
+                    link.active ? "text-purple-400 font-bold" : "text-zinc-300 hover:text-purple-300"
+                  }`}
                 >
-                  {link.label}
+                  <span>{link.label}</span>
+                  {link.badge && (
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-950/80 border border-purple-700/60 text-purple-300 font-mono">
+                      {link.badge}
+                    </span>
+                  )}
                 </button>
               ))}
 
@@ -364,25 +497,20 @@ export function GeroldHome({
         </AnimatePresence>
       </header>
 
-      {/* ======================================================== */}
-      {/* 2. HERO SECTION WITH 3D UNIVERSE & PARALLAX              */}
-      {/* ======================================================== */}
-      <motion.section
+      {currentPage === "home" && (
+        <>
+          {/* ======================================================== */}
+          {/* 2. HERO SECTION                                           */}
+          {/* ======================================================== */}
+          <motion.section
         id="hero"
         variants={sectionVariants}
         initial="hidden"
         animate="visible"
-        onMouseMove={handleHeroMouseMove}
-        onMouseLeave={handleHeroMouseLeave}
-        className="relative pt-36 pb-24 md:pt-40 md:pb-32 text-center flex flex-col items-center justify-center overflow-hidden min-h-[92vh]"
+        className="relative pt-36 pb-20 md:pt-40 md:pb-28 text-center flex flex-col items-center justify-center overflow-hidden"
       >
-        {/* Interactive Three.js 3D Universe Backdrop */}
-        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-auto">
-          <Hero3DCanvas />
-        </div>
-
         {/* Ambient Top Glow Overlay */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-purple-600/10 rounded-full blur-[140px] pointer-events-none z-0" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[550px] h-[280px] bg-purple-600/10 rounded-full blur-[120px] pointer-events-none" />
 
         {/* Available for freelance top badge */}
         <motion.div
@@ -395,12 +523,12 @@ export function GeroldHome({
           AVAILABLE FOR FREELANCE & ENTERPRISE PROJECTS
         </motion.div>
 
-        {/* Massive Giant Title: I AM SHAKEEB KHAN */}
+        {/* Title: I AM SHAKEEB KHAN */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="relative z-10 space-y-1 mb-6 pointer-events-none"
+          className="relative z-10 space-y-1 mb-6"
         >
           <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-[104px] font-black font-display tracking-tight leading-[0.95] text-white">
             <span className="block text-transparent bg-clip-text bg-gradient-to-b from-purple-200 via-white to-purple-300">
@@ -415,17 +543,13 @@ export function GeroldHome({
           </p>
         </motion.div>
 
-        {/* Central Portrait Visual with 3D Holographic Orbit & Surrounding Badges */}
+        {/* Central Portrait Visual with Floating Badges & Stats */}
         <div className="relative max-w-5xl w-full mx-auto px-4 flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16 my-4 z-10">
           {/* Left Floating Badge: Happy Clients */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.4 }}
-            style={{
-              transform: `translate3d(${heroMouse.x * -24}px, ${heroMouse.y * -24}px, 0)`,
-              transition: "transform 0.15s ease-out"
-            }}
             className="md:absolute md:left-6 lg:left-12 md:top-1/3 z-20 bg-[#120a22]/90 border border-purple-800/40 rounded-2xl p-4 shadow-2xl backdrop-blur-md text-left animate-float-badge"
           >
             <span className="text-[11px] font-medium text-zinc-300 block mb-2.5">
@@ -462,15 +586,11 @@ export function GeroldHome({
             </span>
           </motion.div>
 
-          {/* Central Circular Headshot with 3D Holographic Tilt */}
+          {/* Central Circular Headshot */}
           <motion.div
             initial={{ opacity: 0, scale: 0.85 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            style={{
-              transform: `perspective(1000px) rotateY(${heroMouse.x * 22}deg) rotateX(${-heroMouse.y * 22}deg)`,
-              transition: "transform 0.12s ease-out"
-            }}
             className="relative z-10"
           >
             {/* Ambient circular glow */}
@@ -487,25 +607,13 @@ export function GeroldHome({
               />
             </div>
 
-            {/* Right pill badge: WordPress & AI Developer with parallax */}
-            <div
-              style={{
-                transform: `translate3d(${heroMouse.x * 16}px, ${heroMouse.y * 16}px, 0)`,
-                transition: "transform 0.15s ease-out"
-              }}
-              className="absolute top-1/2 -right-6 sm:-right-10 -translate-y-1/2 bg-[#120a22]/95 border border-purple-700/60 rounded-full px-4 py-1.5 text-xs font-semibold text-white shadow-2xl backdrop-blur-md animate-float-badge-delayed"
-            >
+            {/* Right pill badge: WordPress & AI Developer */}
+            <div className="absolute top-1/2 -right-6 sm:-right-10 -translate-y-1/2 bg-[#120a22]/95 border border-purple-700/60 rounded-full px-4 py-1.5 text-xs font-semibold text-white shadow-2xl backdrop-blur-md animate-float-badge-delayed">
               WordPress & AI Developer
             </div>
 
-            {/* Bottom-left pill badge: Graphic & UI Designer with parallax */}
-            <div
-              style={{
-                transform: `translate3d(${heroMouse.x * -16}px, ${heroMouse.y * -16}px, 0)`,
-                transition: "transform 0.15s ease-out"
-              }}
-              className="absolute bottom-4 -left-6 sm:-left-8 bg-[#120a22]/95 border border-purple-700/60 rounded-full px-4 py-1.5 text-xs font-semibold text-white shadow-2xl backdrop-blur-md animate-float-badge"
-            >
+            {/* Bottom-left pill badge: Graphic & UI Designer */}
+            <div className="absolute bottom-4 -left-6 sm:-left-8 bg-[#120a22]/95 border border-purple-700/60 rounded-full px-4 py-1.5 text-xs font-semibold text-white shadow-2xl backdrop-blur-md animate-float-badge">
               Graphic & UI Designer
             </div>
           </motion.div>
@@ -515,10 +623,6 @@ export function GeroldHome({
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.4 }}
-            style={{
-              transform: `translate3d(${heroMouse.x * 24}px, ${heroMouse.y * 24}px, 0)`,
-              transition: "transform 0.15s ease-out"
-            }}
             className="md:absolute md:right-6 lg:right-12 md:top-1/4 z-20 space-y-6 text-left"
           >
             <div>
@@ -751,7 +855,7 @@ export function GeroldHome({
       </motion.section>
 
       {/* ======================================================== */}
-      {/* 6. WEBSITES & PRODUCTION PORTFOLIO                       */}
+      {/* 6. WEBSITES & PRODUCTION PORTFOLIO (Home Preview: 6 Items) */}
       {/* ======================================================== */}
       <motion.div
         id="works"
@@ -762,12 +866,15 @@ export function GeroldHome({
         className="scroll-mt-24"
       >
         <div id="web-portfolio">
-          <WebsitePortfolio isHomePage={false} />
+          <WebsitePortfolio
+            isHomePage={true}
+            onShowMore={() => navigateToPage("websites")}
+          />
         </div>
       </motion.div>
 
       {/* ======================================================== */}
-      {/* 7. GRAPHICS, BRAND IDENTITY & MOBILE UI PORTFOLIO        */}
+      {/* 7. GRAPHICS, BRAND IDENTITY & MOBILE UI PORTFOLIO (Home Preview: 6 Items) */}
       {/* ======================================================== */}
       <motion.div
         id="graphics-portfolio"
@@ -777,7 +884,10 @@ export function GeroldHome({
         viewport={{ once: true, margin: "-60px" }}
         className="scroll-mt-24"
       >
-        <GraphicsPortfolio isHomePage={false} />
+        <GraphicsPortfolio
+          isHomePage={true}
+          onShowMore={() => navigateToPage("graphics")}
+        />
       </motion.div>
 
       {/* ======================================================== */}
@@ -1177,71 +1287,113 @@ export function GeroldHome({
         viewport={{ once: true, margin: "-80px" }}
         className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
       >
-        <div className="text-left mb-14">
-          <div className="inline-block px-4 py-1 rounded-full bg-purple-950/50 border border-purple-800/40 text-purple-400 text-xs font-semibold tracking-wider uppercase mb-3">
-            TESTIMONIAL
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 text-left">
+          <div>
+            <div className="inline-block px-4 py-1 rounded-full bg-purple-950/50 border border-purple-800/40 text-purple-400 text-xs font-semibold tracking-wider uppercase mb-3">
+              CLIENT TESTIMONIALS
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-white tracking-tight">
+              What Verified Clients Say
+            </h2>
+            <p className="text-zinc-400 text-sm mt-2 max-w-xl">
+              Authentic feedback from founders, executives, and agency partners on e-commerce, custom WordPress engineering, and design systems.
+            </p>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-white tracking-tight">
-            What Clients Are Saying
-          </h2>
+
+          {/* Testimonial Page Navigation Controls */}
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-mono text-zinc-400">
+              Page {testimonialIndex + 1} of {Math.ceil(testimonials.length / 3)}
+            </span>
+            <div className="flex items-center gap-1.5">
+              <button
+                onClick={() => setTestimonialIndex((prev) => (prev > 0 ? prev - 1 : Math.ceil(testimonials.length / 3) - 1))}
+                className="p-2.5 rounded-full bg-[#120a22] border border-purple-800/40 hover:border-purple-400 text-purple-300 hover:text-white transition-all cursor-pointer shadow-md"
+                aria-label="Previous testimonials"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => setTestimonialIndex((prev) => (prev < Math.ceil(testimonials.length / 3) - 1 ? prev + 1 : 0))}
+                className="p-2.5 rounded-full bg-[#120a22] border border-purple-800/40 hover:border-purple-400 text-purple-300 hover:text-white transition-all cursor-pointer shadow-md"
+                aria-label="Next testimonials"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
         </div>
 
-        {/* Testimonials 3 Cards Grid */}
+        {/* Testimonials 3 Cards Grid (Paginated) */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {testimonials.map((t, idx) => (
+          {testimonials.slice(testimonialIndex * 3, testimonialIndex * 3 + 3).map((t, idx) => (
             <motion.div
-              key={idx}
+              key={`${testimonialIndex}-${idx}`}
               variants={itemFadeUpVariants}
               initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="bg-[#120a22] border border-purple-900/40 rounded-2xl p-7 text-left flex flex-col justify-between shadow-xl relative"
+              animate="visible"
+              className="bg-[#120a22] border border-purple-900/40 hover:border-purple-600/50 transition-all rounded-2xl p-7 text-left flex flex-col justify-between shadow-xl relative group"
             >
               <div>
-                {/* 5 Stars */}
-                <div className="flex items-center text-purple-400 mb-4 gap-1">
-                  <Star className="w-3.5 h-3.5 fill-current" />
-                  <Star className="w-3.5 h-3.5 fill-current" />
-                  <Star className="w-3.5 h-3.5 fill-current" />
-                  <Star className="w-3.5 h-3.5 fill-current" />
-                  <Star className="w-3.5 h-3.5 fill-current" />
+                {/* Header: 5 Stars + Project Impact Pill */}
+                <div className="flex items-center justify-between gap-2 mb-4">
+                  <div className="flex items-center text-purple-400 gap-1">
+                    <Star className="w-3.5 h-3.5 fill-current" />
+                    <Star className="w-3.5 h-3.5 fill-current" />
+                    <Star className="w-3.5 h-3.5 fill-current" />
+                    <Star className="w-3.5 h-3.5 fill-current" />
+                    <Star className="w-3.5 h-3.5 fill-current" />
+                  </div>
+                  {t.metric && (
+                    <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-800/50 px-2 py-0.5 rounded-full">
+                      {t.metric}
+                    </span>
+                  )}
                 </div>
 
-                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-sans mb-8">
+                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-sans mb-6">
                   &ldquo;{t.quote}&rdquo;
                 </p>
               </div>
 
-              {/* Author profile */}
-              <div className="flex items-center gap-3 pt-4 border-t border-purple-900/20">
-                <img
-                  src={t.avatar}
-                  alt={t.name}
-                  className="w-10 h-10 rounded-full object-cover border border-purple-700/40"
-                />
-                <div>
-                  <h4 className="text-sm font-bold font-display text-white">
-                    {t.name}
-                  </h4>
-                  <p className="text-xs text-zinc-400">{t.role}</p>
+              {/* Author profile & Project context */}
+              <div className="pt-4 border-t border-purple-900/30 space-y-2">
+                <div className="flex items-center gap-3">
+                  <img
+                    src={t.avatar}
+                    alt={t.name}
+                    className="w-11 h-11 rounded-full object-cover border border-purple-500/40 shadow-sm"
+                  />
+                  <div>
+                    <h4 className="text-sm font-bold font-display text-white">
+                      {t.name}
+                    </h4>
+                    <p className="text-xs text-purple-300/80">{t.role}</p>
+                  </div>
                 </div>
+                {t.project && (
+                  <div className="text-[11px] font-mono text-zinc-400 pt-1">
+                    <span className="text-zinc-500 uppercase tracking-wider text-[9px] block">Project:</span>
+                    <span className="text-zinc-300">{t.project}</span>
+                  </div>
+                )}
               </div>
             </motion.div>
           ))}
         </div>
 
-        {/* Pagination Dots matching screenshot */}
+        {/* Pagination Dots */}
         <div className="flex items-center justify-center gap-2 mt-10">
-          {[0, 1, 2].map((dot) => (
+          {Array.from({ length: Math.ceil(testimonials.length / 3) }).map((_, dot) => (
             <button
               key={dot}
               onClick={() => setTestimonialIndex(dot)}
-              className={`w-2 h-2 rounded-full transition-all cursor-pointer ${
+              className={`h-2 rounded-full transition-all cursor-pointer ${
                 testimonialIndex === dot
-                  ? "w-6 bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.8)]"
-                  : "bg-purple-950 border border-purple-800"
+                  ? "w-8 bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.8)]"
+                  : "w-2 bg-purple-950 border border-purple-800 hover:border-purple-600"
               }`}
-              aria-label={`Slide ${dot + 1}`}
+              aria-label={`Go to slide ${dot + 1}`}
             />
           ))}
         </div>
@@ -1410,6 +1562,104 @@ export function GeroldHome({
           </a>
         </div>
       </motion.div>
+        </>
+      )}
+
+      {/* ======================================================== */}
+      {/* SEPARATE PAGE: WEBSITES PORTFOLIO                        */}
+      {/* ======================================================== */}
+      {currentPage === "websites" && (
+        <main className="pt-28 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[85vh]">
+          {/* Breadcrumb & Navigation Bar */}
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-6 border-b border-purple-900/40">
+            <button
+              onClick={() => navigateToPage("home")}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-purple-950/70 hover:bg-purple-900/80 border border-purple-700/60 hover:border-purple-400 text-purple-200 text-xs font-mono font-bold tracking-wider transition-all hover:scale-105 cursor-pointer shadow-lg"
+            >
+              <span>← Back to Home</span>
+            </button>
+
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => navigateToPage("graphics")}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#120a22] hover:bg-[#1a0e30] border border-purple-800/40 hover:border-purple-500 text-zinc-300 hover:text-white text-xs font-mono font-medium transition-all cursor-pointer"
+              >
+                <Palette className="w-3.5 h-3.5 text-purple-400" />
+                <span>Switch to Graphics Portfolio (40+)</span>
+                <ArrowRight className="w-3.5 h-3.5 text-purple-400" />
+              </button>
+            </div>
+          </div>
+
+          {/* Full Websites Portfolio (All 12+ Production Sites, Filters, Search, Modals) */}
+          <WebsitePortfolio isHomePage={false} />
+
+          {/* Bottom Navigation */}
+          <div className="mt-16 pt-10 border-t border-purple-900/40 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <button
+              onClick={() => navigateToPage("home")}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#120a22] hover:bg-[#180e2f] border border-purple-800/40 hover:border-purple-400 text-purple-300 text-xs font-semibold tracking-wide transition-all cursor-pointer"
+            >
+              <span>← Return to Home</span>
+            </button>
+            <button
+              onClick={() => navigateToPage("graphics")}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold tracking-wide shadow-[0_0_20px_rgba(147,51,234,0.35)] transition-all cursor-pointer"
+            >
+              <span>Explore Graphics Portfolio (40+ Designs)</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        </main>
+      )}
+
+      {/* ======================================================== */}
+      {/* SEPARATE PAGE: GRAPHICS PORTFOLIO                        */}
+      {/* ======================================================== */}
+      {currentPage === "graphics" && (
+        <main className="pt-28 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[85vh]">
+          {/* Breadcrumb & Navigation Bar */}
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-6 border-b border-purple-900/40">
+            <button
+              onClick={() => navigateToPage("home")}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-purple-950/70 hover:bg-purple-900/80 border border-purple-700/60 hover:border-purple-400 text-purple-200 text-xs font-mono font-bold tracking-wider transition-all hover:scale-105 cursor-pointer shadow-lg"
+            >
+              <span>← Back to Home</span>
+            </button>
+
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => navigateToPage("websites")}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#120a22] hover:bg-[#1a0e30] border border-purple-800/40 hover:border-purple-500 text-zinc-300 hover:text-white text-xs font-mono font-medium transition-all cursor-pointer"
+              >
+                <Globe className="w-3.5 h-3.5 text-purple-400" />
+                <span>Switch to Websites Portfolio (12+)</span>
+                <ArrowRight className="w-3.5 h-3.5 text-purple-400" />
+              </button>
+            </div>
+          </div>
+
+          {/* Full Graphics Portfolio (All 40+ Designs, Filters, Modals) */}
+          <GraphicsPortfolio isHomePage={false} />
+
+          {/* Bottom Navigation */}
+          <div className="mt-16 pt-10 border-t border-purple-900/40 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <button
+              onClick={() => navigateToPage("home")}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#120a22] hover:bg-[#180e2f] border border-purple-800/40 hover:border-purple-400 text-purple-300 text-xs font-semibold tracking-wide transition-all cursor-pointer"
+            >
+              <span>← Return to Home</span>
+            </button>
+            <button
+              onClick={() => navigateToPage("websites")}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold tracking-wide shadow-[0_0_20px_rgba(147,51,234,0.35)] transition-all cursor-pointer"
+            >
+              <span>Explore Websites Portfolio (12+ Sites)</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        </main>
+      )}
 
       {/* ======================================================== */}
       {/* 14. FOOTER                                               */}

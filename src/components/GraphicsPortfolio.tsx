@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Palette,
   ExternalLink,
@@ -16,7 +16,10 @@ import {
   Share2,
   Bookmark,
   Smartphone,
-  ArrowRight
+  ArrowRight,
+  ChevronLeft,
+  ChevronRight,
+  Info
 } from "lucide-react";
 
 export interface GraphicItem {
@@ -1972,8 +1975,10 @@ export function GraphicsPortfolio({
   onShowMore
 }: GraphicsPortfolioProps = {}) {
   const [internalCategory, setInternalCategory] = useState<string>("All");
-  const [activeGraphic, setActiveGraphic] = useState<GraphicItem | null>(null);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [showSpecsDrawer, setShowSpecsDrawer] = useState<boolean>(false);
   const [copiedHex, setCopiedHex] = useState<string | null>(null);
+  const thumbnailContainerRef = useRef<HTMLDivElement>(null);
 
   const selectedCategory = externalCategory !== undefined ? externalCategory : internalCategory;
 
@@ -2020,8 +2025,59 @@ export function GraphicsPortfolio({
     return projCat === cat;
   });
 
+  // Master list of graphics for the lightbox (allows browsing all or filtered items)
+  const activeList = filteredProjects.length > 0 ? filteredProjects : GRAPHIC_PROJECTS;
+  const currentGraphic = lightboxIndex !== null && activeList[lightboxIndex] ? activeList[lightboxIndex] : null;
+
+  const openLightboxByProject = (project: GraphicItem) => {
+    const idx = activeList.findIndex((p) => p.id === project.id);
+    setLightboxIndex(idx !== -1 ? idx : 0);
+    setShowSpecsDrawer(false);
+  };
+
+  const handlePrevGraphic = () => {
+    if (lightboxIndex === null) return;
+    setLightboxIndex((prev) => (prev! > 0 ? prev! - 1 : activeList.length - 1));
+  };
+
+  const handleNextGraphic = () => {
+    if (lightboxIndex === null) return;
+    setLightboxIndex((prev) => (prev! < activeList.length - 1 ? prev! + 1 : 0));
+  };
+
+  // Keyboard navigation for Lightbox
+  useEffect(() => {
+    if (lightboxIndex === null) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        handlePrevGraphic();
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        handleNextGraphic();
+      } else if (e.key === "Escape") {
+        e.preventDefault();
+        setLightboxIndex(null);
+        setShowSpecsDrawer(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [lightboxIndex, activeList.length]);
+
+  // Auto-scroll active thumbnail into view
+  useEffect(() => {
+    if (lightboxIndex === null || !thumbnailContainerRef.current) return;
+    const activeThumb = thumbnailContainerRef.current.children[lightboxIndex] as HTMLElement;
+    if (activeThumb) {
+      activeThumb.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    }
+  }, [lightboxIndex]);
+
   const projectsToDisplay = isHomePage
-    ? filteredProjects.slice(0, 5)
+    ? filteredProjects.slice(0, 6)
     : filteredProjects;
 
   const copyToClipboard = (hex: string) => {
@@ -2096,12 +2152,16 @@ export function GraphicsPortfolio({
             >
               <div>
                 {/* Visual Canvas Mockup Card Container */}
-                <div className="relative aspect-[16/10] overflow-hidden bg-zinc-950 border-b border-zinc-800 flex flex-col justify-between">
+                <div
+                  onClick={() => openLightboxByProject(project)}
+                  className="relative aspect-[16/10] overflow-hidden bg-zinc-950 border-b border-zinc-800 flex flex-col justify-between cursor-pointer group/img"
+                  title="Click to view full artwork in Lightbox Gallery"
+                >
                   {project.imageUrl && (
                     <img
                       src={project.imageUrl}
                       alt={project.title}
-                      loading="eager"
+                      loading="lazy"
                       decoding="async"
                       className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 [image-rendering:-webkit-optimize-contrast]"
                       onError={(e) => {
@@ -2173,47 +2233,29 @@ export function GraphicsPortfolio({
               {/* Action Buttons */}
               <div className="p-6 pt-0 border-t border-zinc-800/50 flex items-center justify-between gap-3 mt-4">
                 <button
-                  onClick={() => setActiveGraphic(project)}
+                  onClick={() => openLightboxByProject(project)}
                   className="w-full py-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-[10px] font-mono font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 cursor-pointer rounded-xl shadow-[0_0_20px_rgba(147,51,234,0.35)] hover:shadow-purple-500/50 hover:scale-[1.02]"
                 >
-                  Inspect Design System <Maximize2 className="w-3.5 h-3.5" />
+                  View in Lightbox Gallery <Maximize2 className="w-3.5 h-3.5" />
                 </button>
               </div>
             </div>
           ))}
-
-          {/* 6th Item: Show More Button Card (Only rendered on Home page) */}
-          {isHomePage && (
-            <div
-              onClick={onShowMore}
-              className="bg-gradient-to-br from-purple-600/10 via-zinc-900 to-zinc-950 border border-purple-500/40 hover:border-purple-400 rounded-2xl transition-all duration-300 flex flex-col items-center justify-center p-8 text-center group cursor-pointer shadow-xl relative overflow-hidden min-h-[380px]"
-            >
-              {/* Background ambient glow */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-purple-600/10 via-transparent to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-
-              <div className="p-4 rounded-2xl bg-purple-600/10 border border-purple-500/30 text-purple-400 group-hover:bg-purple-600 group-hover:text-white transition-all duration-300 mb-6 shadow-lg group-hover:scale-110">
-                <ArrowRight className="w-8 h-8 transition-transform group-hover:translate-x-1" />
-              </div>
-
-              <div className="space-y-2 max-w-xs relative z-10">
-                <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-purple-400 font-bold block">
-                  Complete Gallery
-                </span>
-                <h3 className="text-xl font-serif font-black text-white group-hover:text-purple-300 transition-colors">
-                  Show More Projects
-                </h3>
-                <p className="text-xs text-zinc-400 leading-relaxed font-sans pt-1">
-                  View full portfolio of logos, maps, brand identity guidelines, Mobile App UI systems & design work.
-                </p>
-              </div>
-
-              <div className="mt-8 px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-mono font-black uppercase tracking-widest rounded-xl shadow-[0_0_20px_rgba(147,51,234,0.35)] group-hover:shadow-[0_0_30px_rgba(147,51,234,0.5)] transition-all flex items-center gap-2 relative z-10 cursor-pointer">
-                <span>View Full Portfolio ({GRAPHIC_PROJECTS.length}+ Items)</span>
-                <ArrowRight className="w-4 h-4" />
-              </div>
-            </div>
-          )}
         </div>
+
+        {/* Prominent View All Graphics CTA (on Homepage) */}
+        {isHomePage && onShowMore && (
+          <div className="pt-6 text-center">
+            <button
+              onClick={onShowMore}
+              className="px-8 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white rounded-2xl font-mono text-xs font-bold uppercase tracking-widest transition-all shadow-[0_0_25px_rgba(147,51,234,0.35)] hover:shadow-purple-500/50 hover:scale-[1.02] inline-flex items-center gap-3 cursor-pointer"
+            >
+              <Palette className="w-4 h-4 text-white" />
+              <span>View All Graphics & Branding Portfolio ({GRAPHIC_PROJECTS.length}+ Projects)</span>
+              <ArrowRight className="w-4 h-4 text-white" />
+            </button>
+          </div>
+        )}
 
         {/* Empty State if filter returns no items */}
         {projectsToDisplay.length === 0 && (
@@ -2234,213 +2276,324 @@ export function GraphicsPortfolio({
 
       </div>
 
-      {/* DESIGN SYSTEM SPECIFICATION MODAL */}
-      {activeGraphic && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6 bg-zinc-950/85 backdrop-blur-md overflow-y-auto">
-          <div
-            className="bg-zinc-900 border border-zinc-800 max-w-4xl w-full max-h-[92vh] overflow-y-auto shadow-2xl relative text-left rounded-2xl my-auto transition-all animate-in fade-in zoom-in-95 duration-200"
-          >
-              {/* Modal Top Control Header */}
-              <div className="sticky top-0 z-20 bg-zinc-950 text-white px-4 sm:px-6 py-3.5 sm:py-4 flex items-center justify-between border-b border-zinc-800">
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <Palette className="w-4 h-4 text-purple-400 shrink-0" />
-                  <span className="font-mono text-[10px] sm:text-xs uppercase tracking-widest font-bold text-zinc-300 truncate">
-                    Graphic Asset Specimen // {activeGraphic.title}
+      {/* IMMERSIVE GRAPHICS LIGHTBOX GALLERY */}
+      {currentGraphic && lightboxIndex !== null && (
+        <div className="fixed inset-0 z-50 flex flex-col justify-between bg-black/95 backdrop-blur-2xl overflow-hidden select-none animate-in fade-in duration-200">
+          
+          {/* 1. TOP HEADER TOOLBAR */}
+          <div className="relative z-20 px-4 sm:px-8 py-3.5 bg-zinc-950/90 border-b border-purple-900/30 flex items-center justify-between gap-4 shrink-0 shadow-lg">
+            {/* Left: Branding & Index Counter */}
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="w-8 h-8 rounded-lg bg-purple-950/80 border border-purple-700/60 flex items-center justify-center shrink-0">
+                <Palette className="w-4 h-4 text-purple-400" />
+              </div>
+              <div className="min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-[10px] sm:text-xs font-bold uppercase tracking-wider text-white truncate">
+                    {currentGraphic.title}
+                  </span>
+                  <span className="text-[9px] font-mono font-bold px-2 py-0.5 rounded-full bg-purple-950/80 border border-purple-700/60 text-purple-300 shrink-0">
+                    {currentGraphic.category}
                   </span>
                 </div>
+                <span className="text-[10px] font-mono text-zinc-400 block truncate">
+                  Client: {currentGraphic.client} · {currentGraphic.dimensions}
+                </span>
+              </div>
+            </div>
 
-                <button
-                  onClick={() => setActiveGraphic(null)}
-                  className="p-1.5 text-zinc-400 hover:text-white transition-colors cursor-pointer rounded-lg hover:bg-zinc-800 shrink-0"
-                >
-                  <X className="w-5 h-5" />
-                </button>
+            {/* Center: Graphic Index Counter */}
+            <div className="hidden md:flex items-center gap-2 px-3.5 py-1 rounded-full bg-zinc-900/90 border border-purple-900/40 font-mono text-xs text-zinc-300">
+              <span className="text-purple-400 font-bold">{lightboxIndex + 1}</span>
+              <span className="text-zinc-500">/</span>
+              <span>{activeList.length}</span>
+              <span className="text-[10px] text-zinc-500 ml-1">Artwork</span>
+            </div>
+
+            {/* Right: Actions (Specs toggle, Behance, Close) */}
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                onClick={() => setShowSpecsDrawer(!showSpecsDrawer)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-mono font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+                  showSpecsDrawer
+                    ? "bg-purple-600 text-white shadow-[0_0_12px_rgba(168,85,247,0.5)]"
+                    : "bg-zinc-900 text-zinc-300 hover:text-white border border-zinc-700 hover:border-purple-500"
+                }`}
+                title="Toggle Technical Specifications & Typography"
+              >
+                <Info className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">{showSpecsDrawer ? "Hide Specs" : "View Specs"}</span>
+              </button>
+
+              <a
+                href={currentGraphic.behanceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-700 hover:border-purple-500 rounded-lg text-xs font-mono font-medium transition-all"
+                title="Open Behance case study in new tab"
+              >
+                <span>Behance</span>
+                <ExternalLink className="w-3 h-3 text-purple-400" />
+              </a>
+
+              <button
+                onClick={() => {
+                  setLightboxIndex(null);
+                  setShowSpecsDrawer(false);
+                }}
+                className="p-1.5 sm:p-2 rounded-lg bg-zinc-900/90 hover:bg-rose-950/80 border border-zinc-700 hover:border-rose-600 text-zinc-400 hover:rose-200 transition-all cursor-pointer flex items-center gap-1"
+                aria-label="Close Lightbox (Esc)"
+                title="Close (Esc)"
+              >
+                <X className="w-5 h-5" />
+                <span className="hidden sm:inline font-mono text-[10px] text-zinc-500 uppercase">Esc</span>
+              </button>
+            </div>
+          </div>
+
+          {/* 2. MAIN CENTER STAGE */}
+          <div className="relative flex-1 flex items-center justify-between p-2 sm:p-6 overflow-hidden min-h-0">
+            {/* Prev Navigation Button */}
+            <button
+              onClick={handlePrevGraphic}
+              className="z-30 p-3 sm:p-4 rounded-full bg-zinc-900/80 hover:bg-purple-600/50 border border-zinc-700/80 hover:border-purple-400 text-white shadow-2xl backdrop-blur-md transition-all hover:scale-110 cursor-pointer shrink-0 ml-1 sm:ml-4"
+              aria-label="Previous Graphic (Left Arrow)"
+              title="Previous Graphic (Left Arrow)"
+            >
+              <ChevronLeft className="w-6 h-6 sm:w-7 sm:h-7" />
+            </button>
+
+            {/* Central Artwork Display & Caption */}
+            <div className="flex-1 flex flex-col items-center justify-center max-h-full max-w-5xl mx-auto px-2 sm:px-6 relative overflow-hidden">
+              <div
+                className="relative max-h-[58vh] sm:max-h-[64vh] flex items-center justify-center cursor-pointer group"
+                onClick={handleNextGraphic}
+                title="Click image to advance to next artwork"
+              >
+                <img
+                  key={currentGraphic.id}
+                  src={currentGraphic.imageUrl}
+                  alt={currentGraphic.title}
+                  className="max-h-[58vh] sm:max-h-[64vh] max-w-full w-auto object-contain rounded-xl border border-purple-900/40 shadow-[0_20px_70px_rgba(0,0,0,0.9)] transition-all [image-rendering:-webkit-optimize-contrast]"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    if (!target.dataset.fallbackTried && currentGraphic.fallbackUrl) {
+                      target.dataset.fallbackTried = "true";
+                      target.src = currentGraphic.fallbackUrl;
+                    } else if (target.dataset.fallbackTried !== "final") {
+                      target.dataset.fallbackTried = "final";
+                      target.src = "/graphics/9d55f6220534229.67c9db72b524d.webp";
+                    }
+                  }}
+                />
+
+                {/* Subtle Click Hint on Hover */}
+                <div className="absolute inset-0 rounded-xl bg-purple-950/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                  <span className="px-3 py-1 bg-black/70 backdrop-blur-md text-[11px] font-mono text-purple-200 rounded-full border border-purple-500/40 shadow-lg">
+                    Click to view next →
+                  </span>
+                </div>
               </div>
 
-              {/* Modal Main Content */}
-              <div className="p-4 sm:p-8 space-y-6">
-                
-                {/* Visual Canvas Display */}
-                <div className="relative rounded-xl overflow-hidden border border-zinc-800 bg-zinc-950">
-                  {activeGraphic.imageUrl && (
-                    <img
-                      src={activeGraphic.imageUrl}
-                      alt={activeGraphic.title}
-                      loading="eager"
-                      decoding="async"
-                      className="w-full h-auto max-h-[600px] object-contain mx-auto [image-rendering:-webkit-optimize-contrast]"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        if (!target.dataset.fallbackTried && activeGraphic.fallbackUrl) {
-                          target.dataset.fallbackTried = "true";
-                          target.src = activeGraphic.fallbackUrl;
-                        } else if (target.dataset.fallbackTried !== "final") {
-                          target.dataset.fallbackTried = "final";
-                          target.src = "/graphics/9d55f6220534229.67c9db72b524d.webp";
-                        }
+              {/* Artwork Floating Caption & Swatches */}
+              <div className="mt-3 max-w-2xl w-full px-4 py-2.5 rounded-xl bg-zinc-950/80 border border-zinc-800/80 backdrop-blur-md flex flex-wrap items-center justify-between gap-3 text-left">
+                <div className="min-w-0">
+                  <h4 className="text-xs sm:text-sm font-bold font-serif text-white truncate">
+                    {currentGraphic.title}
+                  </h4>
+                  <p className="text-[11px] text-zinc-400 font-mono truncate">
+                    {currentGraphic.tagline}
+                  </p>
+                </div>
+
+                {/* Quick Swatches Bar */}
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <span className="text-[9px] font-mono text-zinc-500 uppercase hidden sm:inline">Palette:</span>
+                  {currentGraphic.palette.map((hex) => (
+                    <button
+                      key={hex}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        copyToClipboard(hex);
                       }}
-                    />
-                  )}
-                  <div className="absolute top-3 left-3 right-3 flex justify-between items-center font-mono text-[9px] sm:text-xs z-10 gap-2">
-                    <span className="px-2.5 sm:px-3 py-1 bg-purple-950/80 border border-purple-700/50 uppercase font-black text-purple-300 tracking-widest rounded shadow truncate">
-                      {activeGraphic.category}
-                    </span>
-                    <span className="text-zinc-300 uppercase font-bold bg-zinc-900/90 px-2 sm:px-2.5 py-1 rounded border border-zinc-700 shadow shrink-0">
-                      {activeGraphic.dimensions}
-                    </span>
-                  </div>
+                      className="w-5 h-5 rounded-full border border-white/20 hover:scale-125 transition-transform cursor-pointer relative shadow-sm"
+                      style={{ backgroundColor: hex }}
+                      title={`Copy Hex ${hex}`}
+                    >
+                      {copiedHex === hex && (
+                        <span className="absolute inset-0 flex items-center justify-center text-[8px] text-white font-bold bg-black/60 rounded-full">
+                          ✓
+                        </span>
+                      )}
+                    </button>
+                  ))}
                 </div>
+              </div>
+            </div>
 
-                {/* Modal Title & Swatches */}
-                <div className="p-4 sm:p-6 bg-zinc-950/60 border border-zinc-800/80 rounded-xl space-y-4">
-                  <div className="space-y-1">
-                    <span className="text-[10px] font-mono uppercase tracking-widest text-purple-400 font-bold block">
-                      CLIENT: {activeGraphic.client}
-                    </span>
-                    <h3 className="text-2xl sm:text-3xl font-serif font-black text-white tracking-tight">
-                      {activeGraphic.title}
+            {/* Next Navigation Button */}
+            <button
+              onClick={handleNextGraphic}
+              className="z-30 p-3 sm:p-4 rounded-full bg-zinc-900/80 hover:bg-purple-600/50 border border-zinc-700/80 hover:border-purple-400 text-white shadow-2xl backdrop-blur-md transition-all hover:scale-110 cursor-pointer shrink-0 mr-1 sm:mr-4"
+              aria-label="Next Graphic (Right Arrow)"
+              title="Next Graphic (Right Arrow)"
+            >
+              <ChevronRight className="w-6 h-6 sm:w-7 sm:h-7" />
+            </button>
+          </div>
+
+          {/* 3. OPTIONAL SPECS DRAWER (SLIDE OVER) */}
+          {showSpecsDrawer && (
+            <div className="absolute inset-y-0 right-0 z-40 w-full sm:w-96 bg-zinc-950/95 border-l border-purple-900/40 p-6 overflow-y-auto shadow-2xl backdrop-blur-2xl text-left animate-in slide-in-from-right duration-200 flex flex-col justify-between">
+              <div className="space-y-6">
+                <div className="flex items-center justify-between pb-3 border-b border-zinc-800">
+                  <div className="flex items-center gap-2">
+                    <Info className="w-4 h-4 text-purple-400" />
+                    <h3 className="font-mono text-xs font-bold uppercase tracking-wider text-white">
+                      Design System Specs
                     </h3>
-                    <p className="text-xs sm:text-sm text-zinc-300 font-mono">
-                      {activeGraphic.tagline}
-                    </p>
                   </div>
-
-                  {/* Interactive Swatches Bar */}
-                  <div className="pt-4 border-t border-zinc-800/80 flex flex-wrap items-center justify-between gap-4 font-mono text-xs">
-                    <span className="text-zinc-400 text-[10px] uppercase font-bold">Click swatch to copy hex code:</span>
-                    <div className="flex items-center gap-2">
-                      {activeGraphic.palette.map((hex) => (
-                        <button
-                          key={hex}
-                          onClick={() => copyToClipboard(hex)}
-                          className="flex items-center gap-1.5 px-2.5 py-1 bg-zinc-900/90 border border-zinc-700/80 hover:border-purple-400 transition-colors text-[10px] font-bold text-zinc-200 cursor-pointer rounded"
-                        >
-                          <span className="w-3 h-3 rounded-full" style={{ backgroundColor: hex }}></span>
-                          <span>{hex}</span>
-                          {copiedHex === hex && <Check className="w-3 h-3 text-emerald-400" />}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
+                  <button
+                    onClick={() => setShowSpecsDrawer(false)}
+                    className="p-1 rounded-md text-zinc-400 hover:text-white hover:bg-zinc-800 cursor-pointer"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
                 </div>
 
-                {/* Detailed Specifications Grid */}
-                <div className="grid md:grid-cols-2 gap-8">
-                  
-                  {/* Left Column: Typographic & Technical Specs */}
-                  <div className="space-y-6">
-                    
-                    <div className="p-5 bg-zinc-950/60 border border-zinc-800/80 rounded-xl space-y-3">
-                      <span className="text-[9px] font-mono text-zinc-400 uppercase tracking-widest font-black block">
-                        Typographic Pairing
-                      </span>
-                      <div className="space-y-2 font-mono text-xs text-zinc-300">
-                        <div className="space-y-0.5">
-                          <span className="text-[10px] text-zinc-500 block uppercase">Heading Specimen:</span>
-                          <span className="font-bold text-purple-300 font-serif text-sm">{activeGraphic.fonts.heading}</span>
-                        </div>
-                        <div className="space-y-0.5 pt-2 border-t border-zinc-800/60">
-                          <span className="text-[10px] text-zinc-500 block uppercase">Body & Metadata Specimen:</span>
-                          <span className="font-bold text-white">{activeGraphic.fonts.body}</span>
-                        </div>
-                      </div>
+                {/* Typography */}
+                <div className="space-y-2 font-mono text-xs">
+                  <span className="text-[10px] text-purple-400 font-bold uppercase tracking-wider block">
+                    Typographic Pairing
+                  </span>
+                  <div className="p-3 bg-zinc-900/60 rounded-lg border border-zinc-800 space-y-1.5">
+                    <div>
+                      <span className="text-[10px] text-zinc-500 uppercase block">Heading:</span>
+                      <span className="font-serif font-bold text-white text-sm">{currentGraphic.fonts.heading}</span>
                     </div>
-
-                    <div className="p-5 bg-zinc-950/60 border border-zinc-800/80 rounded-xl space-y-3">
-                      <span className="text-[9px] font-mono text-zinc-400 uppercase tracking-widest font-black block">
-                        File & Color Export Metadata
-                      </span>
-                      <div className="space-y-1.5 font-mono text-xs text-zinc-300">
-                        <div className="flex justify-between py-1 border-b border-zinc-800/60">
-                          <span className="text-zinc-500">Color Profile:</span>
-                          <span className="font-bold text-white">{activeGraphic.specifications.colorSpace}</span>
-                        </div>
-                        <div className="flex justify-between py-1 border-b border-zinc-800/60">
-                          <span className="text-zinc-500">Resolution Standard:</span>
-                          <span className="font-bold text-white">{activeGraphic.specifications.resolution}</span>
-                        </div>
-                        <div className="flex justify-between py-1">
-                          <span className="text-zinc-500">Print Scale:</span>
-                          <span className="font-bold text-white">{activeGraphic.specifications.vectorDpi}</span>
-                        </div>
-                      </div>
+                    <div className="pt-1.5 border-t border-zinc-800/60">
+                      <span className="text-[10px] text-zinc-500 uppercase block">Body:</span>
+                      <span className="text-zinc-300">{currentGraphic.fonts.body}</span>
                     </div>
-
                   </div>
-
-                  {/* Right Column: Designer Notes & Deliverables */}
-                  <div className="space-y-6">
-                    
-                    <div className="space-y-2">
-                      <h4 className="text-xs font-mono font-black uppercase text-white tracking-wider">
-                        Design Rationale & Composition Notes
-                      </h4>
-                      <p className="text-xs text-zinc-400 leading-relaxed bg-zinc-950/60 p-4 border border-zinc-800/60 rounded-xl">
-                        {activeGraphic.designNotes}
-                      </p>
-                    </div>
-
-                    <div className="space-y-2">
-                      <span className="text-[9px] font-mono text-zinc-400 uppercase tracking-widest font-black block">
-                        Master Formats Enqueued
-                      </span>
-                      <div className="flex flex-wrap gap-1.5">
-                        {activeGraphic.specifications.fileFormats.map((fmt) => (
-                          <span
-                            key={fmt}
-                            className="px-2.5 py-1 bg-zinc-800/80 border border-zinc-700/60 text-[10px] font-mono text-zinc-300 font-bold uppercase rounded"
-                          >
-                            {fmt}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="space-y-2 pt-2">
-                      <span className="text-[9px] font-mono text-zinc-400 uppercase tracking-widest font-black block">
-                        Primary Tools & Software
-                      </span>
-                      <div className="flex flex-wrap gap-1.5">
-                        {activeGraphic.tools.map((tool) => (
-                          <span
-                            key={tool}
-                            className="px-2.5 py-1 bg-purple-950/80 text-purple-300 border border-purple-700/50 text-[10px] font-mono font-bold uppercase rounded"
-                          >
-                            {tool}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                  </div>
-
                 </div>
 
+                {/* Technical Specifications */}
+                <div className="space-y-2 font-mono text-xs">
+                  <span className="text-[10px] text-purple-400 font-bold uppercase tracking-wider block">
+                    Production Standards
+                  </span>
+                  <div className="p-3 bg-zinc-900/60 rounded-lg border border-zinc-800 space-y-1 text-zinc-300">
+                    <div className="flex justify-between py-0.5">
+                      <span className="text-zinc-500">Color Profile:</span>
+                      <span className="text-white font-bold">{currentGraphic.specifications.colorSpace}</span>
+                    </div>
+                    <div className="flex justify-between py-0.5">
+                      <span className="text-zinc-500">Resolution:</span>
+                      <span className="text-white font-bold">{currentGraphic.specifications.resolution}</span>
+                    </div>
+                    <div className="flex justify-between py-0.5">
+                      <span className="text-zinc-500">Vector Scale:</span>
+                      <span className="text-white font-bold">{currentGraphic.specifications.vectorDpi}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Design Notes */}
+                <div className="space-y-2">
+                  <span className="text-[10px] font-mono text-purple-400 font-bold uppercase tracking-wider block">
+                    Composition Notes
+                  </span>
+                  <p className="text-xs text-zinc-300 leading-relaxed bg-zinc-900/60 p-3 rounded-lg border border-zinc-800">
+                    {currentGraphic.designNotes}
+                  </p>
+                </div>
+
+                {/* Software Tools */}
+                <div className="space-y-2">
+                  <span className="text-[10px] font-mono text-purple-400 font-bold uppercase tracking-wider block">
+                    Software Tools
+                  </span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {currentGraphic.tools.map((t) => (
+                      <span
+                        key={t}
+                        className="px-2 py-0.5 bg-purple-950/80 text-purple-300 border border-purple-800/50 rounded text-[10px] font-mono font-bold"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </div>
 
-              {/* Modal Bottom Action Bar */}
-              <div className="p-4 sm:p-6 bg-zinc-950 border-t border-zinc-800 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 rounded-b-2xl">
-                <a
-                  href={activeGraphic.behanceUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center sm:justify-start gap-2 text-xs font-mono font-bold text-zinc-400 hover:text-white uppercase tracking-wider"
-                >
-                  View Full Behance Case Study <ExternalLink className="w-3.5 h-3.5 text-purple-400" />
-                </a>
-
+              <div className="pt-6 mt-6 border-t border-zinc-800">
                 <a
                   href="#contact"
-                  onClick={() => setActiveGraphic(null)}
-                  className="px-5 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-mono font-black uppercase tracking-widest transition-all rounded-xl text-center shadow-[0_0_20px_rgba(147,51,234,0.35)] cursor-pointer hover:shadow-purple-500/50 hover:scale-[1.02] whitespace-nowrap"
+                  onClick={() => {
+                    setLightboxIndex(null);
+                    setShowSpecsDrawer(false);
+                  }}
+                  className="block w-full py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-mono text-xs font-bold uppercase tracking-wider text-center shadow-lg hover:brightness-110 cursor-pointer"
                 >
-                  Request Custom Graphics Kit
+                  Request Graphics Kit
                 </a>
               </div>
             </div>
+          )}
+
+          {/* 4. BOTTOM FILMSTRIP THUMBNAIL CAROUSEL */}
+          <div className="relative z-20 bg-zinc-950/95 border-t border-purple-900/30 px-3 sm:px-6 py-2.5 shrink-0">
+            <div className="flex items-center justify-between mb-1.5 font-mono text-[10px] text-zinc-400 px-1">
+              <span>
+                All Graphics ({activeList.length} items) · Click any thumbnail to jump
+              </span>
+              <span className="hidden sm:inline text-purple-400">
+                Use ← → arrow keys to browse · Esc to close
+              </span>
+            </div>
+
+            {/* Scrollable Thumbnails Strip */}
+            <div
+              ref={thumbnailContainerRef}
+              className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 scroll-smooth"
+            >
+              {activeList.map((item, idx) => {
+                const isActive = idx === lightboxIndex;
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => setLightboxIndex(idx)}
+                    className={`relative shrink-0 w-16 h-12 sm:w-20 sm:h-14 rounded-lg overflow-hidden border transition-all cursor-pointer ${
+                      isActive
+                        ? "border-purple-400 ring-2 ring-purple-500 scale-105 shadow-[0_0_15px_rgba(168,85,247,0.7)]"
+                        : "border-zinc-800 hover:border-purple-600/70 opacity-60 hover:opacity-100"
+                    }`}
+                    title={`${item.title} (${idx + 1}/${activeList.length})`}
+                  >
+                    <img
+                      src={item.imageUrl}
+                      alt={item.title}
+                      className="w-full h-full object-cover [image-rendering:-webkit-optimize-contrast]"
+                      loading="lazy"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        if (!target.dataset.fallbackTried && item.fallbackUrl) {
+                          target.dataset.fallbackTried = "true";
+                          target.src = item.fallbackUrl;
+                        }
+                      }}
+                    />
+                    {isActive && (
+                      <span className="absolute bottom-0.5 right-0.5 w-2 h-2 rounded-full bg-purple-400 shadow-[0_0_6px_rgba(168,85,247,1)]" />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        )}
+        </div>
+      )}
     </section>
   );
 }

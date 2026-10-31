@@ -69,9 +69,9 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     year: "2025",
     liveUrl: "https://partakefoods.com/",
     image: "/websites-portfolio/partake-foods.webp",
-    fallbackImage: "/websites-portfolio/partake-foods.webp",
-    bgGradient: "from-purple-950 via-zinc-900 to-zinc-950",
-    primaryColor: "#a855f7",
+    fallbackImage: "/Websites Portfolio/partake foods.webp",
+    bgGradient: "from-amber-950 via-zinc-900 to-zinc-950",
+    primaryColor: "#f59e0b",
     features: [
       "Allergy-friendly custom product filters & subscription management",
       "Sub-second checkout flow optimization with AJAX cart drawer",
@@ -106,7 +106,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     year: "2025",
     liveUrl: "https://adora.com/",
     image: "/websites-portfolio/adora.webp",
-    fallbackImage: "/websites-portfolio/adora.webp",
+    fallbackImage: "/Websites Portfolio/Adora.webp",
     bgGradient: "from-rose-950 via-zinc-900 to-zinc-950",
     primaryColor: "#f43f5e",
     features: [
@@ -143,7 +143,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     year: "2025",
     liveUrl: "https://thebuildermarket.com/",
     image: "/websites-portfolio/the-buildermarket.webp",
-    fallbackImage: "/websites-portfolio/the-buildermarket.webp",
+    fallbackImage: "/Websites Portfolio/The Buildermarket.webp",
     bgGradient: "from-blue-950 via-zinc-900 to-zinc-950",
     primaryColor: "#3b82f6",
     features: [
@@ -180,7 +180,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     year: "2025",
     liveUrl: "https://blockd.io/",
     image: "/websites-portfolio/blockd.webp",
-    fallbackImage: "/websites-portfolio/blockd.webp",
+    fallbackImage: "/Websites Portfolio/blockd.webp",
     bgGradient: "from-indigo-950 via-zinc-900 to-zinc-950",
     primaryColor: "#6366f1",
     features: [
@@ -217,7 +217,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     year: "2025",
     liveUrl: "https://www.toynk.com/",
     image: "/websites-portfolio/toynk-pop-culture.webp",
-    fallbackImage: "/websites-portfolio/toynk-pop-culture.webp",
+    fallbackImage: "/Websites Portfolio/toynk pop culture.webp",
     bgGradient: "from-rose-950 via-zinc-900 to-zinc-950",
     primaryColor: "#ef4444",
     features: [
@@ -254,7 +254,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     year: "2025",
     liveUrl: "https://detach.co/",
     image: "/websites-portfolio/detach.webp",
-    fallbackImage: "/websites-portfolio/detach.webp",
+    fallbackImage: "/Websites Portfolio/Detach.webp",
     bgGradient: "from-emerald-950 via-zinc-900 to-zinc-950",
     primaryColor: "#10b981",
     features: [
@@ -291,7 +291,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     year: "2026",
     liveUrl: "https://www.watchguys.com/",
     image: "/websites-portfolio/watch-guys.webp",
-    fallbackImage: "/web-portfolio/watch-guys.png",
+    fallbackImage: "/Websites Portfolio/Watch Guys.webp",
     bgGradient: "from-amber-950 via-zinc-900 to-zinc-950",
     primaryColor: "#c5a059",
     features: [
@@ -328,7 +328,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     year: "2025",
     liveUrl: "https://purepush.com/",
     image: "/websites-portfolio/purepush.webp",
-    fallbackImage: "/websites-portfolio/purepush.webp",
+    fallbackImage: "/Websites Portfolio/purepush.webp",
     bgGradient: "from-sky-950 via-zinc-900 to-zinc-950",
     primaryColor: "#0284c7",
     features: [
@@ -365,7 +365,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     year: "2025",
     liveUrl: "https://slamables.com/",
     image: "/websites-portfolio/slamables.webp",
-    fallbackImage: "/websites-portfolio/slamables.webp",
+    fallbackImage: "/Websites Portfolio/slamables.webp",
     bgGradient: "from-purple-950 via-zinc-900 to-zinc-950",
     primaryColor: "#a855f7",
     features: [
@@ -401,8 +401,8 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     role: "E-Commerce Specialist & UI Designer",
     year: "2024",
     liveUrl: "https://desicart.co.uk/",
-    image: "/websites-portfolio/lux-compounds.webp",
-    fallbackImage: "/websites-portfolio/partake-foods.webp",
+    image: "/websites-portfolio/desicart-uk.png",
+    fallbackImage: "/web-portfolio/desicart UK Grocery.png",
     bgGradient: "from-emerald-950 via-zinc-900 to-zinc-950",
     primaryColor: "#10b981",
     features: [
@@ -439,7 +439,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     year: "2024",
     liveUrl: "https://luxcompounds.com/",
     image: "/websites-portfolio/lux-compounds.webp",
-    fallbackImage: "/web-portfolio/lux-compounds.png",
+    fallbackImage: "/Websites Portfolio/lux compounds.webp",
     bgGradient: "from-cyan-950 via-zinc-900 to-zinc-950",
     primaryColor: "#06b6d4",
     features: [
@@ -476,7 +476,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     year: "2025",
     liveUrl: "https://www.matalanme.com/",
     image: "/websites-portfolio/matalan-clothing.webp",
-    fallbackImage: "/websites-portfolio/matalan-clothing.webp",
+    fallbackImage: "/Websites Portfolio/Maltan clothing.webp",
     bgGradient: "from-rose-950 via-zinc-900 to-zinc-950",
     primaryColor: "#e11d48",
     features: [
@@ -513,7 +513,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     year: "2025",
     liveUrl: "https://www.babyshopstores.com/",
     image: "/websites-portfolio/matalan-clothing.webp",
-    fallbackImage: "/websites-portfolio/maltan-clothing.webp",
+    fallbackImage: "/Websites Portfolio/Maltan clothing.webp",
     bgGradient: "from-sky-950 via-zinc-900 to-zinc-950",
     primaryColor: "#0284c7",
     features: [
@@ -591,7 +591,7 @@ export function WebsitePortfolio({
         {/* SECTION HEADER */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
           <div className="space-y-3 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-purple-950/60 border border-purple-800/60 text-[10px] font-mono font-bold text-purple-400 uppercase tracking-widest rounded-md">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-purple-950/50 border border-purple-800/40 text-[10px] font-mono font-bold text-purple-400 uppercase tracking-widest rounded-md">
               <Globe className="w-3.5 h-3.5 text-purple-400" />
               Verified Work Showcase
             </div>
@@ -604,7 +604,7 @@ export function WebsitePortfolio({
           </div>
 
           {/* Quick Metrics Badge */}
-          <div className="flex items-center gap-4 p-4 bg-zinc-900/90 border border-zinc-800 rounded-2xl font-mono text-xs shrink-0 shadow-xl">
+          <div className="flex items-center gap-4 p-4 bg-zinc-900/90 border border-purple-900/30 rounded-2xl font-mono text-xs shrink-0 shadow-xl">
             <div className="space-y-0.5">
               <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest block">Core Web Vitals</span>
               <span className="text-emerald-400 font-bold text-sm">95–99 Average</span>
@@ -628,8 +628,8 @@ export function WebsitePortfolio({
                 onClick={() => handleCategoryChange(cat)}
                 className={`px-3.5 py-1.5 text-[10px] font-mono tracking-widest uppercase font-bold transition-all cursor-pointer rounded-lg shrink-0 whitespace-nowrap ${
                   currentCategory === cat
-                    ? "bg-purple-600 text-white shadow-[0_0_15px_rgba(168,85,247,0.4)] border border-purple-500 font-bold"
-                    : "bg-zinc-900/60 text-zinc-400 hover:text-white border border-zinc-800 hover:border-purple-800/50"
+                    ? "bg-purple-600/20 text-purple-300 border border-purple-500/40 shadow-[0_0_15px_rgba(168,85,247,0.2)]"
+                    : "bg-zinc-900/60 text-zinc-400 hover:text-white border border-zinc-800 hover:border-zinc-700"
                 }`}
               >
                 {cat}
@@ -676,12 +676,12 @@ export function WebsitePortfolio({
                   <div className="absolute top-0 left-0 right-0 z-20 px-3 py-2 bg-zinc-950/95 backdrop-blur-md border-b border-zinc-800/80 flex items-center justify-between text-[9px] font-mono">
                     <div className="flex items-center gap-1.5">
                       <span className="w-2 h-2 rounded-full bg-rose-500"></span>
-                      <span className="w-2 h-2 rounded-full bg-purple-500"></span>
+                      <span className="w-2 h-2 rounded-full bg-amber-500"></span>
                       <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
                       <span className="text-zinc-300 font-bold ml-1 truncate max-w-[130px]">{project.liveUrl.replace("https://", "")}</span>
                     </div>
                     <div className="flex items-center gap-1.5">
-                      <span className="hidden sm:inline-block text-[8px] text-zinc-400 font-mono tracking-wider uppercase bg-zinc-900 px-1.5 py-0.5 rounded border border-zinc-800 opacity-80 group-hover/img:opacity-100 transition-opacity">
+                      <span className="hidden sm:inline-block text-[8px] text-purple-300/80 font-mono tracking-wider uppercase bg-purple-950/60 px-1.5 py-0.5 rounded border border-purple-800/50 opacity-80 group-hover/img:opacity-100 transition-opacity">
                         Hover to Scroll
                       </span>
                       <div className="flex items-center gap-1 px-2 py-0.5 bg-emerald-950/90 border border-emerald-800/80 text-emerald-300 font-bold rounded">
@@ -696,9 +696,9 @@ export function WebsitePortfolio({
                     <img
                       src={project.image}
                       alt={`${project.title} website screenshot`}
-                      loading="eager"
+                      loading="lazy"
                       decoding="async"
-                      className="w-full h-auto block transform translate-y-0 group-hover/img:-translate-y-[calc(100%-240px)] transition-transform duration-[6000ms] ease-in-out opacity-100 [image-rendering:-webkit-optimize-contrast]"
+                      className="w-full h-auto block transform-gpu translate-y-0 group-hover/img:-translate-y-[calc(100%-240px)] transition-transform duration-[6000ms] ease-in-out opacity-100 will-change-transform [image-rendering:-webkit-optimize-contrast]"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         if (!target.dataset.fallbackTried && project.fallbackImage && project.fallbackImage !== project.image) {
@@ -717,7 +717,7 @@ export function WebsitePortfolio({
 
                   <div className="absolute bottom-3 left-3 right-3 z-10 flex items-end justify-between font-mono text-[9px]">
                     <div>
-                      <span className="px-2 py-0.5 bg-purple-950/80 border border-purple-700/50 text-purple-300 font-bold uppercase tracking-wider rounded text-[8px] inline-block mb-1">
+                      <span className="px-2 py-0.5 bg-purple-950/80 border border-purple-800/60 text-purple-300 font-bold uppercase tracking-wider rounded text-[8px] inline-block mb-1">
                         {project.category}
                       </span>
                       <h3 className="text-base font-bold font-serif text-white tracking-tight drop-shadow-md group-hover:text-purple-300 transition-colors">
@@ -750,13 +750,13 @@ export function WebsitePortfolio({
                 </div>
               </div>
 
-              {/* Action Footer */}
+              {/* Action Footer - Purple Button matching site theme */}
               <div className="p-6 pt-0 mt-2">
                 <a
                   href={project.liveUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-3.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-mono font-black uppercase tracking-wider transition-all rounded-xl flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(147,51,234,0.35)] cursor-pointer hover:shadow-purple-500/50 hover:scale-[1.02]"
+                  className="w-full py-3.5 bg-gradient-to-r from-purple-600 via-[#8750f7] to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-mono font-black uppercase tracking-wider transition-all duration-300 rounded-xl flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(135,80,247,0.35)] hover:shadow-[0_4px_25px_rgba(135,80,247,0.6)] cursor-pointer hover:scale-[1.01] active:scale-[0.99]"
                 >
                   Visit Live <ExternalLink className="w-3.5 h-3.5" />
                 </a>
@@ -770,7 +770,7 @@ export function WebsitePortfolio({
           <div className="pt-2 text-center">
             <button
               onClick={onShowMore}
-              className="px-8 py-4 bg-zinc-900 hover:bg-zinc-800 text-purple-300 hover:text-white border border-purple-500/30 hover:border-purple-500/60 rounded-2xl font-mono text-xs font-bold uppercase tracking-widest transition-all shadow-xl hover:shadow-purple-500/20 inline-flex items-center gap-2.5 cursor-pointer"
+              className="px-8 py-4 bg-zinc-900 hover:bg-zinc-800 text-purple-300 hover:text-white border border-purple-500/40 hover:border-purple-400 rounded-2xl font-mono text-xs font-bold uppercase tracking-widest transition-all shadow-xl hover:shadow-purple-500/20 inline-flex items-center gap-2.5 cursor-pointer"
             >
               <Globe className="w-4 h-4 text-purple-400" />
               <span>Explore All {PORTFOLIO_SITES.length} Web Architectures</span>
@@ -789,7 +789,7 @@ export function WebsitePortfolio({
                 handleCategoryChange("All");
                 setSearchQuery("");
               }}
-              className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white text-[10px] uppercase font-bold tracking-widest rounded-lg cursor-pointer shadow-md"
+              className="px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-[10px] uppercase font-bold tracking-widest rounded-lg cursor-pointer shadow-md"
             >
               Reset Filters
             </button>
@@ -818,16 +818,16 @@ export function WebsitePortfolio({
                   <div className="hidden sm:flex items-center bg-zinc-900 border border-zinc-800 rounded-lg p-0.5 font-mono text-[9px]">
                     <button
                       onClick={() => setViewDevice("desktop")}
-                      className={`px-2.5 py-1 rounded flex items-center gap-1.5 uppercase font-bold cursor-pointer transition-all ${
-                        viewDevice === "desktop" ? "bg-purple-600 text-white shadow-md font-bold" : "text-zinc-400 hover:text-zinc-200"
+                      className={`px-2.5 py-1 rounded flex items-center gap-1.5 uppercase font-bold cursor-pointer transition-colors ${
+                        viewDevice === "desktop" ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-sm" : "text-zinc-400 hover:text-zinc-200"
                       }`}
                     >
                       <Monitor className="w-3 h-3" /> Desktop
                     </button>
                     <button
                       onClick={() => setViewDevice("mobile")}
-                      className={`px-2.5 py-1 rounded flex items-center gap-1.5 uppercase font-bold cursor-pointer transition-all ${
-                        viewDevice === "mobile" ? "bg-purple-600 text-white shadow-md font-bold" : "text-zinc-400 hover:text-zinc-200"
+                      className={`px-2.5 py-1 rounded flex items-center gap-1.5 uppercase font-bold cursor-pointer transition-colors ${
+                        viewDevice === "mobile" ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-sm" : "text-zinc-400 hover:text-zinc-200"
                       }`}
                     >
                       <Smartphone className="w-3 h-3" /> Mobile
@@ -858,14 +858,14 @@ export function WebsitePortfolio({
                     <div className="bg-zinc-950 px-3 sm:px-4 py-2 border-b border-zinc-800 flex items-center justify-between text-[10px] font-mono text-zinc-500 gap-2">
                       <div className="flex items-center gap-1.5 shrink-0">
                         <span className="w-2 h-2 rounded-full bg-rose-500"></span>
-                        <span className="w-2 h-2 rounded-full bg-purple-500"></span>
+                        <span className="w-2 h-2 rounded-full bg-amber-500"></span>
                         <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
                       </div>
                       <a
                         href={activeProject.liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-zinc-900 hover:bg-zinc-800 px-2 sm:px-3 py-0.5 rounded text-zinc-300 hover:text-purple-300 font-bold tracking-wider border border-zinc-800 flex items-center gap-1 transition-colors truncate max-w-[150px] sm:max-w-xs text-[9px] sm:text-[10px]"
+                        className="bg-zinc-900 hover:bg-zinc-800 px-2 sm:px-3 py-0.5 rounded text-zinc-300 hover:text-purple-400 font-bold tracking-wider border border-zinc-800 flex items-center gap-1 transition-colors truncate max-w-[150px] sm:max-w-xs text-[9px] sm:text-[10px]"
                       >
                         <span className="truncate">{activeProject.liveUrl.replace("https://", "")}</span> <ExternalLink className="w-2.5 h-2.5 shrink-0" />
                       </a>
@@ -877,9 +877,9 @@ export function WebsitePortfolio({
                       <img
                         src={activeProject.image}
                         alt={`${activeProject.title} live website screenshot`}
-                        loading="eager"
+                        loading="lazy"
                         decoding="async"
-                        className="w-full h-auto object-cover object-top [image-rendering:-webkit-optimize-contrast]"
+                        className="w-full h-auto object-cover object-top [image-rendering:-webkit-optimize-contrast] transform-gpu"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
                           if (!target.dataset.fallbackTried && activeProject.fallbackImage && activeProject.fallbackImage !== activeProject.image) {
@@ -895,7 +895,7 @@ export function WebsitePortfolio({
                       {/* Floating bottom status bar with speed metric & live link */}
                       <div className="sticky bottom-0 left-0 right-0 p-2.5 sm:p-3 bg-zinc-950/95 backdrop-blur-md border-t border-zinc-800 flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
                         <div className="flex items-center gap-2 sm:gap-3">
-                          <span className="px-2 py-0.5 bg-purple-950/80 border border-purple-700/50 text-purple-300 font-bold uppercase rounded text-[8px] sm:text-[9px]">
+                          <span className="px-2 py-0.5 bg-purple-950/70 border border-purple-800/50 text-purple-300 font-bold uppercase rounded text-[8px] sm:text-[9px]">
                             {activeProject.mockup.badgeText}
                           </span>
                           <span className="text-emerald-400 font-bold flex items-center gap-1 text-[9px] sm:text-[10px]">
@@ -907,7 +907,7 @@ export function WebsitePortfolio({
                           href={activeProject.liveUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="px-2.5 sm:px-3 py-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-[9px] sm:text-[10px] uppercase tracking-wider rounded flex items-center gap-1 transition-all whitespace-nowrap shadow-md"
+                          className="px-2.5 sm:px-3 py-1 bg-gradient-to-r from-purple-600 via-[#8750f7] to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-[9px] sm:text-[10px] uppercase tracking-wider rounded-lg flex items-center gap-1 transition-all whitespace-nowrap shadow-md cursor-pointer"
                         >
                           Visit Live Site <ExternalLink className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
                         </a>
@@ -1023,14 +1023,14 @@ export function WebsitePortfolio({
                     href={activeProject.liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-4 sm:px-5 py-2.5 sm:py-3 bg-zinc-900 border border-zinc-700 hover:border-purple-400 text-zinc-200 hover:text-purple-300 text-xs font-mono font-bold uppercase tracking-widest transition-all rounded-xl flex items-center justify-center gap-2 whitespace-nowrap"
+                    className="px-4 sm:px-5 py-2.5 sm:py-3 bg-zinc-900 border border-purple-900/50 hover:border-purple-400 text-zinc-200 hover:text-purple-300 text-xs font-mono font-bold uppercase tracking-widest transition-all rounded-xl flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer"
                   >
                     Visit Live Site <ExternalLink className="w-3.5 h-3.5" />
                   </a>
                   <a
                     href="#contact"
                     onClick={() => setActiveProject(null)}
-                    className="px-5 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-mono font-bold uppercase tracking-widest shadow-[0_0_20px_rgba(147,51,234,0.35)] transition-all rounded-xl text-center whitespace-nowrap cursor-pointer"
+                    className="px-5 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-purple-600 via-[#8750f7] to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-mono font-bold uppercase tracking-widest transition-all rounded-xl text-center whitespace-nowrap shadow-[0_4px_20px_rgba(135,80,247,0.4)] cursor-pointer"
                   >
                     Request Similar Project
                   </a>
