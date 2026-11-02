@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { motion } from "motion/react";
 import {
   Globe,
   ExternalLink,
@@ -660,9 +661,13 @@ export function WebsitePortfolio({
 
         {/* PROJECTS GRID */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {displayedProjects.map((project) => (
-            <div
+          {displayedProjects.map((project, idx) => (
+            <motion.div
               key={project.id}
+              initial={{ opacity: 0, y: 35, filter: "blur(4px)" }}
+              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.6, delay: (idx % 3) * 0.08, ease: [0.16, 1, 0.3, 1] }}
               className="bg-zinc-900/80 border border-zinc-800 hover:border-purple-500/50 rounded-2xl transition-all duration-300 flex flex-col justify-between group overflow-hidden shadow-xl"
             >
               <div>
@@ -761,7 +766,7 @@ export function WebsitePortfolio({
                   Visit Live <ExternalLink className="w-3.5 h-3.5" />
                 </a>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 

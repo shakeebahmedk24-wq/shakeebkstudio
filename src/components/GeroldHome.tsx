@@ -96,21 +96,41 @@ export function GeroldHome({
         setTimeout(() => {
           const element = document.getElementById(targetSectionId);
           if (element) {
-            const yOffset = -80;
-            const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-            window.scrollTo({ top: y, behavior: "smooth" });
+            const lenis = (window as any).__lenis;
+            if (lenis && typeof lenis.scrollTo === "function") {
+              lenis.scrollTo(element, { offset: -80, duration: 1.2 });
+            } else {
+              const yOffset = -80;
+              const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+              window.scrollTo({ top: y, behavior: "smooth" });
+            }
           }
         }, 100);
       } else {
         window.location.hash = "";
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        const lenis = (window as any).__lenis;
+        if (lenis && typeof lenis.scrollTo === "function") {
+          lenis.scrollTo(0, { duration: 1.0 });
+        } else {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
       }
     } else if (page === "websites") {
       window.location.hash = "websites-page";
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      const lenis = (window as any).__lenis;
+      if (lenis && typeof lenis.scrollTo === "function") {
+        lenis.scrollTo(0, { immediate: true });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
     } else if (page === "graphics") {
       window.location.hash = "graphics-page";
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      const lenis = (window as any).__lenis;
+      if (lenis && typeof lenis.scrollTo === "function") {
+        lenis.scrollTo(0, { immediate: true });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
     }
   };
 
@@ -126,24 +146,35 @@ export function GeroldHome({
     setTimeout(() => {
       const element = document.getElementById(id);
       if (element) {
-        const yOffset = -80;
-        const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-        window.scrollTo({ top: y, behavior: "smooth" });
+        const lenis = (window as any).__lenis;
+        if (lenis && typeof lenis.scrollTo === "function") {
+          lenis.scrollTo(element, { offset: -80, duration: 1.2 });
+        } else {
+          const yOffset = -80;
+          const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+          window.scrollTo({ top: y, behavior: "smooth" });
+        }
       }
     }, 60);
   };
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    const lenis = (window as any).__lenis;
+    if (lenis && typeof lenis.scrollTo === "function") {
+      lenis.scrollTo(0, { duration: 1.2 });
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
 
-  // Section animation variants for scroll entrance
+  // Section animation variants for scroll entrance with blur and cubic-bezier easing
   const sectionVariants = {
-    hidden: { opacity: 0, y: 35 },
+    hidden: { opacity: 0, y: 40, filter: "blur(6px)" },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const }
+      filter: "blur(0px)",
+      transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1] as const }
     }
   };
 
@@ -317,28 +348,22 @@ export function GeroldHome({
       {/* ======================================================== */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-[#07030e]/85 backdrop-blur-md border-b border-purple-950/40 transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-          {/* Brand Logo - Swirl Monogram */}
+          {/* Brand Logo - Official Shakeeb Logo (No Name Text) */}
           <a
             href="#hero"
             onClick={(e) => {
               e.preventDefault();
               scrollToTop();
             }}
-            className="flex items-center gap-3 group"
+            className="flex items-center group py-1.5 focus:outline-none"
+            title="Shakeeb"
           >
-            <div className="w-10 h-10 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-105 bg-gradient-to-tr from-purple-700 to-indigo-600 p-0.5 shadow-[0_0_15px_rgba(168,85,247,0.4)]">
-              <div className="w-full h-full bg-[#0d071d] rounded-full flex items-center justify-center text-purple-300 font-bold font-display text-base group-hover:text-white">
-                S
-              </div>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xl font-bold font-display tracking-tight text-white group-hover:text-purple-300 transition-colors leading-none">
-                Shakeeb
-              </span>
-              <span className="text-[10px] text-purple-400 tracking-wider font-mono uppercase mt-0.5">
-                Developer & Designer
-              </span>
-            </div>
+            <img
+              src="/shakeeb_logo.png"
+              alt="Shakeeb"
+              style={{ width: "210px", height: "auto" }}
+              className="w-[170px] sm:w-[210px] h-auto object-contain transition-transform duration-300 group-hover:scale-105 filter drop-shadow-[0_0_12px_rgba(168,85,247,0.45)]"
+            />
           </a>
 
           {/* Center Navigation Links */}
@@ -1753,7 +1778,12 @@ export function GeroldHome({
       {/* SEPARATE PAGE: WEBSITES PORTFOLIO                        */}
       {/* ======================================================== */}
       {currentPage === "websites" && (
-        <main className="pt-28 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[85vh]">
+        <motion.main
+          initial={{ opacity: 0, y: 25, filter: "blur(4px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="pt-28 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[85vh]"
+        >
           {/* Breadcrumb & Navigation Bar */}
           <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-6 border-b border-purple-900/40">
             <button
@@ -1794,14 +1824,19 @@ export function GeroldHome({
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
-        </main>
+        </motion.main>
       )}
 
       {/* ======================================================== */}
       {/* SEPARATE PAGE: GRAPHICS PORTFOLIO                        */}
       {/* ======================================================== */}
       {currentPage === "graphics" && (
-        <main className="pt-28 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[85vh]">
+        <motion.main
+          initial={{ opacity: 0, y: 25, filter: "blur(4px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="pt-28 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[85vh]"
+        >
           {/* Breadcrumb & Navigation Bar */}
           <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-6 border-b border-purple-900/40">
             <button
@@ -1842,7 +1877,7 @@ export function GeroldHome({
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
-        </main>
+        </motion.main>
       )}
 
       {/* ======================================================== */}
@@ -1853,11 +1888,21 @@ export function GeroldHome({
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-40px" }}
-        className="bg-[#05020a] py-14 px-4 sm:px-6 lg:px-8 border-t border-purple-950/40 relative"
+        className="bg-[#05020a] py-6 sm:py-7 px-4 sm:px-6 lg:px-8 border-t border-purple-950/40 relative"
       >
-        <div className="max-w-7xl mx-auto flex flex-col items-center justify-center gap-8">
+        <div className="max-w-7xl mx-auto flex flex-col items-center justify-center gap-3.5 sm:gap-4">
+          {/* Brand Logo in Footer */}
+          <div className="flex items-center justify-center">
+            <img
+              src="/Shakeeb_logo_white-removebg-preview-1.png"
+              alt="Shakeeb"
+              style={{ width: "220px", height: "auto" }}
+              className="w-[180px] sm:w-[220px] h-auto object-contain filter drop-shadow-[0_0_12px_rgba(168,85,247,0.4)] block m-0 p-0"
+            />
+          </div>
+
           {/* Social Links Row */}
-          <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-sm font-semibold text-zinc-300">
+          <div className="flex flex-wrap items-center justify-center gap-5 sm:gap-8 text-xs sm:text-sm font-semibold text-zinc-300">
             <a
               href="https://behance.net/sksolutions"
               target="_blank"
@@ -1902,7 +1947,7 @@ export function GeroldHome({
           </div>
 
           {/* Copyright text */}
-          <div className="text-xs text-zinc-500 font-medium">
+          <div className="text-[11px] sm:text-xs text-zinc-500 font-medium">
             © 2026 Shakeeb Ahmed Khan. All rights reserved.
           </div>
         </div>

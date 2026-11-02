@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { motion } from "motion/react";
 import {
   Palette,
   ExternalLink,
@@ -2167,9 +2168,13 @@ export function GraphicsPortfolio({
 
         {/* GRAPHICS GALLERY GRID */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projectsToDisplay.map((project) => (
-            <div
+          {projectsToDisplay.map((project, idx) => (
+            <motion.div
               key={project.id}
+              initial={{ opacity: 0, y: 35, filter: "blur(4px)" }}
+              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.6, delay: (idx % 3) * 0.08, ease: [0.16, 1, 0.3, 1] }}
               className="bg-zinc-900/80 border border-zinc-800/80 rounded-2xl hover:border-purple-500/50 transition-all duration-300 flex flex-col justify-between group overflow-hidden shadow-lg backdrop-blur-sm"
             >
               <div>
@@ -2261,7 +2266,7 @@ export function GraphicsPortfolio({
                   View in Lightbox Gallery <Maximize2 className="w-3.5 h-3.5" />
                 </button>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
