@@ -50,6 +50,7 @@ export function GeroldHome({
   const [testimonialIndex, setTestimonialIndex] = useState(0);
   const [showHireModal, setShowHireModal] = useState(false);
   const [hireFormSubmitted, setHireFormSubmitted] = useState(false);
+  const [activeSkillCategory, setActiveSkillCategory] = useState<"all" | "design" | "dev">("all");
 
   // Hire me form state
   const [hireName, setHireName] = useState("");
@@ -175,7 +176,7 @@ export function GeroldHome({
       role: "Founder & CEO, Partake Foods",
       project: "WooCommerce Replatform & Speed Overhaul",
       metric: "+145% Sales Growth · 0.39s Load",
-      avatar: "/gerold/author_1.jpg",
+      avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80",
       quote:
         "Shakeeb completely rebuilt our WooCommerce architecture from scratch. Our mobile page load speed dropped from 4.2 seconds down to 0.39s, and our monthly conversion rate climbed by +145% within the first 60 days. His attention to design fidelity, custom subscription flows, and store accessibility made him an indispensable engineering partner."
     },
@@ -184,7 +185,7 @@ export function GeroldHome({
       role: "VP of Digital Growth, The Builder Market",
       project: "B2B Quotation Portal & Catalog Engine",
       metric: "+110% Contractor RFQs",
-      avatar: "/gerold/author_2.jpg",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
       quote:
         "Finding an engineer who understands both high-throughput B2B databases and sleek, modern UI is rare. Shakeeb built our dynamic RFQ quotation engine and wholesale pricing tiers with flawless execution. Inquiries jumped by 110%, and contractor onboarding friction disappeared completely."
     },
@@ -193,7 +194,7 @@ export function GeroldHome({
       role: "Brand Director, Adora Organic Skincare",
       project: "D2C Luxury Skincare & Shade Finder",
       metric: "+160% Conversion Rate · 99/100 CWV",
-      avatar: "/gerold/author_3.jpg",
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
       quote:
         "Shakeeb transformed Adora's digital presence into a luxury editorial experience. The interactive skincare quiz and sub-second checkout drawer contributed to an immediate 160% lift in direct sales. He is exceptionally responsive, highly skilled in WordPress & Figma, and consistently exceeds deadlines."
     },
@@ -202,7 +203,7 @@ export function GeroldHome({
       role: "Operations Director, DesiCart UK",
       project: "Multi-Vendor Postal Code Grocery System",
       metric: "-38% Cart Abandonment",
-      avatar: "/gerold/test_cta_1.jpg",
+      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80",
       quote:
         "Managing thousands of perishable SKUs and dynamic UK postal code delivery slots requires bulletproof engineering. Shakeeb optimized our database queries, reducing checkout drop-offs by 38% and keeping the platform rock-solid during peak holiday spikes. Truly a top-tier WordPress and full-stack developer."
     },
@@ -211,7 +212,7 @@ export function GeroldHome({
       role: "Head of E-Commerce, Toynk Pop Culture",
       project: "High-Traffic Collectibles & Drop Architecture",
       metric: "Zero Downtime · 25k+ SKUs",
-      avatar: "/gerold/test_cta_2.jpg",
+      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80",
       quote:
         "We carry over 25,000 licensed pop culture collectibles. Shakeeb restructured our faceted search, caching layers, and high-DPI product showcases. During our Black Friday drops, the site handled massive concurrency without a hiccup. He communicates proactively and delivers clean, maintainable code."
     },
@@ -220,9 +221,63 @@ export function GeroldHome({
       role: "Creative Director, Brandilyst Digital",
       project: "Enterprise Design System & Web Deployment",
       metric: "12+ Joint Client Launches",
-      avatar: "/gerold/test_cta_3.jpg",
+      avatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&auto=format&fit=crop&q=80",
       quote:
         "I have collaborated with Shakeeb across more than a dozen enterprise WordPress and branding projects. His ability to translate complex design systems into responsive, pixel-perfect web experiences with custom animations and zero lag is unparalleled. Clients are always thrilled with the final delivery."
+    },
+    {
+      name: "Rachel Vance",
+      role: "Managing Partner, Lumina MedSpa & Wellness",
+      project: "Medical Booking System & HIPAA-Ready Portal",
+      metric: "+85% Mobile Inbound Bookings",
+      avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&auto=format&fit=crop&q=80",
+      quote:
+        "Shakeeb designed and developed our private patient booking portal and medical treatment catalogue. His multi-step scheduling calendar and instant inquiry routing doubled our inbound consultations within thirty days. He pairs clinical design elegance with absolute performance."
+    },
+    {
+      name: "Tariq Al-Mansoor",
+      role: "Founder, Desert Falcon Luxury Apparel",
+      project: "Omnichannel Shopify & Arabic RTL Localization",
+      metric: "+210% GCC Regional Revenue",
+      avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&auto=format&fit=crop&q=80",
+      quote:
+        "We hired Shakeeb to rebuild our luxury streetwear portal with seamless English and Arabic RTL layout switching, multi-currency checkout, and rapid product filtration. His attention to typography nuances and sub-second checkout speeds was phenomenal. One of the sharpest developers in the space."
+    },
+    {
+      name: "Sarah Jenkins",
+      role: "Chief Marketing Officer, Qantra Security",
+      project: "Enterprise SaaS Web Platform & Brand Mark",
+      metric: "99/100 PageSpeed · +92% Lead Form CVR",
+      avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80",
+      quote:
+        "Shakeeb delivered far more than code: he refined our entire brand identity, vector icon sets, and interactive product tour. Our demo booking conversion rate increased by 92% immediately upon launch. His communication is proactive, structured, and genuinely collaborative."
+    },
+    {
+      name: "Jason Bradley",
+      role: "Principal, Bradley Architectural Millwork",
+      project: "Custom Parametric Quote Engine & WooCommerce",
+      metric: "+130% Custom Quote Inquiries",
+      avatar: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=150&auto=format&fit=crop&q=80",
+      quote:
+        "Shakeeb engineered a custom parametric pricing calculator for our architectural millwork catalog in WooCommerce. Our commercial contractors can now specify custom dimensions and receive immediate estimations. He solved complex logic two previous agencies gave up on."
+    },
+    {
+      name: "Amara Okafor",
+      role: "Product Lead, NovaPay Global Systems",
+      project: "Developer API Hub & FinTech Portal",
+      metric: "Sub-400ms API Doc Renders",
+      avatar: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=150&auto=format&fit=crop&q=80",
+      quote:
+        "Shakeeb delivered a high-converting developer documentation hub and merchant portal for our payments ecosystem. His mastery of responsive Tailwind layouts, accessible UI components, and clean code made onboarding seamless for thousands of partners across Europe and Africa."
+    },
+    {
+      name: "Jonathan Briggs",
+      role: "Executive Publisher, Briggs Media & Entertainment",
+      project: "High-Traffic Editorial Publication & Video Hub",
+      metric: "400K+ Monthly Readers · 0 CLS",
+      avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&auto=format&fit=crop&q=80",
+      quote:
+        "Our digital publication demands aggressive caching, rich video embed support, and lightning-fast ad delivery. Shakeeb eliminated our previous cumulative layout shifts, brought our Core Web Vitals to a straight 98 score, and restructured our article templates with perfection."
     }
   ];
 
@@ -550,30 +605,33 @@ export function GeroldHome({
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.4 }}
-            className="md:absolute md:left-6 lg:left-12 md:top-1/3 z-20 bg-[#120a22]/90 border border-purple-800/40 rounded-2xl p-4 shadow-2xl backdrop-blur-md text-left animate-float-badge"
+            className="md:absolute md:left-6 lg:left-12 md:top-1/3 z-20 bg-[#120a22]/90 border border-purple-800/40 rounded-2xl p-4 shadow-2xl backdrop-blur-md text-left animate-float-badge font-jakarta"
           >
             <span className="text-[11px] font-medium text-zinc-300 block mb-2.5">
               Happy Clients | Behance | Fiverr
             </span>
-            <div className="flex items-center gap-2 mb-2">
+            <div className="flex items-center gap-2.5 mb-2">
               <div className="flex -space-x-2">
                 <img
-                  src="/gerold/author_1.jpg"
-                  alt="Client"
+                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
+                  alt="Client Denise"
                   className="w-7 h-7 rounded-full border-2 border-[#120a22] object-cover"
                 />
                 <img
-                  src="/gerold/author_2.jpg"
-                  alt="Client"
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80"
+                  alt="Client Marcus"
                   className="w-7 h-7 rounded-full border-2 border-[#120a22] object-cover"
                 />
                 <img
-                  src="/gerold/author_3.jpg"
-                  alt="Client"
+                  src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&auto=format&fit=crop&q=80"
+                  alt="Client Elena"
                   className="w-7 h-7 rounded-full border-2 border-[#120a22] object-cover"
                 />
+                <div className="w-7 h-7 rounded-full border-2 border-[#120a22] bg-purple-900/90 flex items-center justify-center text-[9px] font-bold text-purple-200">
+                  +150
+                </div>
               </div>
-              <div className="flex items-center text-amber-400 text-xs">
+              <div className="flex items-center text-amber-400 text-xs gap-0.5">
                 <Star className="w-3.5 h-3.5 fill-current" />
                 <Star className="w-3.5 h-3.5 fill-current" />
                 <Star className="w-3.5 h-3.5 fill-current" />
@@ -1105,7 +1163,7 @@ export function GeroldHome({
       </motion.section>
 
       {/* ======================================================== */}
-      {/* 8. SKILLS SECTION ("My Favourite Stakes")                */}
+      {/* 8. SKILLS SECTION ("My Core Tech Stack & Tools")         */}
       {/* ======================================================== */}
       <motion.section
         id="skills"
@@ -1113,18 +1171,54 @@ export function GeroldHome({
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-80px" }}
-        className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+        className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 font-jakarta"
       >
-        <div className="text-left mb-12">
-          <div className="inline-block px-4 py-1 rounded-full bg-purple-950/50 border border-purple-800/40 text-purple-400 text-xs font-semibold tracking-wider uppercase mb-3">
-            SKILLS & EXPERTISE
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 text-left">
+          <div>
+            <div className="inline-block px-4 py-1 rounded-full bg-purple-950/60 border border-purple-800/40 text-purple-400 text-xs font-semibold tracking-wider uppercase mb-3">
+              SKILLS & EXPERTISE
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-jakarta text-white tracking-tight">
+              My Core Tech Stack & Tools
+            </h2>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-white tracking-tight">
-            My Core Tech Stack & Tools
-          </h2>
+
+          {/* Category Filter Tabs */}
+          <div className="flex items-center gap-2 bg-[#120a22]/80 p-1.5 rounded-xl border border-purple-900/40 self-start md:self-auto">
+            <button
+              onClick={() => setActiveSkillCategory("all")}
+              className={`px-4 py-2 rounded-lg text-xs font-semibold font-jakarta transition-all cursor-pointer ${
+                activeSkillCategory === "all"
+                  ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-950/50"
+                  : "text-zinc-400 hover:text-white hover:bg-purple-900/30"
+              }`}
+            >
+              All Stack (8)
+            </button>
+            <button
+              onClick={() => setActiveSkillCategory("design")}
+              className={`px-4 py-2 rounded-lg text-xs font-semibold font-jakarta transition-all cursor-pointer ${
+                activeSkillCategory === "design"
+                  ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-950/50"
+                  : "text-zinc-400 hover:text-white hover:bg-purple-900/30"
+              }`}
+            >
+              UI/UX & Design
+            </button>
+            <button
+              onClick={() => setActiveSkillCategory("dev")}
+              className={`px-4 py-2 rounded-lg text-xs font-semibold font-jakarta transition-all cursor-pointer ${
+                activeSkillCategory === "dev"
+                  ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-950/50"
+                  : "text-zinc-400 hover:text-white hover:bg-purple-900/30"
+              }`}
+            >
+              Web & Full-Stack
+            </button>
+          </div>
         </div>
 
-        {/* 4 Interactive Skill Cards with Animated Progress Bars */}
+        {/* Skill Cards Grid (Matches uploaded screenshot card design) */}
         <motion.div
           variants={cardStaggerVariants}
           initial="hidden"
@@ -1134,70 +1228,157 @@ export function GeroldHome({
         >
           {[
             {
-              name: "WordPress & Elementor",
-              percent: 98,
-              iconBg: "bg-sky-500/10 border-sky-500/30 text-sky-400",
-              desc: "Deep expertise in custom themes, Elementor Pro design systems, WooCommerce, and ACF."
-            },
-            {
-              name: "Shopify Customization",
-              percent: 90,
-              iconBg: "bg-emerald-500/10 border-emerald-500/30 text-emerald-400",
-              desc: "Bespoke store setups, Liquid theme modifications, checkout enhancements, and payment setups."
-            },
-            {
-              name: "HTML, CSS, JS & PHP",
-              percent: 95,
-              iconBg: "bg-purple-500/10 border-purple-500/30 text-purple-400",
-              desc: "Semantic clean code, responsive design, modern JavaScript, and high-performance PHP backend."
-            },
-            {
-              name: "Graphic & UI/UX Design",
+              id: "figma",
+              name: "Figma",
+              category: "design",
               percent: 92,
-              iconBg: "bg-rose-500/10 border-rose-500/30 text-rose-400",
-              desc: "Adobe Photoshop, Illustrator & Canva Pro for distinctive brand identities and visual systems."
+              desc: "I have had the opportunity to work on several projects.",
+              icon: (
+                <svg className="w-6 h-8 shrink-0" viewBox="0 0 38 57" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M19 28.5C19 23.2533 23.2533 19 28.5 19C33.7467 19 38 23.2533 38 28.5C38 33.7467 33.7467 38 28.5 38C23.2533 38 19 33.7467 19 28.5Z" fill="#1ABCFE"/>
+                  <path d="M0 47.5C0 42.2533 4.25329 38 9.5 38H19V47.5C19 52.7467 14.7467 57 9.5 57C4.25329 57 0 52.7467 0 47.5Z" fill="#0ACF83"/>
+                  <path d="M19 0V19H28.5C33.7467 19 38 14.7467 38 9.5C38 4.25329 33.7467 0 28.5 0H19Z" fill="#FF7262"/>
+                  <path d="M0 9.5C0 14.7467 4.25329 19 9.5 19H19V0H9.5C4.25329 0 0 4.25329 0 9.5Z" fill="#F24E1E"/>
+                  <path d="M0 28.5C0 33.7467 4.25329 38 9.5 38H19V19H9.5C4.25329 19 0 23.2533 0 28.5Z" fill="#A259FF"/>
+                </svg>
+              )
+            },
+            {
+              id: "sketch",
+              name: "Sketch",
+              category: "design",
+              percent: 80,
+              desc: "I have had the opportunity to work on several projects.",
+              icon: (
+                <svg className="w-8 h-8 shrink-0" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M7.7 4.8L2.5 11.2L16 27.2L29.5 11.2L24.3 4.8H7.7Z" fill="#EA6C00"/>
+                  <path d="M7.7 4.8L16 27.2L24.3 4.8H7.7Z" fill="#FDB300"/>
+                  <path d="M16 4.8L11.5 11.2L16 27.2L20.5 11.2L16 4.8Z" fill="#FDD231"/>
+                  <path d="M2.5 11.2H29.5L16 27.2L2.5 11.2Z" fill="#EA6C00" fillOpacity="0.2"/>
+                  <path d="M7.7 4.8L11.5 11.2H2.5L7.7 4.8Z" fill="#FDAD00"/>
+                  <path d="M24.3 4.8L20.5 11.2H29.5L24.3 4.8Z" fill="#FDAD00"/>
+                  <path d="M16 4.8L11.5 11.2H20.5L16 4.8Z" fill="#FEEEB7"/>
+                </svg>
+              )
+            },
+            {
+              id: "xd",
+              name: "XD",
+              category: "design",
+              percent: 85,
+              desc: "I have had the opportunity to work on several projects.",
+              icon: (
+                <div className="w-8 h-8 rounded-lg bg-[#470137] border border-[#FF61F6]/60 flex items-center justify-center font-bold text-xs text-[#FF61F6] tracking-tighter shadow-sm select-none shrink-0">
+                  Xd
+                </div>
+              )
+            },
+            {
+              id: "wordpress",
+              name: "WordPress",
+              category: "dev",
+              percent: 99,
+              desc: "I have had the opportunity to work on several projects.",
+              icon: (
+                <svg className="w-8 h-8 shrink-0 text-[#21759B]" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M21.469 6.825c.84 1.537 1.318 3.3 1.318 5.175c0 3.979-2.156 7.456-5.363 9.325l3.295-9.527c.615-1.54.82-2.771.82-3.864c0-.405-.026-.78-.07-1.11m-7.981.105c.647-.03 1.232-.105 1.232-.105c.582-.075.514-.93-.067-.899c0 0-1.755.135-2.88.135c-1.064 0-2.85-.15-2.85-.15c-.585-.03-.661.855-.075.885c0 0 .54.061 1.125.09l1.68 4.605l-2.37 7.08L5.354 6.9c.649-.03 1.234-.1 1.234-.1c.585-.075.516-.93-.065-.896c0 0-1.746.138-2.874.138c-.2 0-.438-.008-.69-.015C4.911 3.15 8.235 1.215 12 1.215c2.809 0 5.365 1.072 7.286 2.833c-.046-.003-.091-.009-.141-.009c-1.06 0-1.812.923-1.812 1.914c0 .89.513 1.643 1.06 2.531c.411.72.89 1.643.89 2.977c0 .915-.354 1.994-.821 3.479l-1.075 3.585l-3.9-11.61zM12 22.784c-1.059 0-2.081-.153-3.048-.437l3.237-9.406l3.315 9.087q.036.078.078.149c-1.12.393-2.325.609-3.582.609M1.211 12c0-1.564.336-3.05.935-4.39L7.29 21.709A10.79 10.79 0 0 1 1.211 12M12 0C5.385 0 0 5.385 0 12s5.385 12 12 12s12-5.385 12-12S18.615 0 12 0" />
+                </svg>
+              )
+            },
+            {
+              id: "react",
+              name: "React.js",
+              category: "dev",
+              percent: 94,
+              desc: "I have had the opportunity to work on several projects.",
+              icon: (
+                <svg className="w-8 h-8 shrink-0" viewBox="0 0 115 102" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="57.5" cy="51" r="9" fill="#61DAFB"/>
+                  <ellipse cx="57.5" cy="51" rx="50" ry="19.5" stroke="#61DAFB" strokeWidth="4"/>
+                  <ellipse cx="57.5" cy="51" rx="50" ry="19.5" stroke="#61DAFB" strokeWidth="4" transform="rotate(60 57.5 51)"/>
+                  <ellipse cx="57.5" cy="51" rx="50" ry="19.5" stroke="#61DAFB" strokeWidth="4" transform="rotate(120 57.5 51)"/>
+                </svg>
+              )
+            },
+            {
+              id: "nextjs",
+              name: "Next.js",
+              category: "dev",
+              percent: 90,
+              desc: "I have had the opportunity to work on several projects.",
+              icon: (
+                <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center shrink-0 shadow-sm">
+                  <svg className="w-5 h-5" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fillRule="evenodd" clipRule="evenodd" d="M125.7 143.6L63.8 63.8V144H51.4V40H63.8L126.8 121.2V40H139.2V143.6H125.7Z" fill="black"/>
+                  </svg>
+                </div>
+              )
+            },
+            {
+              id: "tailwind",
+              name: "Tailwind CSS",
+              category: "dev",
+              percent: 96,
+              desc: "I have had the opportunity to work on several projects.",
+              icon: (
+                <svg className="w-8 h-8 shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12.001 4.8c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624C13.666 10.618 15.027 12 18.001 12c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C16.336 6.182 14.975 4.8 12.001 4.8zm-6 7.2c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624 1.177 1.194 2.538 2.576 5.512 2.576 3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C10.336 13.382 8.975 12 6.001 12z" fill="#38BDF8"/>
+                </svg>
+              )
+            },
+            {
+              id: "photoshop",
+              name: "Photoshop",
+              category: "design",
+              percent: 92,
+              desc: "I have had the opportunity to work on several projects.",
+              icon: (
+                <div className="w-8 h-8 rounded-lg bg-[#001E36] border border-[#31A8FF]/60 flex items-center justify-center font-bold text-xs text-[#31A8FF] tracking-tighter shadow-sm select-none shrink-0">
+                  Ps
+                </div>
+              )
             }
-          ].map((skill, idx) => (
-            <motion.div
-              key={idx}
-              variants={itemFadeUpVariants}
-              whileHover={{ y: -5 }}
-              className="bg-[#120a22] border border-purple-900/30 hover:border-purple-500/50 rounded-2xl p-6 transition-all duration-300 shadow-xl flex flex-col justify-between"
-            >
-              <div>
-                <div className="flex items-center gap-3 mb-4">
-                  <div
-                    className={`w-9 h-9 rounded-lg flex items-center justify-center font-bold text-xs border ${skill.iconBg}`}
-                  >
-                    {skill.name[0]}
+          ]
+            .filter((skill) => activeSkillCategory === "all" || skill.category === activeSkillCategory)
+            .map((skill, idx) => (
+              <motion.div
+                key={skill.id}
+                variants={itemFadeUpVariants}
+                whileHover={{ y: -6 }}
+                className="bg-[#120d22] border border-purple-900/30 hover:border-purple-500/50 rounded-3xl p-7 transition-all duration-300 shadow-xl flex flex-col justify-between group"
+              >
+                <div>
+                  <div className="flex items-center gap-4 mb-4">
+                    {skill.icon}
+                    <h3 className="text-xl sm:text-2xl font-bold font-jakarta text-white tracking-tight">
+                      {skill.name}
+                    </h3>
                   </div>
-                  <h3 className="text-lg font-bold font-display text-white">
-                    {skill.name}
-                  </h3>
+
+                  <p className="text-sm text-zinc-300 leading-relaxed font-jakarta mb-8">
+                    {skill.desc}
+                  </p>
                 </div>
 
-                <p className="text-xs text-zinc-400 leading-relaxed font-sans mb-6">
-                  {skill.desc}
-                </p>
-              </div>
-
-              {/* Animated Progress Bar */}
-              <div>
-                <div className="flex items-center justify-end text-xs font-mono font-bold text-white mb-2">
-                  <span>{skill.percent}%</span>
+                {/* Percentage & Solid White Progress Bar matching screenshot */}
+                <div className="mt-auto">
+                  <div className="flex items-center justify-end mb-2.5">
+                    <span className="text-sm font-bold font-jakarta text-white tracking-wide">
+                      {skill.percent}%
+                    </span>
+                  </div>
+                  <div className="w-full h-1 bg-[#251f38] rounded-full overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${skill.percent}%` }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 1.1, delay: 0.15 + idx * 0.08, ease: "easeOut" }}
+                      className="h-full bg-white rounded-full"
+                    />
+                  </div>
                 </div>
-                <div className="w-full h-1.5 bg-purple-950/80 rounded-full overflow-hidden">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    whileInView={{ width: `${skill.percent}%` }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1.2, delay: 0.2 + idx * 0.1, ease: "easeOut" }}
-                    className="h-full bg-gradient-to-r from-purple-500 to-indigo-400 rounded-full"
-                  />
-                </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))}
         </motion.div>
       </motion.section>
 
@@ -1351,7 +1532,7 @@ export function GeroldHome({
                   )}
                 </div>
 
-                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-sans mb-6">
+                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-jakarta mb-6">
                   &ldquo;{t.quote}&rdquo;
                 </p>
               </div>
@@ -1362,18 +1543,21 @@ export function GeroldHome({
                   <img
                     src={t.avatar}
                     alt={t.name}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80";
+                    }}
                     className="w-11 h-11 rounded-full object-cover border border-purple-500/40 shadow-sm"
                   />
                   <div>
                     <h4 className="text-sm font-bold font-display text-white">
                       {t.name}
                     </h4>
-                    <p className="text-xs text-purple-300/80">{t.role}</p>
+                    <p className="text-xs text-purple-300/80 font-jakarta">{t.role}</p>
                   </div>
                 </div>
                 {t.project && (
-                  <div className="text-[11px] font-mono text-zinc-400 pt-1">
-                    <span className="text-zinc-500 uppercase tracking-wider text-[9px] block">Project:</span>
+                  <div className="text-[11px] font-jakarta text-zinc-400 pt-1">
+                    <span className="text-zinc-500 uppercase tracking-wider text-[9px] font-bold block">Project:</span>
                     <span className="text-zinc-300">{t.project}</span>
                   </div>
                 )}
@@ -1574,7 +1758,7 @@ export function GeroldHome({
           <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-6 border-b border-purple-900/40">
             <button
               onClick={() => navigateToPage("home")}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-purple-950/70 hover:bg-purple-900/80 border border-purple-700/60 hover:border-purple-400 text-purple-200 text-xs font-mono font-bold tracking-wider transition-all hover:scale-105 cursor-pointer shadow-lg"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-purple-950/70 hover:bg-purple-900/80 border border-purple-700/60 hover:border-purple-400 text-purple-200 text-xs font-jakarta font-bold tracking-wider transition-all hover:scale-105 cursor-pointer shadow-lg"
             >
               <span>← Back to Home</span>
             </button>
@@ -1582,10 +1766,10 @@ export function GeroldHome({
             <div className="flex items-center gap-3">
               <button
                 onClick={() => navigateToPage("graphics")}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#120a22] hover:bg-[#1a0e30] border border-purple-800/40 hover:border-purple-500 text-zinc-300 hover:text-white text-xs font-mono font-medium transition-all cursor-pointer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#120a22] hover:bg-[#1a0e30] border border-purple-800/40 hover:border-purple-500 text-zinc-300 hover:text-white text-xs font-jakarta font-medium transition-all cursor-pointer"
               >
                 <Palette className="w-3.5 h-3.5 text-purple-400" />
-                <span>Switch to Graphics Portfolio (40+)</span>
+                <span>Switch to Graphic Design Portfolio (40+)</span>
                 <ArrowRight className="w-3.5 h-3.5 text-purple-400" />
               </button>
             </div>
@@ -1598,15 +1782,15 @@ export function GeroldHome({
           <div className="mt-16 pt-10 border-t border-purple-900/40 flex flex-col sm:flex-row items-center justify-between gap-6">
             <button
               onClick={() => navigateToPage("home")}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#120a22] hover:bg-[#180e2f] border border-purple-800/40 hover:border-purple-400 text-purple-300 text-xs font-semibold tracking-wide transition-all cursor-pointer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#120a22] hover:bg-[#180e2f] border border-purple-800/40 hover:border-purple-400 text-purple-300 text-xs font-jakarta font-semibold tracking-wide transition-all cursor-pointer"
             >
               <span>← Return to Home</span>
             </button>
             <button
               onClick={() => navigateToPage("graphics")}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold tracking-wide shadow-[0_0_20px_rgba(147,51,234,0.35)] transition-all cursor-pointer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-jakarta font-bold tracking-wide shadow-[0_0_20px_rgba(147,51,234,0.35)] transition-all cursor-pointer"
             >
-              <span>Explore Graphics Portfolio (40+ Designs)</span>
+              <span>Explore Graphic Design Portfolio (40+ Designs)</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
@@ -1622,7 +1806,7 @@ export function GeroldHome({
           <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-6 border-b border-purple-900/40">
             <button
               onClick={() => navigateToPage("home")}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-purple-950/70 hover:bg-purple-900/80 border border-purple-700/60 hover:border-purple-400 text-purple-200 text-xs font-mono font-bold tracking-wider transition-all hover:scale-105 cursor-pointer shadow-lg"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-purple-950/70 hover:bg-purple-900/80 border border-purple-700/60 hover:border-purple-400 text-purple-200 text-xs font-jakarta font-bold tracking-wider transition-all hover:scale-105 cursor-pointer shadow-lg"
             >
               <span>← Back to Home</span>
             </button>
@@ -1630,7 +1814,7 @@ export function GeroldHome({
             <div className="flex items-center gap-3">
               <button
                 onClick={() => navigateToPage("websites")}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#120a22] hover:bg-[#1a0e30] border border-purple-800/40 hover:border-purple-500 text-zinc-300 hover:text-white text-xs font-mono font-medium transition-all cursor-pointer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#120a22] hover:bg-[#1a0e30] border border-purple-800/40 hover:border-purple-500 text-zinc-300 hover:text-white text-xs font-jakarta font-medium transition-all cursor-pointer"
               >
                 <Globe className="w-3.5 h-3.5 text-purple-400" />
                 <span>Switch to Websites Portfolio (12+)</span>
@@ -1646,13 +1830,13 @@ export function GeroldHome({
           <div className="mt-16 pt-10 border-t border-purple-900/40 flex flex-col sm:flex-row items-center justify-between gap-6">
             <button
               onClick={() => navigateToPage("home")}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#120a22] hover:bg-[#180e2f] border border-purple-800/40 hover:border-purple-400 text-purple-300 text-xs font-semibold tracking-wide transition-all cursor-pointer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#120a22] hover:bg-[#180e2f] border border-purple-800/40 hover:border-purple-400 text-purple-300 text-xs font-jakarta font-semibold tracking-wide transition-all cursor-pointer"
             >
               <span>← Return to Home</span>
             </button>
             <button
               onClick={() => navigateToPage("websites")}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold tracking-wide shadow-[0_0_20px_rgba(147,51,234,0.35)] transition-all cursor-pointer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-jakarta font-bold tracking-wide shadow-[0_0_20px_rgba(147,51,234,0.35)] transition-all cursor-pointer"
             >
               <span>Explore Websites Portfolio (12+ Sites)</span>
               <ArrowRight className="w-4 h-4" />

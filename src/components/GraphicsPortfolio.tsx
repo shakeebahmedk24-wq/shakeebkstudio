@@ -53,11 +53,11 @@ export interface GraphicItem {
 export const GRAPHIC_PROJECTS: GraphicItem[] = [
   {
     id: "behance-showcase-terracotta-01",
-    title: "Terracotta & Warm Copper Brand Identity System",
-    client: "Shakeeb Khan Studio — Behance Featured",
+    title: "Mono Blanco",
+    client: "Mono Blanco — Climbing & Expedition Center",
     category: "Brand Identity",
-    tagline: "Executive Visual Identity, Typography Hierarchy & Collateral System",
-    description: "Featured flagship portfolio project from Behance (Project 220534229). Comprehensive brand guidelines, custom warm earth-tone palette, stationery dielines, typography systems, and executive print collateral.",
+    tagline: "Visual Identity Refresh for Climbing & Expedition Center",
+    description: "Mono Blanco is a climbing and expedition center in Arequipa. In 2024, it aimed to refresh and professionalize its visual identity, creating a unique and authentic brand that conveys the energy, adrenaline, and movement of the extreme sports it promotes.",
     aspectRatio: "16:9",
     dimensions: "1400 x 720 px",
     palette: ["#F6ECDF", "#B6682B", "#D79359", "#483E37"],
@@ -75,15 +75,15 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
       vectorDpi: "300 DPI Print Ready",
       fileFormats: ["AI Master", "PDF Brand Deck", "SVG", "PNG High-Res"]
     },
-    designNotes: "Architected for high-end brands requiring tactile warmth, optical kerning balance, and multi-surface versatility across web and luxury print packaging."
+    designNotes: "Visual identity refresh created for extreme sports and climbing center. Features custom angular mountain-block logomark, high-contrast terracotta and orange palette, apparel, reusable flasks, and social media feed guidelines."
   },
   {
     id: "behance-showcase-royal-indigo-02",
-    title: "Royal Iris & Electric Indigo Corporate Identity",
-    client: "Shakeeb Khan Studio — Behance Featured",
+    title: "Sebas Baldeon",
+    client: "Sebas Baldeon — Graphic Designer",
     category: "Brand Identity",
-    tagline: "Modern Tech Monogram, Color Architecture & App UI Guide",
-    description: "Featured flagship portfolio project from Behance (Project 220534229). High-impact geometric monogram logo, vibrant digital blue-violet color standards, icon system, and responsive brand collateral.",
+    tagline: "Personal Brand Rebranding & Star Geometry Identity System",
+    description: "Sebas Baldeon is the rebranding of personal brand, reflecting the evolution of talent and style as a graphic designer. Features a clean, modern visual identity centered on stars—embodying dreams, inspiration, and infinite possibilities.",
     aspectRatio: "16:9",
     dimensions: "1400 x 720 px",
     palette: ["#F3E9DE", "#626BE4", "#A5A6D6", "#4F538D"],
@@ -101,18 +101,18 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
       vectorDpi: "300 DPI Print Ready",
       fileFormats: ["AI Master", "SVG", "PDF Brand Kit", "Canva Master Kit"]
     },
-    designNotes: "Engineered with golden ratio geometry, high-contrast dark UI pairing, and scalable vectors ready for global tech deployment."
+    designNotes: "Personal brand rebrand featuring 3D acrylic-style SB monogram, star-pattern wallpaper grid, corporate stationery suite (lanyards, enamel pins, notebooks), and smartphone wallpapers."
   },
   {
     id: "behance-showcase-luxury-brass-03",
-    title: "Olive Brass & Luxury Gold Editorial Brand Book",
-    client: "Shakeeb Khan Studio — Behance Featured",
+    title: "Nueva Face",
+    client: "Nueva Face — Universidad Católica de Santa María",
     category: "Brand Identity",
-    tagline: "High-End Editorial Identity, Foil Stamping & Packaging Suite",
-    description: "Featured flagship portfolio project from Behance (Project 220534229). Luxury brand book utilizing olive brass, warm champagne tones, custom serif lockups, foil-stamped stationery, and packaging mockups.",
+    tagline: "Bold Visual Identity & Mascot Branding for Student Opinion Group",
+    description: "Nueva Face, the oldest student opinion group at the Universidad Católica de Santa María, renewed its image in 2023 with a bold visual identity, high-contrast yellow & black posters, direct messaging, and the iconic Face Owl mascot.",
     aspectRatio: "16:9",
     dimensions: "1400 x 720 px",
-    palette: ["#F6ECDE", "#CFAE35", "#837C50", "#484436"],
+    palette: ["#F6ECDE", "#F2C015", "#1C1C1E", "#3A3A3C"],
     fonts: {
       heading: "Jost (Bold)",
       body: "Inter"
@@ -122,20 +122,20 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     imageUrl: "/graphics/b9cc95220534229.67c9db72b65fd.webp",
     featuredImgBg: "bg-gradient-to-br from-stone-950 via-zinc-900 to-amber-950",
     specifications: {
-      colorSpace: "CMYK Pantone Metallic & sRGB",
+      colorSpace: "CMYK & sRGB High-Contrast Profile",
       resolution: "Ultra-HD Vector Master",
       vectorDpi: "300 DPI Print Ready",
-      fileFormats: ["AI Vector", "PDF Editorial Deck", "EPS", "PNG Transparent"]
+      fileFormats: ["AI Vector", "PDF Campaign Deck", "EPS", "PNG Transparent"]
     },
-    designNotes: "Designed for premium boutique brands seeking timeless luxury appeal with gold leaf and letterpress print considerations."
+    designNotes: "Electoral campaign and student advocacy brand identity featuring bold yellow street banners, the geometric Face Owl emblem, speaker announcement posters ('Piensa Diferente'), and social challenge graphics."
   },
   {
     id: "behance-showcase-cyan-navy-04",
-    title: "Cyan Teal & Midnight Navy Tech Brand Architecture",
-    client: "Shakeeb Khan Studio — Behance Featured",
+    title: "Festilec",
+    client: "Festilec — Reading Festival in Arequipa",
     category: "Brand Identity",
-    tagline: "Digital Systems, Brand Guidelines & Product Identity System",
-    description: "Featured flagship portfolio project from Behance (Project 220534229). Precision tech identity guidelines featuring cyan teal accents, dark navy contrast, product UI styling guidelines, and comprehensive digital assets.",
+    tagline: "Visual Identity & Amazonian Cultural Pattern System",
+    description: "Festilec, the Reading Festival in Arequipa, is a platform that promotes literature and the arts. Created for its 2023 edition, integrating Amazonian identity and blending Tarapoto culture with the White City through botanical patterns and visual storytelling.",
     aspectRatio: "16:9",
     dimensions: "1400 x 720 px",
     palette: ["#F1E9DE", "#48B5B1", "#5D6593", "#363F49"],
@@ -153,18 +153,18 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
       vectorDpi: "300 DPI Print Ready",
       fileFormats: ["AI Master", "SVG", "PDF Brand Deck", "PNG 24-bit"]
     },
-    designNotes: "Engineered for fintech and enterprise SaaS applications requiring high visual clarity, clean data typography, and cross-platform consistency."
+    designNotes: "Cultural festival identity combining hand-drawn Amazonian floral motifs, architectural billboard displays, patterned gift wrapping, and mobile festival schedule apps."
   },
   {
     id: "brand-style-guide-master-01",
-    title: "Modern Brand Identity & Style Guide",
-    client: "Apex Enterprise",
+    title: "FiZZ — Electro Citrus Soft Drink",
+    client: "FiZZ Beverages",
     category: "Brand Identity",
-    tagline: "Full Logo Design, Brand Book & Identity Guidelines Kit",
-    description: "Comprehensive corporate brand book and identity guidelines kit. Includes primary logomark variations, brand voice standards, typography hierarchy, and business stationery dielines.",
+    tagline: "Full Citrus Soda Brand Identity, Can & Bottle Packaging System",
+    description: "Complete visual brand identity and packaging architecture for FiZZ Electro Citrus Orange soft drink. Features vibrant citrus typography, aluminum can and glass bottle graphics, cardboard carrier packaging, and mobile order UI.",
     aspectRatio: "16:9",
     dimensions: "3840 x 2160 px",
-    palette: ["#0f172a", "#38bdf8", "#64748b", "#f8fafc"],
+    palette: ["#0f172a", "#f97316", "#22c55e", "#f8fafc"],
     fonts: {
       heading: "Jost (Bold 800)",
       body: "Inter"
@@ -184,14 +184,14 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
   },
   {
     id: "brand-style-guide-master-03",
-    title: "Minimalist Brand Book & Social Media Kit",
-    client: "Vanguard Creative",
+    title: "foodlare™ — Fresh Grocery & Packaged Goods",
+    client: "foodlare™ Supermarkets",
     category: "Social Media Kits",
-    tagline: "Executive Style Guide, Logomark & Social Media Suite",
-    description: "End-to-end brand guidelines deck crafted for executive tech ventures. Includes full vector logo suites, color usage rules, typography scales, and social media brand templates.",
+    tagline: "Complete Supermarket Brand Guidelines, Packaging & Delivery Fleet Suite",
+    description: "End-to-end corporate brand identity for foodlare™ frozen foods, grains, and packaged items. Features custom Raleway typography, eco-friendly tote bags, freezer pouch packaging, delivery van livery, and employee uniform branding.",
     aspectRatio: "16:9",
     dimensions: "3840 x 2160 px",
-    palette: ["#09090b", "#f59e0b", "#27272a", "#f4f4f5"],
+    palette: ["#009136", "#fe8101", "#211f1f", "#ffffff"],
     fonts: {
       heading: "Jost (ExtraBold)",
       body: "Inter"
@@ -778,30 +778,30 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
   },
   {
     id: "modern-branding-kit-01",
-    title: "Modern Logo & Marketing Banner Kit",
-    client: "Brand Identity Studio",
+    title: "trustio™ — Fintech & Lending Identity",
+    client: "trustio™ Financial Systems",
     category: "Marketing Banners",
-    tagline: "Full-Suite Marketing Banners & Promo Identity Package",
-    description: "End-to-end promotional banner and brand identity kit engineered for modern tech & business ventures. Includes marketing web banners, typography hierarchy guidelines, social display ads, and collateral.",
+    tagline: "Fintech Brand Architecture, Social Display Ads & Marketing Collateral",
+    description: "End-to-end promotional identity and marketing suite for trustio™ lending platform. Features custom interlocking petal logo mark, Poppins typography standards, corporate business cards, and high-conversion social ad templates.",
     aspectRatio: "16:9",
     dimensions: "3840 x 2160 px",
-    palette: ["#0f172a", "#818cf8", "#cbd5e1", "#0284c7"],
+    palette: ["#007469", "#f9c500", "#faf3d6", "#b7c9c9"],
     fonts: {
-      heading: "Jost (ExtraBold)",
-      body: "Inter"
+      heading: "Poppins (Bold)",
+      body: "Poppins (Regular)"
     },
     tools: ["Canva Pro Studio", "Adobe Illustrator", "Photoshop"],
     behanceUrl: "https://behance.net/sksolutions",
     imageUrl: "/graphics/modern-branding-kit-01.jpg",
     fallbackUrl: "https://fiverr-res.cloudinary.com/images/q_auto:best,f_auto/gigs/366978407/original/06bff92bfd5471590c6ce1f896dc6a6423217c96/design-modern-logo-branding-kit-with-complete-brand-identity.jpg",
-    featuredImgBg: "bg-gradient-to-br from-slate-950 via-indigo-950 to-zinc-900",
+    featuredImgBg: "bg-gradient-to-br from-emerald-950 via-zinc-900 to-amber-950",
     specifications: {
       colorSpace: "sRGB & CMYK Dual Profile",
       resolution: "4K Retina Vector",
       vectorDpi: "300 DPI Vector Scale",
       fileFormats: ["SVG", "PDF Print", "Canva Brand Kit", "PNG 24-bit"]
     },
-    designNotes: "Tailored to communicate professional design craftsmanship, modern creative authority, and strong visual hierarchy."
+    designNotes: "Designed for fintech and digital lending ventures requiring trusted institutional feel, balanced teal-gold warmth, and responsive social media assets."
   },
   {
     id: "packaging-bonjoy-burger-box-01",
@@ -1978,7 +1978,29 @@ export function GraphicsPortfolio({
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [showSpecsDrawer, setShowSpecsDrawer] = useState<boolean>(false);
   const [copiedHex, setCopiedHex] = useState<string | null>(null);
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const [touchEndX, setTouchEndX] = useState<number | null>(null);
   const thumbnailContainerRef = useRef<HTMLDivElement>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEndX(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartX === null || touchEndX === null) return;
+    const diff = touchStartX - touchEndX;
+    if (diff > 45) {
+      handleNextGraphic();
+    } else if (diff < -45) {
+      handlePrevGraphic();
+    }
+    setTouchStartX(null);
+    setTouchEndX(null);
+  };
 
   const selectedCategory = externalCategory !== undefined ? externalCategory : internalCategory;
 
@@ -2100,23 +2122,23 @@ export function GraphicsPortfolio({
         {/* SECTION HEADER */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
           <div className="space-y-4 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-purple-950/60 border border-purple-800/60 text-[10px] font-mono font-bold text-purple-400 uppercase tracking-widest rounded-md">
-              <Smartphone className="w-3.5 h-3.5 text-purple-400" />
-              Mobile App & Graphic Design Studio
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-purple-950/60 border border-purple-800/60 text-[11px] font-jakarta font-bold text-purple-400 uppercase tracking-widest rounded-lg shadow-sm">
+              <Palette className="w-4 h-4 text-purple-400" />
+              Graphic Design & Brand Identity Studio
             </div>
             <h2 className="font-serif text-3xl md:text-5xl font-black tracking-tight text-white">
-              Graphics & Mobile App Portfolio
+              Graphic Design & Brand Identity
             </h2>
-            <p className="text-zinc-400 text-sm sm:text-base leading-relaxed">
-              Explore bespoke Mobile App UI designs, high-converting social campaign kits, vector monograms, and luxury print assets engineered to give digital products an unforgettable visual edge.
+            <p className="text-zinc-400 text-sm sm:text-base leading-relaxed font-jakarta">
+              Explore custom brand identity systems, vector logos, high-converting social media kits, luxury packaging designs, and marketing visual assets engineered for distinctive brand presence.
             </p>
           </div>
 
           {/* Creative Studio Badge */}
-          <div className="flex items-center gap-4 p-4 bg-zinc-900/80 border border-zinc-800 rounded-xl font-mono text-xs shrink-0 backdrop-blur-sm">
+          <div className="flex items-center gap-4 p-4 bg-zinc-900/80 border border-zinc-800 rounded-xl font-jakarta text-xs shrink-0 backdrop-blur-sm">
             <div className="space-y-0.5">
               <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest block">Design Tooling</span>
-              <span className="text-white font-bold text-sm">Figma + Mobile App UI</span>
+              <span className="text-white font-bold text-sm">Adobe Suite & Figma</span>
             </div>
             <div className="w-px h-8 bg-zinc-800"></div>
             <div className="space-y-0.5">
@@ -2132,7 +2154,7 @@ export function GraphicsPortfolio({
             <button
               key={cat}
               onClick={() => handleSelectCategory(cat)}
-              className={`px-4 py-2 text-[10px] font-mono tracking-widest uppercase font-bold rounded-lg transition-all cursor-pointer shrink-0 whitespace-nowrap ${
+              className={`px-4 py-2 text-[11px] font-jakarta tracking-wide uppercase font-bold rounded-lg transition-all cursor-pointer shrink-0 whitespace-nowrap ${
                 selectedCategory === cat
                   ? "bg-purple-600 text-white font-bold shadow-[0_0_15px_rgba(168,85,247,0.4)] border border-purple-500"
                   : "bg-zinc-900/80 text-zinc-400 hover:text-white border border-zinc-800 hover:border-purple-800/50"
@@ -2207,7 +2229,7 @@ export function GraphicsPortfolio({
 
                 {/* Card Title & Content Section */}
                 <div className="p-6 space-y-3 text-left">
-                  <span className="text-[10px] font-mono uppercase tracking-widest text-purple-400 font-bold block">
+                  <span className="text-[10px] font-jakarta uppercase tracking-widest text-purple-400 font-bold block">
                     {project.client}
                   </span>
                   <h3 className="text-lg font-serif font-bold text-white tracking-tight leading-snug group-hover:text-purple-300 transition-colors">
@@ -2221,7 +2243,7 @@ export function GraphicsPortfolio({
                     {project.tools.map((tool) => (
                       <span
                         key={tool}
-                        className="px-2.5 py-1 bg-zinc-800/80 border border-zinc-700/60 text-[9px] font-mono text-zinc-300 font-bold uppercase rounded"
+                        className="px-2.5 py-1 bg-zinc-800/80 border border-zinc-700/60 text-[10px] font-jakarta text-zinc-300 font-semibold uppercase tracking-wider rounded"
                       >
                         {tool}
                       </span>
@@ -2234,7 +2256,7 @@ export function GraphicsPortfolio({
               <div className="p-6 pt-0 border-t border-zinc-800/50 flex items-center justify-between gap-3 mt-4">
                 <button
                   onClick={() => openLightboxByProject(project)}
-                  className="w-full py-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-[10px] font-mono font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 cursor-pointer rounded-xl shadow-[0_0_20px_rgba(147,51,234,0.35)] hover:shadow-purple-500/50 hover:scale-[1.02]"
+                  className="w-full py-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-[11px] font-jakarta font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer rounded-xl shadow-[0_0_20px_rgba(147,51,234,0.35)] hover:shadow-purple-500/50 hover:scale-[1.02]"
                 >
                   View in Lightbox Gallery <Maximize2 className="w-3.5 h-3.5" />
                 </button>
@@ -2248,7 +2270,7 @@ export function GraphicsPortfolio({
           <div className="pt-6 text-center">
             <button
               onClick={onShowMore}
-              className="px-8 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white rounded-2xl font-mono text-xs font-bold uppercase tracking-widest transition-all shadow-[0_0_25px_rgba(147,51,234,0.35)] hover:shadow-purple-500/50 hover:scale-[1.02] inline-flex items-center gap-3 cursor-pointer"
+              className="px-8 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white rounded-2xl font-jakarta text-xs font-bold uppercase tracking-wider transition-all shadow-[0_0_25px_rgba(147,51,234,0.35)] hover:shadow-purple-500/50 hover:scale-[1.02] inline-flex items-center gap-3 cursor-pointer"
             >
               <Palette className="w-4 h-4 text-white" />
               <span>View All Graphics & Branding Portfolio ({GRAPHIC_PROJECTS.length}+ Projects)</span>
@@ -2262,12 +2284,12 @@ export function GraphicsPortfolio({
           <div className="p-12 text-center bg-zinc-900/60 border border-zinc-800 rounded-2xl space-y-4 max-w-xl mx-auto">
             <Palette className="w-10 h-10 text-purple-400 mx-auto opacity-80" />
             <h3 className="text-xl font-serif font-bold text-white">No Assets Found in &ldquo;{selectedCategory}&rdquo;</h3>
-            <p className="text-xs text-zinc-400 font-mono">
+            <p className="text-xs text-zinc-400 font-jakarta">
               Try selecting another category or view all design specimens.
             </p>
             <button
               onClick={() => handleSelectCategory("All")}
-              className="px-5 py-2.5 bg-purple-600 text-white text-xs font-mono font-black uppercase tracking-widest rounded-xl hover:bg-purple-500 transition-all cursor-pointer shadow-md"
+              className="px-5 py-2.5 bg-purple-600 text-white text-xs font-jakarta font-bold uppercase tracking-wider rounded-xl hover:bg-purple-500 transition-all cursor-pointer shadow-md"
             >
               Show All Design Works ({GRAPHIC_PROJECTS.length} Items)
             </button>
@@ -2289,14 +2311,14 @@ export function GraphicsPortfolio({
               </div>
               <div className="min-w-0">
                 <div className="flex items-center gap-2">
-                  <span className="font-mono text-[10px] sm:text-xs font-bold uppercase tracking-wider text-white truncate">
+                  <span className="font-jakarta text-[11px] sm:text-xs font-bold uppercase tracking-wider text-white truncate">
                     {currentGraphic.title}
                   </span>
-                  <span className="text-[9px] font-mono font-bold px-2 py-0.5 rounded-full bg-purple-950/80 border border-purple-700/60 text-purple-300 shrink-0">
+                  <span className="text-[9px] font-jakarta font-bold px-2 py-0.5 rounded-full bg-purple-950/80 border border-purple-700/60 text-purple-300 shrink-0">
                     {currentGraphic.category}
                   </span>
                 </div>
-                <span className="text-[10px] font-mono text-zinc-400 block truncate">
+                <span className="text-[10px] font-jakarta text-zinc-400 block truncate">
                   Client: {currentGraphic.client} · {currentGraphic.dimensions}
                 </span>
               </div>
@@ -2314,7 +2336,7 @@ export function GraphicsPortfolio({
             <div className="flex items-center gap-2 shrink-0">
               <button
                 onClick={() => setShowSpecsDrawer(!showSpecsDrawer)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-mono font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-jakarta font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
                   showSpecsDrawer
                     ? "bg-purple-600 text-white shadow-[0_0_12px_rgba(168,85,247,0.5)]"
                     : "bg-zinc-900 text-zinc-300 hover:text-white border border-zinc-700 hover:border-purple-500"
@@ -2329,7 +2351,7 @@ export function GraphicsPortfolio({
                 href={currentGraphic.behanceUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-700 hover:border-purple-500 rounded-lg text-xs font-mono font-medium transition-all"
+                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-700 hover:border-purple-500 rounded-lg text-xs font-jakarta font-medium transition-all"
                 title="Open Behance case study in new tab"
               >
                 <span>Behance</span>
@@ -2346,35 +2368,43 @@ export function GraphicsPortfolio({
                 title="Close (Esc)"
               >
                 <X className="w-5 h-5" />
-                <span className="hidden sm:inline font-mono text-[10px] text-zinc-500 uppercase">Esc</span>
+                <span className="hidden sm:inline font-jakarta text-[10px] text-zinc-500 uppercase">Esc</span>
               </button>
             </div>
           </div>
 
           {/* 2. MAIN CENTER STAGE */}
-          <div className="relative flex-1 flex items-center justify-between p-2 sm:p-6 overflow-hidden min-h-0">
-            {/* Prev Navigation Button */}
+          <div
+            className="relative flex-1 flex flex-col items-center justify-center p-2 sm:p-6 overflow-hidden min-h-0 w-full"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
+            {/* Prev Navigation Button - Overlay */}
             <button
-              onClick={handlePrevGraphic}
-              className="z-30 p-3 sm:p-4 rounded-full bg-zinc-900/80 hover:bg-purple-600/50 border border-zinc-700/80 hover:border-purple-400 text-white shadow-2xl backdrop-blur-md transition-all hover:scale-110 cursor-pointer shrink-0 ml-1 sm:ml-4"
+              onClick={(e) => {
+                e.stopPropagation();
+                handlePrevGraphic();
+              }}
+              className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-3.5 rounded-full bg-black/60 sm:bg-zinc-900/80 hover:bg-purple-600/70 border border-white/20 sm:border-zinc-700/80 text-white shadow-2xl backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer"
               aria-label="Previous Graphic (Left Arrow)"
               title="Previous Graphic (Left Arrow)"
             >
-              <ChevronLeft className="w-6 h-6 sm:w-7 sm:h-7" />
+              <ChevronLeft className="w-5 h-5 sm:w-7 sm:h-7" />
             </button>
 
             {/* Central Artwork Display & Caption */}
-            <div className="flex-1 flex flex-col items-center justify-center max-h-full max-w-5xl mx-auto px-2 sm:px-6 relative overflow-hidden">
+            <div className="w-full max-w-5xl flex-1 flex flex-col items-center justify-center px-1 sm:px-6 min-h-0 relative">
               <div
-                className="relative max-h-[58vh] sm:max-h-[64vh] flex items-center justify-center cursor-pointer group"
+                className="relative w-full flex-1 flex items-center justify-center min-h-0 cursor-pointer group"
                 onClick={handleNextGraphic}
-                title="Click image to advance to next artwork"
+                title="Tap to advance to next artwork"
               >
                 <img
                   key={currentGraphic.id}
                   src={currentGraphic.imageUrl}
                   alt={currentGraphic.title}
-                  className="max-h-[58vh] sm:max-h-[64vh] max-w-full w-auto object-contain rounded-xl border border-purple-900/40 shadow-[0_20px_70px_rgba(0,0,0,0.9)] transition-all [image-rendering:-webkit-optimize-contrast]"
+                  className="max-h-[66vh] sm:max-h-[72vh] w-auto max-w-full object-contain rounded-xl sm:rounded-2xl border border-purple-900/40 shadow-[0_20px_70px_rgba(0,0,0,0.9)] transition-all [image-rendering:-webkit-optimize-contrast]"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
                     if (!target.dataset.fallbackTried && currentGraphic.fallbackUrl) {
@@ -2389,26 +2419,26 @@ export function GraphicsPortfolio({
 
                 {/* Subtle Click Hint on Hover */}
                 <div className="absolute inset-0 rounded-xl bg-purple-950/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
-                  <span className="px-3 py-1 bg-black/70 backdrop-blur-md text-[11px] font-mono text-purple-200 rounded-full border border-purple-500/40 shadow-lg">
+                  <span className="hidden sm:inline px-3 py-1 bg-black/70 backdrop-blur-md text-[11px] font-mono text-purple-200 rounded-full border border-purple-500/40 shadow-lg">
                     Click to view next →
                   </span>
                 </div>
               </div>
 
               {/* Artwork Floating Caption & Swatches */}
-              <div className="mt-3 max-w-2xl w-full px-4 py-2.5 rounded-xl bg-zinc-950/80 border border-zinc-800/80 backdrop-blur-md flex flex-wrap items-center justify-between gap-3 text-left">
-                <div className="min-w-0">
-                  <h4 className="text-xs sm:text-sm font-bold font-serif text-white truncate">
+              <div className="mt-2 sm:mt-3 w-full max-w-2xl px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-zinc-950/85 border border-zinc-800/80 backdrop-blur-md flex items-center justify-between gap-2 sm:gap-3 text-left z-20">
+                <div className="min-w-0 flex-1">
+                  <h4 className="text-xs sm:text-sm font-bold font-jakarta text-white truncate">
                     {currentGraphic.title}
                   </h4>
-                  <p className="text-[11px] text-zinc-400 font-mono truncate">
+                  <p className="text-[10px] sm:text-[11px] text-zinc-400 font-jakarta line-clamp-1">
                     {currentGraphic.tagline}
                   </p>
                 </div>
 
                 {/* Quick Swatches Bar */}
-                <div className="flex items-center gap-1.5 shrink-0">
-                  <span className="text-[9px] font-mono text-zinc-500 uppercase hidden sm:inline">Palette:</span>
+                <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
+                  <span className="text-[9px] font-mono text-zinc-500 uppercase hidden md:inline">Palette:</span>
                   {currentGraphic.palette.map((hex) => (
                     <button
                       key={hex}
@@ -2416,12 +2446,12 @@ export function GraphicsPortfolio({
                         e.stopPropagation();
                         copyToClipboard(hex);
                       }}
-                      className="w-5 h-5 rounded-full border border-white/20 hover:scale-125 transition-transform cursor-pointer relative shadow-sm"
+                      className="w-4 h-4 sm:w-5 sm:h-5 rounded-full border border-white/20 hover:scale-125 transition-transform cursor-pointer relative shadow-sm"
                       style={{ backgroundColor: hex }}
                       title={`Copy Hex ${hex}`}
                     >
                       {copiedHex === hex && (
-                        <span className="absolute inset-0 flex items-center justify-center text-[8px] text-white font-bold bg-black/60 rounded-full">
+                        <span className="absolute inset-0 flex items-center justify-center text-[7px] sm:text-[8px] text-white font-bold bg-black/60 rounded-full">
                           ✓
                         </span>
                       )}
@@ -2431,14 +2461,17 @@ export function GraphicsPortfolio({
               </div>
             </div>
 
-            {/* Next Navigation Button */}
+            {/* Next Navigation Button - Overlay */}
             <button
-              onClick={handleNextGraphic}
-              className="z-30 p-3 sm:p-4 rounded-full bg-zinc-900/80 hover:bg-purple-600/50 border border-zinc-700/80 hover:border-purple-400 text-white shadow-2xl backdrop-blur-md transition-all hover:scale-110 cursor-pointer shrink-0 mr-1 sm:mr-4"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleNextGraphic();
+              }}
+              className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-3.5 rounded-full bg-black/60 sm:bg-zinc-900/80 hover:bg-purple-600/70 border border-white/20 sm:border-zinc-700/80 text-white shadow-2xl backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer"
               aria-label="Next Graphic (Right Arrow)"
               title="Next Graphic (Right Arrow)"
             >
-              <ChevronRight className="w-6 h-6 sm:w-7 sm:h-7" />
+              <ChevronRight className="w-5 h-5 sm:w-7 sm:h-7" />
             </button>
           </div>
 
@@ -2564,7 +2597,7 @@ export function GraphicsPortfolio({
                   <button
                     key={item.id}
                     onClick={() => setLightboxIndex(idx)}
-                    className={`relative shrink-0 w-16 h-12 sm:w-20 sm:h-14 rounded-lg overflow-hidden border transition-all cursor-pointer ${
+                    className={`relative shrink-0 w-12 h-9 sm:w-20 sm:h-14 rounded-lg overflow-hidden border transition-all cursor-pointer ${
                       isActive
                         ? "border-purple-400 ring-2 ring-purple-500 scale-105 shadow-[0_0_15px_rgba(168,85,247,0.7)]"
                         : "border-zinc-800 hover:border-purple-600/70 opacity-60 hover:opacity-100"
