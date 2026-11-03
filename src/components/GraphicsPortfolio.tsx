@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { motion } from "motion/react";
 import {
   Palette,
@@ -2090,6 +2091,30 @@ export function GraphicsPortfolio({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [lightboxIndex, activeList.length]);
 
+  // Lock background scroll when lightbox is open
+  useEffect(() => {
+    if (lightboxIndex !== null) {
+      document.body.style.overflow = "hidden";
+      const lenis = (window as any).__lenis;
+      if (lenis && typeof lenis.stop === "function") {
+        lenis.stop();
+      }
+    } else {
+      document.body.style.overflow = "";
+      const lenis = (window as any).__lenis;
+      if (lenis && typeof lenis.start === "function") {
+        lenis.start();
+      }
+    }
+    return () => {
+      document.body.style.overflow = "";
+      const lenis = (window as any).__lenis;
+      if (lenis && typeof lenis.start === "function") {
+        lenis.start();
+      }
+    };
+  }, [lightboxIndex]);
+
   // Auto-scroll active thumbnail into view
   useEffect(() => {
     if (lightboxIndex === null || !thumbnailContainerRef.current) return;
@@ -2116,9 +2141,9 @@ export function GraphicsPortfolio({
   return (
     <section
       id="graphics-portfolio"
-      className="py-28 border-t border-zinc-800/60 scroll-mt-24 text-left"
+      className={`${isHomePage ? "py-20 border-t border-zinc-800/60" : "py-4"} scroll-mt-24 text-left`}
     >
-      <div className="max-w-6xl mx-auto px-3 sm:px-6 space-y-16">
+      <div className="max-w-6xl mx-auto px-3 sm:px-6 space-y-12">
         
         {/* SECTION HEADER */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
@@ -2304,8 +2329,8 @@ export function GraphicsPortfolio({
       </div>
 
       {/* IMMERSIVE GRAPHICS LIGHTBOX GALLERY */}
-      {currentGraphic && lightboxIndex !== null && (
-        <div className="fixed inset-0 z-50 flex flex-col justify-between bg-black/95 backdrop-blur-2xl overflow-hidden select-none animate-in fade-in duration-200">
+      {currentGraphic && lightboxIndex !== null && typeof document !== "undefined" && createPortal(
+        <div className="fixed inset-0 z-[9999] flex flex-col justify-between bg-black/95 backdrop-blur-2xl overflow-hidden select-none animate-in fade-in duration-200">
           
           {/* 1. TOP HEADER TOOLBAR */}
           <div className="relative z-20 px-4 sm:px-8 py-3.5 bg-zinc-950/90 border-b border-purple-900/30 flex items-center justify-between gap-4 shrink-0 shadow-lg">
@@ -2630,7 +2655,8 @@ export function GraphicsPortfolio({
               })}
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </section>
   );

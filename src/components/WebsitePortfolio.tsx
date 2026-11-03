@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion } from "motion/react";
 import {
   Globe,
@@ -580,12 +581,36 @@ export function WebsitePortfolio({
     return matchesCategory && matchesSearch;
   });
 
+  // Lock background scroll when case study modal is open
+  useEffect(() => {
+    if (activeProject) {
+      document.body.style.overflow = "hidden";
+      const lenis = (window as any).__lenis;
+      if (lenis && typeof lenis.stop === "function") {
+        lenis.stop();
+      }
+    } else {
+      document.body.style.overflow = "";
+      const lenis = (window as any).__lenis;
+      if (lenis && typeof lenis.start === "function") {
+        lenis.start();
+      }
+    }
+    return () => {
+      document.body.style.overflow = "";
+      const lenis = (window as any).__lenis;
+      if (lenis && typeof lenis.start === "function") {
+        lenis.start();
+      }
+    };
+  }, [activeProject]);
+
   const displayedProjects = isHomePage ? filteredProjects.slice(0, 6) : filteredProjects;
 
   return (
     <section
       id="portfolio"
-      className="py-24 border-t border-zinc-800/60 scroll-mt-20 text-left"
+      className={`${isHomePage ? "py-20 border-t border-zinc-800/60" : "py-4"} scroll-mt-20 text-left`}
     >
       <div className="max-w-6xl mx-auto px-3 sm:px-6 space-y-12">
         
@@ -804,8 +829,8 @@ export function WebsitePortfolio({
       </div>
 
       {/* INTERACTIVE CASE STUDY MODAL & SIMULATOR */}
-      {activeProject && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6 bg-zinc-950/85 backdrop-blur-md overflow-y-auto">
+      {activeProject && typeof document !== "undefined" && createPortal(
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-2 sm:p-6 bg-zinc-950/85 backdrop-blur-md overflow-y-auto">
           <div
             className="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-4xl w-full max-h-[92vh] overflow-y-auto shadow-2xl relative text-left my-auto transition-all animate-in fade-in zoom-in-95 duration-200"
           >
@@ -1042,7 +1067,8 @@ export function WebsitePortfolio({
                 </div>
               </div>
             </div>
-          </div>
+          </div>,
+          document.body
         )}
     </section>
   );

@@ -58,6 +58,30 @@ export function GeroldHome({
   const [hireService, setHireService] = useState("WordPress Development");
   const [hireMessage, setHireMessage] = useState("");
 
+  // Lock background scroll when hire modal is open
+  useEffect(() => {
+    if (showHireModal) {
+      document.body.style.overflow = "hidden";
+      const lenis = (window as any).__lenis;
+      if (lenis && typeof lenis.stop === "function") {
+        lenis.stop();
+      }
+    } else {
+      document.body.style.overflow = "";
+      const lenis = (window as any).__lenis;
+      if (lenis && typeof lenis.start === "function") {
+        lenis.start();
+      }
+    }
+    return () => {
+      document.body.style.overflow = "";
+      const lenis = (window as any).__lenis;
+      if (lenis && typeof lenis.start === "function") {
+        lenis.start();
+      }
+    };
+  }, [showHireModal]);
+
   // Page Routing & Hash Sync
   useEffect(() => {
     const handleUrlHash = () => {
@@ -1970,7 +1994,7 @@ export function GeroldHome({
       {/* ======================================================== */}
       <AnimatePresence>
         {showHireModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
+          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
