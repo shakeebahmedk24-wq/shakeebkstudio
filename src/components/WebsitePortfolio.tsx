@@ -610,49 +610,49 @@ export function WebsitePortfolio({
   return (
     <section
       id="portfolio"
-      className={`${isHomePage ? "py-20 border-t border-zinc-800/60" : "py-4"} scroll-mt-20 text-left`}
+      className={`${isHomePage ? "py-10 sm:py-20 border-t border-zinc-800/60" : "py-4"} scroll-mt-20 text-left`}
     >
-      <div className="max-w-6xl mx-auto px-3 sm:px-6 space-y-12">
+      <div className="max-w-6xl mx-auto px-3 sm:px-6 space-y-6 sm:space-y-12">
         
         {/* SECTION HEADER */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
-          <div className="space-y-3 max-w-2xl">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-8">
+          <div className="space-y-2.5 sm:space-y-3 max-w-2xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-purple-950/50 border border-purple-800/40 text-[10px] font-mono font-bold text-purple-400 uppercase tracking-widest rounded-md">
               <Globe className="w-3.5 h-3.5 text-purple-400" />
               Verified Work Showcase
             </div>
-            <h2 className="font-serif text-3xl md:text-4xl font-black tracking-tight text-white">
+            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-white">
               Websites Portfolio
             </h2>
-            <p className="text-zinc-400 text-sm sm:text-base leading-relaxed">
+            <p className="text-zinc-400 text-xs sm:text-base leading-relaxed">
               Explore custom-engineered website architectures, high-converting e-commerce applications, and high-impact graphic design systems built for maximum page speed and business growth.
             </p>
           </div>
 
           {/* Quick Metrics Badge */}
-          <div className="flex items-center gap-4 p-4 bg-zinc-900/90 border border-purple-900/30 rounded-2xl font-mono text-xs shrink-0 shadow-xl">
+          <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-zinc-900/90 border border-purple-900/30 rounded-xl sm:rounded-2xl font-mono text-xs shrink-0 shadow-xl">
             <div className="space-y-0.5">
-              <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest block">Core Web Vitals</span>
-              <span className="text-emerald-400 font-bold text-sm">95–99 Average</span>
+              <span className="text-[8px] sm:text-[9px] text-zinc-500 font-bold uppercase tracking-widest block">Core Web Vitals</span>
+              <span className="text-emerald-400 font-bold text-xs sm:text-sm">95–99 Average</span>
             </div>
-            <div className="w-px h-8 bg-zinc-800"></div>
+            <div className="w-px h-7 sm:h-8 bg-zinc-800"></div>
             <div className="space-y-0.5">
-              <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest block">Deployments</span>
-              <span className="text-purple-300 font-bold text-sm">100+ Live Sites</span>
+              <span className="text-[8px] sm:text-[9px] text-zinc-500 font-bold uppercase tracking-widest block">Deployments</span>
+              <span className="text-purple-300 font-bold text-xs sm:text-sm">100+ Live Sites</span>
             </div>
           </div>
         </div>
 
         {/* SEARCH & CATEGORY FILTERS */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pt-2 border-b border-zinc-800 pb-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4 pt-1 sm:pt-2 border-b border-zinc-800 pb-4 sm:pb-6">
           
           {/* Category Tabs */}
-          <div className="flex flex-nowrap sm:flex-wrap gap-2 overflow-x-auto no-scrollbar pb-2 sm:pb-0 -mx-2 px-2 sm:mx-0 sm:px-0">
+          <div className="flex flex-nowrap sm:flex-wrap gap-2 overflow-x-auto no-scrollbar pb-1 sm:pb-0 -mx-2 px-2 sm:mx-0 sm:px-0 touch-pan-x">
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => handleCategoryChange(cat)}
-                className={`px-3.5 py-1.5 text-[11px] font-jakarta tracking-wide uppercase font-bold transition-all cursor-pointer rounded-lg shrink-0 whitespace-nowrap ${
+                className={`px-3 sm:px-3.5 py-1.5 text-[10px] sm:text-[11px] font-jakarta tracking-wide uppercase font-bold transition-all cursor-pointer rounded-lg shrink-0 whitespace-nowrap ${
                   currentCategory === cat
                     ? "bg-purple-600/20 text-purple-300 border border-purple-500/40 shadow-[0_0_15px_rgba(168,85,247,0.2)]"
                     : "bg-zinc-900/60 text-zinc-400 hover:text-white border border-zinc-800 hover:border-zinc-700"
@@ -685,7 +685,7 @@ export function WebsitePortfolio({
         </div>
 
         {/* PROJECTS GRID */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {displayedProjects.map((project, idx) => (
             <motion.div
               key={project.id}
@@ -699,7 +699,7 @@ export function WebsitePortfolio({
                 {/* Visual Header / Mockup Card Window */}
                 <div 
                   onClick={() => setActiveProject(project)}
-                  className="relative h-64 sm:h-72 w-full overflow-hidden bg-zinc-950 border-b border-zinc-800 group/img cursor-pointer"
+                  className="relative h-48 sm:h-72 w-full overflow-hidden bg-zinc-950 border-b border-zinc-800 group/img cursor-pointer"
                   title="Click to view full case study & interactive device preview"
                 >
                   {/* Browser top chrome bar */}
@@ -708,13 +708,13 @@ export function WebsitePortfolio({
                       <span className="w-2 h-2 rounded-full bg-rose-500"></span>
                       <span className="w-2 h-2 rounded-full bg-amber-500"></span>
                       <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-                      <span className="text-zinc-300 font-bold ml-1 truncate max-w-[130px]">{project.liveUrl.replace("https://", "")}</span>
+                      <span className="text-zinc-300 font-bold ml-1 truncate max-w-[105px] sm:max-w-[130px]">{project.liveUrl.replace("https://", "")}</span>
                     </div>
                     <div className="flex items-center gap-1.5">
-                      <span className="inline-block text-[8.5px] text-purple-200 font-jakarta font-bold tracking-wider uppercase bg-purple-950/80 px-2 py-0.5 rounded border border-purple-700/50 shadow-sm opacity-90 group-hover/img:opacity-100 transition-opacity">
+                      <span className="hidden sm:inline-block text-[8.5px] text-purple-200 font-jakarta font-bold tracking-wider uppercase bg-purple-950/80 px-2 py-0.5 rounded border border-purple-700/50 shadow-sm opacity-90 group-hover/img:opacity-100 transition-opacity">
                         Hover to Scroll
                       </span>
-                      <div className="flex items-center gap-1 px-2 py-0.5 bg-emerald-950/90 border border-emerald-800/80 text-emerald-300 font-bold rounded">
+                      <div className="flex items-center gap-1 px-1.5 sm:px-2 py-0.5 bg-emerald-950/90 border border-emerald-800/80 text-emerald-300 font-bold rounded">
                         <Zap className="w-2.5 h-2.5 text-emerald-400 fill-emerald-400" />
                         <span>{project.speedScore}/100</span>
                       </div>
@@ -728,7 +728,7 @@ export function WebsitePortfolio({
                       alt={`${project.title} website screenshot`}
                       loading="lazy"
                       decoding="async"
-                      className="w-full h-auto block transform-gpu translate-y-0 group-hover/img:-translate-y-[calc(100%-240px)] transition-transform duration-[6000ms] ease-in-out opacity-100 will-change-transform [image-rendering:-webkit-optimize-contrast]"
+                      className="w-full h-auto block transform-gpu translate-y-0 group-hover/img:-translate-y-[calc(100%-200px)] sm:group-hover/img:-translate-y-[calc(100%-240px)] transition-transform duration-[6000ms] ease-in-out opacity-100 will-change-transform [image-rendering:-webkit-optimize-contrast]"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         if (!target.dataset.fallbackTried && project.fallbackImage && project.fallbackImage !== project.image) {
@@ -743,50 +743,63 @@ export function WebsitePortfolio({
                   </div>
 
                   {/* Bottom subtle gradient overlay for text readability */}
-                  <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-zinc-950 via-zinc-950/70 to-transparent pointer-events-none z-10"></div>
+                  <div className="absolute bottom-0 left-0 right-0 h-24 sm:h-28 bg-gradient-to-t from-zinc-950 via-zinc-950/70 to-transparent pointer-events-none z-10"></div>
 
-                  <div className="absolute bottom-3 left-3 right-3 z-10 flex items-end justify-between font-jakarta text-[9px]">
+                  <div className="absolute bottom-2.5 sm:bottom-3 left-2.5 sm:left-3 right-2.5 sm:right-3 z-10 flex items-end justify-between font-jakarta text-[9px]">
                     <div>
-                      <span className="px-2 py-0.5 bg-purple-950/80 border border-purple-800/60 text-purple-300 font-bold uppercase tracking-wider rounded text-[8px] inline-block mb-1">
+                      <span className="px-2 py-0.5 bg-purple-950/80 border border-purple-800/60 text-purple-300 font-bold uppercase tracking-wider rounded text-[8px] inline-block mb-0.5 sm:mb-1">
                         {project.category}
                       </span>
-                      <h3 className="text-base font-bold font-serif text-white tracking-tight drop-shadow-md group-hover:text-purple-300 transition-colors">
+                      <h3 className="text-sm sm:text-base font-bold font-serif text-white tracking-tight drop-shadow-md group-hover:text-purple-300 transition-colors">
                         {project.title}
                       </h3>
                     </div>
-                    <span className="text-emerald-400 font-bold bg-zinc-950/90 px-2 py-0.5 rounded border border-zinc-800 shadow-md">
+                    <span className="text-emerald-400 font-bold bg-zinc-950/90 px-1.5 sm:px-2 py-0.5 rounded border border-zinc-800 shadow-md text-[9px]">
                       {project.conversionBoost}
                     </span>
                   </div>
                 </div>
 
                 {/* Card Content Description */}
-                <div className="p-6 space-y-4 text-left">
-                  <p className="text-xs text-zinc-400 leading-relaxed min-h-[54px]">
+                <div className="p-4 sm:p-6 space-y-2.5 sm:space-y-4 text-left">
+                  {/* On desktop: show full description; on mobile: hidden to avoid huge cards */}
+                  <p className="hidden sm:block text-xs text-zinc-400 leading-relaxed min-h-[54px]">
                     {project.description}
                   </p>
 
-                  {/* Tech Stack Pills */}
-                  <div className="flex flex-wrap gap-1.5 pt-1">
-                    {project.techStack.map((tech) => (
-                      <span
-                        key={tech}
-                        className="px-2.5 py-1 bg-zinc-950 border border-zinc-800 text-[10px] font-jakarta text-zinc-300 font-semibold uppercase tracking-wider rounded"
-                      >
-                        {tech}
-                      </span>
-                    ))}
+                  {/* Tech Stack Pills: Mobile shows 2 key tags; desktop shows all */}
+                  <div className="flex flex-wrap gap-1 sm:gap-1.5 pt-0.5 sm:pt-1">
+                    <div className="flex sm:hidden flex-wrap gap-1">
+                      {project.techStack.slice(0, 2).map((tech) => (
+                        <span
+                          key={tech}
+                          className="px-2 py-0.5 bg-zinc-950 border border-zinc-800 text-[9px] font-jakarta text-zinc-300 font-medium rounded"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="hidden sm:flex flex-wrap gap-1.5">
+                      {project.techStack.map((tech) => (
+                        <span
+                          key={tech}
+                          className="px-2.5 py-1 bg-zinc-950 border border-zinc-800 text-[10px] font-jakarta text-zinc-300 font-semibold uppercase tracking-wider rounded"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
 
               {/* Action Footer - Purple Button matching site theme */}
-              <div className="p-6 pt-0 mt-2">
+              <div className="p-4 sm:p-6 pt-0 mt-1 sm:mt-2">
                 <a
                   href={project.liveUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-3.5 bg-gradient-to-r from-purple-600 via-[#8750f7] to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-jakarta font-bold uppercase tracking-wider transition-all duration-300 rounded-xl flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(135,80,247,0.35)] hover:shadow-[0_4px_25px_rgba(135,80,247,0.6)] cursor-pointer hover:scale-[1.01] active:scale-[0.99]"
+                  className="w-full py-2.5 sm:py-3.5 bg-gradient-to-r from-purple-600 via-[#8750f7] to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-[11px] sm:text-xs font-jakarta font-bold uppercase tracking-wider transition-all duration-300 rounded-xl flex items-center justify-center gap-1.5 sm:gap-2 shadow-[0_4px_20px_rgba(135,80,247,0.35)] hover:shadow-[0_4px_25px_rgba(135,80,247,0.6)] cursor-pointer hover:scale-[1.01] active:scale-[0.99]"
                 >
                   Visit Live <ExternalLink className="w-3.5 h-3.5" />
                 </a>
@@ -797,14 +810,15 @@ export function WebsitePortfolio({
 
         {/* VIEW ALL SITES CTA (ON HOMEPAGE) */}
         {isHomePage && onShowMore && filteredProjects.length > 6 && (
-          <div className="pt-2 text-center">
+          <div className="pt-2 sm:pt-4 text-center px-3">
             <button
               onClick={onShowMore}
-              className="px-8 py-4 bg-zinc-900 hover:bg-zinc-800 text-purple-300 hover:text-white border border-purple-500/40 hover:border-purple-400 rounded-2xl font-jakarta text-xs font-bold uppercase tracking-wider transition-all shadow-xl hover:shadow-purple-500/20 inline-flex items-center gap-2.5 cursor-pointer"
+              className="w-full max-w-sm sm:max-w-none sm:w-auto px-4 sm:px-8 py-3 sm:py-3.5 bg-zinc-900/90 hover:bg-zinc-800 text-purple-200 hover:text-white border border-purple-500/40 hover:border-purple-400 rounded-xl sm:rounded-2xl font-jakarta text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all shadow-xl hover:shadow-purple-500/20 inline-flex items-center justify-center gap-2 sm:gap-2.5 cursor-pointer active:scale-95"
             >
-              <Globe className="w-4 h-4 text-purple-400" />
-              <span>Explore All {PORTFOLIO_SITES.length} Web Architectures</span>
-              <ArrowUpRight className="w-4 h-4" />
+              <Globe className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-400 shrink-0" />
+              <span className="sm:hidden">Explore All {PORTFOLIO_SITES.length} Websites</span>
+              <span className="hidden sm:inline">Explore All {PORTFOLIO_SITES.length} Web Architectures</span>
+              <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-400 shrink-0" />
             </button>
           </div>
         )}

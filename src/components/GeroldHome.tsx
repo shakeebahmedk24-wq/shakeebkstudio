@@ -361,7 +361,7 @@ export function GeroldHome({
   ];
 
   return (
-    <div className="min-h-screen bg-[#07030e] text-[#f3f4f6] font-sans antialiased selection:bg-purple-600/40 selection:text-white relative overflow-x-hidden">
+    <div className="min-h-screen bg-[#07030e] text-[#f3f4f6] font-sans antialiased selection:bg-purple-600/40 selection:text-white relative overflow-x-clip">
       {/* ATMOSPHERIC PURPLE AMBIENT GLOWS */}
       <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[850px] h-[550px] bg-gradient-to-b from-purple-800/18 via-indigo-900/10 to-transparent blur-[140px] pointer-events-none z-0" />
       <div className="fixed top-[45%] -left-[200px] w-[500px] h-[500px] bg-purple-900/10 blur-[130px] pointer-events-none z-0" />
@@ -611,20 +611,20 @@ export function GeroldHome({
         variants={sectionVariants}
         initial="hidden"
         animate="visible"
-        className="relative pt-36 pb-20 md:pt-40 md:pb-28 text-center flex flex-col items-center justify-center overflow-hidden"
+        className="relative pt-24 pb-12 sm:pt-36 sm:pb-20 md:pt-40 md:pb-28 text-center flex flex-col items-center justify-center overflow-hidden"
       >
         {/* Ambient Top Glow Overlay */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[550px] h-[280px] bg-purple-600/10 rounded-full blur-[120px] pointer-events-none" />
 
-        {/* Available for freelance top badge */}
+        {/* Available for freelance top badge: forced single line on all screen sizes */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#120a22]/80 border border-purple-800/40 text-purple-300 text-xs font-medium tracking-wide mb-6 backdrop-blur-md shadow-[0_0_15px_rgba(168,85,247,0.2)]"
+          className="relative z-10 inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full bg-[#120a22]/80 border border-purple-800/40 text-purple-300 text-[9.5px] sm:text-xs font-semibold tracking-tight sm:tracking-wide mb-4 sm:mb-6 backdrop-blur-md shadow-[0_0_15px_rgba(168,85,247,0.2)] whitespace-nowrap select-none max-w-full"
         >
-          <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)] animate-pulse" />
-          AVAILABLE FOR FREELANCE & ENTERPRISE PROJECTS
+          <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)] animate-pulse shrink-0" />
+          <span className="whitespace-nowrap">AVAILABLE FOR FREELANCE & ENTERPRISE PROJECTS</span>
         </motion.div>
 
         {/* Title: I AM SHAKEEB KHAN */}
@@ -634,7 +634,7 @@ export function GeroldHome({
           transition={{ duration: 0.7, delay: 0.2 }}
           className="relative z-10 space-y-1 mb-6"
         >
-          <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-[104px] font-black font-display tracking-tight leading-[0.95] text-white">
+          <h1 className="text-4xl sm:text-6xl md:text-8xl lg:text-[104px] font-black font-display tracking-tight leading-[1.05] sm:leading-[0.95] text-white">
             <span className="block text-transparent bg-clip-text bg-gradient-to-b from-purple-200 via-white to-purple-300">
               I AM
             </span>
@@ -642,19 +642,19 @@ export function GeroldHome({
               SHAKEEB KHAN
             </span>
           </h1>
-          <p className="text-sm sm:text-base md:text-lg text-purple-200/90 font-medium max-w-2xl mx-auto pt-3">
+          <p className="text-xs sm:text-base md:text-lg text-purple-200/90 font-medium max-w-2xl mx-auto pt-3 px-4">
             WordPress, AI & Custom Developer · Senior Graphic & UI/UX Designer
           </p>
         </motion.div>
 
         {/* Central Portrait Visual with Floating Badges & Stats */}
-        <div className="relative max-w-5xl w-full mx-auto px-4 flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16 my-4 z-10">
-          {/* Left Floating Badge: Happy Clients */}
+        <div className="relative max-w-5xl w-full mx-auto px-4 flex flex-col md:flex-row items-center justify-center gap-4 sm:gap-6 md:gap-16 my-2 sm:my-4 z-10">
+          {/* Left Floating Badge: Happy Clients (Hidden on small mobile to prevent vertical sprawling) */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.4 }}
-            className="md:absolute md:left-6 lg:left-12 md:top-1/3 z-20 bg-[#120a22]/90 border border-purple-800/40 rounded-2xl p-4 shadow-2xl backdrop-blur-md text-left animate-float-badge font-jakarta"
+            className="hidden sm:block w-full max-w-xs mx-auto md:mx-0 md:absolute md:left-6 lg:left-12 md:top-1/3 z-20 bg-[#120a22]/90 border border-purple-800/40 rounded-2xl p-4 shadow-2xl backdrop-blur-md text-left animate-float-badge font-jakarta"
           >
             <span className="text-[11px] font-medium text-zinc-300 block mb-2.5">
               Happy Clients | Behance | Fiverr
@@ -698,12 +698,12 @@ export function GeroldHome({
             initial={{ opacity: 0, scale: 0.85 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="relative z-10"
+            className="relative z-10 flex flex-col items-center"
           >
             {/* Ambient circular glow */}
             <div className="absolute inset-0 bg-gradient-to-tr from-purple-600/35 to-indigo-600/35 rounded-full blur-2xl transform scale-110 pointer-events-none" />
 
-            <div className="relative w-64 h-64 sm:w-76 sm:h-76 md:w-84 md:h-84 rounded-full overflow-hidden p-1.5 bg-gradient-to-b from-purple-400/50 via-purple-900/30 to-transparent border border-purple-500/40 shadow-[0_0_70px_rgba(168,85,247,0.35)]">
+            <div className="relative w-48 h-48 sm:w-72 sm:h-72 md:w-84 md:h-84 rounded-full overflow-hidden p-1.5 bg-gradient-to-b from-purple-400/50 via-purple-900/30 to-transparent border border-purple-500/40 shadow-[0_0_70px_rgba(168,85,247,0.35)]">
               <img
                 src="/Gemini_Generated_Image_bvflr0bvflr0bvfl.jpg"
                 onError={(e) => {
@@ -714,14 +714,22 @@ export function GeroldHome({
               />
             </div>
 
-            {/* Right pill badge: WordPress & AI Developer */}
-            <div className="absolute top-1/2 -right-6 sm:-right-10 -translate-y-1/2 bg-[#120a22]/95 border border-purple-700/60 rounded-full px-4 py-1.5 text-xs font-semibold text-white shadow-2xl backdrop-blur-md animate-float-badge-delayed">
+            {/* Desktop floating pill badges */}
+            <div className="hidden sm:block absolute top-1/2 -right-6 sm:-right-10 -translate-y-1/2 bg-[#120a22]/95 border border-purple-700/60 rounded-full px-4 py-1.5 text-xs font-semibold text-white shadow-2xl backdrop-blur-md animate-float-badge-delayed">
               WordPress & AI Developer
             </div>
-
-            {/* Bottom-left pill badge: Graphic & UI Designer */}
-            <div className="absolute bottom-4 -left-6 sm:-left-8 bg-[#120a22]/95 border border-purple-700/60 rounded-full px-4 py-1.5 text-xs font-semibold text-white shadow-2xl backdrop-blur-md animate-float-badge">
+            <div className="hidden sm:block absolute bottom-4 -left-6 sm:-left-8 bg-[#120a22]/95 border border-purple-700/60 rounded-full px-4 py-1.5 text-xs font-semibold text-white shadow-2xl backdrop-blur-md animate-float-badge">
               Graphic & UI Designer
+            </div>
+
+            {/* Mobile-only compact badge row */}
+            <div className="flex sm:hidden flex-wrap items-center justify-center gap-1.5 mt-2.5 z-20">
+              <span className="bg-[#120a22]/95 border border-purple-700/60 rounded-full px-2.5 py-0.5 text-[9px] font-semibold text-purple-200 shadow-md">
+                WordPress & AI Developer
+              </span>
+              <span className="bg-[#120a22]/95 border border-purple-700/60 rounded-full px-2.5 py-0.5 text-[9px] font-semibold text-purple-200 shadow-md">
+                Graphic & UI Designer
+              </span>
             </div>
           </motion.div>
 
@@ -730,65 +738,67 @@ export function GeroldHome({
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.4 }}
-            className="md:absolute md:right-6 lg:right-12 md:top-1/4 z-20 space-y-6 text-left"
+            className="w-full max-w-xs sm:max-w-sm mx-auto grid grid-cols-3 gap-2 text-center md:absolute md:right-6 lg:right-12 md:top-1/4 z-20 md:space-y-6 md:text-left md:w-auto md:block mt-3 md:mt-0"
           >
-            <div>
-              <div className="text-4xl sm:text-5xl font-black font-display text-white tracking-tight">
+            <div className="bg-[#120a22]/85 md:bg-transparent border border-purple-900/40 md:border-0 rounded-xl p-2 sm:p-2.5 md:p-0">
+              <div className="text-xl sm:text-4xl lg:text-5xl font-black font-display text-white tracking-tight">
                 7+
               </div>
-              <div className="text-xs text-zinc-400 font-medium">
-                Years of Experience
+              <div className="text-[9px] sm:text-xs text-zinc-400 font-medium leading-tight">
+                Years Exp.
               </div>
             </div>
-            <div>
-              <div className="text-4xl sm:text-5xl font-black font-display text-white tracking-tight">
+            <div className="bg-[#120a22]/85 md:bg-transparent border border-purple-900/40 md:border-0 rounded-xl p-2 sm:p-2.5 md:p-0">
+              <div className="text-xl sm:text-4xl lg:text-5xl font-black font-display text-white tracking-tight">
                 150+
               </div>
-              <div className="text-xs text-zinc-400 font-medium">
-                Projects Completed
+              <div className="text-[9px] sm:text-xs text-zinc-400 font-medium leading-tight">
+                Projects
               </div>
             </div>
-            <div>
-              <div className="text-4xl sm:text-5xl font-black font-display text-white tracking-tight">
+            <div className="bg-[#120a22]/85 md:bg-transparent border border-purple-900/40 md:border-0 rounded-xl p-2 sm:p-2.5 md:p-0">
+              <div className="text-xl sm:text-4xl lg:text-5xl font-black font-display text-white tracking-tight">
                 100%
               </div>
-              <div className="text-xs text-zinc-400 font-medium">
-                Client Satisfaction Rate
+              <div className="text-[9px] sm:text-xs text-zinc-400 font-medium leading-tight">
+                Satisfaction
               </div>
             </div>
           </motion.div>
         </div>
 
-        {/* Hero Action CTA Buttons: Download CV & Contact */}
+        {/* Hero Action CTA Buttons: Responsive 2-column on mobile */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.5 }}
-          className="mt-8 flex flex-wrap items-center justify-center gap-4 relative z-20"
+          className="mt-4 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2.5 sm:gap-4 relative z-20 w-full max-w-md mx-auto px-4"
         >
-          <a
-            href="/assets/aistudio/Shakeeb_Khan_Website_Developer_CV_75f2e3fe.pdf"
-            download="Shakeeb_Khan_CV.pdf"
-            target="_blank"
-            rel="noreferrer"
-            className="px-6 py-3 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-semibold text-xs sm:text-sm tracking-wide shadow-[0_0_25px_rgba(147,51,234,0.4)] transition-all hover:scale-105 flex items-center gap-2 cursor-pointer"
-          >
-            <Download className="w-4 h-4 text-white" />
-            <span>Download Shakeeb&apos;s CV</span>
-          </a>
+          <div className="grid grid-cols-2 gap-2 sm:gap-4 w-full sm:w-auto sm:flex sm:items-center">
+            <a
+              href="/assets/aistudio/Shakeeb_Khan_Website_Developer_CV_75f2e3fe.pdf"
+              download="Shakeeb_Khan_CV.pdf"
+              target="_blank"
+              rel="noreferrer"
+              className="px-3.5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-semibold text-xs sm:text-sm tracking-wide shadow-[0_0_20px_rgba(147,51,234,0.4)] transition-all hover:scale-105 flex items-center justify-center gap-1.5 cursor-pointer text-center"
+            >
+              <Download className="w-3.5 h-3.5 text-white shrink-0" />
+              <span>Download CV</span>
+            </a>
 
-          <button
-            onClick={() => setShowHireModal(true)}
-            className="px-6 py-3 rounded-full bg-[#180e2f] hover:bg-[#20133e] text-purple-200 border border-purple-700/50 hover:border-purple-400 font-semibold text-xs sm:text-sm tracking-wide transition-all hover:scale-105 cursor-pointer"
-          >
-            Hire Me
-          </button>
+            <button
+              onClick={() => setShowHireModal(true)}
+              className="px-3.5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-[#180e2f] hover:bg-[#20133e] text-purple-200 border border-purple-700/50 hover:border-purple-400 font-semibold text-xs sm:text-sm tracking-wide transition-all hover:scale-105 cursor-pointer text-center"
+            >
+              Hire Me
+            </button>
+          </div>
 
           <a
             href="https://behance.net/sksolutions"
             target="_blank"
             rel="noreferrer"
-            className="px-5 py-3 rounded-full bg-[#120a22] hover:bg-[#1b0e33] text-zinc-300 border border-purple-900/40 hover:border-purple-500/50 font-semibold text-xs sm:text-sm tracking-wide transition-all flex items-center gap-1.5"
+            className="w-full sm:w-auto px-4 sm:px-5 py-2 sm:py-3 rounded-full bg-[#120a22] hover:bg-[#1b0e33] text-zinc-300 border border-purple-900/40 hover:border-purple-500/50 font-semibold text-xs sm:text-sm tracking-wide transition-all flex items-center justify-center gap-1.5"
           >
             <span className="font-bold text-purple-400">Bē</span>
             <span>Behance Portfolio</span>
@@ -835,9 +845,9 @@ export function GeroldHome({
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-80px" }}
-        className="py-24 max-w-4xl mx-auto px-4 sm:px-6 text-center"
+        className="py-12 sm:py-24 max-w-4xl mx-auto px-4 sm:px-6 text-center"
       >
-        <div className="inline-block px-4 py-1 rounded-full bg-purple-950/50 border border-purple-800/40 text-purple-400 text-xs font-semibold tracking-wider uppercase mb-8">
+        <div className="inline-block px-4 py-1 rounded-full bg-purple-950/50 border border-purple-800/40 text-purple-400 text-xs font-semibold tracking-wider uppercase mb-5 sm:mb-8">
           ABOUT SHAKEEB KHAN
         </div>
 
@@ -849,24 +859,44 @@ export function GeroldHome({
           with 7+ years of experience and 150+ projects successfully delivered. With added expertise in graphic design, I combine technical and creative skills to deliver impactful results.
         </h2>
 
-        {/* Quick Contact & Credentials Pill Matrix */}
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-xs sm:text-sm font-medium text-zinc-300">
+        {/* Quick Contact & Credentials Pill Matrix (Mobile vs Desktop responsive numbers and emails) */}
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 text-xs sm:text-sm font-medium text-zinc-300 max-w-xl mx-auto">
+          {/* Mobile-Only Email */}
+          <a
+            href="mailto:shakeebkhanstudio@gmail.com"
+            className="sm:hidden flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-purple-950/40 border border-purple-800/40 hover:border-purple-400 text-purple-300 transition-all"
+          >
+            <Mail className="w-3.5 h-3.5 shrink-0" />
+            <span>shakeebkhanstudio@gmail.com</span>
+          </a>
+          {/* Desktop-Only Email */}
           <a
             href="mailto:shakeebahmedk24@gmail.com"
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-purple-950/40 border border-purple-800/40 hover:border-purple-400 text-purple-300 transition-all hover:bg-purple-900/30"
+            className="hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-xl bg-purple-950/40 border border-purple-800/40 hover:border-purple-400 text-purple-300 transition-all hover:bg-purple-900/30"
           >
-            <Mail className="w-3.5 h-3.5" />
+            <Mail className="w-3.5 h-3.5 shrink-0" />
             <span>shakeebahmedk24@gmail.com</span>
           </a>
+
+          {/* Mobile-Only Phone */}
+          <a
+            href="tel:923363445281"
+            className="sm:hidden flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-purple-950/40 border border-purple-800/40 hover:border-purple-400 text-purple-300 transition-all"
+          >
+            <Phone className="w-3.5 h-3.5 shrink-0" />
+            <span>+92-336-3445281</span>
+          </a>
+          {/* Desktop-Only Phone */}
           <a
             href="tel:+923320203701"
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-purple-950/40 border border-purple-800/40 hover:border-purple-400 text-purple-300 transition-all hover:bg-purple-900/30"
+            className="hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-xl bg-purple-950/40 border border-purple-800/40 hover:border-purple-400 text-purple-300 transition-all hover:bg-purple-900/30"
           >
-            <Phone className="w-3.5 h-3.5" />
+            <Phone className="w-3.5 h-3.5 shrink-0" />
             <span>+92-332-0203701</span>
           </a>
-          <span className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-purple-950/40 border border-purple-800/40 text-zinc-400">
-            <MapPin className="w-3.5 h-3.5 text-purple-400" />
+
+          <span className="flex items-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-xl bg-purple-950/40 border border-purple-800/40 text-zinc-400">
+            <MapPin className="w-3.5 h-3.5 text-purple-400 shrink-0" />
             <span>Karachi, Pakistan</span>
           </span>
         </div>
@@ -891,13 +921,13 @@ export function GeroldHome({
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-80px" }}
-        className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+        className="py-10 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
       >
-        <div className="text-left mb-12">
-          <div className="inline-block px-4 py-1 rounded-full bg-purple-950/50 border border-purple-800/40 text-purple-400 text-xs font-semibold tracking-wider uppercase mb-3">
+        <div className="text-left mb-6 sm:mb-12">
+          <div className="inline-block px-4 py-1 rounded-full bg-purple-950/50 border border-purple-800/40 text-purple-400 text-xs font-semibold tracking-wider uppercase mb-2 sm:mb-3">
             SERVICES
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-white tracking-tight">
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold font-display text-white tracking-tight">
             What we are offering
           </h2>
         </div>
@@ -1006,15 +1036,15 @@ export function GeroldHome({
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-80px" }}
-        className="py-24 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8"
+        className="py-12 sm:py-24 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8"
       >
-        <div className="text-left mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-white tracking-tight">
+        <div className="text-left mb-8 sm:mb-16">
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold font-display text-white tracking-tight">
             Education & Work Experience
           </h2>
         </div>
 
-        <div className="space-y-16">
+        <div className="space-y-8 sm:space-y-16">
           {/* Sub-Group 1: EXPERIENCE */}
           <div className="space-y-6">
             <div className="inline-block px-3.5 py-1 rounded-full bg-purple-950/60 border border-purple-800/40 text-purple-300 text-[11px] font-bold tracking-widest uppercase">
@@ -1088,7 +1118,7 @@ export function GeroldHome({
                       </p>
                     </div>
                   </div>
-                  <div className="text-xs font-mono font-medium text-zinc-400 whitespace-nowrap pl-15 sm:pl-0">
+                  <div className="text-xs font-mono font-medium text-zinc-400 whitespace-nowrap pl-14 sm:pl-0">
                     {item.period}
                   </div>
                 </div>
@@ -1201,7 +1231,7 @@ export function GeroldHome({
                       </p>
                     </div>
                   </div>
-                  <div className="text-xs font-mono font-medium text-zinc-400 whitespace-nowrap pl-15 sm:pl-0">
+                  <div className="text-xs font-mono font-medium text-zinc-400 whitespace-nowrap pl-14 sm:pl-0">
                     {item.year}
                   </div>
                 </div>
@@ -1220,23 +1250,23 @@ export function GeroldHome({
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-80px" }}
-        className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 font-jakarta"
+        className="py-10 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 font-jakarta"
       >
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 text-left">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-6 sm:mb-12 text-left">
           <div>
-            <div className="inline-block px-4 py-1 rounded-full bg-purple-950/60 border border-purple-800/40 text-purple-400 text-xs font-semibold tracking-wider uppercase mb-3">
+            <div className="inline-block px-4 py-1 rounded-full bg-purple-950/60 border border-purple-800/40 text-purple-400 text-xs font-semibold tracking-wider uppercase mb-2 sm:mb-3">
               SKILLS & EXPERTISE
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-jakarta text-white tracking-tight">
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold font-jakarta text-white tracking-tight">
               My Core Tech Stack & Tools
             </h2>
           </div>
 
           {/* Category Filter Tabs */}
-          <div className="flex items-center gap-2 bg-[#120a22]/80 p-1.5 rounded-xl border border-purple-900/40 self-start md:self-auto">
+          <div className="flex items-center gap-2 bg-[#120a22]/80 p-1.5 rounded-xl border border-purple-900/40 self-stretch sm:self-auto overflow-x-auto no-scrollbar max-w-full">
             <button
               onClick={() => setActiveSkillCategory("all")}
-              className={`px-4 py-2 rounded-lg text-xs font-semibold font-jakarta transition-all cursor-pointer ${
+              className={`px-4 py-2 rounded-lg text-xs font-semibold font-jakarta transition-all cursor-pointer shrink-0 whitespace-nowrap ${
                 activeSkillCategory === "all"
                   ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-950/50"
                   : "text-zinc-400 hover:text-white hover:bg-purple-900/30"
@@ -1246,7 +1276,7 @@ export function GeroldHome({
             </button>
             <button
               onClick={() => setActiveSkillCategory("design")}
-              className={`px-4 py-2 rounded-lg text-xs font-semibold font-jakarta transition-all cursor-pointer ${
+              className={`px-4 py-2 rounded-lg text-xs font-semibold font-jakarta transition-all cursor-pointer shrink-0 whitespace-nowrap ${
                 activeSkillCategory === "design"
                   ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-950/50"
                   : "text-zinc-400 hover:text-white hover:bg-purple-900/30"
@@ -1256,7 +1286,7 @@ export function GeroldHome({
             </button>
             <button
               onClick={() => setActiveSkillCategory("dev")}
-              className={`px-4 py-2 rounded-lg text-xs font-semibold font-jakarta transition-all cursor-pointer ${
+              className={`px-4 py-2 rounded-lg text-xs font-semibold font-jakarta transition-all cursor-pointer shrink-0 whitespace-nowrap ${
                 activeSkillCategory === "dev"
                   ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-950/50"
                   : "text-zinc-400 hover:text-white hover:bg-purple-900/30"
@@ -1267,13 +1297,13 @@ export function GeroldHome({
           </div>
         </div>
 
-        {/* Skill Cards Grid (Matches uploaded screenshot card design) */}
+        {/* Skill Cards Grid: 2 in a row on mobile, hide long descriptions on mobile */}
         <motion.div
           variants={cardStaggerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6"
         >
           {[
             {
@@ -1283,7 +1313,7 @@ export function GeroldHome({
               percent: 92,
               desc: "I have had the opportunity to work on several projects.",
               icon: (
-                <svg className="w-6 h-8 shrink-0" viewBox="0 0 38 57" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg className="w-5 h-7 sm:w-6 sm:h-8 shrink-0" viewBox="0 0 38 57" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M19 28.5C19 23.2533 23.2533 19 28.5 19C33.7467 19 38 23.2533 38 28.5C38 33.7467 33.7467 38 28.5 38C23.2533 38 19 33.7467 19 28.5Z" fill="#1ABCFE"/>
                   <path d="M0 47.5C0 42.2533 4.25329 38 9.5 38H19V47.5C19 52.7467 14.7467 57 9.5 57C4.25329 57 0 52.7467 0 47.5Z" fill="#0ACF83"/>
                   <path d="M19 0V19H28.5C33.7467 19 38 14.7467 38 9.5C38 4.25329 33.7467 0 28.5 0H19Z" fill="#FF7262"/>
@@ -1299,7 +1329,7 @@ export function GeroldHome({
               percent: 80,
               desc: "I have had the opportunity to work on several projects.",
               icon: (
-                <svg className="w-8 h-8 shrink-0" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg className="w-6 h-6 sm:w-8 sm:h-8 shrink-0" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M7.7 4.8L2.5 11.2L16 27.2L29.5 11.2L24.3 4.8H7.7Z" fill="#EA6C00"/>
                   <path d="M7.7 4.8L16 27.2L24.3 4.8H7.7Z" fill="#FDB300"/>
                   <path d="M16 4.8L11.5 11.2L16 27.2L20.5 11.2L16 4.8Z" fill="#FDD231"/>
@@ -1317,7 +1347,7 @@ export function GeroldHome({
               percent: 85,
               desc: "I have had the opportunity to work on several projects.",
               icon: (
-                <div className="w-8 h-8 rounded-lg bg-[#470137] border border-[#FF61F6]/60 flex items-center justify-center font-bold text-xs text-[#FF61F6] tracking-tighter shadow-sm select-none shrink-0">
+                <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-[#470137] border border-[#FF61F6]/60 flex items-center justify-center font-bold text-[10px] sm:text-xs text-[#FF61F6] tracking-tighter shadow-sm select-none shrink-0">
                   Xd
                 </div>
               )
@@ -1329,7 +1359,7 @@ export function GeroldHome({
               percent: 99,
               desc: "I have had the opportunity to work on several projects.",
               icon: (
-                <svg className="w-8 h-8 shrink-0 text-[#21759B]" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <svg className="w-6 h-6 sm:w-8 sm:h-8 shrink-0 text-[#21759B]" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                   <path d="M21.469 6.825c.84 1.537 1.318 3.3 1.318 5.175c0 3.979-2.156 7.456-5.363 9.325l3.295-9.527c.615-1.54.82-2.771.82-3.864c0-.405-.026-.78-.07-1.11m-7.981.105c.647-.03 1.232-.105 1.232-.105c.582-.075.514-.93-.067-.899c0 0-1.755.135-2.88.135c-1.064 0-2.85-.15-2.85-.15c-.585-.03-.661.855-.075.885c0 0 .54.061 1.125.09l1.68 4.605l-2.37 7.08L5.354 6.9c.649-.03 1.234-.1 1.234-.1c.585-.075.516-.93-.065-.896c0 0-1.746.138-2.874.138c-.2 0-.438-.008-.69-.015C4.911 3.15 8.235 1.215 12 1.215c2.809 0 5.365 1.072 7.286 2.833c-.046-.003-.091-.009-.141-.009c-1.06 0-1.812.923-1.812 1.914c0 .89.513 1.643 1.06 2.531c.411.72.89 1.643.89 2.977c0 .915-.354 1.994-.821 3.479l-1.075 3.585l-3.9-11.61zM12 22.784c-1.059 0-2.081-.153-3.048-.437l3.237-9.406l3.315 9.087q.036.078.078.149c-1.12.393-2.325.609-3.582.609M1.211 12c0-1.564.336-3.05.935-4.39L7.29 21.709A10.79 10.79 0 0 1 1.211 12M12 0C5.385 0 0 5.385 0 12s5.385 12 12 12s12-5.385 12-12S18.615 0 12 0" />
                 </svg>
               )
@@ -1341,7 +1371,7 @@ export function GeroldHome({
               percent: 94,
               desc: "I have had the opportunity to work on several projects.",
               icon: (
-                <svg className="w-8 h-8 shrink-0" viewBox="0 0 115 102" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg className="w-6 h-6 sm:w-8 sm:h-8 shrink-0" viewBox="0 0 115 102" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="57.5" cy="51" r="9" fill="#61DAFB"/>
                   <ellipse cx="57.5" cy="51" rx="50" ry="19.5" stroke="#61DAFB" strokeWidth="4"/>
                   <ellipse cx="57.5" cy="51" rx="50" ry="19.5" stroke="#61DAFB" strokeWidth="4" transform="rotate(60 57.5 51)"/>
@@ -1356,8 +1386,8 @@ export function GeroldHome({
               percent: 90,
               desc: "I have had the opportunity to work on several projects.",
               icon: (
-                <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center shrink-0 shadow-sm">
-                  <svg className="w-5 h-5" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-white flex items-center justify-center shrink-0 shadow-sm">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path fillRule="evenodd" clipRule="evenodd" d="M125.7 143.6L63.8 63.8V144H51.4V40H63.8L126.8 121.2V40H139.2V143.6H125.7Z" fill="black"/>
                   </svg>
                 </div>
@@ -1370,7 +1400,7 @@ export function GeroldHome({
               percent: 96,
               desc: "I have had the opportunity to work on several projects.",
               icon: (
-                <svg className="w-8 h-8 shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg className="w-6 h-6 sm:w-8 sm:h-8 shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M12.001 4.8c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624C13.666 10.618 15.027 12 18.001 12c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C16.336 6.182 14.975 4.8 12.001 4.8zm-6 7.2c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624 1.177 1.194 2.538 2.576 5.512 2.576 3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C10.336 13.382 8.975 12 6.001 12z" fill="#38BDF8"/>
                 </svg>
               )
@@ -1382,7 +1412,7 @@ export function GeroldHome({
               percent: 92,
               desc: "I have had the opportunity to work on several projects.",
               icon: (
-                <div className="w-8 h-8 rounded-lg bg-[#001E36] border border-[#31A8FF]/60 flex items-center justify-center font-bold text-xs text-[#31A8FF] tracking-tighter shadow-sm select-none shrink-0">
+                <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-[#001E36] border border-[#31A8FF]/60 flex items-center justify-center font-bold text-[10px] sm:text-xs text-[#31A8FF] tracking-tighter shadow-sm select-none shrink-0">
                   Ps
                 </div>
               )
@@ -1394,29 +1424,29 @@ export function GeroldHome({
                 key={skill.id}
                 variants={itemFadeUpVariants}
                 whileHover={{ y: -6 }}
-                className="bg-[#120d22] border border-purple-900/30 hover:border-purple-500/50 rounded-3xl p-7 transition-all duration-300 shadow-xl flex flex-col justify-between group"
+                className="bg-[#120d22] border border-purple-900/30 hover:border-purple-500/50 rounded-2xl sm:rounded-3xl p-3.5 sm:p-7 transition-all duration-300 shadow-xl flex flex-col justify-between group"
               >
                 <div>
-                  <div className="flex items-center gap-4 mb-4">
+                  <div className="flex items-center gap-2 sm:gap-4 mb-2 sm:mb-4">
                     {skill.icon}
-                    <h3 className="text-xl sm:text-2xl font-bold font-jakarta text-white tracking-tight">
+                    <h3 className="text-sm sm:text-2xl font-bold font-jakarta text-white tracking-tight truncate">
                       {skill.name}
                     </h3>
                   </div>
 
-                  <p className="text-sm text-zinc-300 leading-relaxed font-jakarta mb-8">
+                  <p className="hidden md:block text-sm text-zinc-300 leading-relaxed font-jakarta mb-8">
                     {skill.desc}
                   </p>
                 </div>
 
                 {/* Percentage & Solid White Progress Bar matching screenshot */}
-                <div className="mt-auto">
-                  <div className="flex items-center justify-end mb-2.5">
-                    <span className="text-sm font-bold font-jakarta text-white tracking-wide">
+                <div className="mt-2 sm:mt-auto">
+                  <div className="flex items-center justify-end mb-1 sm:mb-2.5">
+                    <span className="text-xs sm:text-sm font-bold font-jakarta text-white tracking-wide">
                       {skill.percent}%
                     </span>
                   </div>
-                  <div className="w-full h-1 bg-[#251f38] rounded-full overflow-hidden">
+                  <div className="w-full h-1 sm:h-1 bg-[#251f38] rounded-full overflow-hidden">
                     <motion.div
                       initial={{ width: 0 }}
                       whileInView={{ width: `${skill.percent}%` }}
@@ -1432,14 +1462,15 @@ export function GeroldHome({
       </motion.section>
 
       {/* ======================================================== */}
-      {/* 9. NUMBERS / MEASURING SUCCESS                           */}
+      {/* 9. NUMBERS / MEASURING SUCCESS (Hidden on mobile devices) */}
       {/* ======================================================== */}
       <motion.section
+        id="numbers"
         variants={sectionVariants}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-80px" }}
-        className="relative my-12 py-16 px-4 sm:px-6 lg:px-8 border-y border-purple-900/40 overflow-hidden"
+        className="relative my-12 py-16 px-4 sm:px-6 lg:px-8 border-y border-purple-900/40 overflow-hidden hidden md:block"
       >
         {/* Fiber Streak Background */}
         <div className="absolute inset-0 z-0">
@@ -1515,23 +1546,23 @@ export function GeroldHome({
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-80px" }}
-        className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+        className="pt-8 pb-4 sm:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
       >
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 text-left">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-6 sm:mb-12 text-left">
           <div>
-            <div className="inline-block px-4 py-1 rounded-full bg-purple-950/50 border border-purple-800/40 text-purple-400 text-xs font-semibold tracking-wider uppercase mb-3">
+            <div className="inline-block px-4 py-1 rounded-full bg-purple-950/50 border border-purple-800/40 text-purple-400 text-xs font-semibold tracking-wider uppercase mb-2 sm:mb-3">
               CLIENT TESTIMONIALS
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-white tracking-tight">
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold font-display text-white tracking-tight">
               What Verified Clients Say
             </h2>
-            <p className="text-zinc-400 text-sm mt-2 max-w-xl">
+            <p className="text-zinc-400 text-xs sm:text-sm mt-1.5 sm:mt-2 max-w-xl">
               Authentic feedback from founders, executives, and agency partners on e-commerce, custom WordPress engineering, and design systems.
             </p>
           </div>
 
-          {/* Testimonial Page Navigation Controls */}
-          <div className="flex items-center gap-3">
+          {/* Testimonial Page Navigation Controls (Desktop only) */}
+          <div className="hidden md:flex items-center gap-3">
             <span className="text-xs font-mono text-zinc-400">
               Page {testimonialIndex + 1} of {Math.ceil(testimonials.length / 3)}
             </span>
@@ -1554,8 +1585,55 @@ export function GeroldHome({
           </div>
         </div>
 
-        {/* Testimonials 3 Cards Grid (Paginated) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Mobile Single-Line Infinite Marquee */}
+        <div className="md:hidden overflow-hidden -mx-4 px-4 py-1 relative">
+          <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-[#07030e] to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#07030e] to-transparent z-10 pointer-events-none" />
+
+          <div className="flex gap-3.5 animate-marquee w-max py-1">
+            {[...testimonials, ...testimonials].map((t, idx) => (
+              <div
+                key={idx}
+                className="w-[280px] shrink-0 bg-[#120a22]/95 border border-purple-900/50 rounded-2xl p-4 text-left flex flex-col justify-between shadow-lg"
+              >
+                <div>
+                  <div className="flex items-center justify-between gap-1 mb-2">
+                    <div className="flex items-center text-purple-400 gap-0.5">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-3 h-3 fill-current" />
+                      ))}
+                    </div>
+                    {t.metric && (
+                      <span className="text-[9px] font-mono font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-800/50 px-1.5 py-0.5 rounded-full">
+                        {t.metric}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-zinc-300 line-clamp-3 leading-relaxed mb-3">
+                    &ldquo;{t.quote}&rdquo;
+                  </p>
+                </div>
+                <div className="flex items-center gap-2.5 pt-2 border-t border-purple-900/30">
+                  <img
+                    src={t.avatar}
+                    alt={t.name}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80";
+                    }}
+                    className="w-8 h-8 rounded-full object-cover border border-purple-500/40 shrink-0"
+                  />
+                  <div className="min-w-0">
+                    <h4 className="text-xs font-bold text-white truncate">{t.name}</h4>
+                    <p className="text-[10px] text-purple-300/80 truncate">{t.role}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Testimonials 3 Cards Grid (Desktop Paginated) */}
+        <div className="hidden md:grid md:grid-cols-3 gap-6">
           {testimonials.slice(testimonialIndex * 3, testimonialIndex * 3 + 3).map((t, idx) => (
             <motion.div
               key={`${testimonialIndex}-${idx}`}
@@ -1615,8 +1693,8 @@ export function GeroldHome({
           ))}
         </div>
 
-        {/* Pagination Dots */}
-        <div className="flex items-center justify-center gap-2 mt-10">
+        {/* Pagination Dots (Desktop only) */}
+        <div className="hidden md:flex items-center justify-center gap-2 mt-10">
           {Array.from({ length: Math.ceil(testimonials.length / 3) }).map((_, dot) => (
             <button
               key={dot}
@@ -1641,13 +1719,13 @@ export function GeroldHome({
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-80px" }}
-        className="py-20 max-w-4xl mx-auto px-4 sm:px-6"
+        className="pt-4 pb-12 sm:py-20 max-w-4xl mx-auto px-4 sm:px-6"
       >
-        <div className="text-center mb-12">
-          <div className="inline-block px-4 py-1 rounded-full bg-purple-950/50 border border-purple-800/40 text-purple-400 text-xs font-semibold tracking-wider uppercase mb-3">
+        <div className="text-center mb-6 sm:mb-12">
+          <div className="inline-block px-4 py-1 rounded-full bg-purple-950/50 border border-purple-800/40 text-purple-400 text-xs font-semibold tracking-wider uppercase mb-2 sm:mb-3">
             FAQ
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-white tracking-tight">
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold font-display text-white tracking-tight">
             Your Questions and Answers
           </h2>
         </div>
@@ -1700,9 +1778,9 @@ export function GeroldHome({
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-60px" }}
-        className="py-16 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8"
+        className="py-8 sm:py-16 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8"
       >
-        <div className="relative rounded-3xl overflow-hidden shadow-[0_0_60px_rgba(147,51,234,0.35)] p-10 sm:p-14 text-center border border-purple-500/40 bg-gradient-to-br from-[#1a0836] via-[#2a0e4e] to-[#0f0322]">
+        <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_0_60px_rgba(147,51,234,0.35)] p-6 sm:p-14 text-center border border-purple-500/40 bg-gradient-to-br from-[#1a0836] via-[#2a0e4e] to-[#0f0322]">
           {/* Ambient Lighting & Mesh Orbs (Replaces image with baked-in text) */}
           <div className="absolute -top-24 -left-24 w-80 h-80 bg-purple-600/35 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute -bottom-24 -right-24 w-80 h-80 bg-indigo-600/35 rounded-full blur-3xl pointer-events-none" />
@@ -1765,24 +1843,48 @@ export function GeroldHome({
         viewport={{ once: true, margin: "-40px" }}
         className="w-full bg-[#6d28d9] py-4 px-4 text-white"
       >
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 text-xs sm:text-sm font-semibold tracking-wide">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-center gap-3.5 md:gap-8 text-xs sm:text-sm font-semibold tracking-wide">
+          {/* Mobile-Only Email */}
+          <a
+            href="mailto:shakeebkhanstudio@gmail.com"
+            className="md:hidden hover:underline flex items-center gap-1.5"
+          >
+            <Mail className="w-4 h-4" />
+            <span>shakeebkhanstudio@gmail.com</span>
+          </a>
+          {/* Desktop-Only Email */}
           <a
             href="mailto:shakeebahmedk24@gmail.com"
-            className="hover:underline flex items-center gap-1.5"
+            className="hidden md:flex hover:underline items-center gap-1.5"
           >
             <Mail className="w-4 h-4" />
             <span>shakeebahmedk24@gmail.com</span>
           </a>
+
           <span className="hidden md:inline opacity-60">/</span>
           <span className="flex items-center gap-1.5 text-center">
             <MapPin className="w-4 h-4" />
             <span>Karachi, Pakistan</span>
           </span>
           <span className="hidden md:inline opacity-60">/</span>
-          <a href="tel:+923320203701" className="hover:underline flex items-center gap-1.5">
+
+          {/* Mobile-Only Phone */}
+          <a
+            href="tel:923363445281"
+            className="md:hidden hover:underline flex items-center gap-1.5"
+          >
+            <Phone className="w-4 h-4" />
+            <span>+92-336-3445281</span>
+          </a>
+          {/* Desktop-Only Phone */}
+          <a
+            href="tel:+923320203701"
+            className="hidden md:flex hover:underline items-center gap-1.5"
+          >
             <Phone className="w-4 h-4" />
             <span>+92-332-0203701</span>
           </a>
+
           <span className="hidden md:inline opacity-60">/</span>
           <a
             href="https://behance.net/sksolutions"
@@ -1952,9 +2054,17 @@ export function GeroldHome({
             >
               Facebook
             </a>
+            {/* Mobile-Only Email */}
+            <a
+              href="mailto:shakeebkhanstudio@gmail.com"
+              className="sm:hidden hover:text-purple-400 transition-colors"
+            >
+              Email Shakeeb
+            </a>
+            {/* Desktop-Only Email */}
             <a
               href="mailto:shakeebahmedk24@gmail.com"
-              className="hover:text-purple-400 transition-colors"
+              className="hidden sm:inline hover:text-purple-400 transition-colors"
             >
               Email Shakeeb
             </a>

@@ -5,15 +5,29 @@ import { GeroldHome } from "./components/GeroldHome";
 
 export default function App() {
   useEffect(() => {
-    // Initialize Lenis for luxurious, smooth inertial momentum scrolling
+    // Detect mobile and touch devices
+    // Mobile browsers (iOS Safari, Android Chrome) have 120Hz native hardware-accelerated momentum scrolling.
+    // Emulating scroll via JS on touch devices causes touch lockups and freezes.
+    const isTouchDevice =
+      typeof window !== "undefined" &&
+      ("ontouchstart" in window ||
+        navigator.maxTouchPoints > 0 ||
+        window.matchMedia("(pointer: coarse)").matches);
+
+    if (isTouchDevice) {
+      // Clean up any existing instance so touch devices use 100% native scrolling
+      delete (window as any).__lenis;
+      return;
+    }
+
+    // Initialize Lenis only for desktop pointer devices with mouse wheels
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 1.1,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
       wheelMultiplier: 0.95,
-      touchMultiplier: 1.4,
       infinite: false,
     });
 
