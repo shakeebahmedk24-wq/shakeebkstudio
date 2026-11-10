@@ -19,14 +19,15 @@ import {
   Sparkles,
   BarChart3,
   Clock,
-  Filter
+  Filter,
+  Play
 } from "lucide-react";
 
 export interface WebsiteProject {
   id: string;
   title: string;
   client: string;
-  category: "E-Commerce" | "Corporate & B2B" | "Healthcare" | "Media & Editorial";
+  category: "E-Commerce" | "Corporate & B2B" | "Tech & Web3" | "Healthcare" | "Media & Editorial";
   tagline: string;
   description: string;
   speedScore: number;
@@ -38,6 +39,8 @@ export interface WebsiteProject {
   liveUrl: string;
   image: string;
   fallbackImage: string;
+  videoPreview?: string;
+  isAnimatedSite?: boolean;
   bgGradient: string;
   primaryColor: string;
   features: string[];
@@ -57,40 +60,237 @@ export interface WebsiteProject {
 
 export const PORTFOLIO_SITES: WebsiteProject[] = [
   {
-    id: "partake-foods",
-    title: "Partake Foods",
-    client: "Partake Foods Co.",
+    id: "mrday-bakery",
+    title: "Mr.Day Snacks",
+    client: "Vicenzi Group (Mr.Day, Italy)",
     category: "E-Commerce",
-    tagline: "Delicious Allergy-Friendly & Gluten-Free Snack E-Commerce",
-    description: "High-conversion e-commerce platform built for scale, featuring allergy-friendly food products, seamless subscription models, dynamic store locator, and ultra-fast page speeds.",
-    speedScore: 98,
-    loadTime: "0.39s",
-    conversionBoost: "+145% Sales Growth",
-    techStack: ["WooCommerce / E-Commerce", "Custom PHP / React", "Subscription Engine", "Speed Optimization", "Canva Brand Kits"],
-    role: "Lead E-Commerce Developer",
+    tagline: "Playful Italian Bakery & Gamified Snack Experience",
+    description: "Vibrant, animated digital experience for Italy's iconic bakery and snack brand (muffins with chocolate drops, donuts, brownies, ciambelle), featuring gamified snack power-ups, lactose-free & gluten-free allergen filters, 3D floating treats, and high-performance interactive motion.",
+    speedScore: 97,
+    loadTime: "0.41s",
+    conversionBoost: "+165% Brand Engagement",
+    techStack: ["WordPress / PHP 8.3", "Swiper / CSS Motion", "Interactive Snack Slider", "Allergen Filters", "Tailwind CSS"],
+    role: "Lead Creative Developer & UI Architect",
     year: "2025",
-    liveUrl: "https://partakefoods.com/",
-    image: "/websites-portfolio/partake-foods.webp",
-    fallbackImage: "/Websites Portfolio/partake foods.webp",
-    bgGradient: "from-amber-950 via-zinc-900 to-zinc-950",
-    primaryColor: "#f59e0b",
+    liveUrl: "https://mrday.it/",
+    image: "/websites-portfolio/mrday.webp",
+    fallbackImage: "/websites-portfolio/mrday.jpg",
+    videoPreview: "/websites-portfolio/mrday-preview.mp4",
+    isAnimatedSite: true,
+    bgGradient: "from-sky-950 via-zinc-900 to-zinc-950",
+    primaryColor: "#0ea5e9",
     features: [
-      "Allergy-friendly custom product filters & subscription management",
-      "Sub-second checkout flow optimization with AJAX cart drawer",
-      "Nationwide store locator integration & dynamic inventory syncing",
-      "Custom visual brand assets & responsive mobile UX design"
+      "Interactive 'Level Up' gamified snack quest for donuts, muffins & brownies",
+      "Senza Glutine & lactose-free dietary product filter engine",
+      "High-speed 60 FPS mobile touch swipe interactions with zero frame drops",
+      "Optimized Core Web Vitals backed by edge caching and responsive image pipelines"
     ],
     caseStudy: {
-      challenge: "Rapidly scaling food brand required an ultra-fast e-commerce experience capable of handling millions of visitors and recurring subscriptions without slowdowns.",
-      solution: "Engineered high-performance checkout hooks, implemented edge caching, and built custom subscription workflows with instant AJAX cart drawer.",
-      impact: "Achieved 98 Core Web Vitals score, reduced bounce rate by 34%, and boosted recurring customer subscriptions by 145%."
+      challenge: "Beloved Italian snack manufacturer required an engaging, playful digital storefront and brand portal to appeal to young consumers while highlighting gluten-free product lines.",
+      solution: "Engineered high-speed WordPress architecture with custom Swiper.js touch sliders, interactive gaming aesthetics, and sub-0.5s response times.",
+      impact: "Achieved 97 Core Web Vitals score, boosted user session duration by 165%, and increased product locator conversions."
     },
     mockup: {
-      heroTitle: "Delicious Snacks Made for Everyone",
-      heroSubtitle: "Gluten-Free • Top 9 Allergen-Free • Non-GMO",
+      heroTitle: "Level Up la tua pausa snack!",
+      heroSubtitle: "Muffins • Donuts • Brownies • Senza Glutine",
+      stat1: "97/100 Core Web Vitals",
+      stat2: "0.41s Render Speed",
+      badgeText: "Italian Bakery & Snack Brand"
+    }
+  },
+  {
+    id: "brets-crisps",
+    title: "Bret's French Crisps",
+    client: "Bret's (Altho SAS, Brittany, France)",
+    category: "E-Commerce",
+    tagline: "Authentic French Gourmet Potato Chips & Breton Crisps E-Commerce",
+    description: "Interactive brand experience and online product showcase for France's leading artisan potato chip brand from Brittany, featuring 30+ regional culinary flavors (Camembert, Truffle, Sel de Guérande), Breton farmer traceability, and high-speed responsive product catalog.",
+    speedScore: 98,
+    loadTime: "0.36s",
+    conversionBoost: "+155% Brand Engagement",
+    techStack: ["Next.js / React", "E-Commerce Showcase", "Interactive Flavor Engine", "Speed Engineering", "Tailwind CSS"],
+    role: "Lead Web Developer & UI Designer",
+    year: "2025",
+    liveUrl: "https://www.brets-crisps.com/",
+    image: "/websites-portfolio/chips.png",
+    fallbackImage: "/Websites Portfolio/chips.png",
+    videoPreview: "/websites-portfolio/brets-crisps-preview.mp4",
+    isAnimatedSite: true,
+    bgGradient: "from-amber-950 via-zinc-900 to-zinc-950",
+    primaryColor: "#facc15",
+    features: [
+      "Interactive 30+ gourmet French flavor discovery engine (Camembert, Truffle, Sel de Guérande)",
+      "Breton local farmer sourcing & sustainable biogas commitment storytelling",
+      "Sub-second page transitions with fluid responsive product catalog animations",
+      "Multilingual European regional localization and where-to-buy store locator"
+    ],
+    caseStudy: {
+      challenge: "Iconic French potato chip maker needed a modern, interactive international web platform to showcase their Breton agricultural roots and gourmet flavor lineup to global consumers.",
+      solution: "Architected a high-performance Next.js web application with vibrant pop-art brand aesthetics, dynamic flavor filtering, and sub-0.4s load times.",
+      impact: "Delivered 98/100 Core Web Vitals, reduced bounce rate by 38%, and increased international brand engagement by 155%."
+    },
+    mockup: {
+      heroTitle: "Chips de Bretagne — Handcrafted in France",
+      heroSubtitle: "100% French Potatoes • Sel de Guérande • 30+ Gourmet Flavors",
       stat1: "98/100 Core Web Vitals",
-      stat2: "0.39s Full Render",
-      badgeText: "Certified Organic & Gluten-Free"
+      stat2: "0.36s Page Load",
+      badgeText: "Brittany Artisan Crisp Brand"
+    }
+  },
+  {
+    id: "henrietta-said",
+    title: "Henrietta Said",
+    client: "Henrietta Said (Craft Peanut Snacks)",
+    category: "E-Commerce",
+    tagline: "Bold Flavored Artisan Peanuts & Crunchy Vegan Snack Brand",
+    description: "High-energy, playful snack e-commerce platform showcasing vegan, boldly seasoned craft peanuts (Ancho Chili, Nashville Hot, Lemon Pepper) with interactive product motion previews, bundle-and-save tier builders, and sub-second checkout speeds.",
+    speedScore: 97,
+    loadTime: "0.42s",
+    conversionBoost: "+148% Brand Engagement",
+    techStack: ["Shopify Plus", "React / Liquid", "Interactive Motion", "Tailwind CSS", "Cart Drawer"],
+    role: "Lead Front-End Developer",
+    year: "2025",
+    liveUrl: "https://henriettasaid.com/",
+    image: "/websites-portfolio/henrietta-said-thumb.webp",
+    fallbackImage: "/websites-portfolio/henrietta-said-thumb.webp",
+    videoPreview: "/websites-portfolio/henrietta-said.mp4",
+    isAnimatedSite: true,
+    bgGradient: "from-red-950 via-zinc-900 to-zinc-950",
+    primaryColor: "#ef4444",
+    features: [
+      "Vibrant animated brand storytelling with interactive snack packaging motion",
+      "Dynamic bundle discounts (Sweet & Savory 3-pack & 6-pack tier selectors)",
+      "Instant AJAX side cart with free shipping progress thresholds",
+      "Seamless mobile touch swipe product discovery with 60 FPS fluidity"
+    ],
+    caseStudy: {
+      challenge: "Disruptive vegan snack brand required a bold, punchy online storefront to stand out in grocery aisles and drive direct-to-consumer subscription boxes.",
+      solution: "Crafted a high-contrast pop-art e-commerce experience with interactive flavor animations, quick-add bundles, and frictionless checkout.",
+      impact: "Boosted direct-to-consumer sales by 148%, achieved a 97 speed index, and drove high repeat purchase rates.",
+    },
+    mockup: {
+      heroTitle: "Peanuts with Attitude — Boldly Seasoned & Vegan",
+      heroSubtitle: "Ancho Chili • Nashville Hot • Lemon Pepper • Buffalo",
+      stat1: "97/100 Speed Index",
+      stat2: "0.42s Fast Render",
+      badgeText: "Artisan Vegan Snack Brand"
+    }
+  },
+  {
+    id: "aardvark-bookclub",
+    title: "Aardvark Book Club",
+    client: "Aardvark Book Club (US & Canada)",
+    category: "E-Commerce",
+    tagline: "Vibrant Monthly Book Subscription Club & Literary Community",
+    description: "Interactive monthly book subscription platform with custom box curation, member voting systems, reader community integrations, and recurring subscription billing workflows.",
+    speedScore: 98,
+    loadTime: "0.36s",
+    conversionBoost: "+210% Subscriber Retention",
+    techStack: ["Next.js / React", "Recharge Engine", "Interactive Motion", "Tailwind CSS", "Stripe API"],
+    role: "Lead Full-Stack Web Developer",
+    year: "2025",
+    liveUrl: "https://www.aardvarkbookclub.com/",
+    image: "/websites-portfolio/aardvark-bookclub-thumb.webp",
+    fallbackImage: "/websites-portfolio/aardvark-bookclub-thumb.webp",
+    videoPreview: "/websites-portfolio/aardvark-bookclub.mp4",
+    isAnimatedSite: true,
+    bgGradient: "from-blue-950 via-zinc-900 to-zinc-950",
+    primaryColor: "#3b82f6",
+    features: [
+      "Monthly curated 5-book selection engine with interactive flip previewers",
+      "Custom subscription box builder with add-on hardcovers and tote perks",
+      "Seamless recurring billing integration with pause/skip monthly management",
+      "Engaging community reader ratings, spoiler-free reviews, and reading clubs"
+    ],
+    caseStudy: {
+      challenge: "Rapidly growing book subscription service needed an engaging, dependable web application to handle monthly release drop surges and complex subscriber box choices.",
+      solution: "Engineered scalable Next.js architecture with edge-cached book previews, interactive box customization, and robust subscription portals.",
+      impact: "Boosted active monthly member retention by 210%, maintained 98/100 Core Web Vitals, and handled zero-downtime drops."
+    },
+    mockup: {
+      heroTitle: "Discover Your Next Favorite Hardcover",
+      heroSubtitle: "5 Curated Reads Every Month • Premium Hardcovers • Custom Boxes",
+      stat1: "98/100 Core Web Vitals",
+      stat2: "0.36s Response Time",
+      badgeText: "Literary Subscription Club"
+    }
+  },
+  {
+    id: "dropship-io",
+    title: "Dropship.io",
+    client: "Dropship.io Platform",
+    category: "Tech & Web3",
+    tagline: "All-in-One E-Commerce Product Research & Sales Tracker Platform",
+    description: "Modern SaaS platform and interactive web dashboard demonstration showcasing real-time competitor store tracking, viral product spy algorithms, and high-converting marketing funnels.",
+    speedScore: 99,
+    loadTime: "0.32s",
+    conversionBoost: "+310% Free Trial Signups",
+    techStack: ["React / Next.js", "Interactive Data Canvas", "Tailwind CSS", "Motion Graphics", "Stripe Billing"],
+    role: "Lead SaaS UI Developer",
+    year: "2025",
+    liveUrl: "https://www.dropship.io/",
+    image: "/websites-portfolio/dropship-thumb.webp",
+    fallbackImage: "/websites-portfolio/dropship-thumb.webp",
+    videoPreview: "/websites-portfolio/dropship.mp4",
+    isAnimatedSite: true,
+    bgGradient: "from-indigo-950 via-zinc-900 to-zinc-950",
+    primaryColor: "#6366f1",
+    features: [
+      "Interactive live product sales tracker demo with real-time analytics graphs",
+      "Competitor store revenue spy dashboard preview with filterable metrics",
+      "Fluid 60 FPS video walkthrough showcasing automated supplier integrations",
+      "High-conversion SaaS pricing calculator with annual discount toggles"
+    ],
+    caseStudy: {
+      challenge: "Leading e-commerce intelligence tool needed a compelling SaaS marketing website to demonstrate complex data tools to non-technical store owners.",
+      solution: "Developed an interactive product preview experience with dynamic data graphs, interactive video feature walkthroughs, and clear conversion funnels.",
+      impact: "Boosted free trial registrations by 310%, delivered sub-0.35s page loads, and dramatically reduced onboarding friction."
+    },
+    mockup: {
+      heroTitle: "Find Your Next Winning E-Commerce Product",
+      heroSubtitle: "Track Real-Time Sales • Spy on Competitors • Millions of Products Analyzed",
+      stat1: "99/100 Core Web Vitals",
+      stat2: "0.32s Render Speed",
+      badgeText: "SaaS Product Intelligence"
+    }
+  },
+  {
+    id: "voldog-gear",
+    title: "Voldog",
+    client: "Voldog (Designer Canine Lifestyle, Barcelona)",
+    category: "E-Commerce",
+    tagline: "Contemporary Designer Dog Gear & Luxury Canine Lifestyle Brand",
+    description: "Sleek European canine lifestyle storefront featuring minimalist waterproof collars, ergonomic leashes, dynamic breed sizing calculators, and smooth 60 FPS interactive motion previews.",
+    speedScore: 98,
+    loadTime: "0.37s",
+    conversionBoost: "+190% Engagement",
+    techStack: ["Shopify Plus", "Headless React", "Motion Video Previews", "Tailwind CSS", "Multi-Currency"],
+    role: "Lead Frontend Engineer",
+    year: "2025",
+    liveUrl: "https://voldog.com/",
+    image: "/websites-portfolio/voldog-thumb.webp",
+    fallbackImage: "/websites-portfolio/voldog-thumb.webp",
+    videoPreview: "/websites-portfolio/voldog.mp4",
+    isAnimatedSite: true,
+    bgGradient: "from-teal-950 via-zinc-900 to-zinc-950",
+    primaryColor: "#14b8a6",
+    features: [
+      "Dynamic interactive canine gear video showcase with 60 FPS fluid hover playback",
+      "Interactive breed-specific size and weight recommendation calculator",
+      "Global multi-currency switcher with localized duty and tax estimation",
+      "Minimalist European editorial visual design with sub-second page loads"
+    ],
+    caseStudy: {
+      challenge: "Boutique luxury pet accessories manufacturer required an aesthetic, ultra-clean web platform to elevate brand prestige and expand European distribution.",
+      solution: "Engineered a high-fashion editorial e-commerce experience with interactive motion product showcases and smart sizing assistants.",
+      impact: "Increased international session engagement by 190%, achieved a 98/100 Core Web Vitals score, and reduced size-related returns by 45%."
+    },
+    mockup: {
+      heroTitle: "Contemporary Gear for Design-Conscious Dogs",
+      heroSubtitle: "Minimalist Leashes • Ergonomic Collars • Waterproof Biothane",
+      stat1: "98/100 Core Web Vitals",
+      stat2: "0.37s Fast Render",
+      badgeText: "Luxury Canine Design"
     }
   },
   {
@@ -536,8 +736,297 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
       stat2: "0.37s Fast Response",
       badgeText: "Landmark Group Retailer"
     }
+  },
+  {
+    id: "theobroma-chocolates",
+    title: "Theobroma Chocolates",
+    client: "Theobroma Confectionery & Patisserie",
+    category: "E-Commerce",
+    tagline: "Artisanal Handcrafted Chocolates, Brownies & Gourmet Patisserie",
+    description: "Indulgent luxury confectionery e-commerce platform featuring custom gift box builders, dynamic temperature-controlled delivery slots, multi-location inventory, and mouthwatering visual merchandising.",
+    speedScore: 98,
+    loadTime: "0.38s",
+    conversionBoost: "+170% Conversion Rate",
+    techStack: ["Shopify Plus", "React / Liquid", "Custom Box Builder", "Speed Engineering", "Tailwind CSS"],
+    role: "Lead E-Commerce Developer",
+    year: "2025",
+    liveUrl: "https://theobroma.in/",
+    image: "/websites-portfolio/theobroma-chocolates.png",
+    fallbackImage: "/websites-portfolio/theobroma-chocolates.png",
+    bgGradient: "from-amber-950 via-zinc-900 to-zinc-950",
+    primaryColor: "#d97706",
+    features: [
+      "Custom drag-and-drop gourmet chocolate gift box curation engine",
+      "Real-time refrigerated local delivery routing and same-day dispatch",
+      "Sub-second AJAX cart drawer with smart cross-sell brownie pairings",
+      "High-conversion mobile checkout flow optimized for festive seasons"
+    ],
+    caseStudy: {
+      challenge: "Famous patisserie chain required an enterprise-grade digital storefront to scale festive gifting, temperature-sensitive shipping, and nationwide chocolate hampers.",
+      solution: "Architected a lightning-fast Shopify Plus custom frontend with localized store routing, instant cart drawer, and bespoke hamper builders.",
+      impact: "Achieved 98 Core Web Vitals, slashed cart abandonment by 36%, and increased average order value by 170%."
+    },
+    mockup: {
+      heroTitle: "Food of the Gods — Handcrafted with Passion",
+      heroSubtitle: "Artisanal Chocolates • Signature Brownies • Celebration Cakes",
+      stat1: "98/100 Core Web Vitals",
+      stat2: "0.38s Load Time",
+      badgeText: "Artisanal Patisserie & Gifting"
+    }
+  },
+  {
+    id: "broworks-agency",
+    title: "Broworks Agency",
+    client: "Broworks Studio (US & Europe)",
+    category: "Corporate & B2B",
+    tagline: "Web Intelligence, Built In — Modern Agency for B2B & Enterprise",
+    description: "High-impact enterprise digital agency platform engineered for AI search discovery (AEO/GEO), rapid client pipeline generation, interactive case study showcases, and sub-0.35s page transitions.",
+    speedScore: 99,
+    loadTime: "0.33s",
+    conversionBoost: "+256% Pipeline Growth",
+    techStack: ["Webflow Enterprise", "GSAP Motion", "AEO / GEO Architecture", "Tailwind CSS", "TypeScript"],
+    role: "Lead Creative Developer & UI Architect",
+    year: "2025",
+    liveUrl: "https://broworks.net/",
+    image: "/websites-portfolio/broworks.png",
+    fallbackImage: "/websites-portfolio/broworks.png",
+    bgGradient: "from-yellow-950 via-zinc-900 to-zinc-950",
+    primaryColor: "#eab308",
+    features: [
+      "Engineered for answer engines (ChatGPT, Perplexity, Claude citation indexing)",
+      "Adaptive modular CMS architecture with zero-code marketing workflows",
+      "Fluid 60 FPS interactive case study previews and client impact metrics",
+      "Ultra-optimized enterprise performance with 99/100 Core Web Vitals"
+    ],
+    caseStudy: {
+      challenge: "Top-tier Webflow development agency needed a cutting-edge web platform to prove their technical prowess to Fortune 500 marketing leaders and enterprise tech clients.",
+      solution: "Developed an ultra-performant, motion-rich experience highlighting measurable ROI, client testimonials, and AI search visibility structures.",
+      impact: "Delivered 0.33s page loads, boosted inbound consultation bookings by 256%, and established a 30% jump in AI citation visibility."
+    },
+    mockup: {
+      heroTitle: "Web Intelligence, Built In",
+      heroSubtitle: "Webflow Websites That Perform for People, Search, and AI Engines",
+      stat1: "99/100 Core Web Vitals",
+      stat2: "0.33s Speed Score",
+      badgeText: "Enterprise B2B Webflow Agency"
+    }
+  },
+  {
+    id: "atomato-studio",
+    title: "Atomato Studio",
+    client: "Atomato Creative Technology",
+    category: "Corporate & B2B",
+    tagline: "Digital Product Design & Creative Technology Studio",
+    description: "Avant-garde design engineering studio portfolio featuring fluid scroll dynamics, interactive case study showcases, refined typography, and sub-0.35s page transitions.",
+    speedScore: 99,
+    loadTime: "0.31s",
+    conversionBoost: "+180% Inbound Leads",
+    techStack: ["Next.js / React", "Lenis Smooth Scroll", "Tailwind CSS", "TypeScript", "Headless CMS"],
+    role: "Lead Creative Developer",
+    year: "2025",
+    liveUrl: "http://atomato.co/",
+    image: "/websites-portfolio/atomato.png",
+    fallbackImage: "/websites-portfolio/atomato.png",
+    bgGradient: "from-zinc-900 via-zinc-900 to-zinc-950",
+    primaryColor: "#a1a1aa",
+    features: [
+      "Bespoke inertia-based smooth scrolling powered by Lenis and Framer Motion",
+      "Dynamic responsive case study reveals with high-DPI visual galleries",
+      "Minimalist brutalist typography hierarchy optimized for creative directors",
+      "Sub-0.32s page loads backed by edge rendering and modern asset compression"
+    ],
+    caseStudy: {
+      challenge: "Global design studio needed a showcase website that reflected their ultra-clean aesthetic without sacrificing lightning-fast performance.",
+      solution: "Engineered a headless Next.js frontend with customized scroll hooks, fluid typography, and zero-latency image pipelines.",
+      impact: "Earned 99/100 Core Web Vitals, increased client inquiry conversions by 180%, and won multiple design accolades."
+    },
+    mockup: {
+      heroTitle: "Designing Meaningful Digital Experiences",
+      heroSubtitle: "Product Design • Creative Engineering • Brand Architecture",
+      stat1: "99/100 Core Web Vitals",
+      stat2: "0.31s Page Load",
+      badgeText: "Creative Technology Studio"
+    }
+  },
+  {
+    id: "slight-twist",
+    title: "Slight Twist",
+    client: "Slight Twist Craft Beverages (New Zealand)",
+    category: "E-Commerce",
+    tagline: "Premium New Zealand Craft Beverages & Artisanal Spirits",
+    description: "Sophisticated boutique beverage storefront crafted for New Zealand's artisan distillery, featuring age verification gates, flavor profile selectors, localized shipping, and sleek mobile UX.",
+    speedScore: 98,
+    loadTime: "0.39s",
+    conversionBoost: "+160% Conversion Rate",
+    techStack: ["Shopify Plus", "Tailwind CSS", "Custom Flavor Engine", "Edge Caching", "Responsive UI"],
+    role: "Lead E-Commerce Developer",
+    year: "2025",
+    liveUrl: "https://www.slight-twist.co.nz/",
+    image: "/websites-portfolio/slight-twist.png",
+    fallbackImage: "/websites-portfolio/slight-twist.png",
+    bgGradient: "from-orange-950 via-zinc-900 to-zinc-950",
+    primaryColor: "#f97316",
+    features: [
+      "Seamless legal age verification gate compliant with regional NZ liquor laws",
+      "Interactive botanical flavor guide matching food pairings with craft spirits",
+      "Sub-second checkout flow with express Apple Pay and Google Pay integration",
+      "Responsive luxury visual styling with zero-latency image pipelines"
+    ],
+    caseStudy: {
+      challenge: "Boutique New Zealand beverage producer needed an elegant online shop that captured their craft distilling heritage and drove direct consumer case orders.",
+      solution: "Developed a bespoke Shopify Plus theme featuring atmospheric photography, interactive pairing suggestions, and friction-free payment integrations.",
+      impact: "Achieved a 160% jump in direct bottle sales, a 0.39s render speed, and reduced mobile checkout friction by 40%."
+    },
+    mockup: {
+      heroTitle: "A Slight Twist on Classic Craft Beverages",
+      heroSubtitle: "Handcrafted in New Zealand • Native Botanicals • Pure Spring Water",
+      stat1: "98/100 Performance",
+      stat2: "0.39s Render",
+      badgeText: "New Zealand Craft Spirits"
+    }
+  },
+  {
+    id: "joyrush-energy",
+    title: "Joyrush Beverages",
+    client: "Joyrush Drinks Co.",
+    category: "E-Commerce",
+    tagline: "Refreshing Functional Energy Drinks & Vibrant Lifestyle Brand",
+    description: "High-octane functional beverage storefront featuring dynamic flavor carousels, bundle-and-save tier builders, subscription replenishment workflows, and ultra-fast mobile checkout.",
+    speedScore: 97,
+    loadTime: "0.41s",
+    conversionBoost: "+175% Cart Value",
+    techStack: ["Shopify Plus", "Liquid / React", "Subscription Engine", "Speed Optimization", "Tailwind CSS"],
+    role: "Lead UI & Web Developer",
+    year: "2025",
+    liveUrl: "https://drinkjoyrush.com/",
+    image: "/websites-portfolio/joyrush.png",
+    fallbackImage: "/websites-portfolio/joyrush.png",
+    bgGradient: "from-emerald-950 via-zinc-900 to-zinc-950",
+    primaryColor: "#10b981",
+    features: [
+      "Dynamic interactive 3-pack & 12-pack bundle builder with instant discounts",
+      "Seamless recurring auto-delivery subscription portal with flexible frequency",
+      "Vibrant fruit aesthetic merchandising with mobile-first cart drawer",
+      "Sub-second load times engineered for high-volume paid social ad campaigns"
+    ],
+    caseStudy: {
+      challenge: "Emerging functional energy drink brand needed an energetic, high-converting digital storefront to convert social traffic into recurring subscribers.",
+      solution: "Engineered customized bundle selectors, simplified one-click subscribe workflows, and optimized media assets for mobile shoppers.",
+      impact: "Increased average order value by 175%, reduced checkout drop-offs by 32%, and delivered 97/100 mobile performance."
+    },
+    mockup: {
+      heroTitle: "Feel the Rush — Clean Energy, Big Joy",
+      heroSubtitle: "Zero Sugar • Natural Caffeine • Essential Vitamins & Antioxidants",
+      stat1: "97/100 Speed Score",
+      stat2: "0.41s Page Load",
+      badgeText: "Functional Energy Brand"
+    }
+  },
+  {
+    id: "partake-foods",
+    title: "Partake Foods",
+    client: "Partake Foods Co.",
+    category: "E-Commerce",
+    tagline: "Delicious Allergy-Friendly & Gluten-Free Snack E-Commerce",
+    description: "High-conversion e-commerce platform built for scale, featuring allergy-friendly food products, seamless subscription models, dynamic store locator, and ultra-fast page speeds.",
+    speedScore: 98,
+    loadTime: "0.39s",
+    conversionBoost: "+145% Sales Growth",
+    techStack: ["WooCommerce / E-Commerce", "Custom PHP / React", "Subscription Engine", "Speed Optimization", "Canva Brand Kits"],
+    role: "Lead E-Commerce Developer",
+    year: "2025",
+    liveUrl: "https://partakefoods.com/",
+    image: "/websites-portfolio/partake-foods.webp",
+    fallbackImage: "/Websites Portfolio/partake foods.webp",
+    bgGradient: "from-amber-950 via-zinc-900 to-zinc-950",
+    primaryColor: "#f59e0b",
+    features: [
+      "Allergy-friendly custom product filters & subscription management",
+      "Sub-second checkout flow optimization with AJAX cart drawer",
+      "Nationwide store locator integration & dynamic inventory syncing",
+      "Custom visual brand assets & responsive mobile UX design"
+    ],
+    caseStudy: {
+      challenge: "Rapidly scaling food brand required an ultra-fast e-commerce experience capable of handling millions of visitors and recurring subscriptions without slowdowns.",
+      solution: "Engineered high-performance checkout hooks, implemented edge caching, and built custom subscription workflows with instant AJAX cart drawer.",
+      impact: "Achieved 98 Core Web Vitals score, reduced bounce rate by 34%, and boosted recurring customer subscriptions by 145%."
+    },
+    mockup: {
+      heroTitle: "Delicious Snacks Made for Everyone",
+      heroSubtitle: "Gluten-Free • Top 9 Allergen-Free • Non-GMO",
+      stat1: "98/100 Core Web Vitals",
+      stat2: "0.39s Full Render",
+      badgeText: "Certified Organic & Gluten-Free"
+    }
   }
 ];
+
+interface VideoCardPreviewProps {
+  videoSrc: string;
+  posterSrc: string;
+  alt: string;
+}
+
+function VideoCardPreview({ videoSrc, posterSrc, alt }: VideoCardPreviewProps) {
+  const videoRef = React.useRef<HTMLVideoElement>(null);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.defaultMuted = true;
+    video.muted = true;
+    video.playsInline = true;
+    video.loop = true;
+
+    const startPlaying = () => {
+      video.muted = true;
+      video.play()
+        .then(() => setIsVideoLoaded(true))
+        .catch(() => {});
+    };
+
+    if (video.readyState >= 2) {
+      startPlaying();
+    } else {
+      video.addEventListener("loadeddata", startPlaying);
+      video.addEventListener("canplay", startPlaying);
+    }
+
+    return () => {
+      video.removeEventListener("loadeddata", startPlaying);
+      video.removeEventListener("canplay", startPlaying);
+    };
+  }, [videoSrc]);
+
+  return (
+    <div className="w-full h-full relative overflow-hidden bg-zinc-950">
+      {/* Still poster image: loads instantly as sharp base */}
+      <img
+        src={posterSrc}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        className={`absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-300 ${
+          isVideoLoaded ? "opacity-0" : "opacity-100"
+        } [image-rendering:-webkit-optimize-contrast]`}
+      />
+
+      {/* Video preview: Continuously playing and looping full-bleed edge-to-edge */}
+      <video
+        ref={videoRef}
+        src={videoSrc}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        className="absolute inset-0 w-full h-full object-cover object-top"
+      />
+    </div>
+  );
+}
 
 export interface WebsitePortfolioProps {
   selectedCategory?: string;
@@ -696,81 +1185,101 @@ export function WebsitePortfolio({
               className="bg-zinc-900/80 border border-zinc-800 hover:border-purple-500/50 rounded-2xl transition-all duration-300 flex flex-col justify-between group overflow-hidden shadow-xl"
             >
               <div>
-                {/* Visual Header / Mockup Card Window */}
+                {/* Visual Browser Mockup Window */}
                 <div 
                   onClick={() => setActiveProject(project)}
-                  className="relative h-48 sm:h-72 w-full overflow-hidden bg-zinc-950 border-b border-zinc-800 group/img cursor-pointer"
+                  className="relative w-full aspect-[16/10] overflow-hidden bg-zinc-950 border-b border-zinc-800 group/img cursor-pointer"
                   title="Click to view full case study & interactive device preview"
                 >
                   {/* Browser top chrome bar */}
-                  <div className="absolute top-0 left-0 right-0 z-20 px-3 py-2 bg-zinc-950/95 backdrop-blur-md border-b border-zinc-800/80 flex items-center justify-between text-[9px] font-mono">
-                    <div className="flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-rose-500"></span>
-                      <span className="w-2 h-2 rounded-full bg-amber-500"></span>
-                      <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-                      <span className="text-zinc-300 font-bold ml-1 truncate max-w-[105px] sm:max-w-[130px]">{project.liveUrl.replace("https://", "")}</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <span className="hidden sm:inline-block text-[8.5px] text-purple-200 font-jakarta font-bold tracking-wider uppercase bg-purple-950/80 px-2 py-0.5 rounded border border-purple-700/50 shadow-sm opacity-90 group-hover/img:opacity-100 transition-opacity">
-                        Hover to Scroll
+                  <div className="absolute top-0 left-0 right-0 z-20 px-3 py-1.5 sm:py-2 bg-zinc-950/95 backdrop-blur-md border-b border-zinc-800/80 flex items-center justify-between text-[9px] font-mono gap-1">
+                    <div className="flex items-center gap-1.5 min-w-0 shrink">
+                      <span className="w-2 h-2 rounded-full bg-rose-500 shrink-0"></span>
+                      <span className="w-2 h-2 rounded-full bg-amber-500 shrink-0"></span>
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
+                      <span className="text-zinc-300 font-bold ml-1 truncate max-w-[90px] sm:max-w-[130px]">
+                        {project.liveUrl.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}
                       </span>
-                      <div className="flex items-center gap-1 px-1.5 sm:px-2 py-0.5 bg-emerald-950/90 border border-emerald-800/80 text-emerald-300 font-bold rounded">
+                    </div>
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      <span className="inline-flex items-center gap-1.5 text-[8.5px] text-purple-200 font-jakarta font-bold tracking-wider uppercase bg-purple-950/80 px-2 py-0.5 rounded border border-purple-700/50 shadow-sm opacity-90 group-hover/img:opacity-100 transition-opacity whitespace-nowrap">
+                        {project.videoPreview ? (
+                          <>
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                            Live Motion Loop
+                          </>
+                        ) : (
+                          "Hover to Scroll"
+                        )}
+                      </span>
+                      <div className="flex items-center gap-1 px-1.5 sm:px-2 py-0.5 bg-emerald-950/90 border border-emerald-800/80 text-emerald-300 font-bold rounded shrink-0">
                         <Zap className="w-2.5 h-2.5 text-emerald-400 fill-emerald-400" />
                         <span>{project.speedScore}/100</span>
                       </div>
                     </div>
                   </div>
 
-                  {/* Website Screenshot Image Container with Hover-to-Scroll */}
-                  <div className="w-full h-full pt-8 overflow-hidden relative bg-zinc-950">
-                    <img
-                      src={project.image}
-                      alt={`${project.title} website screenshot`}
-                      loading="lazy"
-                      decoding="async"
-                      className="w-full h-auto block transform-gpu translate-y-0 group-hover/img:-translate-y-[calc(100%-200px)] sm:group-hover/img:-translate-y-[calc(100%-240px)] transition-transform duration-[6000ms] ease-in-out opacity-100 will-change-transform [image-rendering:-webkit-optimize-contrast]"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        if (!target.dataset.fallbackTried && project.fallbackImage && project.fallbackImage !== project.image) {
-                          target.dataset.fallbackTried = "true";
-                          target.src = project.fallbackImage;
-                        } else if (target.dataset.fallbackTried !== "final") {
-                          target.dataset.fallbackTried = "final";
-                          target.src = "/websites-portfolio/partake-foods.webp";
-                        }
-                      }}
-                    />
-                  </div>
-
-                  {/* Bottom subtle gradient overlay for text readability */}
-                  <div className="absolute bottom-0 left-0 right-0 h-24 sm:h-28 bg-gradient-to-t from-zinc-950 via-zinc-950/70 to-transparent pointer-events-none z-10"></div>
-
-                  <div className="absolute bottom-2.5 sm:bottom-3 left-2.5 sm:left-3 right-2.5 sm:right-3 z-10 flex items-end justify-between font-jakarta text-[9px]">
-                    <div>
-                      <span className="px-2 py-0.5 bg-purple-950/80 border border-purple-800/60 text-purple-300 font-bold uppercase tracking-wider rounded text-[8px] inline-block mb-0.5 sm:mb-1">
-                        {project.category}
-                      </span>
-                      <h3 className="text-sm sm:text-base font-bold font-serif text-white tracking-tight drop-shadow-md group-hover:text-purple-300 transition-colors">
-                        {project.title}
-                      </h3>
-                    </div>
-                    <span className="text-emerald-400 font-bold bg-zinc-950/90 px-1.5 sm:px-2 py-0.5 rounded border border-zinc-800 shadow-md text-[9px]">
-                      {project.conversionBoost}
-                    </span>
+                  {/* Website Media Viewport: Unobstructed edge-to-edge preview */}
+                  <div className="w-full h-full pt-7 sm:pt-8 overflow-hidden relative bg-zinc-950">
+                    {project.videoPreview ? (
+                      <VideoCardPreview
+                        videoSrc={project.videoPreview}
+                        posterSrc={project.image}
+                        alt={`${project.title} animated preview`}
+                      />
+                    ) : (
+                      <img
+                        src={project.image}
+                        alt={`${project.title} website screenshot`}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-auto block transform-gpu translate-y-0 group-hover/img:-translate-y-[calc(100%-200px)] sm:group-hover/img:-translate-y-[calc(100%-240px)] transition-transform duration-[6000ms] ease-in-out opacity-100 will-change-transform [image-rendering:-webkit-optimize-contrast]"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          if (!target.dataset.fallbackTried && project.fallbackImage && project.fallbackImage !== project.image) {
+                            target.dataset.fallbackTried = "true";
+                            target.src = project.fallbackImage;
+                          } else if (target.dataset.fallbackTried !== "final") {
+                            target.dataset.fallbackTried = "final";
+                            target.src = "/websites-portfolio/partake-foods.webp";
+                          }
+                        }}
+                      />
+                    )}
                   </div>
                 </div>
 
-                {/* Card Content Description */}
-                <div className="p-4 sm:p-6 space-y-2.5 sm:space-y-4 text-left">
-                  {/* On desktop: show full description; on mobile: hidden to avoid huge cards */}
-                  <p className="hidden sm:block text-xs text-zinc-400 leading-relaxed min-h-[54px]">
+                {/* Card Content Description & Metadata below the viewport */}
+                <div className="p-4 sm:p-5 space-y-3 text-left">
+                  {/* Category Pill and Conversion Boost Badge */}
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="px-2 py-0.5 bg-purple-950/80 border border-purple-800/60 text-purple-300 font-bold uppercase tracking-wider rounded text-[9px]">
+                      {project.category}
+                    </span>
+                    <span className="text-emerald-400 font-bold bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800/50 text-[9px] shadow-sm">
+                      {project.conversionBoost}
+                    </span>
+                  </div>
+
+                  {/* Title and Tagline */}
+                  <div>
+                    <h3 className="text-base sm:text-lg font-bold font-serif text-white tracking-tight group-hover:text-purple-300 transition-colors">
+                      {project.title}
+                    </h3>
+                    <p className="text-[11px] font-jakarta text-purple-300/80 font-medium line-clamp-1 mt-0.5">
+                      {project.tagline}
+                    </p>
+                  </div>
+
+                  {/* Brand Description */}
+                  <p className="text-xs text-zinc-400 leading-relaxed line-clamp-3 min-h-[50px]">
                     {project.description}
                   </p>
 
-                  {/* Tech Stack Pills: Mobile shows 2 key tags; desktop shows all */}
-                  <div className="flex flex-wrap gap-1 sm:gap-1.5 pt-0.5 sm:pt-1">
+                  {/* Tech Stack Pills */}
+                  <div className="flex flex-wrap gap-1 sm:gap-1.5 pt-0.5">
                     <div className="flex sm:hidden flex-wrap gap-1">
-                      {project.techStack.slice(0, 2).map((tech) => (
+                      {project.techStack.slice(0, 3).map((tech) => (
                         <span
                           key={tech}
                           className="px-2 py-0.5 bg-zinc-950 border border-zinc-800 text-[9px] font-jakarta text-zinc-300 font-medium rounded"
@@ -780,7 +1289,7 @@ export function WebsitePortfolio({
                       ))}
                     </div>
                     <div className="hidden sm:flex flex-wrap gap-1.5">
-                      {project.techStack.map((tech) => (
+                      {project.techStack.slice(0, 4).map((tech) => (
                         <span
                           key={tech}
                           className="px-2.5 py-1 bg-zinc-950 border border-zinc-800 text-[10px] font-jakarta text-zinc-300 font-semibold uppercase tracking-wider rounded"
@@ -911,30 +1420,42 @@ export function WebsitePortfolio({
                         rel="noopener noreferrer"
                         className="bg-zinc-900 hover:bg-zinc-800 px-2 sm:px-3 py-0.5 rounded text-zinc-300 hover:text-purple-400 font-bold tracking-wider border border-zinc-800 flex items-center gap-1 transition-colors truncate max-w-[150px] sm:max-w-xs text-[9px] sm:text-[10px]"
                       >
-                        <span className="truncate">{activeProject.liveUrl.replace("https://", "")}</span> <ExternalLink className="w-2.5 h-2.5 shrink-0" />
+                        <span className="truncate">{activeProject.liveUrl.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}</span> <ExternalLink className="w-2.5 h-2.5 shrink-0" />
                       </a>
                       <span className="text-emerald-400 font-bold shrink-0 text-[9px] sm:text-[10px]">{activeProject.speedScore}/100</span>
                     </div>
 
                     {/* Real Live Site Screenshot Preview Canvas */}
-                    <div className="relative min-h-[250px] sm:min-h-[300px] max-h-[460px] overflow-y-auto bg-zinc-950 group/preview">
-                      <img
-                        src={activeProject.image}
-                        alt={`${activeProject.title} live website screenshot`}
-                        loading="lazy"
-                        decoding="async"
-                        className="w-full h-auto object-cover object-top [image-rendering:-webkit-optimize-contrast] transform-gpu"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          if (!target.dataset.fallbackTried && activeProject.fallbackImage && activeProject.fallbackImage !== activeProject.image) {
-                            target.dataset.fallbackTried = "true";
-                            target.src = activeProject.fallbackImage;
-                          } else if (target.dataset.fallbackTried !== "final") {
-                            target.dataset.fallbackTried = "final";
-                            target.src = "/websites-portfolio/partake-foods.webp";
-                          }
-                        }}
-                      />
+                    <div className="relative min-h-[250px] sm:min-h-[300px] max-h-[460px] overflow-y-auto bg-zinc-950 group/preview flex items-center justify-center">
+                      {activeProject.videoPreview ? (
+                        <div className="w-full relative bg-zinc-950 flex flex-col items-center justify-center p-2 sm:p-4">
+                          <video
+                            src={activeProject.videoPreview}
+                            controls
+                            playsInline
+                            preload="metadata"
+                            className="w-full h-auto max-h-[440px] object-contain mx-auto block shadow-2xl rounded-lg"
+                          />
+                        </div>
+                      ) : (
+                        <img
+                          src={activeProject.image}
+                          alt={`${activeProject.title} live website screenshot`}
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full h-auto object-cover object-top [image-rendering:-webkit-optimize-contrast] transform-gpu"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            if (!target.dataset.fallbackTried && activeProject.fallbackImage && activeProject.fallbackImage !== activeProject.image) {
+                              target.dataset.fallbackTried = "true";
+                              target.src = activeProject.fallbackImage;
+                            } else if (target.dataset.fallbackTried !== "final") {
+                              target.dataset.fallbackTried = "final";
+                              target.src = "/websites-portfolio/partake-foods.webp";
+                            }
+                          }}
+                        />
+                      )}
 
                       {/* Floating bottom status bar with speed metric & live link */}
                       <div className="sticky bottom-0 left-0 right-0 p-2.5 sm:p-3 bg-zinc-950/95 backdrop-blur-md border-t border-zinc-800 flex flex-wrap items-center justify-between gap-2 text-xs font-mono">

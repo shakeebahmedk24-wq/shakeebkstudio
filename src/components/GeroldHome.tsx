@@ -534,7 +534,7 @@ export function GeroldHome({
             >
               {[
                 { label: "Home", action: () => navigateToPage("home"), active: currentPage === "home" },
-                { label: "Websites Portfolio (12+ Live Sites)", action: () => navigateToPage("websites"), badge: "Live Sites", active: currentPage === "websites" },
+                { label: "Websites Portfolio (15+ Live Sites)", action: () => navigateToPage("websites"), badge: "Live Sites", active: currentPage === "websites" },
                 { label: "Graphics & Branding (40+ Designs)", action: () => navigateToPage("graphics"), badge: "Gallery", active: currentPage === "graphics" },
                 { label: "Testimonials", action: () => scrollToSection("testimonials") },
                 { label: "Contact & Hire", action: () => scrollToSection("contact") }
@@ -648,19 +648,19 @@ export function GeroldHome({
         </motion.div>
 
         {/* Central Portrait Visual with Floating Badges & Stats */}
-        <div className="relative max-w-5xl w-full mx-auto px-4 flex flex-col md:flex-row items-center justify-center gap-4 sm:gap-6 md:gap-16 my-2 sm:my-4 z-10">
-          {/* Left Floating Badge: Happy Clients (Hidden on small mobile to prevent vertical sprawling) */}
+        <div className="relative max-w-5xl xl:max-w-6xl w-full mx-auto px-4 flex flex-col md:flex-row items-center justify-center gap-6 md:gap-5 lg:gap-8 my-2 sm:my-6 z-10">
+          {/* Left Floating Badge: Happy Clients (Positioned close to the portrait image) */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.4 }}
-            className="hidden sm:block w-full max-w-xs mx-auto md:mx-0 md:absolute md:left-6 lg:left-12 md:top-1/3 z-20 bg-[#120a22]/90 border border-purple-800/40 rounded-2xl p-4 shadow-2xl backdrop-blur-md text-left animate-float-badge font-jakarta"
+            className="hidden md:block w-fit shrink-0 bg-[#120a22]/90 border border-purple-800/40 rounded-2xl p-4 shadow-2xl backdrop-blur-md text-left animate-float-badge font-jakarta md:translate-x-2 lg:translate-x-4 z-20"
           >
-            <span className="text-[11px] font-medium text-zinc-300 block mb-2.5">
+            <span className="text-xs font-semibold text-zinc-300 block mb-2 whitespace-nowrap">
               Happy Clients | Behance | Fiverr
             </span>
-            <div className="flex items-center gap-2.5 mb-2">
-              <div className="flex -space-x-2">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="flex -space-x-2 shrink-0">
                 <img
                   src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
                   alt="Client Denise"
@@ -680,7 +680,7 @@ export function GeroldHome({
                   +150
                 </div>
               </div>
-              <div className="flex items-center text-amber-400 text-xs gap-0.5">
+              <div className="flex items-center text-amber-400 text-xs gap-0.5 shrink-0">
                 <Star className="w-3.5 h-3.5 fill-current" />
                 <Star className="w-3.5 h-3.5 fill-current" />
                 <Star className="w-3.5 h-3.5 fill-current" />
@@ -688,7 +688,7 @@ export function GeroldHome({
                 <Star className="w-3.5 h-3.5 fill-current" />
               </div>
             </div>
-            <span className="text-[11px] text-zinc-400 block font-medium">
+            <span className="text-xs text-zinc-400 block font-medium whitespace-nowrap">
               150+ successful projects delivered
             </span>
           </motion.div>
@@ -698,12 +698,12 @@ export function GeroldHome({
             initial={{ opacity: 0, scale: 0.85 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="relative z-10 flex flex-col items-center"
+            className="relative z-10 shrink-0 flex flex-col items-center"
           >
             {/* Ambient circular glow */}
             <div className="absolute inset-0 bg-gradient-to-tr from-purple-600/35 to-indigo-600/35 rounded-full blur-2xl transform scale-110 pointer-events-none" />
 
-            <div className="relative w-48 h-48 sm:w-72 sm:h-72 md:w-84 md:h-84 rounded-full overflow-hidden p-1.5 bg-gradient-to-b from-purple-400/50 via-purple-900/30 to-transparent border border-purple-500/40 shadow-[0_0_70px_rgba(168,85,247,0.35)]">
+            <div className="relative w-48 h-48 sm:w-64 sm:h-64 md:w-76 md:h-76 lg:w-84 lg:h-84 rounded-full overflow-hidden p-1.5 bg-gradient-to-b from-purple-400/50 via-purple-900/30 to-transparent border border-purple-500/40 shadow-[0_0_70px_rgba(168,85,247,0.35)]">
               <img
                 src="/Gemini_Generated_Image_bvflr0bvflr0bvfl.jpg"
                 onError={(e) => {
@@ -715,10 +715,10 @@ export function GeroldHome({
             </div>
 
             {/* Desktop floating pill badges */}
-            <div className="hidden sm:block absolute top-1/2 -right-6 sm:-right-10 -translate-y-1/2 bg-[#120a22]/95 border border-purple-700/60 rounded-full px-4 py-1.5 text-xs font-semibold text-white shadow-2xl backdrop-blur-md animate-float-badge-delayed">
+            <div className="hidden sm:block absolute top-1/2 -right-4 sm:-right-8 -translate-y-1/2 bg-[#120a22]/95 border border-purple-700/60 rounded-full px-3.5 py-1.5 text-xs font-semibold text-white shadow-2xl backdrop-blur-md animate-float-badge-delayed whitespace-nowrap">
               WordPress & AI Developer
             </div>
-            <div className="hidden sm:block absolute bottom-4 -left-6 sm:-left-8 bg-[#120a22]/95 border border-purple-700/60 rounded-full px-4 py-1.5 text-xs font-semibold text-white shadow-2xl backdrop-blur-md animate-float-badge">
+            <div className="hidden sm:block absolute bottom-3 -left-4 sm:-left-6 bg-[#120a22]/95 border border-purple-700/60 rounded-full px-3.5 py-1.5 text-xs font-semibold text-white shadow-2xl backdrop-blur-md animate-float-badge whitespace-nowrap">
               Graphic & UI Designer
             </div>
 
@@ -738,71 +738,108 @@ export function GeroldHome({
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.4 }}
-            className="w-full max-w-xs sm:max-w-sm mx-auto grid grid-cols-3 gap-2 text-center md:absolute md:right-6 lg:right-12 md:top-1/4 z-20 md:space-y-6 md:text-left md:w-auto md:block mt-3 md:mt-0"
+            className="w-full max-w-xs sm:max-w-sm mx-auto grid grid-cols-3 gap-2 text-center md:mx-0 md:w-52 lg:w-64 shrink-0 md:space-y-6 md:text-left md:block mt-3 md:mt-0 z-20"
           >
             <div className="bg-[#120a22]/85 md:bg-transparent border border-purple-900/40 md:border-0 rounded-xl p-2 sm:p-2.5 md:p-0">
               <div className="text-xl sm:text-4xl lg:text-5xl font-black font-display text-white tracking-tight">
                 7+
               </div>
-              <div className="text-[9px] sm:text-xs text-zinc-400 font-medium leading-tight">
-                Years Exp.
+              <div className="text-[9px] sm:text-xs text-zinc-400 font-medium leading-tight mt-0.5">
+                <span className="md:hidden">Years Exp.</span>
+                <span className="hidden md:inline">Years of Experience</span>
               </div>
             </div>
             <div className="bg-[#120a22]/85 md:bg-transparent border border-purple-900/40 md:border-0 rounded-xl p-2 sm:p-2.5 md:p-0">
               <div className="text-xl sm:text-4xl lg:text-5xl font-black font-display text-white tracking-tight">
                 150+
               </div>
-              <div className="text-[9px] sm:text-xs text-zinc-400 font-medium leading-tight">
-                Projects
+              <div className="text-[9px] sm:text-xs text-zinc-400 font-medium leading-tight mt-0.5">
+                <span className="md:hidden">Projects</span>
+                <span className="hidden md:inline">Projects Completed</span>
               </div>
             </div>
             <div className="bg-[#120a22]/85 md:bg-transparent border border-purple-900/40 md:border-0 rounded-xl p-2 sm:p-2.5 md:p-0">
               <div className="text-xl sm:text-4xl lg:text-5xl font-black font-display text-white tracking-tight">
                 100%
               </div>
-              <div className="text-[9px] sm:text-xs text-zinc-400 font-medium leading-tight">
-                Satisfaction
+              <div className="text-[9px] sm:text-xs text-zinc-400 font-medium leading-tight mt-0.5">
+                <span className="md:hidden">Satisfaction</span>
+                <span className="hidden md:inline">Client Satisfaction</span>
               </div>
             </div>
           </motion.div>
         </div>
 
-        {/* Hero Action CTA Buttons: Responsive 2-column on mobile */}
+        {/* Hero Action CTA Buttons: Responsive single-line pills on desktop/laptop, 2-column grid on mobile */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.5 }}
-          className="mt-4 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2.5 sm:gap-4 relative z-20 w-full max-w-md mx-auto px-4"
+          className="mt-4 sm:mt-8 relative z-20 w-full max-w-md sm:max-w-2xl mx-auto px-4"
         >
-          <div className="grid grid-cols-2 gap-2 sm:gap-4 w-full sm:w-auto sm:flex sm:items-center">
+          {/* Desktop & Laptop layout: 3 horizontal pill buttons in a row */}
+          <div className="hidden sm:flex items-center justify-center gap-3 md:gap-4">
             <a
               href="/assets/aistudio/Shakeeb_Khan_Website_Developer_CV_75f2e3fe.pdf"
               download="Shakeeb_Khan_CV.pdf"
               target="_blank"
               rel="noreferrer"
-              className="px-3.5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-semibold text-xs sm:text-sm tracking-wide shadow-[0_0_20px_rgba(147,51,234,0.4)] transition-all hover:scale-105 flex items-center justify-center gap-1.5 cursor-pointer text-center"
+              className="px-6 py-3.5 rounded-full bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 hover:from-purple-500 hover:to-indigo-500 text-white font-semibold text-sm tracking-wide shadow-[0_0_25px_rgba(147,51,234,0.45)] transition-all hover:scale-105 flex items-center justify-center gap-2 cursor-pointer whitespace-nowrap"
             >
-              <Download className="w-3.5 h-3.5 text-white shrink-0" />
+              <Download className="w-4 h-4 text-white shrink-0" />
               <span>Download CV</span>
             </a>
 
             <button
               onClick={() => setShowHireModal(true)}
-              className="px-3.5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-[#180e2f] hover:bg-[#20133e] text-purple-200 border border-purple-700/50 hover:border-purple-400 font-semibold text-xs sm:text-sm tracking-wide transition-all hover:scale-105 cursor-pointer text-center"
+              className="px-6 py-3.5 rounded-full bg-[#180e2f] hover:bg-[#221342] text-purple-200 hover:text-white border border-purple-700/60 hover:border-purple-400 font-semibold text-sm tracking-wide transition-all hover:scale-105 cursor-pointer whitespace-nowrap shadow-lg"
             >
               Hire Me
             </button>
+
+            <a
+              href="https://behance.net/sksolutions"
+              target="_blank"
+              rel="noreferrer"
+              className="px-6 py-3.5 rounded-full bg-[#120a22] hover:bg-[#1b0e33] text-zinc-200 hover:text-white border border-purple-900/60 hover:border-purple-500/60 font-semibold text-sm tracking-wide transition-all hover:scale-105 flex items-center justify-center gap-2 whitespace-nowrap shadow-lg"
+            >
+              <span className="font-bold text-purple-400">Bē</span>
+              <span>Behance Portfolio</span>
+            </a>
           </div>
 
-          <a
-            href="https://behance.net/sksolutions"
-            target="_blank"
-            rel="noreferrer"
-            className="w-full sm:w-auto px-4 sm:px-5 py-2 sm:py-3 rounded-full bg-[#120a22] hover:bg-[#1b0e33] text-zinc-300 border border-purple-900/40 hover:border-purple-500/50 font-semibold text-xs sm:text-sm tracking-wide transition-all flex items-center justify-center gap-1.5"
-          >
-            <span className="font-bold text-purple-400">Bē</span>
-            <span>Behance Portfolio</span>
-          </a>
+          {/* Mobile layout: Compact 2-column grid + Behance button */}
+          <div className="flex sm:hidden flex-col gap-2.5 w-full">
+            <div className="grid grid-cols-2 gap-2 w-full">
+              <a
+                href="/assets/aistudio/Shakeeb_Khan_Website_Developer_CV_75f2e3fe.pdf"
+                download="Shakeeb_Khan_CV.pdf"
+                target="_blank"
+                rel="noreferrer"
+                className="px-3.5 py-2.5 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-semibold text-xs tracking-wide shadow-[0_0_20px_rgba(147,51,234,0.4)] transition-all flex items-center justify-center gap-1.5 cursor-pointer text-center whitespace-nowrap"
+              >
+                <Download className="w-3.5 h-3.5 text-white shrink-0" />
+                <span>Download CV</span>
+              </a>
+
+              <button
+                onClick={() => setShowHireModal(true)}
+                className="px-3.5 py-2.5 rounded-full bg-[#180e2f] hover:bg-[#20133e] text-purple-200 border border-purple-700/50 hover:border-purple-400 font-semibold text-xs tracking-wide transition-all cursor-pointer text-center whitespace-nowrap"
+              >
+                Hire Me
+              </button>
+            </div>
+
+            <a
+              href="https://behance.net/sksolutions"
+              target="_blank"
+              rel="noreferrer"
+              className="w-full px-4 py-2.5 rounded-full bg-[#120a22] hover:bg-[#1b0e33] text-zinc-300 border border-purple-900/40 hover:border-purple-500/50 font-semibold text-xs tracking-wide transition-all flex items-center justify-center gap-1.5 whitespace-nowrap"
+            >
+              <span className="font-bold text-purple-400">Bē</span>
+              <span>Behance Portfolio</span>
+            </a>
+          </div>
         </motion.div>
       </motion.section>
 
