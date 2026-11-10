@@ -968,34 +968,37 @@ export function GeroldHome({
             What we are offering
           </h2>
         </div>
-
-        {/* 4 Service Cards Grid */}
+        {/* 4 Service Cards Grid - 2 columns on mobile, 4 on desktop */}
         <motion.div
           variants={cardStaggerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6"
         >
           {[
             {
               icon: Code,
               title: "WordPress Development",
+              shortDesc: "Custom themes, Elementor Pro & speed optimization.",
               desc: "Custom WordPress themes, Elementor Pro design, Advanced Custom Fields (ACF), WooCommerce stores, and speed optimization for high conversion."
             },
             {
               icon: Layout,
               title: "Shopify Customization",
+              shortDesc: "Tailored Liquid coding, stores & high conversion.",
               desc: "Tailored Shopify stores, custom Liquid coding, checkout optimization, responsive product layouts, and payment gateway integration."
             },
             {
               icon: TrendingUp,
               title: "Custom & AI Web Apps",
+              shortDesc: "Interactive React apps & smart AI integrations.",
               desc: "Clean HTML5, CSS3, JavaScript, PHP & MySQL development, interactive web applications, and smart AI-powered feature integrations."
             },
             {
               icon: PenTool,
               title: "Graphic & UI/UX Design",
+              shortDesc: "Logos, brand identity & clean UI/UX assets.",
               desc: "Brand identity, logos, Adobe Photoshop & Illustrator assets, Canva Pro creations, social media collateral, and clean user experience."
             }
           ].map((srv, idx) => (
@@ -1003,25 +1006,29 @@ export function GeroldHome({
               key={idx}
               variants={itemFadeUpVariants}
               whileHover={{ y: -6, transition: { duration: 0.25 } }}
-              className="bg-[#120a22] hover:bg-[#180e2f] border border-purple-900/30 hover:border-purple-500/50 rounded-2xl p-7 transition-all duration-300 flex flex-col justify-between group shadow-xl relative overflow-hidden"
+              className="bg-[#120a22] hover:bg-[#180e2f] border border-purple-900/30 hover:border-purple-500/50 rounded-xl sm:rounded-2xl p-3.5 sm:p-7 transition-all duration-300 flex flex-col justify-between group shadow-xl relative overflow-hidden"
             >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-purple-600/5 rounded-full blur-2xl group-hover:bg-purple-600/15 transition-all" />
+              <div className="absolute top-0 right-0 w-24 sm:w-32 h-24 sm:h-32 bg-purple-600/5 rounded-full blur-2xl group-hover:bg-purple-600/15 transition-all" />
 
               <div>
-                <div className="w-12 h-12 rounded-xl bg-purple-600/20 border border-purple-500/30 flex items-center justify-center text-purple-400 mb-6 group-hover:scale-110 group-hover:bg-purple-600 group-hover:text-white transition-all duration-300 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
-                  <srv.icon className="w-6 h-6" />
+                <div className="w-8 h-8 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-purple-600/20 border border-purple-500/30 flex items-center justify-center text-purple-400 mb-2.5 sm:mb-6 group-hover:scale-110 group-hover:bg-purple-600 group-hover:text-white transition-all duration-300 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
+                  <srv.icon className="w-4 h-4 sm:w-6 sm:h-6" />
                 </div>
-                <h3 className="text-xl font-bold font-display text-white mb-3 group-hover:text-purple-300 transition-colors">
+                <h3 className="text-xs sm:text-xl font-bold font-display text-white mb-1.5 sm:mb-3 group-hover:text-purple-300 transition-colors leading-tight">
                   {srv.title}
                 </h3>
-                <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed font-sans">
+                {/* Short text on mobile, full text on desktop */}
+                <p className="sm:hidden text-[11px] text-zinc-400 leading-snug font-sans line-clamp-2">
+                  {srv.shortDesc}
+                </p>
+                <p className="hidden sm:block text-xs sm:text-sm text-zinc-400 leading-relaxed font-sans">
                   {srv.desc}
                 </p>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-purple-900/20 flex items-center text-xs font-semibold text-purple-400 group-hover:text-white transition-colors">
+              <div className="mt-3 sm:mt-6 pt-2 sm:pt-4 border-t border-purple-900/20 flex items-center text-[10px] sm:text-xs font-semibold text-purple-400 group-hover:text-white transition-colors">
                 <span>Learn More</span>
-                <ChevronRight className="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" />
+                <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 ml-0.5 sm:ml-1 transition-transform group-hover:translate-x-1" />
               </div>
             </motion.div>
           ))}

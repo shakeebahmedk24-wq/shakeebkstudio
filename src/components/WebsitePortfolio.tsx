@@ -978,25 +978,60 @@ function VideoCardPreview({ videoSrc, posterSrc, alt }: VideoCardPreviewProps) {
     video.defaultMuted = true;
     video.muted = true;
     video.playsInline = true;
+    video.setAttribute("playsinline", "true");
+    video.setAttribute("webkit-playsinline", "true");
+    video.setAttribute("muted", "true");
     video.loop = true;
 
-    const startPlaying = () => {
+    const playVideo = () => {
+      video.defaultMuted = true;
       video.muted = true;
-      video.play()
-        .then(() => setIsVideoLoaded(true))
-        .catch(() => {});
+      const promise = video.play();
+      if (promise !== undefined) {
+        promise
+          .then(() => setIsVideoLoaded(true))
+          .catch(() => {
+            // Fallback: will retry on viewport intersection or touch
+          });
+      }
     };
 
-    if (video.readyState >= 2) {
-      startPlaying();
-    } else {
-      video.addEventListener("loadeddata", startPlaying);
-      video.addEventListener("canplay", startPlaying);
+    // 1. Initial attempt
+    playVideo();
+
+    // 2. Play when data is buffered
+    video.addEventListener("loadeddata", playVideo);
+    video.addEventListener("canplay", playVideo);
+
+    // 3. Autoplay automatically when card scrolls into view on mobile
+    let observer: IntersectionObserver | null = null;
+    if (typeof window !== "undefined" && "IntersectionObserver" in window) {
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              playVideo();
+            }
+          });
+        },
+        { threshold: 0.05 }
+      );
+      observer.observe(video);
     }
 
+    // 4. Mobile user interaction fallback (wakes up any strict mobile audio/video policy)
+    const handleMobileWake = () => {
+      playVideo();
+    };
+    window.addEventListener("touchstart", handleMobileWake, { passive: true, once: true });
+    window.addEventListener("scroll", handleMobileWake, { passive: true, once: true });
+
     return () => {
-      video.removeEventListener("loadeddata", startPlaying);
-      video.removeEventListener("canplay", startPlaying);
+      if (observer) observer.disconnect();
+      video.removeEventListener("loadeddata", playVideo);
+      video.removeEventListener("canplay", playVideo);
+      window.removeEventListener("touchstart", handleMobileWake);
+      window.removeEventListener("scroll", handleMobileWake);
     };
   }, [videoSrc]);
 
@@ -1013,7 +1048,7 @@ function VideoCardPreview({ videoSrc, posterSrc, alt }: VideoCardPreviewProps) {
         } [image-rendering:-webkit-optimize-contrast]`}
       />
 
-      {/* Video preview: Continuously playing and looping full-bleed edge-to-edge */}
+      {/* Video preview: Continuously playing and looping full-bleed edge-to-edge on mobile & desktop */}
       <video
         ref={videoRef}
         src={videoSrc}
@@ -1185,11 +1220,13 @@ export function WebsitePortfolio({
               className="bg-zinc-900/80 border border-zinc-800 hover:border-purple-500/50 rounded-2xl transition-all duration-300 flex flex-col justify-between group overflow-hidden shadow-xl"
             >
               <div>
-                {/* Visual Browser Mockup Window */}
-                <div 
-                  onClick={() => setActiveProject(project)}
-                  className="relative w-full aspect-[16/10] overflow-hidden bg-zinc-950 border-b border-zinc-800 group/img cursor-pointer"
-                  title="Click to view full case study & interactive device preview"
+                {/* Visual Browser Mockup Window - Opens live website directly */}
+                <a 
+                  href={project.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block relative w-full aspect-[16/10] overflow-hidden bg-zinc-950 border-b border-zinc-800 group/img cursor-pointer"
+                  title={`Open ${project.title} live website (${project.liveUrl})`}
                 >
                   {/* Browser top chrome bar */}
                   <div className="absolute top-0 left-0 right-0 z-20 px-3 py-1.5 sm:py-2 bg-zinc-950/95 backdrop-blur-md border-b border-zinc-800/80 flex items-center justify-between text-[9px] font-mono gap-1">
@@ -1247,7 +1284,7 @@ export function WebsitePortfolio({
                       />
                     )}
                   </div>
-                </div>
+                </a>
 
                 {/* Card Content Description & Metadata below the viewport */}
                 <div className="p-4 sm:p-5 space-y-3 text-left">
@@ -1261,11 +1298,20 @@ export function WebsitePortfolio({
                     </span>
                   </div>
 
-                  {/* Title and Tagline */}
+                  {/* Title and Tagline - Title links directly to live site */}
                   <div>
-                    <h3 className="text-base sm:text-lg font-bold font-serif text-white tracking-tight group-hover:text-purple-300 transition-colors">
-                      {project.title}
-                    </h3>
+                    <a
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group/title block"
+                      title={`Open ${project.title} live website (${project.liveUrl})`}
+                    >
+                      <h3 className="text-base sm:text-lg font-bold font-serif text-white tracking-tight group-hover/title:text-purple-300 transition-colors flex items-center justify-between gap-1.5">
+                        <span>{project.title}</span>
+                        <ArrowUpRight className="w-4 h-4 text-purple-400 opacity-60 group-hover/title:opacity-100 group-hover/title:translate-x-0.5 group-hover/title:-translate-y-0.5 transition-all shrink-0" />
+                      </h3>
+                    </a>
                     <p className="text-[11px] font-jakarta text-purple-300/80 font-medium line-clamp-1 mt-0.5">
                       {project.tagline}
                     </p>
