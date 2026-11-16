@@ -1,36 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { WebsitePortfolio } from "./WebsitePortfolio";
 import { GraphicsPortfolio } from "./GraphicsPortfolio";
 import {
-  Code,
-  Layout,
-  PenTool,
-  TrendingUp,
   ArrowRight,
   ArrowUp,
-  Star,
+  ArrowUpRight,
   Plus,
   Minus,
-  Sparkles,
-  ExternalLink,
   Mail,
   Phone,
   MapPin,
   Check,
-  CheckCircle2,
   X,
-  Menu,
-  Award,
   GraduationCap,
   Briefcase,
-  Layers,
   ChevronRight,
   ChevronLeft,
-  Quote,
-  Globe,
+  ChevronDown,
+  Download,
+  RotateCcw,
+  Star,
+  Gauge,
+  Layers,
+  ShoppingBag,
+  Code2,
   Palette,
-  Download
+  Sparkles
 } from "lucide-react";
 
 interface GeroldHomeProps {
@@ -38,49 +34,171 @@ interface GeroldHomeProps {
   onNavigateToPortfolio?: (type?: "all" | "web" | "graphics") => void;
 }
 
+interface CapabilityChip {
+  id: string;
+  label: string;
+  tilt: number;
+  summary: string;
+  stack: string;
+}
+
+const CAPABILITY_CHIPS: CapabilityChip[] = [
+  {
+    id: "wp",
+    label: "WordPress & WooCommerce",
+    tilt: -2,
+    summary: "Bespoke theme architecture, custom PHP hooks, ACF blocks, and high-concurrency WooCommerce stores.",
+    stack: "PHP 8.3 · Gutenberg · ACF Pro · Redis"
+  },
+  {
+    id: "shopify",
+    label: "Shopify Plus & Liquid",
+    tilt: 2,
+    summary: "Conversion-tuned e-commerce storefronts with bundle builders, AJAX cart drawers, and sub-second PDP loads.",
+    stack: "Liquid · Storefront API · Recharge · Stripe"
+  },
+  {
+    id: "react",
+    label: "React, Next.js & AI Apps",
+    tilt: -1.5,
+    summary: "Modern web applications, interactive dashboards, bilingual i18n experiences, and Gemini AI integrations.",
+    stack: "React 19 · TypeScript · Next.js · Tailwind"
+  },
+  {
+    id: "cwv",
+    label: "95+ Core Web Vitals",
+    tilt: 1.5,
+    summary: "Aggressive asset optimization, WebP media pipelines, script pruning, and edge caching so pages load under 0.4s.",
+    stack: "Lighthouse 95–99 · Zero CLS · CDN"
+  },
+  {
+    id: "brand",
+    label: "Brand Identity & Logos",
+    tilt: -2.5,
+    summary: "Geometric monograms, complete brand books, typography systems, and print-ready 300 DPI collateral.",
+    stack: "Illustrator · Figma · Brand Guidelines"
+  },
+  {
+    id: "uiux",
+    label: "Figma UI/UX Systems",
+    tilt: 2,
+    summary: "Clean wireframes, high-contrast responsive interfaces, interactive prototypes, and tokenized design libraries.",
+    stack: "Figma · Design Tokens · Prototyping"
+  },
+  {
+    id: "packaging",
+    label: "Packaging & Social Kits",
+    tilt: -1,
+    summary: "Retail can, bottle, box, and pouch dielines alongside campaign-ready social templates and display ads.",
+    stack: "Photoshop · Print Dielines · Social Kits"
+  },
+  {
+    id: "whitelabel",
+    label: "White-Label Agency Partner",
+    tilt: 2.5,
+    summary: "Dependable senior dev & design capacity under strict NDA with crisp documentation and clean commits.",
+    stack: "NDA Friendly · Async Looms · Handoff Docs"
+  },
+  {
+    id: "mobile",
+    label: "Mobile-First Checkout UX",
+    tilt: -1.5,
+    summary: "Thumb-friendly navigation, 44px+ tap targets, and friction-free digital wallet checkout optimization.",
+    stack: "Apple Pay · Google Pay · Responsive QA"
+  },
+  {
+    id: "care",
+    label: "Maintenance & Backups",
+    tilt: 1,
+    summary: "Ongoing security patching, staging deployments, plugin audits, and fast fixes when you need a hand.",
+    stack: "Staging QA · Backups · Priority Support"
+  }
+];
+
 export function GeroldHome({
   initialPortfolioTab = "all",
   onNavigateToPortfolio
 }: GeroldHomeProps) {
-  // Navigation & Page Routing States ("home" | "websites" | "graphics")
-  const [currentPage, setCurrentPage] = useState<"home" | "websites" | "graphics">("home");
-  const [activeNav, setActiveNav] = useState("home");
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeFaq, setActiveFaq] = useState<number | null>(0); // First FAQ open by default like screenshot
+  const [currentPage, setCurrentPage] = useState<"home" | "websites" | "graphics">(
+    initialPortfolioTab === "websites"
+      ? "websites"
+      : initialPortfolioTab === "graphics"
+      ? "graphics"
+      : "home"
+  );
+  const [fullMenuOpen, setFullMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [openDesktopDropdown, setOpenDesktopDropdown] = useState<"services" | "portfolio" | null>(null);
+  const [openOverlaySubmenu, setOpenOverlaySubmenu] = useState<"services" | "portfolio" | null>(null);
+  const [hoveredOverlayLink, setHoveredOverlayLink] = useState<string | null>(null);
+  const [heroTilt, setHeroTilt] = useState({ rotateX: 0, rotateY: 0 });
+  const [activeFaq, setActiveFaq] = useState<number | null>(0);
   const [testimonialIndex, setTestimonialIndex] = useState(0);
   const [showHireModal, setShowHireModal] = useState(false);
   const [hireFormSubmitted, setHireFormSubmitted] = useState(false);
   const [activeSkillCategory, setActiveSkillCategory] = useState<"all" | "design" | "dev">("all");
+  const [engagementPlan, setEngagementPlan] = useState<"project" | "partner">("project");
+  const [selectedChip, setSelectedChip] = useState<CapabilityChip>(CAPABILITY_CHIPS[0]);
+  const [chipResetKey, setChipResetKey] = useState(0);
 
-  // Hire me form state
+  const chipBoardRef = useRef<HTMLDivElement | null>(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+
+  // Hire modal form fields
   const [hireName, setHireName] = useState("");
   const [hireEmail, setHireEmail] = useState("");
-  const [hireService, setHireService] = useState("WordPress Development");
+  const [hireService, setHireService] = useState("WordPress & WooCommerce Build");
   const [hireMessage, setHireMessage] = useState("");
 
-  // Lock background scroll when hire modal is open
+  // Track scroll position for floating header <-> pill morph
   useEffect(() => {
-    if (showHireModal) {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 90);
+      if (window.scrollY > 90) setOpenDesktopDropdown(null);
+    };
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Close desktop dropdown when clicking outside or pressing Esc
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setOpenDesktopDropdown(null);
+      }
+    };
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpenDesktopDropdown(null);
+        setFullMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    window.addEventListener("keydown", handleEsc);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, []);
+
+  // Lock background scroll when hire modal or full-screen overlay menu is open
+  useEffect(() => {
+    if (showHireModal || fullMenuOpen) {
       document.body.style.overflow = "hidden";
       const lenis = (window as any).__lenis;
-      if (lenis && typeof lenis.stop === "function") {
-        lenis.stop();
-      }
+      if (lenis && typeof lenis.stop === "function") lenis.stop();
     } else {
       document.body.style.overflow = "";
       const lenis = (window as any).__lenis;
-      if (lenis && typeof lenis.start === "function") {
-        lenis.start();
-      }
+      if (lenis && typeof lenis.start === "function") lenis.start();
     }
     return () => {
       document.body.style.overflow = "";
       const lenis = (window as any).__lenis;
-      if (lenis && typeof lenis.start === "function") {
-        lenis.start();
-      }
+      if (lenis && typeof lenis.start === "function") lenis.start();
     };
-  }, [showHireModal]);
+  }, [showHireModal, fullMenuOpen]);
 
   // Page Routing & Hash Sync
   useEffect(() => {
@@ -112,7 +230,11 @@ export function GeroldHome({
 
   const navigateToPage = (page: "home" | "websites" | "graphics", targetSectionId?: string) => {
     setCurrentPage(page);
-    setMobileMenuOpen(false);
+    setFullMenuOpen(false);
+    setOpenDesktopDropdown(null);
+    if (onNavigateToPortfolio && page !== "home") {
+      onNavigateToPortfolio(page === "websites" ? "web" : "graphics");
+    }
 
     if (page === "home") {
       if (targetSectionId) {
@@ -122,10 +244,9 @@ export function GeroldHome({
           if (element) {
             const lenis = (window as any).__lenis;
             if (lenis && typeof lenis.scrollTo === "function") {
-              lenis.scrollTo(element, { offset: -80, duration: 1.2 });
+              lenis.scrollTo(element, { offset: -76, duration: 1.0 });
             } else {
-              const yOffset = -80;
-              const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+              const y = element.getBoundingClientRect().top + window.pageYOffset - 76;
               window.scrollTo({ top: y, behavior: "smooth" });
             }
           }
@@ -134,7 +255,7 @@ export function GeroldHome({
         window.location.hash = "";
         const lenis = (window as any).__lenis;
         if (lenis && typeof lenis.scrollTo === "function") {
-          lenis.scrollTo(0, { duration: 1.0 });
+          lenis.scrollTo(0, { duration: 0.9 });
         } else {
           window.scrollTo({ top: 0, behavior: "smooth" });
         }
@@ -142,2047 +263,2339 @@ export function GeroldHome({
     } else if (page === "websites") {
       window.location.hash = "websites-page";
       const lenis = (window as any).__lenis;
-      if (lenis && typeof lenis.scrollTo === "function") {
-        lenis.scrollTo(0, { immediate: true });
-      } else {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
+      if (lenis && typeof lenis.scrollTo === "function") lenis.scrollTo(0, { immediate: true });
+      else window.scrollTo({ top: 0, behavior: "smooth" });
     } else if (page === "graphics") {
       window.location.hash = "graphics-page";
       const lenis = (window as any).__lenis;
-      if (lenis && typeof lenis.scrollTo === "function") {
-        lenis.scrollTo(0, { immediate: true });
-      } else {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
+      if (lenis && typeof lenis.scrollTo === "function") lenis.scrollTo(0, { immediate: true });
+      else window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
-  // Smooth scroll handler within home
   const scrollToSection = (id: string) => {
+    setFullMenuOpen(false);
+    setOpenDesktopDropdown(null);
     if (currentPage !== "home") {
       navigateToPage("home", id);
       return;
     }
-    setActiveNav(id);
-    setMobileMenuOpen(false);
-
     setTimeout(() => {
       const element = document.getElementById(id);
       if (element) {
         const lenis = (window as any).__lenis;
         if (lenis && typeof lenis.scrollTo === "function") {
-          lenis.scrollTo(element, { offset: -80, duration: 1.2 });
+          lenis.scrollTo(element, { offset: -76, duration: 1.0 });
         } else {
-          const yOffset = -80;
-          const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+          const y = element.getBoundingClientRect().top + window.pageYOffset - 76;
           window.scrollTo({ top: y, behavior: "smooth" });
         }
       }
-    }, 60);
+    }, 50);
   };
 
   const scrollToTop = () => {
     const lenis = (window as any).__lenis;
     if (lenis && typeof lenis.scrollTo === "function") {
-      lenis.scrollTo(0, { duration: 1.2 });
+      lenis.scrollTo(0, { duration: 1.0 });
     } else {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
-  // Section animation variants for scroll entrance with blur and cubic-bezier easing
-  const sectionVariants = {
-    hidden: { opacity: 0, y: 40, filter: "blur(6px)" },
-    visible: {
-      opacity: 1,
-      y: 0,
-      filter: "blur(0px)",
-      transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1] as const }
-    }
+  const openHireWithService = (serviceLabel: string) => {
+    setHireService(serviceLabel);
+    setHireFormSubmitted(false);
+    setShowHireModal(true);
   };
 
-  const cardStaggerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.12,
-        delayChildren: 0.08
-      }
+  const getInitials = (name: string) =>
+    name
+      .split(" ")
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((n) => n[0].toUpperCase())
+      .join("");
+
+  const painPoints = [
+    {
+      num: "01",
+      title: "Great product, sluggish first impression",
+      body: "Customers land from an ad, hit a 4-second blank screen or shifting layout, and bounce before scrolling past the hero."
+    },
+    {
+      num: "02",
+      title: "Your developer and designer don't talk",
+      body: "Brand files sit in one folder while bloated templates break your typography, spacing, and mobile hierarchy in production."
+    },
+    {
+      num: "03",
+      title: "Mobile checkout feels clunky",
+      body: "Over 70% of food, retail, and service traffic arrives on phones — cramped buttons and slow carts quietly kill conversions."
+    },
+    {
+      num: "04",
+      title: "Locked behind fragile page builders",
+      body: "Every tiny menu tweak or promo banner requires fighting twenty nested plugins instead of clean, maintainable components."
+    },
+    {
+      num: "05",
+      title: "Agency handoffs to junior contractors",
+      body: "You pitched senior partners on the sales call, then watched communication slow down once actual build tickets began."
+    },
+    {
+      num: "06",
+      title: "Traffic grows, rankings lag behind",
+      body: "Weak semantic structure, unoptimized images, and missing schema keep Google PageSpeed in the 40s instead of 95+."
     }
-  };
+  ];
 
-  const itemFadeUpVariants = {
-    hidden: { opacity: 0, y: 25 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const }
+  const servicesList = [
+    {
+      num: "01.",
+      icon: Gauge,
+      note: "score stuck below 95?",
+      ctaLabel: "Request speed audit",
+      isNew: true,
+      title: "Website Speed & Health Audit",
+      desc: "Already have a live site that feels sluggish? I audit your scripts, CSS, database queries, and Core Web Vitals, strip bloat cleanly, and push mobile load times under 0.5 seconds without breaking your layout."
+    },
+    {
+      num: "02.",
+      icon: Layers,
+      note: "sick of plugin updates?",
+      ctaLabel: "See WordPress builds",
+      isNew: false,
+      title: "Custom WordPress & WooCommerce",
+      desc: "Outgrown a fragile page builder, or tired of plugins conflicting every update? I engineer bespoke WordPress themes, clean ACF/Gutenberg blocks, and high-concurrency WooCommerce checkouts built to last."
+    },
+    {
+      num: "03.",
+      icon: ShoppingBag,
+      note: "want higher checkout AOV?",
+      ctaLabel: "Explore Shopify stores",
+      isNew: false,
+      title: "Shopify & High-Converting Stores",
+      desc: "Need a store that converts cold ad clicks on mobile? I build custom Liquid storefronts, interactive bundle selectors, instant AJAX cart drawers, and clean bilingual flows built specifically around checkout velocity."
+    },
+    {
+      num: "04.",
+      icon: Code2,
+      note: "need more than templates?",
+      ctaLabel: "See custom code & AI",
+      isNew: false,
+      title: "React, Next.js & AI Web Apps",
+      desc: "Need something faster, interactive, or powered by custom APIs and Gemini AI? I architect modern TypeScript applications, booking portals, B2B quote engines, and animated digital experiences end to end."
+    },
+    {
+      num: "05.",
+      icon: Palette,
+      note: "brand look inconsistent?",
+      ctaLabel: "View brand & graphics",
+      isNew: false,
+      title: "Brand Identity & Packaging Systems",
+      desc: "Launching a new brand or refreshing retail packaging? I design crisp vector logomarks, typography rules, 300 DPI box/can dielines, and social kits so your website and physical product feel unmistakable."
+    },
+    {
+      num: "06.",
+      icon: Sparkles,
+      note: "need reliable dev hands?",
+      ctaLabel: "Partner with Shakeeb",
+      isNew: false,
+      title: "White-Label Agency Partner",
+      desc: "Running an agency and need dependable senior WordPress, Shopify, and design bandwidth under strict NDA? You get direct communication, staging QA, Loom walkthroughs, and pixel-accurate builds on schedule."
     }
-  };
+  ];
 
-
-
-  // Authentic, verified client testimonials for Shakeeb Ahmed Khan
   const testimonials = [
     {
       name: "Denise Woodard",
       role: "Founder & CEO, Partake Foods",
       project: "WooCommerce Replatform & Speed Overhaul",
       metric: "+145% Sales Growth · 0.39s Load",
-      avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80",
       quote:
-        "Shakeeb completely rebuilt our WooCommerce architecture from scratch. Our mobile page load speed dropped from 4.2 seconds down to 0.39s, and our monthly conversion rate climbed by +145% within the first 60 days. His attention to design fidelity, custom subscription flows, and store accessibility made him an indispensable engineering partner."
+        "Shakeeb completely rebuilt our WooCommerce architecture from scratch. Our mobile page load speed dropped from 4.2 seconds down to 0.39s, and our monthly conversion rate climbed by +145% within the first 60 days."
     },
     {
       name: "Marcus Sterling",
       role: "VP of Digital Growth, The Builder Market",
       project: "B2B Quotation Portal & Catalog Engine",
       metric: "+110% Contractor RFQs",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
       quote:
-        "Finding an engineer who understands both high-throughput B2B databases and sleek, modern UI is rare. Shakeeb built our dynamic RFQ quotation engine and wholesale pricing tiers with flawless execution. Inquiries jumped by 110%, and contractor onboarding friction disappeared completely."
+        "Finding an engineer who understands both high-throughput B2B databases and sleek, modern UI is rare. Shakeeb built our dynamic RFQ quotation engine and wholesale pricing tiers with flawless execution."
     },
     {
       name: "Elena Rostova",
       role: "Brand Director, Adora Organic Skincare",
       project: "D2C Luxury Skincare & Shade Finder",
       metric: "+160% Conversion Rate · 99/100 CWV",
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
       quote:
-        "Shakeeb transformed Adora's digital presence into a luxury editorial experience. The interactive skincare quiz and sub-second checkout drawer contributed to an immediate 160% lift in direct sales. He is exceptionally responsive, highly skilled in WordPress & Figma, and consistently exceeds deadlines."
+        "Shakeeb transformed Adora's digital presence into a luxury editorial experience. The interactive skincare quiz and sub-second checkout drawer contributed to an immediate 160% lift in direct sales."
     },
     {
       name: "Khurram Siddiqui",
       role: "Operations Director, DesiCart UK",
       project: "Multi-Vendor Postal Code Grocery System",
       metric: "-38% Cart Abandonment",
-      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80",
       quote:
-        "Managing thousands of perishable SKUs and dynamic UK postal code delivery slots requires bulletproof engineering. Shakeeb optimized our database queries, reducing checkout drop-offs by 38% and keeping the platform rock-solid during peak holiday spikes. Truly a top-tier WordPress and full-stack developer."
+        "Managing thousands of perishable SKUs and dynamic UK postal code delivery slots requires bulletproof engineering. Shakeeb optimized our queries, cutting checkout drop-offs by 38% during peak holidays."
     },
     {
       name: "David M. Klein",
       role: "Head of E-Commerce, Toynk Pop Culture",
       project: "High-Traffic Collectibles & Drop Architecture",
       metric: "Zero Downtime · 25k+ SKUs",
-      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80",
       quote:
-        "We carry over 25,000 licensed pop culture collectibles. Shakeeb restructured our faceted search, caching layers, and high-DPI product showcases. During our Black Friday drops, the site handled massive concurrency without a hiccup. He communicates proactively and delivers clean, maintainable code."
+        "We carry over 25,000 licensed pop culture collectibles. Shakeeb restructured our faceted search and caching layers. During Black Friday drops, the site handled massive concurrency without a hiccup."
     },
     {
       name: "Farhan Bashir",
       role: "Creative Director, Brandilyst Digital",
       project: "Enterprise Design System & Web Deployment",
       metric: "12+ Joint Client Launches",
-      avatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&auto=format&fit=crop&q=80",
       quote:
-        "I have collaborated with Shakeeb across more than a dozen enterprise WordPress and branding projects. His ability to translate complex design systems into responsive, pixel-perfect web experiences with custom animations and zero lag is unparalleled. Clients are always thrilled with the final delivery."
+        "I have collaborated with Shakeeb across more than a dozen enterprise WordPress and branding projects. His ability to translate complex design systems into responsive, lag-free sites is unmatched."
     },
     {
       name: "Rachel Vance",
-      role: "Managing Partner, Lumina MedSpa & Wellness",
+      role: "Managing Partner, Lumina MedSpa",
       project: "Medical Booking System & HIPAA-Ready Portal",
       metric: "+85% Mobile Inbound Bookings",
-      avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&auto=format&fit=crop&q=80",
       quote:
-        "Shakeeb designed and developed our private patient booking portal and medical treatment catalogue. His multi-step scheduling calendar and instant inquiry routing doubled our inbound consultations within thirty days. He pairs clinical design elegance with absolute performance."
-    },
-    {
-      name: "Tariq Al-Mansoor",
-      role: "Founder, Desert Falcon Luxury Apparel",
-      project: "Omnichannel Shopify & Arabic RTL Localization",
-      metric: "+210% GCC Regional Revenue",
-      avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&auto=format&fit=crop&q=80",
-      quote:
-        "We hired Shakeeb to rebuild our luxury streetwear portal with seamless English and Arabic RTL layout switching, multi-currency checkout, and rapid product filtration. His attention to typography nuances and sub-second checkout speeds was phenomenal. One of the sharpest developers in the space."
+        "Shakeeb designed and developed our private patient booking portal. His multi-step scheduling calendar and instant inquiry routing doubled our inbound consultations within thirty days."
     },
     {
       name: "Sarah Jenkins",
       role: "Chief Marketing Officer, Qantra Security",
       project: "Enterprise SaaS Web Platform & Brand Mark",
-      metric: "99/100 PageSpeed · +92% Lead Form CVR",
-      avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80",
+      metric: "99/100 PageSpeed · +92% Demo CVR",
       quote:
-        "Shakeeb delivered far more than code: he refined our entire brand identity, vector icon sets, and interactive product tour. Our demo booking conversion rate increased by 92% immediately upon launch. His communication is proactive, structured, and genuinely collaborative."
-    },
-    {
-      name: "Jason Bradley",
-      role: "Principal, Bradley Architectural Millwork",
-      project: "Custom Parametric Quote Engine & WooCommerce",
-      metric: "+130% Custom Quote Inquiries",
-      avatar: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=150&auto=format&fit=crop&q=80",
-      quote:
-        "Shakeeb engineered a custom parametric pricing calculator for our architectural millwork catalog in WooCommerce. Our commercial contractors can now specify custom dimensions and receive immediate estimations. He solved complex logic two previous agencies gave up on."
-    },
-    {
-      name: "Amara Okafor",
-      role: "Product Lead, NovaPay Global Systems",
-      project: "Developer API Hub & FinTech Portal",
-      metric: "Sub-400ms API Doc Renders",
-      avatar: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=150&auto=format&fit=crop&q=80",
-      quote:
-        "Shakeeb delivered a high-converting developer documentation hub and merchant portal for our payments ecosystem. His mastery of responsive Tailwind layouts, accessible UI components, and clean code made onboarding seamless for thousands of partners across Europe and Africa."
+        "Shakeeb refined our brand identity, vector icon sets, and interactive product tour. Our demo booking conversion rate jumped by 92% immediately upon launch."
     },
     {
       name: "Jonathan Briggs",
-      role: "Executive Publisher, Briggs Media & Entertainment",
-      project: "High-Traffic Editorial Publication & Video Hub",
+      role: "Executive Publisher, Briggs Media",
+      project: "High-Traffic Editorial Hub",
       metric: "400K+ Monthly Readers · 0 CLS",
-      avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&auto=format&fit=crop&q=80",
       quote:
-        "Our digital publication demands aggressive caching, rich video embed support, and lightning-fast ad delivery. Shakeeb eliminated our previous cumulative layout shifts, brought our Core Web Vitals to a straight 98 score, and restructured our article templates with perfection."
+        "Shakeeb eliminated our cumulative layout shifts, brought our Core Web Vitals straight to 98, and restructured our article templates cleanly."
     }
   ];
 
-  // FAQ items exactly from screenshot
+  const experiences = [
+    {
+      company: "Brandilyst (Remote)",
+      role: "Senior WordPress Developer",
+      period: "2025 – 2026",
+      desc: "Enterprise WordPress architecture, bespoke theme engineering, WooCommerce platforms, and performance optimization."
+    },
+    {
+      company: "Contact VA (Remote)",
+      role: "Senior WordPress Developer",
+      period: "2023 – 2025",
+      desc: "Custom web development, Elementor Pro design systems, speed tuning, automated workflows, and API integrations."
+    },
+    {
+      company: "Nehal Solutions (Project Based)",
+      role: "Senior WordPress Developer",
+      period: "2022 – 2023",
+      desc: "Client web applications, custom plugin integrations, responsive UI builds, and cross-browser QA."
+    },
+    {
+      company: "FlyHiDigital (Project Based)",
+      role: "Senior WordPress Developer",
+      period: "2021 – 2022",
+      desc: "High-conversion marketing websites, interactive sales funnels, and CMS customization for global brands."
+    },
+    {
+      company: "Tech Remedys (Remote)",
+      role: "WordPress Developer & Graphic Designer",
+      period: "2020 – 2021",
+      desc: "End-to-end WordPress builds, UI mockups, brand collateral, and marketing assets in Adobe Suite."
+    },
+    {
+      company: "IT Concepts (Onsite)",
+      role: "WordPress Developer & Graphic Designer",
+      period: "2019 – 2020",
+      desc: "Responsive web design, theme customization, logos, social kits, and front-end optimization."
+    }
+  ];
+
+  const stackItems = [
+    { id: "wp", name: "WordPress & PHP", category: "dev", percent: 99 },
+    { id: "woo", name: "WooCommerce / Shopify", category: "dev", percent: 97 },
+    { id: "tailwind", name: "Tailwind CSS", category: "dev", percent: 96 },
+    { id: "react", name: "React & TypeScript", category: "dev", percent: 94 },
+    { id: "nextjs", name: "Next.js & AI APIs", category: "dev", percent: 91 },
+    { id: "figma", name: "Figma UI/UX", category: "design", percent: 94 },
+    { id: "ps", name: "Adobe Photoshop", category: "design", percent: 92 },
+    { id: "ai", name: "Illustrator & Brand Kits", category: "design", percent: 90 }
+  ];
+
   const faqs = [
     {
-      q: "How do I get Quotation for my project?",
-      a: "Getting a project quotation is seamless. Simply click the 'Hire Me' button or reach out directly at shakeebahmedk24@gmail.com (+92-332-0203701) with your project specifications, scope, and timeline. I provide a comprehensive milestone breakdown, deliverables roadmap, and transparent fixed-price or sprint-based proposal within 24 hours."
+      q: "How do I get a fixed quotation for my project?",
+      a: "Click 'Book a Call' or email shakeebahmedk24@gmail.com (+92-332-0203701) with your goals, reference links, and target timeline. Within 24 hours I send back a clear milestone plan and fixed-price quote — no hourly padding or surprise add-ons."
     },
     {
-      q: "How many landing page can I work with your project?",
-      a: "There are no rigid restrictions. Whether you need a high-converting standalone landing page or a multi-page web application ecosystem with comprehensive design systems, I tailor sprint capacity to your product goals."
+      q: "Do you handle both the branding/UI design and the code build?",
+      a: "Yes. Most clients hire me specifically so they don't have to coordinate separate brand designers and developers. I handle everything from vector marks and Figma UI right through production WordPress, Shopify, React, or Next.js deployment."
     },
     {
-      q: "Can I use your project for my clients?",
-      a: "Yes, absolutely! All design assets, Figma master libraries, and custom codebases are delivered with 100% full commercial rights and intellectual property transfer upon final milestone completion."
+      q: "What happens if my existing site is slow and scoring poorly on Google PageSpeed?",
+      a: "Every new build is engineered for 95–99/100 Core Web Vitals out of the box. For existing sites, my Speed & Health Audit strips render-blocking scripts, optimizes images to WebP, configures caching, and gets mobile load times under half a second."
     },
     {
-      q: "Will growth products slow down my products?",
-      a: "Never. Every interface and component is engineered with performance-first principles, achieving sub-second load times, 95+ Google PageSpeed scores, zero layout shifts, and clean modular code."
+      q: "Do I own 100% of the website code and brand source files?",
+      a: "Yes — completely. Upon final milestone sign-off, you receive full commercial ownership of all vector source files (AI/SVG/PDF), Figma master files, and GitHub/WordPress codebase with zero vendor lock-in."
     },
     {
-      q: "Can I use your project for my clients?",
-      a: "Yes, agency white-label engagements and subcontractor deliverables are fully supported with strict non-disclosure agreements and pristine handoff documentation."
+      q: "Do you work white-label for creative agencies and studios?",
+      a: "Yes. I regularly partner with UK, US, Swiss, and UAE agencies under strict NDA to execute flagship web builds, e-commerce customizers, and graphic design systems behind the scenes."
     }
   ];
 
-  return (
-    <div className="min-h-screen bg-[#07030e] text-[#f3f4f6] font-sans antialiased selection:bg-purple-600/40 selection:text-white relative overflow-x-clip">
-      {/* ATMOSPHERIC PURPLE AMBIENT GLOWS */}
-      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[850px] h-[550px] bg-gradient-to-b from-purple-800/18 via-indigo-900/10 to-transparent blur-[140px] pointer-events-none z-0" />
-      <div className="fixed top-[45%] -left-[200px] w-[500px] h-[500px] bg-purple-900/10 blur-[130px] pointer-events-none z-0" />
-      <div className="fixed bottom-[15%] -right-[200px] w-[600px] h-[600px] bg-indigo-900/12 blur-[150px] pointer-events-none z-0" />
+  const desktopTestimonialPages = Math.ceil(testimonials.length / 3);
 
+  return (
+    <div className="min-h-screen bg-[#07030e] text-[#f3f4f6] font-sans antialiased selection:bg-[#8750f7] selection:text-white relative overflow-x-clip">
       {/* ======================================================== */}
-      {/* 1. TOP NAVIGATION BAR                                    */}
+      {/* FLOATING VIDEO-MATCHED HEADER (Capsule Pill + Scrolled)  */}
       {/* ======================================================== */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-[#07030e]/85 backdrop-blur-md border-b border-purple-950/40 transition-all duration-300">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-          {/* Brand Logo - Official Shakeeb Logo (No Name Text) */}
+      <header className="fixed top-0 left-0 right-0 z-50 pointer-events-none">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-5 flex items-center justify-between gap-4">
+          {/* Zone 1: Slightly Smaller White Brand Logo */}
           <a
             href="#hero"
             onClick={(e) => {
               e.preventDefault();
-              scrollToTop();
+              if (currentPage !== "home") navigateToPage("home");
+              else scrollToTop();
             }}
-            className="flex items-center group py-1.5 focus:outline-none"
-            title="Shakeeb"
+            className={`pointer-events-auto flex items-center shrink-0 whitespace-nowrap focus:outline-none group transition-all duration-300 ${
+              isScrolled && currentPage === "home"
+                ? "opacity-0 pointer-events-none md:opacity-0"
+                : "opacity-100"
+            }`}
+            title="Shakeeb Ahmed Khan"
           >
             <img
-              src="/shakeeb_logo.png"
+              src="/Shakeeb_logo_white-removebg-preview-1.png"
               alt="Shakeeb"
-              style={{ width: "210px", height: "auto" }}
-              className="w-[170px] sm:w-[210px] h-auto object-contain transition-transform duration-300 group-hover:scale-105 filter drop-shadow-[0_0_12px_rgba(168,85,247,0.45)]"
+              className="h-6 sm:h-[26px] w-auto object-contain transition-transform duration-200 group-hover:scale-[1.03]"
             />
           </a>
 
-          {/* Center Navigation Links */}
-          <nav className="hidden md:flex items-center gap-4 lg:gap-6 text-xs lg:text-sm font-medium text-zinc-300">
-            <button
-              onClick={() => navigateToPage("home")}
-              className={`relative py-1 transition-colors hover:text-white cursor-pointer ${
-                currentPage === "home" ? "text-purple-400 font-semibold" : "text-zinc-400"
-              }`}
-            >
-              Home
-              {currentPage === "home" && (
-                <motion.div
-                  layoutId="activeNavIndicator"
-                  className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-500 to-indigo-400 rounded-full"
-                />
-              )}
-            </button>
-
-            {/* Dedicated Websites Page Link */}
-            <button
-              onClick={() => navigateToPage("websites")}
-              className={`relative py-1 transition-colors hover:text-white cursor-pointer flex items-center gap-1.5 ${
-                currentPage === "websites" ? "text-purple-400 font-semibold" : "text-zinc-400"
-              }`}
-            >
-              <Globe className="w-3.5 h-3.5" />
-              <span>Websites</span>
-              <span className="text-[9px] px-1.5 py-0.5 rounded-md bg-purple-950/80 border border-purple-700/60 text-purple-300 font-mono font-bold">
-                12+
-              </span>
-              {currentPage === "websites" && (
-                <motion.div
-                  layoutId="activeNavIndicator"
-                  className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-500 to-indigo-400 rounded-full"
-                />
-              )}
-            </button>
-
-            {/* Dedicated Graphics Page Link */}
-            <button
-              onClick={() => navigateToPage("graphics")}
-              className={`relative py-1 transition-colors hover:text-white cursor-pointer flex items-center gap-1.5 ${
-                currentPage === "graphics" ? "text-purple-400 font-semibold" : "text-zinc-400"
-              }`}
-            >
-              <Palette className="w-3.5 h-3.5" />
-              <span>Graphics</span>
-              <span className="text-[9px] px-1.5 py-0.5 rounded-md bg-purple-950/80 border border-purple-700/60 text-purple-300 font-mono font-bold">
-                40+
-              </span>
-              {currentPage === "graphics" && (
-                <motion.div
-                  layoutId="activeNavIndicator"
-                  className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-500 to-indigo-400 rounded-full"
-                />
-              )}
-            </button>
-
-            <button
-              onClick={() => scrollToSection("testimonials")}
-              className="relative py-1 transition-colors hover:text-white cursor-pointer text-zinc-400"
-            >
-              Testimonials
-            </button>
-
-            <button
-              onClick={() => scrollToSection("contact")}
-              className="relative py-1 transition-colors hover:text-white cursor-pointer text-zinc-400"
-            >
-              Contact
-            </button>
-          </nav>
-
-          {/* Right Social Round Icons + Download CV + Hire Button */}
-          <div className="hidden sm:flex items-center gap-2.5">
-            <a
-              href="https://behance.net/sksolutions"
-              target="_blank"
-              rel="noreferrer"
-              className="w-9 h-9 rounded-full border border-purple-800/40 hover:border-purple-400 text-zinc-400 hover:text-white flex items-center justify-center text-xs transition-all hover:bg-purple-900/20 font-bold"
-              title="Shakeeb's Behance: behance.net/sksolutions"
-            >
-              Bē
-            </a>
-            <a
-              href="https://facebook.com"
-              target="_blank"
-              rel="noreferrer"
-              className="w-9 h-9 rounded-full border border-purple-800/40 hover:border-purple-400 text-zinc-400 hover:text-white flex items-center justify-center text-xs transition-all hover:bg-purple-900/20"
-              title="Facebook"
-            >
-              f
-            </a>
-            <a
-              href="https://linkedin.com"
-              target="_blank"
-              rel="noreferrer"
-              className="w-9 h-9 rounded-full border border-purple-800/40 hover:border-purple-400 text-zinc-400 hover:text-white flex items-center justify-center text-xs transition-all hover:bg-purple-900/20 font-serif"
-              title="LinkedIn"
-            >
-              in
-            </a>
-
-            {/* Quick CV Download button in header */}
-            <a
-              href="/assets/aistudio/Shakeeb_Khan_Website_Developer_CV_75f2e3fe.pdf"
-              download="Shakeeb_Khan_CV.pdf"
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-purple-500/50 bg-purple-950/50 hover:bg-purple-900/60 text-purple-200 text-xs font-medium transition-all hover:scale-105"
-              title="Download Shakeeb Khan CV (PDF)"
-            >
-              <Download className="w-3.5 h-3.5 text-purple-400" />
-              <span>CV</span>
-            </a>
-
-            <button
-              onClick={() => setShowHireModal(true)}
-              className="ml-1 px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-semibold rounded-full shadow-[0_0_20px_rgba(147,51,234,0.35)] transition-all cursor-pointer hover:scale-105"
-            >
-              Hire Me
-            </button>
-          </div>
-
-          {/* Mobile Menu Hamburger */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-lg text-zinc-400 hover:text-white hover:bg-purple-900/20"
-            aria-label="Toggle menu"
+          {/* Zone 2: Centered Floating White Capsule Nav (Desktop Top State) */}
+          <div
+            ref={dropdownRef}
+            className={`hidden lg:flex items-center justify-center transition-all duration-300 ${
+              isScrolled
+                ? "opacity-0 -translate-y-4 pointer-events-none"
+                : "opacity-100 translate-y-0 pointer-events-auto"
+            }`}
           >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
+            <nav className="relative bg-white text-[#120a22] rounded-full px-1.5 py-1.5 shadow-[0_12px_32px_rgba(7,3,14,0.32)] border border-purple-200/60 flex items-center gap-0.5 text-[13px] font-medium">
+              <button
+                onClick={() => navigateToPage("home")}
+                className={`px-3.5 py-1.5 rounded-full transition-colors cursor-pointer whitespace-nowrap ${
+                  currentPage === "home"
+                    ? "bg-[#ede9fe] text-[#5b21b6] font-semibold"
+                    : "text-[#120a22] hover:bg-purple-50"
+                }`}
+              >
+                Home
+              </button>
 
-        {/* Mobile Slide-down Menu */}
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-[#0a0515] border-b border-purple-900/40 px-6 py-6 space-y-3"
-            >
-              {[
-                { label: "Home", action: () => navigateToPage("home"), active: currentPage === "home" },
-                { label: "Websites Portfolio (15+ Live Sites)", action: () => navigateToPage("websites"), badge: "Live Sites", active: currentPage === "websites" },
-                { label: "Graphics & Branding (40+ Designs)", action: () => navigateToPage("graphics"), badge: "Gallery", active: currentPage === "graphics" },
-                { label: "Testimonials", action: () => scrollToSection("testimonials") },
-                { label: "Contact & Hire", action: () => scrollToSection("contact") }
-              ].map((link, idx) => (
+              <button
+                onClick={() => scrollToSection("resume")}
+                className="px-3.5 py-1.5 rounded-full text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6] transition-colors cursor-pointer whitespace-nowrap"
+              >
+                About
+              </button>
+
+              {/* Services Dropdown */}
+              <div
+                className="relative"
+                onMouseEnter={() => setOpenDesktopDropdown("services")}
+                onMouseLeave={() => setOpenDesktopDropdown(null)}
+              >
                 <button
-                  key={idx}
-                  onClick={link.action}
-                  className={`flex items-center justify-between w-full text-left text-sm py-2 font-medium transition-colors cursor-pointer ${
-                    link.active ? "text-purple-400 font-bold" : "text-zinc-300 hover:text-purple-300"
+                  onClick={() =>
+                    setOpenDesktopDropdown((prev) => (prev === "services" ? null : "services"))
+                  }
+                  className={`px-3.5 py-1.5 rounded-full transition-colors cursor-pointer whitespace-nowrap inline-flex items-center gap-1 ${
+                    openDesktopDropdown === "services"
+                      ? "bg-[#ede9fe] text-[#5b21b6] font-semibold"
+                      : "text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6]"
                   }`}
                 >
-                  <span>{link.label}</span>
-                  {link.badge && (
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-950/80 border border-purple-700/60 text-purple-300 font-mono">
-                      {link.badge}
-                    </span>
-                  )}
-                </button>
-              ))}
-
-              <div className="pt-4 border-t border-purple-900/30 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <a
-                    href="https://behance.net/sksolutions"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="w-8 h-8 rounded-full border border-purple-800/40 text-zinc-400 flex items-center justify-center text-xs font-bold"
-                    title="Behance"
-                  >
-                    Bē
-                  </a>
-                  <a
-                    href="https://linkedin.com"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="w-8 h-8 rounded-full border border-purple-800/40 text-zinc-400 flex items-center justify-center text-xs font-serif"
-                    title="LinkedIn"
-                  >
-                    in
-                  </a>
-                  <a
-                    href="/assets/aistudio/Shakeeb_Khan_Website_Developer_CV_75f2e3fe.pdf"
-                    download="Shakeeb_Khan_CV.pdf"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="px-3 py-1.5 rounded-full border border-purple-600/50 bg-purple-950/60 text-purple-200 text-xs flex items-center gap-1"
-                  >
-                    <Download className="w-3 h-3" />
-                    CV
-                  </a>
-                </div>
-                <button
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    setShowHireModal(true);
-                  }}
-                  className="px-5 py-2 bg-purple-600 text-white text-xs font-semibold rounded-full"
-                >
-                  Hire Me
-                </button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </header>
-
-      {currentPage === "home" && (
-        <>
-          {/* ======================================================== */}
-          {/* 2. HERO SECTION                                           */}
-          {/* ======================================================== */}
-          <motion.section
-        id="hero"
-        variants={sectionVariants}
-        initial="hidden"
-        animate="visible"
-        className="relative pt-24 pb-12 sm:pt-36 sm:pb-20 md:pt-40 md:pb-28 text-center flex flex-col items-center justify-center overflow-hidden"
-      >
-        {/* Ambient Top Glow Overlay */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[550px] h-[280px] bg-purple-600/10 rounded-full blur-[120px] pointer-events-none" />
-
-        {/* Available for freelance top badge: forced single line on all screen sizes */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="relative z-10 inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full bg-[#120a22]/80 border border-purple-800/40 text-purple-300 text-[9.5px] sm:text-xs font-semibold tracking-tight sm:tracking-wide mb-4 sm:mb-6 backdrop-blur-md shadow-[0_0_15px_rgba(168,85,247,0.2)] whitespace-nowrap select-none max-w-full"
-        >
-          <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)] animate-pulse shrink-0" />
-          <span className="whitespace-nowrap">AVAILABLE FOR FREELANCE & ENTERPRISE PROJECTS</span>
-        </motion.div>
-
-        {/* Title: I AM SHAKEEB KHAN */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.2 }}
-          className="relative z-10 space-y-1 mb-6"
-        >
-          <h1 className="text-4xl sm:text-6xl md:text-8xl lg:text-[104px] font-black font-display tracking-tight leading-[1.05] sm:leading-[0.95] text-white">
-            <span className="block text-transparent bg-clip-text bg-gradient-to-b from-purple-200 via-white to-purple-300">
-              I AM
-            </span>
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-indigo-200 to-white filter drop-shadow-[0_0_40px_rgba(168,85,247,0.45)]">
-              SHAKEEB KHAN
-            </span>
-          </h1>
-          <p className="text-xs sm:text-base md:text-lg text-purple-200/90 font-medium max-w-2xl mx-auto pt-3 px-4">
-            WordPress, AI & Custom Developer · Senior Graphic & UI/UX Designer
-          </p>
-        </motion.div>
-
-        {/* Central Portrait Visual with Floating Badges & Stats */}
-        <div className="relative max-w-5xl xl:max-w-6xl w-full mx-auto px-4 flex flex-col md:flex-row items-center justify-center gap-6 md:gap-5 lg:gap-8 my-2 sm:my-6 z-10">
-          {/* Left Floating Badge: Happy Clients (Positioned close to the portrait image) */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.4 }}
-            className="hidden md:block w-fit shrink-0 bg-[#120a22]/90 border border-purple-800/40 rounded-2xl p-4 shadow-2xl backdrop-blur-md text-left animate-float-badge font-jakarta md:translate-x-2 lg:translate-x-4 z-20"
-          >
-            <span className="text-xs font-semibold text-zinc-300 block mb-2 whitespace-nowrap">
-              Happy Clients | Behance | Fiverr
-            </span>
-            <div className="flex items-center gap-3 mb-2">
-              <div className="flex -space-x-2 shrink-0">
-                <img
-                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
-                  alt="Client Denise"
-                  className="w-7 h-7 rounded-full border-2 border-[#120a22] object-cover"
-                />
-                <img
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80"
-                  alt="Client Marcus"
-                  className="w-7 h-7 rounded-full border-2 border-[#120a22] object-cover"
-                />
-                <img
-                  src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&auto=format&fit=crop&q=80"
-                  alt="Client Elena"
-                  className="w-7 h-7 rounded-full border-2 border-[#120a22] object-cover"
-                />
-                <div className="w-7 h-7 rounded-full border-2 border-[#120a22] bg-purple-900/90 flex items-center justify-center text-[9px] font-bold text-purple-200">
-                  +150
-                </div>
-              </div>
-              <div className="flex items-center text-amber-400 text-xs gap-0.5 shrink-0">
-                <Star className="w-3.5 h-3.5 fill-current" />
-                <Star className="w-3.5 h-3.5 fill-current" />
-                <Star className="w-3.5 h-3.5 fill-current" />
-                <Star className="w-3.5 h-3.5 fill-current" />
-                <Star className="w-3.5 h-3.5 fill-current" />
-              </div>
-            </div>
-            <span className="text-xs text-zinc-400 block font-medium whitespace-nowrap">
-              150+ successful projects delivered
-            </span>
-          </motion.div>
-
-          {/* Central Circular Headshot */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.85 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="relative z-10 shrink-0 flex flex-col items-center"
-          >
-            {/* Ambient circular glow */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-purple-600/35 to-indigo-600/35 rounded-full blur-2xl transform scale-110 pointer-events-none" />
-
-            <div className="relative w-48 h-48 sm:w-64 sm:h-64 md:w-76 md:h-76 lg:w-84 lg:h-84 rounded-full overflow-hidden p-1.5 bg-gradient-to-b from-purple-400/50 via-purple-900/30 to-transparent border border-purple-500/40 shadow-[0_0_70px_rgba(168,85,247,0.35)]">
-              <img
-                src="/Gemini_Generated_Image_bvflr0bvflr0bvfl.jpg"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = "/shakeeb_profile.jpg";
-                }}
-                alt="Shakeeb Ahmed Khan — WordPress, AI & Custom Web Developer"
-                className="w-full h-full object-cover rounded-full filter contrast-105"
-              />
-            </div>
-
-            {/* Desktop floating pill badges */}
-            <div className="hidden sm:block absolute top-1/2 -right-4 sm:-right-8 -translate-y-1/2 bg-[#120a22]/95 border border-purple-700/60 rounded-full px-3.5 py-1.5 text-xs font-semibold text-white shadow-2xl backdrop-blur-md animate-float-badge-delayed whitespace-nowrap">
-              WordPress & AI Developer
-            </div>
-            <div className="hidden sm:block absolute bottom-3 -left-4 sm:-left-6 bg-[#120a22]/95 border border-purple-700/60 rounded-full px-3.5 py-1.5 text-xs font-semibold text-white shadow-2xl backdrop-blur-md animate-float-badge whitespace-nowrap">
-              Graphic & UI Designer
-            </div>
-
-            {/* Mobile-only compact badge row */}
-            <div className="flex sm:hidden flex-wrap items-center justify-center gap-1.5 mt-2.5 z-20">
-              <span className="bg-[#120a22]/95 border border-purple-700/60 rounded-full px-2.5 py-0.5 text-[9px] font-semibold text-purple-200 shadow-md">
-                WordPress & AI Developer
-              </span>
-              <span className="bg-[#120a22]/95 border border-purple-700/60 rounded-full px-2.5 py-0.5 text-[9px] font-semibold text-purple-200 shadow-md">
-                Graphic & UI Designer
-              </span>
-            </div>
-          </motion.div>
-
-          {/* Right Side Stats Stack */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.4 }}
-            className="w-full max-w-xs sm:max-w-sm mx-auto grid grid-cols-3 gap-2 text-center md:mx-0 md:w-52 lg:w-64 shrink-0 md:space-y-6 md:text-left md:block mt-3 md:mt-0 z-20"
-          >
-            <div className="bg-[#120a22]/85 md:bg-transparent border border-purple-900/40 md:border-0 rounded-xl p-2 sm:p-2.5 md:p-0">
-              <div className="text-xl sm:text-4xl lg:text-5xl font-black font-display text-white tracking-tight">
-                7+
-              </div>
-              <div className="text-[9px] sm:text-xs text-zinc-400 font-medium leading-tight mt-0.5">
-                <span className="md:hidden">Years Exp.</span>
-                <span className="hidden md:inline">Years of Experience</span>
-              </div>
-            </div>
-            <div className="bg-[#120a22]/85 md:bg-transparent border border-purple-900/40 md:border-0 rounded-xl p-2 sm:p-2.5 md:p-0">
-              <div className="text-xl sm:text-4xl lg:text-5xl font-black font-display text-white tracking-tight">
-                150+
-              </div>
-              <div className="text-[9px] sm:text-xs text-zinc-400 font-medium leading-tight mt-0.5">
-                <span className="md:hidden">Projects</span>
-                <span className="hidden md:inline">Projects Completed</span>
-              </div>
-            </div>
-            <div className="bg-[#120a22]/85 md:bg-transparent border border-purple-900/40 md:border-0 rounded-xl p-2 sm:p-2.5 md:p-0">
-              <div className="text-xl sm:text-4xl lg:text-5xl font-black font-display text-white tracking-tight">
-                100%
-              </div>
-              <div className="text-[9px] sm:text-xs text-zinc-400 font-medium leading-tight mt-0.5">
-                <span className="md:hidden">Satisfaction</span>
-                <span className="hidden md:inline">Client Satisfaction</span>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Hero Action CTA Buttons: Responsive single-line pills on desktop/laptop, 2-column grid on mobile */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="mt-4 sm:mt-8 relative z-20 w-full max-w-md sm:max-w-2xl mx-auto px-4"
-        >
-          {/* Desktop & Laptop layout: 3 horizontal pill buttons in a row */}
-          <div className="hidden sm:flex items-center justify-center gap-3 md:gap-4">
-            <a
-              href="/assets/aistudio/Shakeeb_Khan_Website_Developer_CV_75f2e3fe.pdf"
-              download="Shakeeb_Khan_CV.pdf"
-              target="_blank"
-              rel="noreferrer"
-              className="px-6 py-3.5 rounded-full bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 hover:from-purple-500 hover:to-indigo-500 text-white font-semibold text-sm tracking-wide shadow-[0_0_25px_rgba(147,51,234,0.45)] transition-all hover:scale-105 flex items-center justify-center gap-2 cursor-pointer whitespace-nowrap"
-            >
-              <Download className="w-4 h-4 text-white shrink-0" />
-              <span>Download CV</span>
-            </a>
-
-            <button
-              onClick={() => setShowHireModal(true)}
-              className="px-6 py-3.5 rounded-full bg-[#180e2f] hover:bg-[#221342] text-purple-200 hover:text-white border border-purple-700/60 hover:border-purple-400 font-semibold text-sm tracking-wide transition-all hover:scale-105 cursor-pointer whitespace-nowrap shadow-lg"
-            >
-              Hire Me
-            </button>
-
-            <a
-              href="https://behance.net/sksolutions"
-              target="_blank"
-              rel="noreferrer"
-              className="px-6 py-3.5 rounded-full bg-[#120a22] hover:bg-[#1b0e33] text-zinc-200 hover:text-white border border-purple-900/60 hover:border-purple-500/60 font-semibold text-sm tracking-wide transition-all hover:scale-105 flex items-center justify-center gap-2 whitespace-nowrap shadow-lg"
-            >
-              <span className="font-bold text-purple-400">Bē</span>
-              <span>Behance Portfolio</span>
-            </a>
-          </div>
-
-          {/* Mobile layout: Compact 2-column grid + Behance button */}
-          <div className="flex sm:hidden flex-col gap-2.5 w-full">
-            <div className="grid grid-cols-2 gap-2 w-full">
-              <a
-                href="/assets/aistudio/Shakeeb_Khan_Website_Developer_CV_75f2e3fe.pdf"
-                download="Shakeeb_Khan_CV.pdf"
-                target="_blank"
-                rel="noreferrer"
-                className="px-3.5 py-2.5 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-semibold text-xs tracking-wide shadow-[0_0_20px_rgba(147,51,234,0.4)] transition-all flex items-center justify-center gap-1.5 cursor-pointer text-center whitespace-nowrap"
-              >
-                <Download className="w-3.5 h-3.5 text-white shrink-0" />
-                <span>Download CV</span>
-              </a>
-
-              <button
-                onClick={() => setShowHireModal(true)}
-                className="px-3.5 py-2.5 rounded-full bg-[#180e2f] hover:bg-[#20133e] text-purple-200 border border-purple-700/50 hover:border-purple-400 font-semibold text-xs tracking-wide transition-all cursor-pointer text-center whitespace-nowrap"
-              >
-                Hire Me
-              </button>
-            </div>
-
-            <a
-              href="https://behance.net/sksolutions"
-              target="_blank"
-              rel="noreferrer"
-              className="w-full px-4 py-2.5 rounded-full bg-[#120a22] hover:bg-[#1b0e33] text-zinc-300 border border-purple-900/40 hover:border-purple-500/50 font-semibold text-xs tracking-wide transition-all flex items-center justify-center gap-1.5 whitespace-nowrap"
-            >
-              <span className="font-bold text-purple-400">Bē</span>
-              <span>Behance Portfolio</span>
-            </a>
-          </div>
-        </motion.div>
-      </motion.section>
-
-      {/* ======================================================== */}
-      {/* 3. INFINITE MARQUEE TICKER                                */}
-      {/* ======================================================== */}
-      <motion.div
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-40px" }}
-        className="w-full bg-[#0d071d] border-y border-purple-900/40 py-5 overflow-hidden relative z-20"
-      >
-        <div className="animate-marquee whitespace-nowrap flex items-center gap-12 font-display text-sm sm:text-base font-extrabold uppercase tracking-widest text-zinc-200">
-          {[...Array(4)].map((_, i) => (
-            <React.Fragment key={i}>
-              <span className="hover:text-purple-400 transition-colors">WORDPRESS</span>
-              <span className="text-purple-500">✱</span>
-              <span className="hover:text-purple-400 transition-colors">SHOPIFY</span>
-              <span className="text-purple-500">✱</span>
-              <span className="hover:text-purple-400 transition-colors">CUSTOM WEB</span>
-              <span className="text-purple-500">✱</span>
-              <span className="hover:text-purple-400 transition-colors">AI DEVELOPMENT</span>
-              <span className="text-purple-500">✱</span>
-              <span className="hover:text-purple-400 transition-colors">GRAPHIC DESIGN</span>
-              <span className="text-purple-500">✱</span>
-              <span className="hover:text-purple-400 transition-colors">UI/UX</span>
-              <span className="text-purple-500">✱</span>
-            </React.Fragment>
-          ))}
-        </div>
-      </motion.div>
-
-      {/* ======================================================== */}
-      {/* 4. ABOUT SECTION                                         */}
-      {/* ======================================================== */}
-      <motion.section
-        id="about"
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-80px" }}
-        className="py-12 sm:py-24 max-w-4xl mx-auto px-4 sm:px-6 text-center"
-      >
-        <div className="inline-block px-4 py-1 rounded-full bg-purple-950/50 border border-purple-800/40 text-purple-400 text-xs font-semibold tracking-wider uppercase mb-5 sm:mb-8">
-          ABOUT SHAKEEB KHAN
-        </div>
-
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display leading-relaxed text-zinc-100 max-w-3xl mx-auto">
-          Hello, I&apos;m <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-indigo-300 to-white">Shakeeb Ahmed Khan</span>, a 26-year-old{" "}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-indigo-300 to-purple-200 underline decoration-purple-500/50 underline-offset-4">
-            WordPress, AI, and Custom Developer
-          </span>{" "}
-          with 7+ years of experience and 150+ projects successfully delivered. With added expertise in graphic design, I combine technical and creative skills to deliver impactful results.
-        </h2>
-
-        {/* Quick Contact & Credentials Pill Matrix (Mobile vs Desktop responsive numbers and emails) */}
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 text-xs sm:text-sm font-medium text-zinc-300 max-w-xl mx-auto">
-          {/* Mobile-Only Email */}
-          <a
-            href="mailto:shakeebkhanstudio@gmail.com"
-            className="sm:hidden flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-purple-950/40 border border-purple-800/40 hover:border-purple-400 text-purple-300 transition-all"
-          >
-            <Mail className="w-3.5 h-3.5 shrink-0" />
-            <span>shakeebkhanstudio@gmail.com</span>
-          </a>
-          {/* Desktop-Only Email */}
-          <a
-            href="mailto:shakeebahmedk24@gmail.com"
-            className="hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-xl bg-purple-950/40 border border-purple-800/40 hover:border-purple-400 text-purple-300 transition-all hover:bg-purple-900/30"
-          >
-            <Mail className="w-3.5 h-3.5 shrink-0" />
-            <span>shakeebahmedk24@gmail.com</span>
-          </a>
-
-          {/* Mobile-Only Phone */}
-          <a
-            href="tel:923363445281"
-            className="sm:hidden flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-purple-950/40 border border-purple-800/40 hover:border-purple-400 text-purple-300 transition-all"
-          >
-            <Phone className="w-3.5 h-3.5 shrink-0" />
-            <span>+92-336-3445281</span>
-          </a>
-          {/* Desktop-Only Phone */}
-          <a
-            href="tel:+923320203701"
-            className="hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-xl bg-purple-950/40 border border-purple-800/40 hover:border-purple-400 text-purple-300 transition-all hover:bg-purple-900/30"
-          >
-            <Phone className="w-3.5 h-3.5 shrink-0" />
-            <span>+92-332-0203701</span>
-          </a>
-
-          <span className="flex items-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-xl bg-purple-950/40 border border-purple-800/40 text-zinc-400">
-            <MapPin className="w-3.5 h-3.5 text-purple-400 shrink-0" />
-            <span>Karachi, Pakistan</span>
-          </span>
-        </div>
-
-        <div className="mt-8">
-          <button
-            onClick={() => scrollToSection("works")}
-            className="inline-flex items-center gap-2 text-sm font-semibold text-zinc-300 hover:text-purple-400 transition-colors group cursor-pointer"
-          >
-            <span>Explore my portfolio & client showcase</span>
-            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1 text-purple-400" />
-          </button>
-        </div>
-      </motion.section>
-
-      {/* ======================================================== */}
-      {/* 5. SERVICES SECTION                                      */}
-      {/* ======================================================== */}
-      <motion.section
-        id="services"
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-80px" }}
-        className="py-10 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
-      >
-        <div className="text-left mb-6 sm:mb-12">
-          <div className="inline-block px-4 py-1 rounded-full bg-purple-950/50 border border-purple-800/40 text-purple-400 text-xs font-semibold tracking-wider uppercase mb-2 sm:mb-3">
-            SERVICES
-          </div>
-          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold font-display text-white tracking-tight">
-            What we are offering
-          </h2>
-        </div>
-        {/* 4 Service Cards Grid - 2 columns on mobile, 4 on desktop */}
-        <motion.div
-          variants={cardStaggerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6"
-        >
-          {[
-            {
-              icon: Code,
-              title: "WordPress Development",
-              shortDesc: "Custom themes, Elementor Pro & speed optimization.",
-              desc: "Custom WordPress themes, Elementor Pro design, Advanced Custom Fields (ACF), WooCommerce stores, and speed optimization for high conversion."
-            },
-            {
-              icon: Layout,
-              title: "Shopify Customization",
-              shortDesc: "Tailored Liquid coding, stores & high conversion.",
-              desc: "Tailored Shopify stores, custom Liquid coding, checkout optimization, responsive product layouts, and payment gateway integration."
-            },
-            {
-              icon: TrendingUp,
-              title: "Custom & AI Web Apps",
-              shortDesc: "Interactive React apps & smart AI integrations.",
-              desc: "Clean HTML5, CSS3, JavaScript, PHP & MySQL development, interactive web applications, and smart AI-powered feature integrations."
-            },
-            {
-              icon: PenTool,
-              title: "Graphic & UI/UX Design",
-              shortDesc: "Logos, brand identity & clean UI/UX assets.",
-              desc: "Brand identity, logos, Adobe Photoshop & Illustrator assets, Canva Pro creations, social media collateral, and clean user experience."
-            }
-          ].map((srv, idx) => (
-            <motion.div
-              key={idx}
-              variants={itemFadeUpVariants}
-              whileHover={{ y: -6, transition: { duration: 0.25 } }}
-              className="bg-[#120a22] hover:bg-[#180e2f] border border-purple-900/30 hover:border-purple-500/50 rounded-xl sm:rounded-2xl p-3.5 sm:p-7 transition-all duration-300 flex flex-col justify-between group shadow-xl relative overflow-hidden"
-            >
-              <div className="absolute top-0 right-0 w-24 sm:w-32 h-24 sm:h-32 bg-purple-600/5 rounded-full blur-2xl group-hover:bg-purple-600/15 transition-all" />
-
-              <div>
-                <div className="w-8 h-8 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-purple-600/20 border border-purple-500/30 flex items-center justify-center text-purple-400 mb-2.5 sm:mb-6 group-hover:scale-110 group-hover:bg-purple-600 group-hover:text-white transition-all duration-300 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
-                  <srv.icon className="w-4 h-4 sm:w-6 sm:h-6" />
-                </div>
-                <h3 className="text-xs sm:text-xl font-bold font-display text-white mb-1.5 sm:mb-3 group-hover:text-purple-300 transition-colors leading-tight">
-                  {srv.title}
-                </h3>
-                {/* Short text on mobile, full text on desktop */}
-                <p className="sm:hidden text-[11px] text-zinc-400 leading-snug font-sans line-clamp-2">
-                  {srv.shortDesc}
-                </p>
-                <p className="hidden sm:block text-xs sm:text-sm text-zinc-400 leading-relaxed font-sans">
-                  {srv.desc}
-                </p>
-              </div>
-
-              <div className="mt-3 sm:mt-6 pt-2 sm:pt-4 border-t border-purple-900/20 flex items-center text-[10px] sm:text-xs font-semibold text-purple-400 group-hover:text-white transition-colors">
-                <span>Learn More</span>
-                <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 ml-0.5 sm:ml-1 transition-transform group-hover:translate-x-1" />
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-      </motion.section>
-
-      {/* ======================================================== */}
-      {/* 6. WEBSITES & PRODUCTION PORTFOLIO (Home Preview: 6 Items) */}
-      {/* ======================================================== */}
-      <motion.div
-        id="works"
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-60px" }}
-        className="scroll-mt-24"
-      >
-        <div id="web-portfolio">
-          <WebsitePortfolio
-            isHomePage={true}
-            onShowMore={() => navigateToPage("websites")}
-          />
-        </div>
-      </motion.div>
-
-      {/* ======================================================== */}
-      {/* 7. GRAPHICS, BRAND IDENTITY & MOBILE UI PORTFOLIO (Home Preview: 6 Items) */}
-      {/* ======================================================== */}
-      <motion.div
-        id="graphics-portfolio"
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-60px" }}
-        className="scroll-mt-24"
-      >
-        <GraphicsPortfolio
-          isHomePage={true}
-          onShowMore={() => navigateToPage("graphics")}
-        />
-      </motion.div>
-
-      {/* ======================================================== */}
-      {/* 7. EDUCATION & WORK EXPERIENCE                           */}
-      {/* ======================================================== */}
-      <motion.section
-        id="resume"
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-80px" }}
-        className="py-12 sm:py-24 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8"
-      >
-        <div className="text-left mb-8 sm:mb-16">
-          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold font-display text-white tracking-tight">
-            Education & Work Experience
-          </h2>
-        </div>
-
-        <div className="space-y-8 sm:space-y-16">
-          {/* Sub-Group 1: EXPERIENCE */}
-          <div className="space-y-6">
-            <div className="inline-block px-3.5 py-1 rounded-full bg-purple-950/60 border border-purple-800/40 text-purple-300 text-[11px] font-bold tracking-widest uppercase">
-              EXPERIENCE
-            </div>
-
-            <div className="space-y-6">
-              {[
-                {
-                  company: "BRANDILYST (REMOTE)",
-                  role: "SENIOR WORDPRESS DEVELOPER",
-                  period: "2025 - 2026",
-                  iconColor: "text-purple-400 bg-purple-500/10 border-purple-500/30",
-                  desc: "Enterprise WordPress architecture, bespoke theme engineering, WooCommerce platforms, advanced performance optimization, and client delivery."
-                },
-                {
-                  company: "CONTACT VA (REMOTE)",
-                  role: "SENIOR WORDPRESS DEVELOPER",
-                  period: "2023 - 2025",
-                  iconColor: "text-indigo-400 bg-indigo-500/10 border-indigo-500/30",
-                  desc: "Custom web development, Elementor Pro design systems, speed tuning, automated workflows, and complex third-party API integrations."
-                },
-                {
-                  company: "NEHAL SOLUTIONS (PROJECT BASED)",
-                  role: "SENIOR WORDPRESS DEVELOPER",
-                  period: "2022 - 2023",
-                  iconColor: "text-sky-400 bg-sky-500/10 border-sky-500/30",
-                  desc: "High-impact client web applications, custom plugin integrations, responsive layouts, and cross-browser performance benchmarks."
-                },
-                {
-                  company: "FLYHIDIGITAL (PROJECT BASED)",
-                  role: "SENIOR WORDPRESS DEVELOPER",
-                  period: "2021 - 2022",
-                  iconColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/30",
-                  desc: "High-conversion digital marketing web platforms, interactive sales funnels, and CMS customization for global clients."
-                },
-                {
-                  company: "TECH REMEDYS (REMOTE - JOB)",
-                  role: "WORDPRESS DEVELOPER & GRAPHIC DESIGNER",
-                  period: "2020 - 2021",
-                  iconColor: "text-amber-400 bg-amber-500/10 border-amber-500/30",
-                  desc: "End-to-end WordPress websites, UI mockups, brand collateral, marketing graphics, and visual design assets using Adobe Suite."
-                },
-                {
-                  company: "IT CONCEPTS (ONSITE - JOB)",
-                  role: "WORDPRESS DEVELOPER & GRAPHIC DESIGNER",
-                  period: "2019 - 2020",
-                  iconColor: "text-rose-400 bg-rose-500/10 border-rose-500/30",
-                  desc: "Responsive website design, theme customization, graphic design assets, logos, and UI optimization."
-                }
-              ].map((item, idx) => (
-                <div
-                  key={idx}
-                  className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 rounded-2xl bg-[#120a22]/70 hover:bg-[#180e2f] border border-purple-900/30 hover:border-purple-500/40 transition-all duration-300"
-                >
-                  <div className="flex items-start gap-4">
-                    <div
-                      className={`w-11 h-11 rounded-xl flex items-center justify-center border font-bold text-sm shrink-0 ${item.iconColor}`}
-                    >
-                      <Briefcase className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h3 className="text-base font-bold font-display text-white tracking-wide">
-                        {item.role}
-                      </h3>
-                      <span className="text-xs font-semibold text-purple-400 uppercase tracking-wider block mb-1">
-                        {item.company}
-                      </span>
-                      <p className="text-xs text-zinc-400 max-w-xl leading-relaxed">
-                        {item.desc}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="text-xs font-mono font-medium text-zinc-400 whitespace-nowrap pl-14 sm:pl-0">
-                    {item.period}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Sub-Group 2: EDUCATION */}
-          <div className="space-y-6">
-            <div className="inline-block px-3.5 py-1 rounded-full bg-purple-950/60 border border-purple-800/40 text-purple-300 text-[11px] font-bold tracking-widest uppercase">
-              EDUCATION
-            </div>
-
-            <div className="space-y-6">
-              {[
-                {
-                  school: "UNIVERSITY OF KARACHI",
-                  degree: "BACHELORS OF COMPUTER SCIENCE (BSCS)",
-                  period: "2019 - 2023",
-                  iconColor: "text-sky-400 bg-sky-500/10 border-sky-500/30",
-                  desc: "Four-year comprehensive computer science degree with rigorous grounding in software engineering, algorithms, database systems, and web architecture."
-                },
-                {
-                  school: "APTECH COMPUTER EDUCATION",
-                  degree: "ADSE DIPLOMA (ADVANCED DIPLOMA IN SOFTWARE ENGINEERING)",
-                  period: "2018 - 2022",
-                  iconColor: "text-indigo-400 bg-indigo-500/10 border-indigo-500/30",
-                  desc: "Industry-standard software engineering diploma covering modern programming languages, database architecture, and full-stack development."
-                }
-              ].map((item, idx) => (
-                <div
-                  key={idx}
-                  className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 rounded-2xl bg-[#120a22]/70 hover:bg-[#180e2f] border border-purple-900/30 hover:border-purple-500/40 transition-all duration-300"
-                >
-                  <div className="flex items-start gap-4">
-                    <div
-                      className={`w-11 h-11 rounded-xl flex items-center justify-center border font-bold text-sm shrink-0 ${item.iconColor}`}
-                    >
-                      <GraduationCap className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h3 className="text-base font-bold font-display text-white tracking-wide">
-                        {item.school}
-                      </h3>
-                      <span className="text-xs font-semibold text-purple-400 uppercase tracking-wider block mb-1">
-                        {item.degree}
-                      </span>
-                      <p className="text-xs text-zinc-400 max-w-xl leading-relaxed">
-                        {item.desc}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="text-xs font-mono font-medium text-zinc-400 whitespace-nowrap pl-15 sm:pl-0">
-                    {item.period}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Sub-Group 3: AWARDS & ACHIEVEMENTS */}
-          <div className="space-y-6">
-            <div className="inline-block px-3.5 py-1 rounded-full bg-purple-950/60 border border-purple-800/40 text-purple-300 text-[11px] font-bold tracking-widest uppercase">
-              KEY ACHIEVEMENTS & MILESTONES
-            </div>
-
-            <div className="space-y-6">
-              {[
-                {
-                  award: "150+ COMPLETED PROJECTS",
-                  category: "GLOBAL CLIENT DELIVERY",
-                  year: "2018 - 2026",
-                  iconColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/30",
-                  desc: "Proven track record delivering reliable, performant websites and brand identities for international businesses and brands."
-                },
-                {
-                  award: "TOP RATED FREELANCER",
-                  category: "FIVERR & BEHANCE",
-                  year: "2021 - 2026",
-                  iconColor: "text-amber-400 bg-amber-500/10 border-amber-500/30",
-                  desc: "Maintained a 100% client satisfaction record with 5-star reviews on freelance platforms and direct client partnerships."
-                },
-                {
-                  award: "7+ YEARS EXPERIENCE",
-                  category: "WORDPRESS, AI & GRAPHIC DESIGN",
-                  year: "2018 - 2026",
-                  iconColor: "text-purple-400 bg-purple-500/10 border-purple-500/30",
-                  desc: "Harmonizing deep technical web development with creative visual identity, UI/UX optimization, and AI tooling."
-                }
-              ].map((item, idx) => (
-                <div
-                  key={idx}
-                  className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 rounded-2xl bg-[#120a22]/70 hover:bg-[#180e2f] border border-purple-900/30 hover:border-purple-500/40 transition-all duration-300"
-                >
-                  <div className="flex items-start gap-4">
-                    <div
-                      className={`w-11 h-11 rounded-xl flex items-center justify-center border font-bold text-sm shrink-0 ${item.iconColor}`}
-                    >
-                      <Award className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h3 className="text-base font-bold font-display text-white tracking-wide">
-                        {item.award}
-                      </h3>
-                      <span className="text-xs font-semibold text-purple-400 uppercase tracking-wider block mb-1">
-                        {item.category}
-                      </span>
-                      <p className="text-xs text-zinc-400 max-w-xl leading-relaxed">
-                        {item.desc}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="text-xs font-mono font-medium text-zinc-400 whitespace-nowrap pl-14 sm:pl-0">
-                    {item.year}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </motion.section>
-
-      {/* ======================================================== */}
-      {/* 8. SKILLS SECTION ("My Core Tech Stack & Tools")         */}
-      {/* ======================================================== */}
-      <motion.section
-        id="skills"
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-80px" }}
-        className="py-10 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 font-jakarta"
-      >
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-6 sm:mb-12 text-left">
-          <div>
-            <div className="inline-block px-4 py-1 rounded-full bg-purple-950/60 border border-purple-800/40 text-purple-400 text-xs font-semibold tracking-wider uppercase mb-2 sm:mb-3">
-              SKILLS & EXPERTISE
-            </div>
-            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold font-jakarta text-white tracking-tight">
-              My Core Tech Stack & Tools
-            </h2>
-          </div>
-
-          {/* Category Filter Tabs */}
-          <div className="flex items-center gap-2 bg-[#120a22]/80 p-1.5 rounded-xl border border-purple-900/40 self-stretch sm:self-auto overflow-x-auto no-scrollbar max-w-full">
-            <button
-              onClick={() => setActiveSkillCategory("all")}
-              className={`px-4 py-2 rounded-lg text-xs font-semibold font-jakarta transition-all cursor-pointer shrink-0 whitespace-nowrap ${
-                activeSkillCategory === "all"
-                  ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-950/50"
-                  : "text-zinc-400 hover:text-white hover:bg-purple-900/30"
-              }`}
-            >
-              All Stack (8)
-            </button>
-            <button
-              onClick={() => setActiveSkillCategory("design")}
-              className={`px-4 py-2 rounded-lg text-xs font-semibold font-jakarta transition-all cursor-pointer shrink-0 whitespace-nowrap ${
-                activeSkillCategory === "design"
-                  ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-950/50"
-                  : "text-zinc-400 hover:text-white hover:bg-purple-900/30"
-              }`}
-            >
-              UI/UX & Design
-            </button>
-            <button
-              onClick={() => setActiveSkillCategory("dev")}
-              className={`px-4 py-2 rounded-lg text-xs font-semibold font-jakarta transition-all cursor-pointer shrink-0 whitespace-nowrap ${
-                activeSkillCategory === "dev"
-                  ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-950/50"
-                  : "text-zinc-400 hover:text-white hover:bg-purple-900/30"
-              }`}
-            >
-              Web & Full-Stack
-            </button>
-          </div>
-        </div>
-
-        {/* Skill Cards Grid: 2 in a row on mobile, hide long descriptions on mobile */}
-        <motion.div
-          variants={cardStaggerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6"
-        >
-          {[
-            {
-              id: "figma",
-              name: "Figma",
-              category: "design",
-              percent: 92,
-              desc: "I have had the opportunity to work on several projects.",
-              icon: (
-                <svg className="w-5 h-7 sm:w-6 sm:h-8 shrink-0" viewBox="0 0 38 57" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M19 28.5C19 23.2533 23.2533 19 28.5 19C33.7467 19 38 23.2533 38 28.5C38 33.7467 33.7467 38 28.5 38C23.2533 38 19 33.7467 19 28.5Z" fill="#1ABCFE"/>
-                  <path d="M0 47.5C0 42.2533 4.25329 38 9.5 38H19V47.5C19 52.7467 14.7467 57 9.5 57C4.25329 57 0 52.7467 0 47.5Z" fill="#0ACF83"/>
-                  <path d="M19 0V19H28.5C33.7467 19 38 14.7467 38 9.5C38 4.25329 33.7467 0 28.5 0H19Z" fill="#FF7262"/>
-                  <path d="M0 9.5C0 14.7467 4.25329 19 9.5 19H19V0H9.5C4.25329 0 0 4.25329 0 9.5Z" fill="#F24E1E"/>
-                  <path d="M0 28.5C0 33.7467 4.25329 38 9.5 38H19V19H9.5C4.25329 19 0 23.2533 0 28.5Z" fill="#A259FF"/>
-                </svg>
-              )
-            },
-            {
-              id: "sketch",
-              name: "Sketch",
-              category: "design",
-              percent: 80,
-              desc: "I have had the opportunity to work on several projects.",
-              icon: (
-                <svg className="w-6 h-6 sm:w-8 sm:h-8 shrink-0" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M7.7 4.8L2.5 11.2L16 27.2L29.5 11.2L24.3 4.8H7.7Z" fill="#EA6C00"/>
-                  <path d="M7.7 4.8L16 27.2L24.3 4.8H7.7Z" fill="#FDB300"/>
-                  <path d="M16 4.8L11.5 11.2L16 27.2L20.5 11.2L16 4.8Z" fill="#FDD231"/>
-                  <path d="M2.5 11.2H29.5L16 27.2L2.5 11.2Z" fill="#EA6C00" fillOpacity="0.2"/>
-                  <path d="M7.7 4.8L11.5 11.2H2.5L7.7 4.8Z" fill="#FDAD00"/>
-                  <path d="M24.3 4.8L20.5 11.2H29.5L24.3 4.8Z" fill="#FDAD00"/>
-                  <path d="M16 4.8L11.5 11.2H20.5L16 4.8Z" fill="#FEEEB7"/>
-                </svg>
-              )
-            },
-            {
-              id: "xd",
-              name: "XD",
-              category: "design",
-              percent: 85,
-              desc: "I have had the opportunity to work on several projects.",
-              icon: (
-                <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-[#470137] border border-[#FF61F6]/60 flex items-center justify-center font-bold text-[10px] sm:text-xs text-[#FF61F6] tracking-tighter shadow-sm select-none shrink-0">
-                  Xd
-                </div>
-              )
-            },
-            {
-              id: "wordpress",
-              name: "WordPress",
-              category: "dev",
-              percent: 99,
-              desc: "I have had the opportunity to work on several projects.",
-              icon: (
-                <svg className="w-6 h-6 sm:w-8 sm:h-8 shrink-0 text-[#21759B]" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M21.469 6.825c.84 1.537 1.318 3.3 1.318 5.175c0 3.979-2.156 7.456-5.363 9.325l3.295-9.527c.615-1.54.82-2.771.82-3.864c0-.405-.026-.78-.07-1.11m-7.981.105c.647-.03 1.232-.105 1.232-.105c.582-.075.514-.93-.067-.899c0 0-1.755.135-2.88.135c-1.064 0-2.85-.15-2.85-.15c-.585-.03-.661.855-.075.885c0 0 .54.061 1.125.09l1.68 4.605l-2.37 7.08L5.354 6.9c.649-.03 1.234-.1 1.234-.1c.585-.075.516-.93-.065-.896c0 0-1.746.138-2.874.138c-.2 0-.438-.008-.69-.015C4.911 3.15 8.235 1.215 12 1.215c2.809 0 5.365 1.072 7.286 2.833c-.046-.003-.091-.009-.141-.009c-1.06 0-1.812.923-1.812 1.914c0 .89.513 1.643 1.06 2.531c.411.72.89 1.643.89 2.977c0 .915-.354 1.994-.821 3.479l-1.075 3.585l-3.9-11.61zM12 22.784c-1.059 0-2.081-.153-3.048-.437l3.237-9.406l3.315 9.087q.036.078.078.149c-1.12.393-2.325.609-3.582.609M1.211 12c0-1.564.336-3.05.935-4.39L7.29 21.709A10.79 10.79 0 0 1 1.211 12M12 0C5.385 0 0 5.385 0 12s5.385 12 12 12s12-5.385 12-12S18.615 0 12 0" />
-                </svg>
-              )
-            },
-            {
-              id: "react",
-              name: "React.js",
-              category: "dev",
-              percent: 94,
-              desc: "I have had the opportunity to work on several projects.",
-              icon: (
-                <svg className="w-6 h-6 sm:w-8 sm:h-8 shrink-0" viewBox="0 0 115 102" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="57.5" cy="51" r="9" fill="#61DAFB"/>
-                  <ellipse cx="57.5" cy="51" rx="50" ry="19.5" stroke="#61DAFB" strokeWidth="4"/>
-                  <ellipse cx="57.5" cy="51" rx="50" ry="19.5" stroke="#61DAFB" strokeWidth="4" transform="rotate(60 57.5 51)"/>
-                  <ellipse cx="57.5" cy="51" rx="50" ry="19.5" stroke="#61DAFB" strokeWidth="4" transform="rotate(120 57.5 51)"/>
-                </svg>
-              )
-            },
-            {
-              id: "nextjs",
-              name: "Next.js",
-              category: "dev",
-              percent: 90,
-              desc: "I have had the opportunity to work on several projects.",
-              icon: (
-                <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-white flex items-center justify-center shrink-0 shadow-sm">
-                  <svg className="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path fillRule="evenodd" clipRule="evenodd" d="M125.7 143.6L63.8 63.8V144H51.4V40H63.8L126.8 121.2V40H139.2V143.6H125.7Z" fill="black"/>
-                  </svg>
-                </div>
-              )
-            },
-            {
-              id: "tailwind",
-              name: "Tailwind CSS",
-              category: "dev",
-              percent: 96,
-              desc: "I have had the opportunity to work on several projects.",
-              icon: (
-                <svg className="w-6 h-6 sm:w-8 sm:h-8 shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12.001 4.8c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624C13.666 10.618 15.027 12 18.001 12c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C16.336 6.182 14.975 4.8 12.001 4.8zm-6 7.2c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624 1.177 1.194 2.538 2.576 5.512 2.576 3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C10.336 13.382 8.975 12 6.001 12z" fill="#38BDF8"/>
-                </svg>
-              )
-            },
-            {
-              id: "photoshop",
-              name: "Photoshop",
-              category: "design",
-              percent: 92,
-              desc: "I have had the opportunity to work on several projects.",
-              icon: (
-                <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-[#001E36] border border-[#31A8FF]/60 flex items-center justify-center font-bold text-[10px] sm:text-xs text-[#31A8FF] tracking-tighter shadow-sm select-none shrink-0">
-                  Ps
-                </div>
-              )
-            }
-          ]
-            .filter((skill) => activeSkillCategory === "all" || skill.category === activeSkillCategory)
-            .map((skill, idx) => (
-              <motion.div
-                key={skill.id}
-                variants={itemFadeUpVariants}
-                whileHover={{ y: -6 }}
-                className="bg-[#120d22] border border-purple-900/30 hover:border-purple-500/50 rounded-2xl sm:rounded-3xl p-3.5 sm:p-7 transition-all duration-300 shadow-xl flex flex-col justify-between group"
-              >
-                <div>
-                  <div className="flex items-center gap-2 sm:gap-4 mb-2 sm:mb-4">
-                    {skill.icon}
-                    <h3 className="text-sm sm:text-2xl font-bold font-jakarta text-white tracking-tight truncate">
-                      {skill.name}
-                    </h3>
-                  </div>
-
-                  <p className="hidden md:block text-sm text-zinc-300 leading-relaxed font-jakarta mb-8">
-                    {skill.desc}
-                  </p>
-                </div>
-
-                {/* Percentage & Solid White Progress Bar matching screenshot */}
-                <div className="mt-2 sm:mt-auto">
-                  <div className="flex items-center justify-end mb-1 sm:mb-2.5">
-                    <span className="text-xs sm:text-sm font-bold font-jakarta text-white tracking-wide">
-                      {skill.percent}%
-                    </span>
-                  </div>
-                  <div className="w-full h-1 sm:h-1 bg-[#251f38] rounded-full overflow-hidden">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${skill.percent}%` }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1.1, delay: 0.15 + idx * 0.08, ease: "easeOut" }}
-                      className="h-full bg-white rounded-full"
-                    />
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-        </motion.div>
-      </motion.section>
-
-      {/* ======================================================== */}
-      {/* 9. NUMBERS / MEASURING SUCCESS (Hidden on mobile devices) */}
-      {/* ======================================================== */}
-      <motion.section
-        id="numbers"
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-80px" }}
-        className="relative my-12 py-16 px-4 sm:px-6 lg:px-8 border-y border-purple-900/40 overflow-hidden hidden md:block"
-      >
-        {/* Fiber Streak Background */}
-        <div className="absolute inset-0 z-0">
-          <img
-            src="/gerold/fiber_streak_bg.jpg"
-            alt="Measuring Success Background"
-            className="w-full h-full object-cover opacity-60 filter brightness-90 contrast-125"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#07030e] via-[#07030e]/85 to-[#07030e]/70" />
-        </div>
-
-        <div className="max-w-7xl mx-auto relative z-10 flex flex-col lg:flex-row items-center justify-between gap-12">
-          {/* Left Title */}
-          <div className="text-left max-w-md">
-            <div className="inline-block px-3.5 py-1 rounded-full bg-purple-950/80 border border-purple-800/40 text-purple-300 text-xs font-bold tracking-wider uppercase mb-4">
-              NUMBERS
-            </div>
-            <h2 className="text-4xl sm:text-5xl font-black font-display text-white tracking-tight leading-tight">
-              Measuring Success <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-200">
-                byNumbers
-              </span>
-            </h2>
-          </div>
-
-          {/* Right 4 Metric Blocks */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 w-full lg:w-auto">
-            <div className="bg-[#120a22]/85 border border-purple-900/50 rounded-2xl p-6 text-left backdrop-blur-md">
-              <div className="text-3xl sm:text-4xl font-black font-display text-white tracking-tight mb-1">
-                150+
-              </div>
-              <div className="text-xs text-zinc-400 font-medium leading-tight">
-                Projects Completed
-              </div>
-            </div>
-
-            <div className="bg-[#120a22]/85 border border-purple-900/50 rounded-2xl p-6 text-left backdrop-blur-md">
-              <div className="text-3xl sm:text-4xl font-black font-display text-white tracking-tight mb-1">
-                7+
-              </div>
-              <div className="text-xs text-zinc-400 font-medium leading-tight">
-                Years of Experience
-              </div>
-            </div>
-
-            <div className="bg-[#120a22]/85 border border-purple-900/50 rounded-2xl p-6 text-left backdrop-blur-md">
-              <div className="text-3xl sm:text-4xl font-black font-display text-white tracking-tight mb-1">
-                100+
-              </div>
-              <div className="text-xs text-zinc-400 font-medium leading-tight">
-                5-Star Reviews
-              </div>
-            </div>
-
-            <div className="bg-[#120a22]/85 border border-purple-900/50 rounded-2xl p-6 text-left backdrop-blur-md">
-              <div className="text-3xl sm:text-4xl font-black font-display text-white tracking-tight mb-1">
-                100%
-              </div>
-              <div className="text-xs text-zinc-400 font-medium leading-tight">
-                Success Rate
-              </div>
-            </div>
-          </div>
-        </div>
-      </motion.section>
-
-      {/* ======================================================== */}
-      {/* 10. TESTIMONIALS                                         */}
-      {/* ======================================================== */}
-      <motion.section
-        id="testimonials"
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-80px" }}
-        className="pt-8 pb-4 sm:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
-      >
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-6 sm:mb-12 text-left">
-          <div>
-            <div className="inline-block px-4 py-1 rounded-full bg-purple-950/50 border border-purple-800/40 text-purple-400 text-xs font-semibold tracking-wider uppercase mb-2 sm:mb-3">
-              CLIENT TESTIMONIALS
-            </div>
-            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold font-display text-white tracking-tight">
-              What Verified Clients Say
-            </h2>
-            <p className="text-zinc-400 text-xs sm:text-sm mt-1.5 sm:mt-2 max-w-xl">
-              Authentic feedback from founders, executives, and agency partners on e-commerce, custom WordPress engineering, and design systems.
-            </p>
-          </div>
-
-          {/* Testimonial Page Navigation Controls (Desktop only) */}
-          <div className="hidden md:flex items-center gap-3">
-            <span className="text-xs font-mono text-zinc-400">
-              Page {testimonialIndex + 1} of {Math.ceil(testimonials.length / 3)}
-            </span>
-            <div className="flex items-center gap-1.5">
-              <button
-                onClick={() => setTestimonialIndex((prev) => (prev > 0 ? prev - 1 : Math.ceil(testimonials.length / 3) - 1))}
-                className="p-2.5 rounded-full bg-[#120a22] border border-purple-800/40 hover:border-purple-400 text-purple-300 hover:text-white transition-all cursor-pointer shadow-md"
-                aria-label="Previous testimonials"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => setTestimonialIndex((prev) => (prev < Math.ceil(testimonials.length / 3) - 1 ? prev + 1 : 0))}
-                className="p-2.5 rounded-full bg-[#120a22] border border-purple-800/40 hover:border-purple-400 text-purple-300 hover:text-white transition-all cursor-pointer shadow-md"
-                aria-label="Next testimonials"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile Single-Line Infinite Marquee */}
-        <div className="md:hidden overflow-hidden -mx-4 px-4 py-1 relative">
-          <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-[#07030e] to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#07030e] to-transparent z-10 pointer-events-none" />
-
-          <div className="flex gap-3.5 animate-marquee w-max py-1">
-            {[...testimonials, ...testimonials].map((t, idx) => (
-              <div
-                key={idx}
-                className="w-[280px] shrink-0 bg-[#120a22]/95 border border-purple-900/50 rounded-2xl p-4 text-left flex flex-col justify-between shadow-lg"
-              >
-                <div>
-                  <div className="flex items-center justify-between gap-1 mb-2">
-                    <div className="flex items-center text-purple-400 gap-0.5">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-3 h-3 fill-current" />
-                      ))}
-                    </div>
-                    {t.metric && (
-                      <span className="text-[9px] font-mono font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-800/50 px-1.5 py-0.5 rounded-full">
-                        {t.metric}
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-xs text-zinc-300 line-clamp-3 leading-relaxed mb-3">
-                    &ldquo;{t.quote}&rdquo;
-                  </p>
-                </div>
-                <div className="flex items-center gap-2.5 pt-2 border-t border-purple-900/30">
-                  <img
-                    src={t.avatar}
-                    alt={t.name}
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80";
-                    }}
-                    className="w-8 h-8 rounded-full object-cover border border-purple-500/40 shrink-0"
+                  <span>Services</span>
+                  <ChevronDown
+                    className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                      openDesktopDropdown === "services" ? "rotate-180 text-[#5b21b6]" : ""
+                    }`}
                   />
-                  <div className="min-w-0">
-                    <h4 className="text-xs font-bold text-white truncate">{t.name}</h4>
-                    <p className="text-[10px] text-purple-300/80 truncate">{t.role}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Testimonials 3 Cards Grid (Desktop Paginated) */}
-        <div className="hidden md:grid md:grid-cols-3 gap-6">
-          {testimonials.slice(testimonialIndex * 3, testimonialIndex * 3 + 3).map((t, idx) => (
-            <motion.div
-              key={`${testimonialIndex}-${idx}`}
-              variants={itemFadeUpVariants}
-              initial="hidden"
-              animate="visible"
-              className="bg-[#120a22] border border-purple-900/40 hover:border-purple-600/50 transition-all rounded-2xl p-7 text-left flex flex-col justify-between shadow-xl relative group"
-            >
-              <div>
-                {/* Header: 5 Stars + Project Impact Pill */}
-                <div className="flex items-center justify-between gap-2 mb-4">
-                  <div className="flex items-center text-purple-400 gap-1">
-                    <Star className="w-3.5 h-3.5 fill-current" />
-                    <Star className="w-3.5 h-3.5 fill-current" />
-                    <Star className="w-3.5 h-3.5 fill-current" />
-                    <Star className="w-3.5 h-3.5 fill-current" />
-                    <Star className="w-3.5 h-3.5 fill-current" />
-                  </div>
-                  {t.metric && (
-                    <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-800/50 px-2 py-0.5 rounded-full">
-                      {t.metric}
-                    </span>
-                  )}
-                </div>
-
-                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-jakarta mb-6">
-                  &ldquo;{t.quote}&rdquo;
-                </p>
-              </div>
-
-              {/* Author profile & Project context */}
-              <div className="pt-4 border-t border-purple-900/30 space-y-2">
-                <div className="flex items-center gap-3">
-                  <img
-                    src={t.avatar}
-                    alt={t.name}
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80";
-                    }}
-                    className="w-11 h-11 rounded-full object-cover border border-purple-500/40 shadow-sm"
-                  />
-                  <div>
-                    <h4 className="text-sm font-bold font-display text-white">
-                      {t.name}
-                    </h4>
-                    <p className="text-xs text-purple-300/80 font-jakarta">{t.role}</p>
-                  </div>
-                </div>
-                {t.project && (
-                  <div className="text-[11px] font-jakarta text-zinc-400 pt-1">
-                    <span className="text-zinc-500 uppercase tracking-wider text-[9px] font-bold block">Project:</span>
-                    <span className="text-zinc-300">{t.project}</span>
-                  </div>
-                )}
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Pagination Dots (Desktop only) */}
-        <div className="hidden md:flex items-center justify-center gap-2 mt-10">
-          {Array.from({ length: Math.ceil(testimonials.length / 3) }).map((_, dot) => (
-            <button
-              key={dot}
-              onClick={() => setTestimonialIndex(dot)}
-              className={`h-2 rounded-full transition-all cursor-pointer ${
-                testimonialIndex === dot
-                  ? "w-8 bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.8)]"
-                  : "w-2 bg-purple-950 border border-purple-800 hover:border-purple-600"
-              }`}
-              aria-label={`Go to slide ${dot + 1}`}
-            />
-          ))}
-        </div>
-      </motion.section>
-
-      {/* ======================================================== */}
-      {/* 11. FAQ ACCORDION                                        */}
-      {/* ======================================================== */}
-      <motion.section
-        id="faq"
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-80px" }}
-        className="pt-4 pb-12 sm:py-20 max-w-4xl mx-auto px-4 sm:px-6"
-      >
-        <div className="text-center mb-6 sm:mb-12">
-          <div className="inline-block px-4 py-1 rounded-full bg-purple-950/50 border border-purple-800/40 text-purple-400 text-xs font-semibold tracking-wider uppercase mb-2 sm:mb-3">
-            FAQ
-          </div>
-          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold font-display text-white tracking-tight">
-            Your Questions and Answers
-          </h2>
-        </div>
-
-        <div className="space-y-4 text-left">
-          {faqs.map((faq, idx) => {
-            const isOpen = activeFaq === idx;
-            return (
-              <div
-                key={idx}
-                className="bg-[#120a22] border border-purple-900/40 rounded-xl overflow-hidden transition-all duration-300"
-              >
-                <button
-                  onClick={() => setActiveFaq(isOpen ? null : idx)}
-                  className="w-full px-6 py-5 flex items-center justify-between text-left gap-4 hover:bg-purple-950/30 transition-colors cursor-pointer"
-                >
-                  <span className="text-sm sm:text-base font-bold font-display text-zinc-100">
-                    {faq.q}
-                  </span>
-                  <div className="w-7 h-7 rounded-full bg-purple-900/30 border border-purple-700/40 flex items-center justify-center text-purple-300 shrink-0">
-                    {isOpen ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
-                  </div>
                 </button>
 
                 <AnimatePresence>
-                  {isOpen && (
+                  {openDesktopDropdown === "services" && (
                     <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
+                      initial={{ opacity: 0, y: 8, scale: 0.97 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 6, scale: 0.97 }}
+                      transition={{ duration: 0.18, ease: "easeOut" }}
+                      className="absolute left-0 top-full pt-2.5 w-[290px] z-50"
                     >
-                      <div className="px-6 pb-6 pt-1 text-xs sm:text-sm text-zinc-400 leading-relaxed border-t border-purple-900/20">
-                        {faq.a}
+                      <div className="bg-white rounded-2xl shadow-[0_20px_50px_rgba(7,3,14,0.35)] border border-purple-200/70 p-2 space-y-0.5 text-left">
+                        {servicesList.map((srv) => (
+                          <button
+                            key={srv.num}
+                            onClick={() => {
+                              setOpenDesktopDropdown(null);
+                              scrollToSection("services");
+                            }}
+                            className="w-full px-3 py-2.5 rounded-xl text-[13px] font-medium text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6] flex items-center justify-between gap-2 transition-colors group/item cursor-pointer text-left"
+                          >
+                            <span className="flex items-center gap-2 min-w-0">
+                              <ArrowRight className="w-3.5 h-3.5 text-[#6d28d9] opacity-0 -ml-1 group-hover/item:opacity-100 group-hover/item:ml-0 transition-all shrink-0" />
+                              <span className="truncate">{srv.title}</span>
+                            </span>
+                            {srv.isNew && (
+                              <span className="px-1.5 py-0.5 rounded bg-[#6d28d9] text-white font-mono text-[9px] font-bold uppercase tracking-wider shrink-0">
+                                NEW
+                              </span>
+                            )}
+                          </button>
+                        ))}
                       </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
               </div>
-            );
-          })}
-        </div>
-      </motion.section>
 
-      {/* ======================================================== */}
-      {/* 12. CALL TO ACTION BANNER                                */}
-      {/* ======================================================== */}
-      <motion.section
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-60px" }}
-        className="py-8 sm:py-16 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8"
-      >
-        <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_0_60px_rgba(147,51,234,0.35)] p-6 sm:p-14 text-center border border-purple-500/40 bg-gradient-to-br from-[#1a0836] via-[#2a0e4e] to-[#0f0322]">
-          {/* Ambient Lighting & Mesh Orbs (Replaces image with baked-in text) */}
-          <div className="absolute -top-24 -left-24 w-80 h-80 bg-purple-600/35 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-24 -right-24 w-80 h-80 bg-indigo-600/35 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-fuchsia-600/15 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(168,85,247,0.2),transparent_70%)] pointer-events-none" />
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none opacity-40" />
+              <button
+                onClick={() => scrollToSection("pricing")}
+                className="px-3.5 py-1.5 rounded-full text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6] transition-colors cursor-pointer whitespace-nowrap"
+              >
+                Pricing
+              </button>
 
-          <div className="relative z-10 flex flex-col items-center">
-            {/* Circular avatar on top */}
-            <div className="relative w-18 h-18 rounded-full overflow-hidden border-2 border-white/80 shadow-[0_0_25px_rgba(168,85,247,0.5)] mb-5 p-0.5 bg-gradient-to-tr from-purple-400 via-indigo-300 to-white">
+              {/* Portfolio Dropdown */}
+              <div
+                className="relative"
+                onMouseEnter={() => setOpenDesktopDropdown("portfolio")}
+                onMouseLeave={() => setOpenDesktopDropdown(null)}
+              >
+                <button
+                  onClick={() =>
+                    setOpenDesktopDropdown((prev) => (prev === "portfolio" ? null : "portfolio"))
+                  }
+                  className={`px-3.5 py-1.5 rounded-full transition-colors cursor-pointer whitespace-nowrap inline-flex items-center gap-1 ${
+                    openDesktopDropdown === "portfolio" ||
+                    currentPage === "websites" ||
+                    currentPage === "graphics"
+                      ? "bg-[#ede9fe] text-[#5b21b6] font-semibold"
+                      : "text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6]"
+                  }`}
+                >
+                  <span>Portfolio</span>
+                  <ChevronDown
+                    className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                      openDesktopDropdown === "portfolio" ? "rotate-180 text-[#5b21b6]" : ""
+                    }`}
+                  />
+                </button>
+
+                <AnimatePresence>
+                  {openDesktopDropdown === "portfolio" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8, scale: 0.97 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 6, scale: 0.97 }}
+                      transition={{ duration: 0.18, ease: "easeOut" }}
+                      className="absolute left-0 top-full pt-2.5 w-[245px] z-50"
+                    >
+                      <div className="bg-white rounded-2xl shadow-[0_20px_50px_rgba(7,3,14,0.35)] border border-purple-200/70 p-2 space-y-0.5 text-left">
+                        <button
+                          onClick={() => navigateToPage("websites")}
+                          className="w-full px-3 py-2.5 rounded-xl text-[13px] font-medium text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6] flex items-center justify-between gap-2 transition-colors group/item cursor-pointer"
+                        >
+                          <span className="flex items-center gap-2">
+                            <ArrowRight className="w-3.5 h-3.5 text-[#6d28d9] opacity-0 group-hover/item:opacity-100 transition-opacity" />
+                            <span>Websites Portfolio (15+)</span>
+                          </span>
+                        </button>
+                        <button
+                          onClick={() => navigateToPage("graphics")}
+                          className="w-full px-3 py-2.5 rounded-xl text-[13px] font-medium text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6] flex items-center justify-between gap-2 transition-colors group/item cursor-pointer"
+                        >
+                          <span className="flex items-center gap-2">
+                            <ArrowRight className="w-3.5 h-3.5 text-[#6d28d9] opacity-0 group-hover/item:opacity-100 transition-opacity" />
+                            <span>Graphic Design (40+)</span>
+                          </span>
+                        </button>
+                        <a
+                          href="/assets/aistudio/Shakeeb_Khan_Website_Developer_CV_75f2e3fe.pdf"
+                          download="Shakeeb_Khan_CV.pdf"
+                          target="_blank"
+                          rel="noreferrer"
+                          onClick={() => setOpenDesktopDropdown(null)}
+                          className="w-full px-3 py-2.5 rounded-xl text-[13px] font-medium text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6] flex items-center justify-between gap-2 transition-colors group/item cursor-pointer"
+                        >
+                          <span className="flex items-center gap-2">
+                            <Download className="w-3.5 h-3.5 text-[#6d28d9]" />
+                            <span>Download Resume PDF</span>
+                          </span>
+                        </a>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              <button
+                onClick={() => scrollToSection("contact")}
+                className="px-3.5 py-1.5 rounded-full text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6] transition-colors cursor-pointer whitespace-nowrap"
+              >
+                Contact
+              </button>
+            </nav>
+          </div>
+
+          {/* Zone 3: White Avatar "Book a call" Pill + Circular Menu Trigger (on scroll / mobile) */}
+          <div className="pointer-events-auto flex items-center gap-2.5 shrink-0">
+            <button
+              onClick={() => openHireWithService("WordPress & WooCommerce Build")}
+              className="inline-flex items-center gap-2.5 pl-1.5 pr-4 py-1.5 bg-white hover:bg-purple-50 text-[#120a22] text-xs font-bold tracking-wide rounded-full transition-all cursor-pointer whitespace-nowrap shadow-[0_12px_32px_rgba(7,3,14,0.32)]"
+            >
               <img
                 src="/Gemini_Generated_Image_bvflr0bvflr0bvfl.jpg"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = "/shakeeb_profile.jpg";
                 }}
-                alt="Shakeeb Ahmed Khan"
-                className="w-full h-full object-cover rounded-full"
+                alt="Shakeeb"
+                className="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover object-top border border-purple-300"
               />
-            </div>
+              <span>Book a call</span>
+            </button>
 
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black font-display text-white tracking-tight mb-3">
-              If you have any project in mind
-            </h2>
+            <button
+              onClick={() => {
+                setOpenOverlaySubmenu(null);
+                setFullMenuOpen(true);
+              }}
+              aria-label="Open full navigation menu"
+              className={`w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white hover:bg-purple-50 text-[#120a22] shadow-[0_12px_32px_rgba(7,3,14,0.32)] flex flex-col items-center justify-center gap-1.5 transition-all cursor-pointer shrink-0 ${
+                isScrolled ? "flex" : "flex lg:hidden"
+              }`}
+            >
+              <span className="w-4 h-[2px] bg-[#120a22] rounded-full block" />
+              <span className="w-4 h-[2px] bg-[#120a22] rounded-full block" />
+            </button>
+          </div>
+        </div>
+      </header>
 
-            <p className="text-xs sm:text-sm text-purple-100/90 font-medium max-w-md mx-auto mb-8">
-              Have a web development, WordPress, or graphic design project in mind? Let&apos;s build something extraordinary together.
-            </p>
-
-            <div className="flex flex-wrap items-center justify-center gap-4">
+      {/* ======================================================== */}
+      {/* FULL-SCREEN PLAIN PURPLE MENU OVERLAY (Video-Matched)     */}
+      {/* ======================================================== */}
+      <AnimatePresence>
+        {fullMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: "-4%" }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: "-4%" }}
+            transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed inset-0 z-[100] bg-[#240b4c] text-white flex flex-col justify-between p-5 sm:p-8 lg:p-10 overflow-y-auto"
+          >
+            {/* Top Bar inside Overlay */}
+            <div className="max-w-7xl w-full mx-auto flex items-center justify-between gap-4">
               <button
-                onClick={() => setShowHireModal(true)}
-                className="px-8 py-3 bg-white text-[#15092c] hover:bg-zinc-100 font-bold text-sm rounded-full shadow-[0_0_25px_rgba(255,255,255,0.45)] transition-all hover:scale-105 cursor-pointer"
+                onClick={() => navigateToPage("home")}
+                className="cursor-pointer focus:outline-none"
+                title="Shakeeb Ahmed Khan"
               >
-                Hire Shakeeb
+                <img
+                  src="/Shakeeb_logo_white-removebg-preview-1.png"
+                  alt="Shakeeb"
+                  className="h-6 sm:h-[26px] w-auto object-contain"
+                />
               </button>
 
+              <div className="flex items-center gap-2.5">
+                <button
+                  onClick={() => {
+                    setFullMenuOpen(false);
+                    openHireWithService("WordPress & WooCommerce Build");
+                  }}
+                  className="inline-flex items-center gap-2.5 pl-1.5 pr-4 py-1.5 bg-white hover:bg-purple-50 text-[#120a22] text-xs font-bold rounded-full transition-colors cursor-pointer"
+                >
+                  <img
+                    src="/Gemini_Generated_Image_bvflr0bvflr0bvfl.jpg"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = "/shakeeb_profile.jpg";
+                    }}
+                    alt="Shakeeb"
+                    className="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover object-top"
+                  />
+                  <span>Book a call</span>
+                </button>
+
+                <button
+                  onClick={() => setFullMenuOpen(false)}
+                  aria-label="Close navigation menu"
+                  className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white hover:bg-purple-50 text-[#120a22] flex items-center justify-center transition-colors cursor-pointer shadow-lg"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Monumental Big Shoulders Display Navigation List */}
+            <div className="max-w-7xl w-full mx-auto py-8 my-auto text-left space-y-2 sm:space-y-3">
+              {/* HOME */}
+              <button
+                onMouseEnter={() => setHoveredOverlayLink("home")}
+                onMouseLeave={() => setHoveredOverlayLink(null)}
+                onClick={() => navigateToPage("home")}
+                className="group flex items-center gap-3 font-display text-5xl sm:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white hover:text-[#e9d5ff] transition-colors cursor-pointer"
+              >
+                <ArrowUpRight
+                  className={`w-8 h-8 sm:w-12 sm:h-12 text-[#e9d5ff] transition-all duration-200 ${
+                    hoveredOverlayLink === "home" ? "opacity-100 scale-100" : "opacity-0 -ml-10 sm:-ml-14 scale-75"
+                  }`}
+                />
+                <span>HOME</span>
+              </button>
+
+              {/* ABOUT */}
+              <button
+                onMouseEnter={() => setHoveredOverlayLink("about")}
+                onMouseLeave={() => setHoveredOverlayLink(null)}
+                onClick={() => scrollToSection("resume")}
+                className="group flex items-center gap-3 font-display text-5xl sm:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white hover:text-[#e9d5ff] transition-colors cursor-pointer"
+              >
+                <ArrowUpRight
+                  className={`w-8 h-8 sm:w-12 sm:h-12 text-[#e9d5ff] transition-all duration-200 ${
+                    hoveredOverlayLink === "about" ? "opacity-100 scale-100" : "opacity-0 -ml-10 sm:-ml-14 scale-75"
+                  }`}
+                />
+                <span>ABOUT</span>
+              </button>
+
+              {/* SERVICES (Accordion matching Video 00:12-00:13) */}
+              <div>
+                <button
+                  onMouseEnter={() => setHoveredOverlayLink("services")}
+                  onMouseLeave={() => setHoveredOverlayLink(null)}
+                  onClick={() =>
+                    setOpenOverlaySubmenu((prev) => (prev === "services" ? null : "services"))
+                  }
+                  className="group flex items-center gap-3 font-display text-5xl sm:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white hover:text-[#e9d5ff] transition-colors cursor-pointer"
+                >
+                  <ArrowUpRight
+                    className={`w-8 h-8 sm:w-12 sm:h-12 text-[#e9d5ff] transition-all duration-200 ${
+                      hoveredOverlayLink === "services" || openOverlaySubmenu === "services"
+                        ? "opacity-100 scale-100"
+                        : "opacity-0 -ml-10 sm:-ml-14 scale-75"
+                    }`}
+                  />
+                  <span>SERVICES</span>
+                  <span className="text-3xl sm:text-5xl font-normal text-[#e9d5ff]">
+                    {openOverlaySubmenu === "services" ? "−" : "+"}
+                  </span>
+                </button>
+
+                <AnimatePresence>
+                  {openOverlaySubmenu === "services" && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.24 }}
+                      className="overflow-hidden pl-4 sm:pl-14 pt-3 pb-2 space-y-2"
+                    >
+                      {servicesList.map((srv) => (
+                        <button
+                          key={srv.num}
+                          onClick={() => scrollToSection("services")}
+                          className="flex items-center gap-2.5 text-base sm:text-xl font-medium text-purple-100 hover:text-white transition-colors cursor-pointer text-left"
+                        >
+                          <span>{srv.title}</span>
+                          {srv.isNew && (
+                            <span className="px-2 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] font-mono text-[10px] font-bold uppercase tracking-wider">
+                              NEW
+                            </span>
+                          )}
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* PRICING */}
+              <button
+                onMouseEnter={() => setHoveredOverlayLink("pricing")}
+                onMouseLeave={() => setHoveredOverlayLink(null)}
+                onClick={() => scrollToSection("pricing")}
+                className="group flex items-center gap-3 font-display text-5xl sm:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white hover:text-[#e9d5ff] transition-colors cursor-pointer"
+              >
+                <ArrowUpRight
+                  className={`w-8 h-8 sm:w-12 sm:h-12 text-[#e9d5ff] transition-all duration-200 ${
+                    hoveredOverlayLink === "pricing" ? "opacity-100 scale-100" : "opacity-0 -ml-10 sm:-ml-14 scale-75"
+                  }`}
+                />
+                <span>PRICING</span>
+              </button>
+
+              {/* PORTFOLIO (Expandable Websites / Graphics / CV) */}
+              <div>
+                <button
+                  onMouseEnter={() => setHoveredOverlayLink("portfolio")}
+                  onMouseLeave={() => setHoveredOverlayLink(null)}
+                  onClick={() =>
+                    setOpenOverlaySubmenu((prev) => (prev === "portfolio" ? null : "portfolio"))
+                  }
+                  className="group flex items-center gap-3 font-display text-5xl sm:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white hover:text-[#e9d5ff] transition-colors cursor-pointer"
+                >
+                  <ArrowUpRight
+                    className={`w-8 h-8 sm:w-12 sm:h-12 text-[#e9d5ff] transition-all duration-200 ${
+                      hoveredOverlayLink === "portfolio" || openOverlaySubmenu === "portfolio"
+                        ? "opacity-100 scale-100"
+                        : "opacity-0 -ml-10 sm:-ml-14 scale-75"
+                    }`}
+                  />
+                  <span>PORTFOLIO</span>
+                  <span className="text-3xl sm:text-5xl font-normal text-[#e9d5ff]">
+                    {openOverlaySubmenu === "portfolio" ? "−" : "+"}
+                  </span>
+                </button>
+
+                <AnimatePresence>
+                  {openOverlaySubmenu === "portfolio" && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.24 }}
+                      className="overflow-hidden pl-4 sm:pl-14 pt-3 pb-2 space-y-2"
+                    >
+                      <button
+                        onClick={() => navigateToPage("websites")}
+                        className="block text-base sm:text-xl font-medium text-purple-100 hover:text-white transition-colors cursor-pointer text-left"
+                      >
+                        Websites Portfolio (15+)
+                      </button>
+                      <button
+                        onClick={() => navigateToPage("graphics")}
+                        className="block text-base sm:text-xl font-medium text-purple-100 hover:text-white transition-colors cursor-pointer text-left"
+                      >
+                        Graphic Design Portfolio (40+)
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* CONTACT */}
+              <button
+                onMouseEnter={() => setHoveredOverlayLink("contact")}
+                onMouseLeave={() => setHoveredOverlayLink(null)}
+                onClick={() => scrollToSection("contact")}
+                className="group flex items-center gap-3 font-display text-5xl sm:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white hover:text-[#e9d5ff] transition-colors cursor-pointer"
+              >
+                <ArrowUpRight
+                  className={`w-8 h-8 sm:w-12 sm:h-12 text-[#e9d5ff] transition-all duration-200 ${
+                    hoveredOverlayLink === "contact" ? "opacity-100 scale-100" : "opacity-0 -ml-10 sm:-ml-14 scale-75"
+                  }`}
+                />
+                <span>CONTACT</span>
+              </button>
+            </div>
+
+            {/* Bottom Row Actions */}
+            <div className="max-w-7xl w-full mx-auto pt-4 border-t border-white/20 flex flex-wrap items-center gap-4">
+              <button
+                onClick={() => {
+                  setFullMenuOpen(false);
+                  openHireWithService("Full Website & Brand Build");
+                }}
+                className="px-6 py-3 bg-white hover:bg-[#e9d5ff] text-[#120a22] text-sm font-bold rounded-full inline-flex items-center gap-2 transition-colors cursor-pointer"
+              >
+                <span>Book a free call</span>
+                <ChevronRight className="w-4 h-4" />
+              </button>
               <a
                 href="/assets/aistudio/Shakeeb_Khan_Website_Developer_CV_75f2e3fe.pdf"
                 download="Shakeeb_Khan_CV.pdf"
                 target="_blank"
                 rel="noreferrer"
-                className="px-7 py-3 bg-purple-950/70 hover:bg-purple-900 border border-white/30 text-white font-semibold text-sm rounded-full shadow-lg transition-all hover:scale-105 flex items-center gap-2 cursor-pointer"
+                className="px-6 py-3 border border-white/35 hover:border-white text-white text-sm font-semibold rounded-full inline-flex items-center gap-2 transition-colors"
               >
-                <Download className="w-4 h-4 text-purple-300" />
+                <Download className="w-4 h-4" />
                 <span>Download CV</span>
               </a>
             </div>
-          </div>
-        </div>
-      </motion.section>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {/* ======================================================== */}
-      {/* 13. SOLID VIOLET CONTACT STRIP                            */}
-      {/* ======================================================== */}
-      <motion.div
-        id="contact"
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-40px" }}
-        className="w-full bg-[#6d28d9] py-4 px-4 text-white"
-      >
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-center gap-3.5 md:gap-8 text-xs sm:text-sm font-semibold tracking-wide">
-          {/* Mobile-Only Email */}
-          <a
-            href="mailto:shakeebkhanstudio@gmail.com"
-            className="md:hidden hover:underline flex items-center gap-1.5"
+      {currentPage === "home" && (
+        <main>
+          {/* ======================================================== */}
+          {/* 1. HERO SECTION (Solid Deep Obsidian #07030E)            */}
+          {/* ======================================================== */}
+          <section
+            id="hero"
+            className="bg-[#07030e] text-white pt-24 pb-16 sm:pt-28 sm:pb-24 lg:pt-32 lg:pb-28 relative overflow-hidden"
           >
-            <Mail className="w-4 h-4" />
-            <span>shakeebkhanstudio@gmail.com</span>
-          </a>
-          {/* Desktop-Only Email */}
-          <a
-            href="mailto:shakeebahmedk24@gmail.com"
-            className="hidden md:flex hover:underline items-center gap-1.5"
-          >
-            <Mail className="w-4 h-4" />
-            <span>shakeebahmedk24@gmail.com</span>
-          </a>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+                {/* Left Column: Heavy Condensed Headline & Value Proposition */}
+                <motion.div
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                  className="lg:col-span-7 space-y-6 text-left"
+                >
+                  <motion.span
+                    initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
+                    animate={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
+                    whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
+                    className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
+                  >
+                    WordPress, AI &amp; Brand Developer · 7+ years
+                  </motion.span>
 
-          <span className="hidden md:inline opacity-60">/</span>
-          <span className="flex items-center gap-1.5 text-center">
-            <MapPin className="w-4 h-4" />
-            <span>Karachi, Pakistan</span>
-          </span>
-          <span className="hidden md:inline opacity-60">/</span>
+                  <h1 className="font-display text-5xl sm:text-7xl lg:text-[92px] font-black uppercase tracking-tight leading-[0.92] text-white text-balance">
+                    Websites &amp; brands that keep getting better
+                  </h1>
 
-          {/* Mobile-Only Phone */}
-          <a
-            href="tel:923363445281"
-            className="md:hidden hover:underline flex items-center gap-1.5"
-          >
-            <Phone className="w-4 h-4" />
-            <span>+92-336-3445281</span>
-          </a>
-          {/* Desktop-Only Phone */}
-          <a
-            href="tel:+923320203701"
-            className="hidden md:flex hover:underline items-center gap-1.5"
-          >
-            <Phone className="w-4 h-4" />
-            <span>+92-332-0203701</span>
-          </a>
+                  <p className="text-base sm:text-lg text-purple-100 leading-relaxed max-w-2xl">
+                    I&apos;m <strong className="text-white font-bold">Shakeeb Ahmed Khan</strong> — a full-stack WordPress, Shopify, React &amp; AI developer paired with a senior graphic design studio. I help ambitious brands replace sluggish, patched-together websites with sub-second stores and cohesive visual identities.
+                  </p>
 
-          <span className="hidden md:inline opacity-60">/</span>
-          <a
-            href="https://behance.net/sksolutions"
-            target="_blank"
-            rel="noreferrer"
-            className="hover:underline flex items-center gap-1 font-bold"
+                  {/* Primary Action + Gradient Download CV Pill (Reference-matched) */}
+                  <div className="flex flex-wrap items-center gap-3.5 pt-2">
+                    <button
+                      onClick={() => openHireWithService("Full Website & Brand Build")}
+                      className="px-7 py-3.5 bg-white hover:bg-[#e9d5ff] text-[#120a22] text-sm font-bold tracking-wide rounded-full transition-colors inline-flex items-center gap-2 cursor-pointer whitespace-nowrap shadow-xl"
+                    >
+                      <span>Start a Project</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+
+                    <button
+                      onClick={() => scrollToSection("web-portfolio")}
+                      className="px-6 py-3.5 bg-white/10 hover:bg-white/20 border border-white/25 text-white text-sm font-semibold rounded-full transition-colors cursor-pointer whitespace-nowrap"
+                    >
+                      See Live Work
+                    </button>
+
+                    <a
+                      href="/assets/aistudio/Shakeeb_Khan_Website_Developer_CV_75f2e3fe.pdf"
+                      download="Shakeeb_Khan_CV.pdf"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="px-6 py-3.5 rounded-full bg-gradient-to-r from-[#8750f7] via-[#6d28d9] to-[#a855f7] hover:brightness-110 text-white text-sm font-bold inline-flex items-center gap-2 whitespace-nowrap shadow-[0_10px_28px_rgba(7,3,14,0.35)] border border-white/20 transition-all"
+                    >
+                      <Download className="w-4 h-4 shrink-0" />
+                      <span>Download CV</span>
+                    </a>
+                  </div>
+                </motion.div>
+
+                {/* Right Column: Framed Portrait with Subtle Interactive 3D Tilt */}
+                <motion.div
+                  initial={{ opacity: 0, y: 28, scale: 0.96 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 0.7, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+                  className="lg:col-span-5 flex flex-col items-center lg:items-end"
+                  style={{ perspective: 1000 }}
+                >
+                  <div
+                    className="relative w-full max-w-[380px] sm:max-w-[420px]"
+                    onMouseMove={(e) => {
+                      const rect = e.currentTarget.getBoundingClientRect();
+                      const x = (e.clientX - rect.left) / rect.width - 0.5;
+                      const y = (e.clientY - rect.top) / rect.height - 0.5;
+                      setHeroTilt({ rotateX: -y * 10, rotateY: x * 12 });
+                    }}
+                    onMouseLeave={() => setHeroTilt({ rotateX: 0, rotateY: 0 })}
+                  >
+                    {/* Interactive Subtle-Tilt Portrait Card */}
+                    <motion.div
+                      animate={{
+                        rotateX: heroTilt.rotateX,
+                        rotateY: heroTilt.rotateY
+                      }}
+                      transition={{ type: "spring", stiffness: 220, damping: 20 }}
+                      className="bg-[#120a22] p-3 sm:p-4 rounded-3xl border-2 border-purple-500/45 shadow-[0_28px_65px_rgba(135,80,247,0.18)] rotate-[2deg] hover:rotate-[0.5deg] transition-transform duration-300 will-change-transform"
+                    >
+                      <div className="aspect-[4/4.3] w-full rounded-2xl overflow-hidden bg-[#07030e]">
+                        <img
+                          src="/Gemini_Generated_Image_bvflr0bvflr0bvfl.jpg"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = "/shakeeb_profile.jpg";
+                          }}
+                          alt="Shakeeb Ahmed Khan — WordPress, AI & Custom Web Developer"
+                          className="w-full h-full object-cover object-top"
+                        />
+                      </div>
+                      <div className="pt-3 pb-1 px-1 flex items-center justify-between text-white">
+                        <div>
+                          <span className="font-display font-black uppercase text-xl leading-none block">
+                            Shakeeb Ahmed Khan
+                          </span>
+                          <span className="text-xs text-purple-200 font-medium">
+                            Karachi, Pakistan · Remote Worldwide
+                          </span>
+                        </div>
+                        <span className="font-mono text-xs font-bold text-[#c084fc] tabular-nums">
+                          150+ Shipped
+                        </span>
+                      </div>
+                    </motion.div>
+
+                    {/* Handwritten Arrow & Note (Desktop) */}
+                    <div className="hidden sm:flex items-center gap-2 mt-4 justify-center lg:justify-start pl-2">
+                      <svg width="36" height="24" viewBox="0 0 36 24" fill="none" className="text-[#e9d5ff] shrink-0" aria-hidden="true">
+                        <path
+                          d="M2 20C10 20 18 14 22 4M22 4L14 7M22 4L26 11"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                      <span className="font-hand text-xl text-[#e9d5ff] -rotate-2">
+                        that&apos;s me — designing &amp; coding the actual build
+                      </span>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          </section>
+
+          {/* ======================================================== */}
+          {/* 2. EXPERIENCE & PROOF STRIP (Rich Gradient Backdrop)     */}
+          {/* ======================================================== */}
+          <motion.section
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.08 }}
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            className="bg-experience-gradient border-y border-purple-500/35 rounded-b-[2rem] sm:rounded-b-[3rem] relative z-10 overflow-hidden shadow-[0_24px_60px_rgba(91,33,182,0.22)]"
           >
-            <span>Bē</span>
-            <span>behance.net/sksolutions</span>
-          </a>
-        </div>
-      </motion.div>
-        </>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-9 sm:py-12 space-y-7 relative">
+              {/* Quantitative Experience Metrics Strip */}
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 border-b border-purple-400/20 pb-7 text-left">
+                {[
+                  {
+                    value: "150+",
+                    label: "Websites & brands delivered",
+                    highlight: false
+                  },
+                  {
+                    value: "7+ Years",
+                    label: "Full-stack web & UI experience",
+                    highlight: true
+                  },
+                  {
+                    value: "95–99",
+                    label: "Average Google PageSpeed score",
+                    highlight: false
+                  },
+                  {
+                    value: "100+",
+                    label: "Verified 5-star client reviews",
+                    highlight: false
+                  }
+                ].map((stat, idx) => (
+                  <motion.div
+                    key={stat.value}
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.1 }}
+                    transition={{ duration: 0.4, delay: idx * 0.06 }}
+                    className="p-4 sm:p-5 rounded-2xl bg-white/[0.04] border border-purple-400/20 hover:border-purple-400/50 transition-colors"
+                  >
+                    <div
+                      className={`font-display text-4xl sm:text-5xl font-black tabular-nums leading-none ${
+                        stat.highlight
+                          ? "bg-gradient-to-r from-[#e9d5ff] via-[#c084fc] to-[#a855f7] bg-clip-text text-transparent"
+                          : "text-white"
+                      }`}
+                    >
+                      {stat.value}
+                    </div>
+                    <div className="text-xs sm:text-sm font-medium text-purple-100/85 mt-1.5">
+                      {stat.label}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Client Brand Roster Marquee */}
+              <div className="flex items-center gap-4 overflow-hidden">
+                <span className="font-hand text-xl sm:text-2xl text-[#e9d5ff] font-bold shrink-0 whitespace-nowrap">
+                  Trusted by:
+                </span>
+                <div className="overflow-hidden flex-1">
+                  <div className="animate-marquee flex items-center gap-8 font-display text-xl sm:text-2xl font-black uppercase tracking-wide text-white">
+                    {[...Array(2)].map((_, loopIdx) => (
+                      <React.Fragment key={loopIdx}>
+                        <span>Henrietta Said</span>
+                        <span className="text-[#c084fc]">·</span>
+                        <span>CRAV Burgers</span>
+                        <span className="text-[#c084fc]">·</span>
+                        <span>Pretty Patty Genève</span>
+                        <span className="text-[#c084fc]">·</span>
+                        <span>Primland Residences</span>
+                        <span className="text-[#c084fc]">·</span>
+                        <span>Tòpas Tapas &amp; Bar</span>
+                        <span className="text-[#c084fc]">·</span>
+                        <span>Brar&apos;s Foods</span>
+                        <span className="text-[#c084fc]">·</span>
+                        <span>Mr.Day Italy</span>
+                        <span className="text-[#c084fc]">·</span>
+                        <span>Partake Foods</span>
+                        <span className="text-[#c084fc]">·</span>
+                        <span>Toynk</span>
+                        <span className="text-[#c084fc]">·</span>
+                        <span>DesiCart UK</span>
+                        <span className="text-[#c084fc]">·</span>
+                      </React.Fragment>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.section>
+
+          {/* ======================================================== */}
+          {/* 3. PAIN POINTS ("IS THIS YOU?" — Obsidian #07030e)       */}
+          {/* ======================================================== */}
+          <motion.section
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.06 }}
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            className="py-16 sm:py-24 bg-[#07030e]"
+          >
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left space-y-10 sm:space-y-12">
+              <div className="max-w-3xl space-y-3">
+                <motion.span
+                  initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
+                  whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
+                  whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
+                  viewport={{ once: true, amount: 0.25 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
+                  className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
+                >
+                  sound familiar?
+                </motion.span>
+                <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white text-balance">
+                  Most businesses don&apos;t have a traffic problem. They have a website problem.
+                </h2>
+              </div>
+
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {painPoints.map((item, idx) => (
+                  <motion.div
+                    key={item.num}
+                    initial={{ opacity: 0, y: 18 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.08 }}
+                    transition={{ duration: 0.45, delay: (idx % 3) * 0.07 }}
+                    className="bg-[#120a22] border border-purple-900/40 hover:border-purple-600/50 rounded-2xl p-6 space-y-3 flex flex-col justify-between transition-colors"
+                  >
+                    <div className="space-y-2.5">
+                      <span className="font-mono text-xs font-bold text-[#c084fc] tabular-nums block">
+                        {item.num}.
+                      </span>
+                      <h3 className="font-display text-2xl sm:text-[26px] font-black uppercase leading-tight text-white">
+                        {item.title}
+                      </h3>
+                      <p className="text-sm text-zinc-300 leading-relaxed">
+                        {item.body}
+                      </p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </motion.section>
+
+          {/* ======================================================== */}
+          {/* 4. SOLUTION TRANSITION (Royal Plum #180e2f)              */}
+          {/* ======================================================== */}
+          <motion.section
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.08 }}
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            className="mx-2 sm:mx-4 lg:mx-6 bg-[#180e2f] border border-purple-800/40 text-white rounded-[2rem] sm:rounded-[3rem] py-16 sm:py-24"
+          >
+            <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 text-left">
+              <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-end">
+                <div className="lg:col-span-7 space-y-4">
+                  <motion.span
+                    initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
+                    whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
+                    whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
+                    viewport={{ once: true, amount: 0.25 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
+                    className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
+                  >
+                    the good news?
+                  </motion.span>
+                  <h2 className="font-display text-5xl sm:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9] text-white text-balance">
+                    That&apos;s the exact bit I fix.
+                  </h2>
+                </div>
+                <div className="lg:col-span-5 space-y-5">
+                  <p className="text-base text-zinc-200 leading-relaxed">
+                    Instead of splitting your project between a slow design studio and an overwhelmed freelancer, I engineer both the visual system and the full production codebase. Every site leaves with clean code, custom branding, and measurable speed.
+                  </p>
+                  <div className="flex flex-wrap gap-3">
+                    <button
+                      onClick={() => scrollToSection("web-portfolio")}
+                      className="px-6 py-3 bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white text-xs sm:text-sm font-bold rounded-full transition-colors cursor-pointer whitespace-nowrap"
+                    >
+                      Explore Website Work
+                    </button>
+                    <button
+                      onClick={() => scrollToSection("graphics-portfolio")}
+                      className="px-6 py-3 bg-[#120a22] hover:bg-purple-900/50 border border-purple-600/40 text-white text-xs sm:text-sm font-semibold rounded-full transition-colors cursor-pointer whitespace-nowrap"
+                    >
+                      View Brand Identities
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.section>
+
+          {/* ======================================================== */}
+          {/* 5. SERVICES (Exact Reference Card Anatomy & Layout)      */}
+          {/* ======================================================== */}
+          <motion.section
+            id="services"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.05 }}
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            className="py-16 sm:py-24 bg-[#07030e] scroll-mt-20"
+          >
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left space-y-10 sm:space-y-12">
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div className="space-y-3 max-w-2xl">
+                  <motion.span
+                    initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
+                    whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
+                    whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
+                    viewport={{ once: true, amount: 0.25 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
+                    className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
+                  >
+                    pick what fits right now
+                  </motion.span>
+                  <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white text-balance">
+                    How I Can Help
+                  </h2>
+                </div>
+                <p className="text-sm sm:text-base text-zinc-300 max-w-md">
+                  Focused engineering and design sprints built to make your digital presence faster, sharper, and easier to convert on.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {servicesList.map((srv, idx) => {
+                  const IconComp = srv.icon;
+                  return (
+                    <motion.div
+                      key={srv.num}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.06 }}
+                      transition={{ duration: 0.45, delay: (idx % 3) * 0.07 }}
+                      className="bg-[#120a22] border border-purple-800/45 hover:border-purple-400/70 rounded-3xl p-7 sm:p-8 text-left flex flex-col justify-between gap-7 transition-all duration-300 hover:-translate-y-1 shadow-[0_10px_30px_rgba(0,0,0,0.35)] hover:shadow-[0_18px_40px_rgba(135,80,247,0.18)] group"
+                    >
+                      <div className="space-y-5">
+                        {/* Reference Top Row: Square Solid Purple Icon + Slanted Handwritten Tag */}
+                        <div className="flex items-center justify-between gap-3">
+                          <div className="w-12 h-12 rounded-2xl bg-[#6d28d9] flex items-center justify-center text-white shadow-[0_6px_18px_rgba(109,40,217,0.45)] shrink-0 group-hover:scale-105 transition-transform">
+                            <IconComp className="w-6 h-6" />
+                          </div>
+                          <motion.span
+                            initial={{ opacity: 0, y: 12, rotate: -9, scale: 0.86 }}
+                            whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
+                            whileHover={{ rotate: 1.5, scale: 1.05 }}
+                            viewport={{ once: true, amount: 0.2 }}
+                            transition={{ type: "spring", stiffness: 320, damping: 16, delay: (idx % 3) * 0.08 }}
+                            className="font-hand text-base sm:text-lg font-bold px-3 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] shadow-sm whitespace-nowrap inline-block"
+                          >
+                            {srv.note}
+                          </motion.span>
+                        </div>
+
+                        <div className="space-y-3">
+                          <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-white leading-snug group-hover:text-purple-200 transition-colors">
+                            {srv.title}
+                          </h3>
+                          <p className="text-sm text-zinc-300 leading-relaxed">
+                            {srv.desc}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="pt-1">
+                        <button
+                          onClick={() => openHireWithService(srv.title)}
+                          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-purple-500/45 hover:border-white hover:bg-[#6d28d9] text-white text-xs sm:text-sm font-semibold transition-all cursor-pointer whitespace-nowrap"
+                        >
+                          <span>{srv.ctaLabel}</span>
+                          <ArrowUpRight className="w-4 h-4 text-[#c084fc] group-hover:text-white transition-colors" />
+                        </button>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
+          </motion.section>
+
+          {/* ======================================================== */}
+          {/* 6. INTERACTIVE CAPABILITY CHIPS (Royal Purple Blueprint) */}
+          {/* ======================================================== */}
+          <motion.section
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.06 }}
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            className="mx-2 sm:mx-4 lg:mx-6 bg-blueprint-grid text-white rounded-[2rem] sm:rounded-[3rem] py-16 sm:py-24 overflow-hidden"
+          >
+            <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 text-left space-y-10">
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div className="space-y-3 max-w-2xl">
+                  <motion.span
+                    initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
+                    whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
+                    whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
+                    viewport={{ once: true, amount: 0.25 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
+                    className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
+                  >
+                    go on, click or drag them around
+                  </motion.span>
+                  <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white text-balance">
+                    Everything Your Site Needs, Either Way
+                  </h2>
+                </div>
+
+                <button
+                  onClick={() => setChipResetKey((k) => k + 1)}
+                  className="self-start md:self-auto px-4 py-2 rounded-full bg-[#120a22]/70 hover:bg-[#120a22] border border-white/25 text-white text-xs font-semibold inline-flex items-center gap-2 transition-colors cursor-pointer whitespace-nowrap"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span>Reset Board</span>
+                </button>
+              </div>
+
+              {/* Interactive Draggable / Clickable Chip Cloud */}
+              <div
+                ref={chipBoardRef}
+                key={chipResetKey}
+                className="flex flex-wrap gap-3 sm:gap-4 p-5 sm:p-8 rounded-3xl bg-[#120a22]/60 border border-purple-300/25"
+              >
+                {CAPABILITY_CHIPS.map((chip, idx) => {
+                  const isSelected = selectedChip.id === chip.id;
+                  return (
+                    <motion.button
+                      key={chip.id}
+                      type="button"
+                      drag
+                      dragConstraints={chipBoardRef}
+                      dragElastic={0.15}
+                      initial={{ opacity: 0, y: 16, rotate: chip.tilt * 3.5, scale: 0.88 }}
+                      whileInView={{ opacity: 1, y: 0, rotate: chip.tilt, scale: 1 }}
+                      viewport={{ once: true, amount: 0.15 }}
+                      transition={{ type: "spring", stiffness: 280, damping: 17, delay: idx * 0.035 }}
+                      whileHover={{ scale: 1.05, rotate: chip.tilt * -0.5 }}
+                      whileTap={{ scale: 0.97 }}
+                      onClick={() => setSelectedChip(chip)}
+                      className={`px-4 sm:px-5 py-2.5 sm:py-3 rounded-full text-xs sm:text-sm font-bold cursor-grab active:cursor-grabbing transition-colors whitespace-nowrap select-none border ${
+                        isSelected
+                          ? "bg-white text-[#120a22] border-white shadow-lg"
+                          : "bg-[#180e2f] text-white border-purple-400/40 hover:border-white"
+                      }`}
+                    >
+                      {chip.label}
+                    </motion.button>
+                  );
+                })}
+              </div>
+
+              {/* Active Capability Detail Readout */}
+              <div className="bg-[#120a22] text-white rounded-2xl p-6 sm:p-7 flex flex-col md:flex-row md:items-center justify-between gap-6 border border-purple-400/40 shadow-xl">
+                <div className="space-y-1.5 max-w-2xl">
+                  <span className="font-mono text-xs font-bold text-[#c084fc] uppercase tracking-wider block">
+                    Selected Capability · {selectedChip.stack}
+                  </span>
+                  <h3 className="font-display text-2xl sm:text-3xl font-black uppercase text-white">
+                    {selectedChip.label}
+                  </h3>
+                  <p className="text-sm text-zinc-300 leading-relaxed">
+                    {selectedChip.summary}
+                  </p>
+                </div>
+                <button
+                  onClick={() => openHireWithService(selectedChip.label)}
+                  className="px-6 py-3 bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white text-xs sm:text-sm font-bold rounded-full transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+                >
+                  Include in My Quote
+                </button>
+              </div>
+            </div>
+          </motion.section>
+
+          {/* ======================================================== */}
+          {/* 7. WEBSITES PORTFOLIO (Video-Matched Dark Purple Stage)  */}
+          {/* ======================================================== */}
+          <motion.div
+            id="works"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.03 }}
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-12 sm:mt-16 bg-[#240b4c] overflow-hidden scroll-mt-20"
+          >
+            <div id="web-portfolio">
+              <WebsitePortfolio
+                isHomePage={true}
+                onShowMore={() => navigateToPage("websites")}
+              />
+            </div>
+          </motion.div>
+
+          {/* ======================================================== */}
+          {/* 8. GRAPHIC DESIGN PORTFOLIO (Deep Plum Mist #0d071d)     */}
+          {/* ======================================================== */}
+          <motion.div
+            id="graphics-portfolio"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.03 }}
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-12 sm:mt-16 mx-2 sm:mx-4 lg:mx-6 bg-[#0d071d] border border-purple-900/35 rounded-[2rem] sm:rounded-[3rem] scroll-mt-20"
+          >
+            <GraphicsPortfolio
+              isHomePage={true}
+              onShowMore={() => navigateToPage("graphics")}
+            />
+          </motion.div>
+
+          {/* ======================================================== */}
+          {/* 9. ENGAGEMENT / PRICING MODELS (Obsidian #07030e)        */}
+          {/* ======================================================== */}
+          <motion.section
+            id="pricing"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.06 }}
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            className="py-16 sm:py-24 bg-[#07030e] scroll-mt-20"
+          >
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-left space-y-10">
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div className="space-y-3 max-w-2xl">
+                  <motion.span
+                    initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
+                    whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
+                    whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
+                    viewport={{ once: true, amount: 0.25 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
+                    className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
+                  >
+                    transparent from day one
+                  </motion.span>
+                  <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white text-balance">
+                    Handled For You, Or Handed To You
+                  </h2>
+                </div>
+
+                {/* 2-Option Segmented Toggle */}
+                <motion.div
+                  initial={{ opacity: 0, y: 14, rotate: -3, scale: 0.94 }}
+                  whileInView={{ opacity: 1, y: 0, rotate: 0, scale: 1 }}
+                  viewport={{ once: true, amount: 0.25 }}
+                  transition={{ type: "spring", stiffness: 260, damping: 18 }}
+                  className="inline-flex p-1.5 bg-[#120a22] border border-purple-900/40 rounded-full self-start md:self-auto"
+                >
+                  <button
+                    onClick={() => setEngagementPlan("project")}
+                    className={`px-5 py-2.5 rounded-full text-xs font-bold transition-colors cursor-pointer whitespace-nowrap ${
+                      engagementPlan === "project"
+                        ? "bg-gradient-to-r from-[#8750f7] to-purple-600 text-white"
+                        : "text-zinc-300 hover:text-white"
+                    }`}
+                  >
+                    Custom Project Build
+                  </button>
+                  <button
+                    onClick={() => setEngagementPlan("partner")}
+                    className={`px-5 py-2.5 rounded-full text-xs font-bold transition-colors cursor-pointer whitespace-nowrap ${
+                      engagementPlan === "partner"
+                        ? "bg-gradient-to-r from-[#8750f7] to-purple-600 text-white"
+                        : "text-zinc-300 hover:text-white"
+                    }`}
+                  >
+                    Ongoing Monthly Partner
+                  </button>
+                </motion.div>
+              </div>
+
+              {/* Ruled Notebook Breakdown Card */}
+              <div className="bg-notebook-purple border border-purple-700/50 rounded-3xl p-6 sm:p-10 grid lg:grid-cols-12 gap-8 items-center shadow-lg">
+                <div className="lg:col-span-7 space-y-4">
+                  <span className="font-mono text-xs font-bold uppercase tracking-wider text-[#c084fc] block">
+                    {engagementPlan === "project"
+                      ? "Fixed-Scope Delivery · 2–4 Week Sprint"
+                      : "Dedicated Retainer · Cancel Any Month"}
+                  </span>
+                  <h3 className="font-display text-3xl sm:text-5xl font-black uppercase text-white leading-[0.95]">
+                    {engagementPlan === "project"
+                      ? "End-to-End Site & Brand Launch"
+                      : "Your Embedded Web & Design Team"}
+                  </h3>
+                  <p className="text-sm sm:text-base text-zinc-300 leading-relaxed">
+                    {engagementPlan === "project"
+                      ? "Ideal when you want a fast, custom-engineered WordPress, Shopify, or React site plus cohesive brand graphics launched cleanly with full ownership."
+                      : "Best for growing stores and agencies shipping weekly landing pages, speed updates, fresh campaigns, and continuous conversion improvements."}
+                  </p>
+
+                  <div className="grid sm:grid-cols-2 gap-3 pt-2 text-xs sm:text-sm font-medium text-purple-100">
+                    {(engagementPlan === "project"
+                      ? [
+                          "Custom UI design & brand kit included",
+                          "95–99/100 Google PageSpeed tuned",
+                          "Full responsive & mobile QA pass",
+                          "100% source code & vector file IP transfer"
+                        ]
+                      : [
+                          "Priority dev & graphic design queue",
+                          "Core Web Vitals & uptime monitoring",
+                          "New landing pages, sections & campaigns",
+                          "Direct Slack, WhatsApp & email channel"
+                        ]
+                    ).map((bullet, idx) => (
+                      <div key={idx} className="flex items-start gap-2">
+                        <Check className="w-4 h-4 text-[#a855f7] shrink-0 mt-0.5" />
+                        <span>{bullet}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="lg:col-span-5 bg-[#120a22] border border-purple-700/50 rounded-2xl p-6 sm:p-7 space-y-5">
+                  <div className="space-y-1">
+                    <span className="text-xs font-semibold text-purple-300 uppercase tracking-wider block">
+                      {engagementPlan === "project" ? "Milestone Proposal" : "Monthly Capacity"}
+                    </span>
+                    <div className="font-display text-4xl font-black uppercase text-white">
+                      {engagementPlan === "project" ? "Fixed Quote in 24h" : "Flexible Monthly Sprint"}
+                    </div>
+                  </div>
+                  <p className="text-xs text-zinc-300 leading-relaxed">
+                    Share what you are building and receive a line-by-line deliverables breakdown before committing a dollar.
+                  </p>
+                  <button
+                    onClick={() =>
+                      openHireWithService(
+                        engagementPlan === "project"
+                          ? "Fixed-Scope Website & Brand Build"
+                          : "Ongoing Monthly Dev & Design Retainer"
+                      )
+                    }
+                    className="w-full py-3.5 px-6 bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white text-xs sm:text-sm font-bold tracking-wide rounded-full transition-colors cursor-pointer"
+                  >
+                    {engagementPlan === "project" ? "Request Fixed Quote" : "Check Monthly Availability"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </motion.section>
+
+          {/* ======================================================== */}
+          {/* 10. ABOUT, EXPERIENCE, EDUCATION & CORE STACK (Gradient) */}
+          {/* ======================================================== */}
+          <motion.section
+            id="resume"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.04 }}
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            className="mx-2 sm:mx-4 lg:mx-6 bg-experience-gradient border border-purple-500/30 text-white rounded-[2rem] sm:rounded-[3rem] py-16 sm:py-24 scroll-mt-20 relative overflow-hidden"
+          >
+            <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 text-left relative z-10">
+              <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+                {/* Left Scrolling Column: Experience, Education, Tech Stack */}
+                <div className="lg:col-span-7 space-y-12">
+                  <div className="space-y-3">
+                    <motion.span
+                      initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
+                      whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
+                      whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
+                      viewport={{ once: true, amount: 0.25 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
+                      className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
+                    >
+                      the track record
+                    </motion.span>
+                    <h2 className="font-display text-4xl sm:text-6xl font-black uppercase tracking-tight leading-[0.95] text-white">
+                      Experience &amp; Education
+                    </h2>
+                  </div>
+
+                  {/* Creative Gradient Timeline: Work History */}
+                  <div className="space-y-5">
+                    <h3 className="text-xs font-mono uppercase tracking-widest text-purple-200 font-bold">
+                      Work History (2019 – 2026)
+                    </h3>
+                    <div className="relative pl-6 sm:pl-8 space-y-4">
+                      {/* Vertical Glowing Timeline Spine */}
+                      <div
+                        aria-hidden="true"
+                        className="absolute left-2 sm:left-2.5 top-3 bottom-3 w-[2px] bg-gradient-to-b from-[#e9d5ff] via-[#a855f7] to-purple-900/20 rounded-full"
+                      />
+
+                      {experiences.map((exp, idx) => (
+                        <motion.div
+                          key={idx}
+                          initial={{ opacity: 0, x: -12 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          viewport={{ once: true, amount: 0.1 }}
+                          transition={{ duration: 0.4, delay: idx * 0.06 }}
+                          className="relative group"
+                        >
+                          {/* Glowing Timeline Node */}
+                          <span
+                            aria-hidden="true"
+                            className="absolute -left-[22px] sm:-left-[27px] top-6 w-3.5 h-3.5 rounded-full bg-[#120a22] border-2 border-[#c084fc] group-hover:bg-[#c084fc] group-hover:scale-125 shadow-[0_0_12px_rgba(192,132,252,0.75)] transition-all"
+                          />
+
+                          <div className="bg-white/[0.045] backdrop-blur-sm border border-purple-400/20 hover:border-purple-300/60 hover:bg-white/[0.08] rounded-2xl p-5 sm:p-6 transition-all duration-300 flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+                            <div className="space-y-1.5">
+                              <div className="flex items-center gap-2 text-sm sm:text-base font-bold text-white">
+                                <Briefcase className="w-4 h-4 text-[#c084fc] shrink-0" />
+                                <span>{exp.role}</span>
+                              </div>
+                              <div className="text-xs font-semibold text-[#e9d5ff] uppercase tracking-wider">
+                                {exp.company}
+                              </div>
+                              <p className="text-xs sm:text-sm text-zinc-200/90 leading-relaxed max-w-xl pt-1">
+                                {exp.desc}
+                              </p>
+                            </div>
+                            <span className="font-mono text-xs text-white font-semibold whitespace-nowrap tabular-nums px-3 py-1 rounded-full bg-purple-950/70 border border-purple-400/30 self-start">
+                              {exp.period}
+                            </span>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Education List */}
+                  <div className="space-y-4">
+                    <h3 className="text-xs font-mono uppercase tracking-widest text-purple-200 font-bold">
+                      Academic Background
+                    </h3>
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      <motion.div
+                        initial={{ opacity: 0, y: 16 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, amount: 0.1 }}
+                        transition={{ duration: 0.45 }}
+                        className="bg-[#0e071c]/85 backdrop-blur-sm border border-purple-400/25 hover:border-purple-300/60 rounded-2xl overflow-hidden transition-colors"
+                      >
+                        <div className="h-1 w-full bg-gradient-to-r from-[#8750f7] via-[#c084fc] to-[#5b21b6]" />
+                        <div className="p-5 space-y-2">
+                          <div className="flex items-center justify-between text-xs font-mono text-[#e9d5ff]">
+                            <span>2019 – 2023</span>
+                            <GraduationCap className="w-4 h-4" />
+                          </div>
+                          <h4 className="font-display text-2xl font-black uppercase text-white leading-tight">
+                            University of Karachi
+                          </h4>
+                          <p className="text-xs font-semibold text-purple-200">
+                            Bachelors of Computer Science (BSCS)
+                          </p>
+                          <p className="text-xs text-zinc-300 leading-relaxed">
+                            Software engineering, algorithms, relational databases, and web architecture.
+                          </p>
+                        </div>
+                      </motion.div>
+
+                      <motion.div
+                        initial={{ opacity: 0, y: 16 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, amount: 0.1 }}
+                        transition={{ duration: 0.45, delay: 0.08 }}
+                        className="bg-[#0e071c]/85 backdrop-blur-sm border border-purple-400/25 hover:border-purple-300/60 rounded-2xl overflow-hidden transition-colors"
+                      >
+                        <div className="h-1 w-full bg-gradient-to-r from-[#c084fc] via-[#8750f7] to-[#5b21b6]" />
+                        <div className="p-5 space-y-2">
+                          <div className="flex items-center justify-between text-xs font-mono text-[#e9d5ff]">
+                            <span>2018 – 2022</span>
+                            <GraduationCap className="w-4 h-4" />
+                          </div>
+                          <h4 className="font-display text-2xl font-black uppercase text-white leading-tight">
+                            Aptech Computer Education
+                          </h4>
+                          <p className="text-xs font-semibold text-purple-200">
+                            ADSE Software Engineering Diploma
+                          </p>
+                          <p className="text-xs text-zinc-300 leading-relaxed">
+                            Full-stack application engineering, CMS architecture, and UI design tooling.
+                          </p>
+                        </div>
+                      </motion.div>
+                    </div>
+                  </div>
+
+                  {/* Filterable Core Stack */}
+                  <div className="space-y-5">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <h3 className="text-xs font-mono uppercase tracking-widest text-purple-200 font-bold">
+                        Core Tech Stack
+                      </h3>
+                      <motion.div
+                        initial={{ opacity: 0, y: 12, rotate: -3, scale: 0.94 }}
+                        whileInView={{ opacity: 1, y: 0, rotate: 0, scale: 1 }}
+                        viewport={{ once: true, amount: 0.2 }}
+                        transition={{ type: "spring", stiffness: 270, damping: 18 }}
+                        className="flex items-center gap-1.5 bg-[#0e071c]/85 p-1 rounded-full border border-purple-400/25"
+                      >
+                        {[
+                          { id: "all" as const, label: "All Stack" },
+                          { id: "dev" as const, label: "Engineering" },
+                          { id: "design" as const, label: "Design" }
+                        ].map((tab) => (
+                          <button
+                            key={tab.id}
+                            onClick={() => setActiveSkillCategory(tab.id)}
+                            className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors cursor-pointer ${
+                              activeSkillCategory === tab.id
+                                ? "bg-gradient-to-r from-[#8750f7] to-purple-600 text-white"
+                                : "text-zinc-300 hover:text-white"
+                            }`}
+                          >
+                            {tab.label}
+                          </button>
+                        ))}
+                      </motion.div>
+                    </div>
+
+                    <div className="grid sm:grid-cols-2 gap-3.5">
+                      {stackItems
+                        .filter((s) => activeSkillCategory === "all" || s.category === activeSkillCategory)
+                        .map((skill) => (
+                          <div
+                            key={skill.id}
+                            className="bg-[#0e071c]/85 backdrop-blur-sm border border-purple-400/20 rounded-xl p-4 space-y-2.5"
+                          >
+                            <div className="flex items-center justify-between gap-2 text-sm font-bold text-white">
+                              <span>{skill.name}</span>
+                              <span className="font-mono text-xs text-[#e9d5ff] tabular-nums">{skill.percent}%</span>
+                            </div>
+                            <div className="w-full h-2 bg-purple-950/90 rounded-full overflow-hidden">
+                              <motion.div
+                                initial={{ width: 0 }}
+                                whileInView={{ width: `${skill.percent}%` }}
+                                viewport={{ once: true, amount: 0.1 }}
+                                transition={{ duration: 0.75, ease: "easeOut" }}
+                                className="h-full bg-gradient-to-r from-[#8750f7] via-[#a855f7] to-[#e9d5ff] rounded-full"
+                              />
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Sticky Bio Card */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  transition={{ duration: 0.5 }}
+                  className="lg:col-span-5 lg:sticky lg:top-24"
+                >
+                  <div className="bg-[#0e071c]/90 backdrop-blur-md text-white rounded-3xl p-6 sm:p-8 space-y-6 border border-purple-400/35 shadow-[0_24px_60px_rgba(0,0,0,0.45)]">
+                    <div className="flex items-center gap-4">
+                      <div className="w-20 h-20 rounded-2xl overflow-hidden bg-[#07030e] border border-purple-400/40 shrink-0">
+                        <img
+                          src="/Gemini_Generated_Image_bvflr0bvflr0bvfl.jpg"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = "/shakeeb_profile.jpg";
+                          }}
+                          alt="Shakeeb Ahmed Khan"
+                          className="w-full h-full object-cover object-top"
+                        />
+                      </div>
+                      <div>
+                        <span className="font-hand text-2xl text-[#e9d5ff] font-bold block leading-none">
+                          Founder &amp; Lead Dev
+                        </span>
+                        <h3 className="font-display text-3xl font-black uppercase text-white leading-tight mt-1">
+                          Shakeeb Ahmed Khan
+                        </h3>
+                        <span className="text-xs font-medium text-purple-200/85">
+                          BSCS · WordPress, Shopify, AI &amp; Brand Design
+                        </span>
+                      </div>
+                    </div>
+
+                    <p className="text-sm text-zinc-200 leading-relaxed">
+                      Over the past 7+ years I&apos;ve partnered with founders, restaurants, B2B wholesalers, and creative agencies across the US, Switzerland, the UK, and Canada — shipping 150+ projects that pair memorable design with dependable speed.
+                    </p>
+
+                    <div className="space-y-2.5 pt-2 border-t border-purple-500/25 text-xs font-medium text-zinc-200">
+                      <div className="flex items-center gap-2.5">
+                        <MapPin className="w-4 h-4 text-[#c084fc] shrink-0" />
+                        <span>Karachi, Pakistan (Serving Clients Globally)</span>
+                      </div>
+                      <a
+                        href="mailto:shakeebkhanstudio@gmail.com"
+                        className="md:hidden flex items-center gap-2.5 hover:text-[#e9d5ff]"
+                      >
+                        <Mail className="w-4 h-4 text-[#c084fc] shrink-0" />
+                        <span>shakeebkhanstudio@gmail.com</span>
+                      </a>
+                      <a
+                        href="mailto:shakeebahmedk24@gmail.com"
+                        className="hidden md:flex items-center gap-2.5 hover:text-[#e9d5ff]"
+                      >
+                        <Mail className="w-4 h-4 text-[#c084fc] shrink-0" />
+                        <span>shakeebahmedk24@gmail.com</span>
+                      </a>
+                      <a
+                        href="tel:923363445281"
+                        className="md:hidden flex items-center gap-2.5 hover:text-[#e9d5ff]"
+                      >
+                        <Phone className="w-4 h-4 text-[#c084fc] shrink-0" />
+                        <span>+92-336-3445281</span>
+                      </a>
+                      <a
+                        href="tel:+923320203701"
+                        className="hidden md:flex items-center gap-2.5 hover:text-[#e9d5ff]"
+                      >
+                        <Phone className="w-4 h-4 text-[#c084fc] shrink-0" />
+                        <span>+92-332-0203701</span>
+                      </a>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row gap-3 pt-1">
+                      <button
+                        onClick={() => openHireWithService("WordPress & WooCommerce Build")}
+                        className="flex-1 py-3 px-5 bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white text-xs font-bold rounded-full transition-colors cursor-pointer whitespace-nowrap"
+                      >
+                        Hire Shakeeb
+                      </button>
+                      <a
+                        href="/assets/aistudio/Shakeeb_Khan_Website_Developer_CV_75f2e3fe.pdf"
+                        download="Shakeeb_Khan_CV.pdf"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="py-3 px-5 bg-white/5 hover:bg-purple-900/50 border border-purple-400/35 text-purple-100 text-xs font-bold rounded-full inline-flex items-center justify-center gap-1.5 transition-colors whitespace-nowrap"
+                      >
+                        <Download className="w-3.5 h-3.5" />
+                        <span>Resume PDF</span>
+                      </a>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          </motion.section>
+
+          {/* ======================================================== */}
+          {/* 11. CLIENT TESTIMONIALS (Royal Purple Blueprint Grid)    */}
+          {/* ======================================================== */}
+          <motion.section
+            id="testimonials"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.05 }}
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-8 sm:mt-12 mx-2 sm:mx-4 lg:mx-6 bg-blueprint-grid text-white rounded-[2rem] sm:rounded-[3rem] py-16 sm:py-24 scroll-mt-20"
+          >
+            <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 text-left space-y-10">
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div className="space-y-3 max-w-2xl">
+                  <motion.span
+                    initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
+                    whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
+                    whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
+                    viewport={{ once: true, amount: 0.25 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
+                    className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
+                  >
+                    verified client feedback
+                  </motion.span>
+                  <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white">
+                    What Clients Say
+                  </h2>
+                </div>
+
+                {/* Desktop Pagination Controls */}
+                <div className="hidden md:flex items-center gap-3">
+                  <span className="font-mono text-xs text-purple-200 tabular-nums">
+                    {testimonialIndex + 1} / {desktopTestimonialPages}
+                  </span>
+                  <button
+                    onClick={() =>
+                      setTestimonialIndex((prev) =>
+                        prev > 0 ? prev - 1 : desktopTestimonialPages - 1
+                      )
+                    }
+                    className="p-2.5 rounded-full bg-[#120a22]/75 hover:bg-white text-white hover:text-[#120a22] border border-white/25 transition-colors cursor-pointer"
+                    aria-label="Previous testimonials"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() =>
+                      setTestimonialIndex((prev) =>
+                        prev < desktopTestimonialPages - 1 ? prev + 1 : 0
+                      )
+                    }
+                    className="p-2.5 rounded-full bg-[#120a22]/75 hover:bg-white text-white hover:text-[#120a22] border border-white/25 transition-colors cursor-pointer"
+                    aria-label="Next testimonials"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Desktop 3-Card Row */}
+              <div className="hidden md:grid md:grid-cols-3 gap-6">
+                {testimonials
+                  .slice(testimonialIndex * 3, testimonialIndex * 3 + 3)
+                  .map((t, idx) => (
+                    <motion.div
+                      key={`${testimonialIndex}-${idx}`}
+                      initial={{ opacity: 0, y: 16 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.08 }}
+                      transition={{ duration: 0.4, delay: idx * 0.06 }}
+                      className="bg-[#120a22] text-white border border-purple-400/35 rounded-2xl p-7 flex flex-col justify-between gap-6 shadow-xl"
+                    >
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-0.5 text-[#c084fc]">
+                            {[...Array(5)].map((_, s) => (
+                              <Star key={s} className="w-3.5 h-3.5 fill-current" />
+                            ))}
+                          </div>
+                          <span className="font-mono text-[11px] font-bold text-[#34d399] tabular-nums">
+                            {t.metric}
+                          </span>
+                        </div>
+                        <p className="text-sm text-zinc-200 leading-relaxed">
+                          &ldquo;{t.quote}&rdquo;
+                        </p>
+                      </div>
+
+                      <div className="pt-4 border-t border-purple-900/50 flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-[#180e2f] border border-purple-500/40 flex items-center justify-center font-display font-black text-base text-purple-200 shrink-0">
+                          {getInitials(t.name)}
+                        </div>
+                        <div className="min-w-0">
+                          <div className="text-sm font-bold text-white truncate">{t.name}</div>
+                          <div className="text-xs text-purple-200/75 truncate">{t.role}</div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+              </div>
+
+              {/* Mobile Scroll Strip */}
+              <div className="md:hidden flex gap-4 overflow-x-auto no-scrollbar pb-2 -mx-2 px-2">
+                {testimonials.map((t, idx) => (
+                  <div
+                    key={idx}
+                    className="w-[290px] shrink-0 bg-[#120a22] text-white border border-purple-400/35 rounded-2xl p-5 flex flex-col justify-between gap-4 shadow-lg"
+                  >
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between text-[11px] font-mono font-bold text-[#34d399]">
+                        <div className="flex items-center gap-0.5 text-[#c084fc]">
+                          {[...Array(5)].map((_, s) => (
+                            <Star key={s} className="w-3 h-3 fill-current" />
+                          ))}
+                        </div>
+                        <span>{t.metric}</span>
+                      </div>
+                      <p className="text-xs text-zinc-200 leading-relaxed">
+                        &ldquo;{t.quote}&rdquo;
+                      </p>
+                    </div>
+                    <div className="pt-3 border-t border-purple-900/50 flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-full bg-[#180e2f] border border-purple-500/40 flex items-center justify-center font-display font-black text-sm text-purple-200 shrink-0">
+                        {getInitials(t.name)}
+                      </div>
+                      <div className="min-w-0">
+                        <div className="text-xs font-bold text-white truncate">{t.name}</div>
+                        <div className="text-[11px] text-purple-200/75 truncate">{t.role}</div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.section>
+
+          {/* ======================================================== */}
+          {/* 12. HOW IT WORKS (Obsidian #07030e)                      */}
+          {/* ======================================================== */}
+          <motion.section
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.06 }}
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            className="py-16 sm:py-24 bg-[#07030e]"
+          >
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left space-y-10 sm:space-y-12">
+              <div className="max-w-2xl space-y-3">
+                <motion.span
+                  initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
+                  whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
+                  whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
+                  viewport={{ once: true, amount: 0.25 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
+                  className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
+                >
+                  simple process, no bureaucracy
+                </motion.span>
+                <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white">
+                  How It Works
+                </h2>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-6">
+                {[
+                  {
+                    step: "01",
+                    title: "Discovery & Fixed Quote",
+                    desc: "We hop on a focused 20-minute call or exchange project notes. Within 24 hours you receive an exact milestone schedule and transparent fixed quote."
+                  },
+                  {
+                    step: "02",
+                    title: "Design & Engineering Sprint",
+                    desc: "You review clickable Figma designs or staging URLs directly via Loom and live preview links — fast async feedback with zero agency phone-tag."
+                  },
+                  {
+                    step: "03",
+                    title: "Launch, Speed Check & Handover",
+                    desc: "I ship your site to production, verify 95+ Google PageSpeed scores across mobile & desktop, and hand over all source files with 100% ownership."
+                  }
+                ].map((s, idx) => (
+                  <motion.div
+                    key={s.step}
+                    initial={{ opacity: 0, y: 18 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.08 }}
+                    transition={{ duration: 0.45, delay: idx * 0.08 }}
+                    className="bg-[#120a22] border border-purple-900/40 hover:border-purple-500/50 rounded-2xl p-6 sm:p-8 space-y-4 transition-colors"
+                  >
+                    <span className="font-display text-5xl font-black text-[#c084fc] leading-none block tabular-nums">
+                      {s.step}
+                    </span>
+                    <h3 className="font-display text-2xl sm:text-3xl font-black uppercase text-white">
+                      {s.title}
+                    </h3>
+                    <p className="text-sm text-zinc-300 leading-relaxed">
+                      {s.desc}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </motion.section>
+
+          {/* ======================================================== */}
+          {/* 13. FAQ ACCORDION (Deep Plum Mist #0d071d)               */}
+          {/* ======================================================== */}
+          <motion.section
+            id="faq"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.06 }}
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            className="mx-2 sm:mx-4 lg:mx-6 bg-[#0d071d] border border-purple-900/35 rounded-[2rem] sm:rounded-[3rem] py-16 sm:py-24 scroll-mt-20"
+          >
+            <div className="max-w-4xl mx-auto px-5 sm:px-8 text-left space-y-10">
+              <div className="space-y-3">
+                <motion.span
+                  initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
+                  whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
+                  whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
+                  viewport={{ once: true, amount: 0.25 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
+                  className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
+                >
+                  straight answers
+                </motion.span>
+                <h2 className="font-display text-4xl sm:text-6xl font-black uppercase tracking-tight leading-[0.95] text-white">
+                  Good Questions, Straight Answers
+                </h2>
+              </div>
+
+              <div className="space-y-3">
+                {faqs.map((faq, idx) => {
+                  const isOpen = activeFaq === idx;
+                  return (
+                    <div
+                      key={idx}
+                      className="bg-[#120a22] border border-purple-900/40 rounded-2xl overflow-hidden"
+                    >
+                      <button
+                        onClick={() => setActiveFaq(isOpen ? null : idx)}
+                        className="w-full px-6 py-5 flex items-center justify-between text-left gap-4 hover:bg-[#180e2f] transition-colors cursor-pointer"
+                      >
+                        <span className="text-sm sm:text-base font-bold text-white">
+                          {faq.q}
+                        </span>
+                        <span className="w-8 h-8 rounded-full bg-[#180e2f] border border-purple-700/40 text-purple-200 flex items-center justify-center shrink-0">
+                          {isOpen ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+                        </span>
+                      </button>
+
+                      <AnimatePresence>
+                        {isOpen && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.25 }}
+                          >
+                            <div className="px-6 pb-6 pt-2 text-sm text-zinc-300 leading-relaxed border-t border-purple-900/40">
+                              {faq.a}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </motion.section>
+        </main>
       )}
 
       {/* ======================================================== */}
-      {/* SEPARATE PAGE: WEBSITES PORTFOLIO                        */}
+      {/* DEDICATED PAGE: WEBSITES PORTFOLIO                       */}
       {/* ======================================================== */}
       {currentPage === "websites" && (
-        <motion.main
-          initial={{ opacity: 0, y: 25, filter: "blur(4px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="pt-28 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[85vh]"
-        >
-          {/* Breadcrumb & Navigation Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-6 border-b border-purple-900/40">
-            <button
-              onClick={() => navigateToPage("home")}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-purple-950/70 hover:bg-purple-900/80 border border-purple-700/60 hover:border-purple-400 text-purple-200 text-xs font-jakarta font-bold tracking-wider transition-all hover:scale-105 cursor-pointer shadow-lg"
-            >
-              <span>← Back to Home</span>
-            </button>
+        <main className="min-h-[85vh] overflow-x-clip">
+          <div className="bg-[#240b4c] border-b border-white/10 pt-24 sm:pt-28 pb-5">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-4">
+              <button
+                onClick={() => navigateToPage("home")}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#120a22]/80 hover:bg-[#180e2f] border border-purple-400/35 text-white text-xs font-bold tracking-wide transition-colors cursor-pointer"
+              >
+                <span>← Back to Home</span>
+              </button>
 
-            <div className="flex items-center gap-3">
               <button
                 onClick={() => navigateToPage("graphics")}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#120a22] hover:bg-[#1a0e30] border border-purple-800/40 hover:border-purple-500 text-zinc-300 hover:text-white text-xs font-jakarta font-medium transition-all cursor-pointer"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white text-xs font-bold tracking-wide transition-colors cursor-pointer shadow-lg"
               >
-                <Palette className="w-3.5 h-3.5 text-purple-400" />
-                <span>Switch to Graphic Design Portfolio (40+)</span>
-                <ArrowRight className="w-3.5 h-3.5 text-purple-400" />
+                <span>Switch to Graphic Design (40+)</span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
           </div>
 
-          {/* Full Websites Portfolio (All 12+ Production Sites, Filters, Search, Modals) */}
           <WebsitePortfolio isHomePage={false} />
 
-          {/* Bottom Navigation */}
-          <div className="mt-16 pt-10 border-t border-purple-900/40 flex flex-col sm:flex-row items-center justify-between gap-6">
-            <button
-              onClick={() => navigateToPage("home")}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#120a22] hover:bg-[#180e2f] border border-purple-800/40 hover:border-purple-400 text-purple-300 text-xs font-jakarta font-semibold tracking-wide transition-all cursor-pointer"
-            >
-              <span>← Return to Home</span>
-            </button>
-            <button
-              onClick={() => navigateToPage("graphics")}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-jakarta font-bold tracking-wide shadow-[0_0_20px_rgba(147,51,234,0.35)] transition-all cursor-pointer"
-            >
-              <span>Explore Graphic Design Portfolio (40+ Designs)</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+            <div className="mt-16 pt-10 border-t border-purple-900/40 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <button
+                onClick={() => navigateToPage("home")}
+                className="px-6 py-3 rounded-full bg-[#120a22] border border-purple-800/50 text-white text-xs font-bold cursor-pointer"
+              >
+                ← Return to Home
+              </button>
+              <button
+                onClick={() => navigateToPage("graphics")}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white text-xs font-bold cursor-pointer"
+              >
+                <span>Explore Graphic Design Portfolio (40+ Designs)</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
           </div>
-        </motion.main>
+        </main>
       )}
 
       {/* ======================================================== */}
-      {/* SEPARATE PAGE: GRAPHICS PORTFOLIO                        */}
+      {/* DEDICATED PAGE: GRAPHICS PORTFOLIO                       */}
       {/* ======================================================== */}
       {currentPage === "graphics" && (
-        <motion.main
-          initial={{ opacity: 0, y: 25, filter: "blur(4px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="pt-28 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[85vh]"
-        >
-          {/* Breadcrumb & Navigation Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-6 border-b border-purple-900/40">
-            <button
-              onClick={() => navigateToPage("home")}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-purple-950/70 hover:bg-purple-900/80 border border-purple-700/60 hover:border-purple-400 text-purple-200 text-xs font-jakarta font-bold tracking-wider transition-all hover:scale-105 cursor-pointer shadow-lg"
-            >
-              <span>← Back to Home</span>
-            </button>
+        <main className="min-h-[85vh] overflow-x-clip">
+          <div className="bg-[#0d071d] border-b border-purple-900/40 pt-24 sm:pt-28 pb-5">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-4">
+              <button
+                onClick={() => navigateToPage("home")}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#120a22] hover:bg-[#180e2f] border border-purple-700/45 text-white text-xs font-bold tracking-wide transition-colors cursor-pointer"
+              >
+                <span>← Back to Home</span>
+              </button>
 
-            <div className="flex items-center gap-3">
               <button
                 onClick={() => navigateToPage("websites")}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#120a22] hover:bg-[#1a0e30] border border-purple-800/40 hover:border-purple-500 text-zinc-300 hover:text-white text-xs font-jakarta font-medium transition-all cursor-pointer"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white text-xs font-bold tracking-wide transition-colors cursor-pointer shadow-lg"
               >
-                <Globe className="w-3.5 h-3.5 text-purple-400" />
-                <span>Switch to Websites Portfolio (12+)</span>
-                <ArrowRight className="w-3.5 h-3.5 text-purple-400" />
+                <span>Switch to Websites Portfolio (15+)</span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
           </div>
 
-          {/* Full Graphics Portfolio (All 40+ Designs, Filters, Modals) */}
           <GraphicsPortfolio isHomePage={false} />
 
-          {/* Bottom Navigation */}
-          <div className="mt-16 pt-10 border-t border-purple-900/40 flex flex-col sm:flex-row items-center justify-between gap-6">
-            <button
-              onClick={() => navigateToPage("home")}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#120a22] hover:bg-[#180e2f] border border-purple-800/40 hover:border-purple-400 text-purple-300 text-xs font-jakarta font-semibold tracking-wide transition-all cursor-pointer"
-            >
-              <span>← Return to Home</span>
-            </button>
-            <button
-              onClick={() => navigateToPage("websites")}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-jakarta font-bold tracking-wide shadow-[0_0_20px_rgba(147,51,234,0.35)] transition-all cursor-pointer"
-            >
-              <span>Explore Websites Portfolio (12+ Sites)</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+            <div className="mt-16 pt-10 border-t border-purple-900/40 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <button
+                onClick={() => navigateToPage("home")}
+                className="px-6 py-3 rounded-full bg-[#120a22] border border-purple-800/50 text-white text-xs font-bold cursor-pointer"
+              >
+                ← Return to Home
+              </button>
+              <button
+                onClick={() => navigateToPage("websites")}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white text-xs font-bold cursor-pointer"
+              >
+                <span>Explore Websites Portfolio (15+ Sites)</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
           </div>
-        </motion.main>
+        </main>
       )}
 
       {/* ======================================================== */}
-      {/* 14. FOOTER                                               */}
+      {/* 14. MONUMENTAL ROYAL PURPLE FOOTER ("LET'S TALK")        */}
       {/* ======================================================== */}
       <motion.footer
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-40px" }}
-        className="bg-[#05020a] py-6 sm:py-7 px-4 sm:px-6 lg:px-8 border-t border-purple-950/40 relative"
+        id="contact"
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.05 }}
+        transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+        className="mt-12 sm:mt-16 bg-blueprint-grid text-white rounded-t-[2rem] sm:rounded-t-[3rem] pt-14 sm:pt-20 pb-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
       >
-        <div className="max-w-7xl mx-auto flex flex-col items-center justify-center gap-3.5 sm:gap-4">
-          {/* Brand Logo in Footer */}
-          <div className="flex items-center justify-center">
+        <div className="max-w-7xl mx-auto space-y-12">
+          {/* Top Pre-Footer Conversion Hook */}
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 text-left">
+            <div className="space-y-4 max-w-2xl">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shrink-0">
+                  <img
+                    src="/Gemini_Generated_Image_bvflr0bvflr0bvfl.jpg"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = "/shakeeb_profile.jpg";
+                    }}
+                    alt="Shakeeb Ahmed Khan"
+                    className="w-full h-full object-cover object-top"
+                  />
+                </div>
+                <motion.span
+                  initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
+                  whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
+                  whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
+                  viewport={{ once: true, amount: 0.25 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
+                  className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
+                >
+                  ready when you are
+                </motion.span>
+              </div>
+              <h2 className="font-display text-3xl sm:text-5xl font-black uppercase tracking-tight leading-[0.95] text-white">
+                Need a faster site, a new store, or a complete brand refresh?
+              </h2>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3 shrink-0">
+              <button
+                onClick={() => openHireWithService("WordPress & WooCommerce Build")}
+                className="px-7 py-3.5 bg-white hover:bg-[#e9d5ff] text-[#120a22] text-sm font-bold rounded-full transition-colors cursor-pointer whitespace-nowrap shadow-xl"
+              >
+                Start Your Project
+              </button>
+              <a
+                href="/assets/aistudio/Shakeeb_Khan_Website_Developer_CV_75f2e3fe.pdf"
+                download="Shakeeb_Khan_CV.pdf"
+                target="_blank"
+                rel="noreferrer"
+                className="px-6 py-3.5 bg-[#120a22]/60 hover:bg-[#120a22]/85 border border-white/25 text-white text-sm font-semibold rounded-full inline-flex items-center gap-2 transition-colors whitespace-nowrap"
+              >
+                <Download className="w-4 h-4" />
+                <span>Resume PDF</span>
+              </a>
+            </div>
+          </div>
+
+          {/* Monumental Full-Width Display Wordmark */}
+          <div className="border-y border-white/20 py-4 sm:py-6 text-center select-none overflow-hidden">
+            <button
+              type="button"
+              onClick={() => openHireWithService("General Inquiry")}
+              className="font-display font-black uppercase tracking-tight leading-[0.82] text-white hover:text-[#e9d5ff] transition-colors cursor-pointer text-[20vw] sm:text-[18vw] lg:text-[175px] block w-full"
+            >
+              LET&apos;S TALK
+            </button>
+          </div>
+
+          {/* Direct Contact Details Strip (Mobile & Desktop Responsive Preserved) */}
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-xs sm:text-sm font-medium">
+            <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 sm:gap-6">
+              <a
+                href="mailto:shakeebkhanstudio@gmail.com"
+                className="md:hidden hover:text-[#e9d5ff] inline-flex items-center gap-1.5"
+              >
+                <Mail className="w-4 h-4" />
+                <span>shakeebkhanstudio@gmail.com</span>
+              </a>
+              <a
+                href="mailto:shakeebahmedk24@gmail.com"
+                className="hidden md:inline-flex hover:text-[#e9d5ff] items-center gap-1.5"
+              >
+                <Mail className="w-4 h-4" />
+                <span>shakeebahmedk24@gmail.com</span>
+              </a>
+
+              <span className="text-white/40">/</span>
+
+              <a
+                href="tel:923363445281"
+                className="md:hidden hover:text-[#e9d5ff] inline-flex items-center gap-1.5"
+              >
+                <Phone className="w-4 h-4" />
+                <span>+92-336-3445281</span>
+              </a>
+              <a
+                href="tel:+923320203701"
+                className="hidden md:inline-flex hover:text-[#e9d5ff] items-center gap-1.5"
+              >
+                <Phone className="w-4 h-4" />
+                <span>+92-332-0203701</span>
+              </a>
+
+              <span className="text-white/40">/</span>
+              <span className="inline-flex items-center gap-1.5 text-white/90">
+                <MapPin className="w-4 h-4" />
+                <span>Karachi, Pakistan</span>
+              </span>
+            </div>
+
+            <div className="flex items-center gap-5 text-xs sm:text-sm font-semibold">
+              <a
+                href="https://behance.net/sksolutions"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-[#e9d5ff] transition-colors inline-flex items-center gap-1"
+              >
+                <span>Behance</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
+              </a>
+              <a
+                href="https://linkedin.com"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-[#e9d5ff] transition-colors"
+              >
+                LinkedIn
+              </a>
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-[#e9d5ff] transition-colors"
+              >
+                Facebook
+              </a>
+              <button
+                onClick={scrollToTop}
+                className="p-2.5 rounded-full bg-white text-[#120a22] hover:bg-[#e9d5ff] transition-colors cursor-pointer"
+                title="Back to Top"
+                aria-label="Back to Top"
+              >
+                <ArrowUp className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-4 border-t border-white/15 text-xs text-purple-100/80">
             <img
               src="/Shakeeb_logo_white-removebg-preview-1.png"
               alt="Shakeeb"
-              style={{ width: "220px", height: "auto" }}
-              className="w-[180px] sm:w-[220px] h-auto object-contain filter drop-shadow-[0_0_12px_rgba(168,85,247,0.4)] block m-0 p-0"
+              className="h-6 w-auto object-contain"
             />
-          </div>
-
-          {/* Social Links Row */}
-          <div className="flex flex-wrap items-center justify-center gap-5 sm:gap-8 text-xs sm:text-sm font-semibold text-zinc-300">
-            <a
-              href="https://behance.net/sksolutions"
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-purple-400 transition-colors flex items-center gap-1.5"
-            >
-              <span className="font-bold text-purple-400">Bē</span>
-              <span>Behance</span>
-            </a>
-            <a
-              href="https://linkedin.com"
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-purple-400 transition-colors"
-            >
-              LinkedIn
-            </a>
-            <a
-              href="https://facebook.com"
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-purple-400 transition-colors"
-            >
-              Facebook
-            </a>
-            {/* Mobile-Only Email */}
-            <a
-              href="mailto:shakeebkhanstudio@gmail.com"
-              className="sm:hidden hover:text-purple-400 transition-colors"
-            >
-              Email Shakeeb
-            </a>
-            {/* Desktop-Only Email */}
-            <a
-              href="mailto:shakeebahmedk24@gmail.com"
-              className="hidden sm:inline hover:text-purple-400 transition-colors"
-            >
-              Email Shakeeb
-            </a>
-            <a
-              href="/assets/aistudio/Shakeeb_Khan_Website_Developer_CV_75f2e3fe.pdf"
-              download="Shakeeb_Khan_CV.pdf"
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-purple-400 transition-colors flex items-center gap-1 text-purple-300"
-            >
-              <Download className="w-3.5 h-3.5" />
-              <span>Resume PDF</span>
-            </a>
-          </div>
-
-          {/* Copyright text */}
-          <div className="text-[11px] sm:text-xs text-zinc-500 font-medium">
-            © 2026 Shakeeb Ahmed Khan. All rights reserved.
+            <span>© 2026 Shakeeb Ahmed Khan. All rights reserved.</span>
           </div>
         </div>
-
-        {/* Back To Top Floating Circle Button on bottom-right */}
-        <button
-          onClick={scrollToTop}
-          className="absolute right-6 bottom-6 w-10 h-10 rounded-full bg-[#120a22] border border-purple-800/60 hover:border-purple-400 text-purple-300 hover:text-white flex items-center justify-center shadow-xl transition-all hover:scale-110 cursor-pointer"
-          title="Back to Top"
-          aria-label="Back to Top"
-        >
-          <ArrowUp className="w-4 h-4" />
-        </button>
       </motion.footer>
 
-
-
       {/* ======================================================== */}
-      {/* 16. HIRE ME / PROJECT INQUIRY MODAL                      */}
+      {/* HIRE ME / PROJECT INQUIRY MODAL                          */}
       {/* ======================================================== */}
       <AnimatePresence>
         {showHireModal && (
-          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
+          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-[#07030e]/85 backdrop-blur-md overflow-y-auto">
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-[#120a22] border border-purple-800/60 rounded-3xl max-w-lg w-full shadow-2xl relative text-left p-6 sm:p-8"
+              exit={{ opacity: 0, scale: 0.96 }}
+              className="bg-[#120a22] text-white border border-purple-700/50 rounded-3xl max-w-lg w-full shadow-2xl relative text-left p-6 sm:p-8"
             >
               <button
                 onClick={() => {
                   setShowHireModal(false);
                   setHireFormSubmitted(false);
                 }}
-                className="absolute top-5 right-5 p-2 rounded-full bg-purple-950/60 hover:bg-purple-900 border border-purple-800/40 text-zinc-300 hover:text-white cursor-pointer"
+                aria-label="Close modal"
+                className="absolute top-5 right-5 p-2 rounded-full bg-[#180e2f] border border-purple-700/40 text-purple-200 hover:text-white hover:bg-purple-900/50 cursor-pointer"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
 
               {hireFormSubmitted ? (
                 <div className="py-8 text-center space-y-4">
-                  <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/40 text-emerald-400 mx-auto flex items-center justify-center">
-                    <Check className="w-8 h-8" />
+                  <div className="w-14 h-14 rounded-full bg-emerald-500/15 text-emerald-400 mx-auto flex items-center justify-center">
+                    <Check className="w-7 h-7" />
                   </div>
-                  <h3 className="text-2xl font-bold font-display text-white">
-                    Proposal Request Received!
+                  <h3 className="text-3xl font-display font-black uppercase text-white">
+                    Proposal Request Received
                   </h3>
-                  <p className="text-xs text-zinc-300 max-w-sm mx-auto">
-                    Thank you, {hireName || "there"}! Shakeeb Ahmed Khan will review your project brief and
-                    respond to <span className="text-purple-300 font-semibold">{hireEmail}</span> within 24 hours with an actionable roadmap.
+                  <p className="text-sm text-zinc-300 max-w-sm mx-auto leading-relaxed">
+                    Thank you, {hireName || "there"}. Shakeeb Ahmed Khan will review your brief and reply to{" "}
+                    <span className="font-bold text-[#c084fc]">{hireEmail}</span> within 24 hours.
                   </p>
                   <button
                     onClick={() => {
                       setShowHireModal(false);
                       setHireFormSubmitted(false);
                     }}
-                    className="mt-4 px-6 py-2.5 bg-purple-600 text-white text-xs font-semibold rounded-full"
+                    className="mt-2 px-7 py-3 bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white text-xs font-bold rounded-full cursor-pointer"
                   >
                     Done
                   </button>
@@ -2196,71 +2609,74 @@ export function GeroldHome({
                   className="space-y-4"
                 >
                   <div>
-                    <span className="text-xs font-bold text-purple-400 uppercase tracking-widest block mb-1">
-                      GET IN TOUCH
-                    </span>
-                    <h3 className="text-2xl font-black font-display text-white">
+                    <motion.span
+                      initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
+                      animate={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
+                      whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
+                      className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
+                    >
+                      let&apos;s build something sharp
+                    </motion.span>
+                    <h3 className="text-3xl sm:text-4xl font-display font-black uppercase text-white mt-1">
                       Start Your Project
                     </h3>
-                    <p className="text-xs text-zinc-400">
-                      Let&apos;s build an extraordinary digital product together.
+                    <p className="text-xs text-zinc-400 mt-1">
+                      Direct reply within 24 hours with a clear milestone plan.
                     </p>
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-medium text-zinc-300">Your Name</label>
+                    <label className="text-xs font-bold text-purple-200">Your Name</label>
                     <input
                       type="text"
                       required
                       value={hireName}
                       onChange={(e) => setHireName(e.target.value)}
                       placeholder="Alex Morgan"
-                      className="w-full px-4 py-2.5 rounded-xl bg-purple-950/30 border border-purple-900/50 text-white placeholder-zinc-500 text-xs focus:outline-none focus:border-purple-500"
+                      className="w-full px-4 py-2.5 rounded-xl bg-[#07030e] border border-purple-900/60 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-[#8750f7]"
                     />
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-medium text-zinc-300">Your Email</label>
+                    <label className="text-xs font-bold text-purple-200">Your Email</label>
                     <input
                       type="email"
                       required
                       value={hireEmail}
                       onChange={(e) => setHireEmail(e.target.value)}
                       placeholder="alex@company.com"
-                      className="w-full px-4 py-2.5 rounded-xl bg-purple-950/30 border border-purple-900/50 text-white placeholder-zinc-500 text-xs focus:outline-none focus:border-purple-500"
+                      className="w-full px-4 py-2.5 rounded-xl bg-[#07030e] border border-purple-900/60 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-[#8750f7]"
                     />
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-medium text-zinc-300">Primary Service</label>
-                    <select
+                    <label className="text-xs font-bold text-purple-200">Primary Service / Scope</label>
+                    <input
+                      type="text"
+                      required
                       value={hireService}
                       onChange={(e) => setHireService(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-xl bg-[#180e2f] border border-purple-900/50 text-white text-xs focus:outline-none focus:border-purple-500"
-                    >
-                      <option value="UI/UX Design">UI/UX Design & Prototyping</option>
-                      <option value="Web Development">Web Development & WordPress</option>
-                      <option value="Brand Identity">Brand Identity & Guidelines</option>
-                      <option value="Mobile App UI">Mobile App UI Architecture</option>
-                      <option value="Full Project">Full-Suite Digital Experience</option>
-                    </select>
+                      placeholder="WordPress, Shopify, React or Brand Design"
+                      className="w-full px-4 py-2.5 rounded-xl bg-[#07030e] border border-purple-900/60 text-white text-sm focus:outline-none focus:border-[#8750f7]"
+                    />
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-medium text-zinc-300">Project Brief / Scope</label>
+                    <label className="text-xs font-bold text-purple-200">Project Brief / Timeline</label>
                     <textarea
                       rows={3}
                       required
                       value={hireMessage}
                       onChange={(e) => setHireMessage(e.target.value)}
-                      placeholder="Describe your goals, timeline, and deliverables..."
-                      className="w-full px-4 py-2.5 rounded-xl bg-purple-950/30 border border-purple-900/50 text-white placeholder-zinc-500 text-xs focus:outline-none focus:border-purple-500"
+                      placeholder="Share your goals, site link (if any), and ideal launch window..."
+                      className="w-full px-4 py-2.5 rounded-xl bg-[#07030e] border border-purple-900/60 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-[#8750f7]"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full py-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg transition-all cursor-pointer"
+                    className="w-full py-3.5 bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white font-bold text-xs sm:text-sm tracking-wide rounded-full transition-colors cursor-pointer"
                   >
                     Send Project Inquiry
                   </button>

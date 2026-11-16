@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import {
   Globe,
   ExternalLink,
@@ -20,7 +20,10 @@ import {
   BarChart3,
   Clock,
   Filter,
-  Play
+  Play,
+  Pause,
+  ChevronLeft,
+  ChevronRight
 } from "lucide-react";
 
 export interface WebsiteProject {
@@ -59,6 +62,201 @@ export interface WebsiteProject {
 }
 
 export const PORTFOLIO_SITES: WebsiteProject[] = [
+  {
+    id: "henrietta-said",
+    title: "Henrietta Said",
+    client: "Henrietta Said (Craft Peanut Snacks)",
+    category: "E-Commerce",
+    tagline: "Bold Flavored Artisan Peanuts & Crunchy Vegan Snack Brand",
+    description: "High-energy, playful snack e-commerce platform showcasing vegan, boldly seasoned craft peanuts (Ancho Chili, Nashville Hot, Lemon Pepper) with interactive product motion previews, bundle-and-save tier builders, and sub-second checkout speeds.",
+    speedScore: 97,
+    loadTime: "0.42s",
+    conversionBoost: "+148% Brand Engagement",
+    techStack: ["Shopify Plus", "React / Liquid", "Interactive Motion", "Tailwind CSS", "Cart Drawer"],
+    role: "Lead Front-End Developer",
+    year: "2025",
+    liveUrl: "https://henriettasaid.com/",
+    image: "/websites-portfolio/henrietta-said-thumb.webp",
+    fallbackImage: "/websites-portfolio/henrietta-said-thumb.webp",
+    videoPreview: "/websites-portfolio/henrietta-said.mp4",
+    isAnimatedSite: true,
+    bgGradient: "from-red-950 via-zinc-900 to-zinc-950",
+    primaryColor: "#ef4444",
+    features: [
+      "Vibrant animated brand storytelling with interactive snack packaging motion",
+      "Dynamic bundle discounts (Sweet & Savory 3-pack & 6-pack tier selectors)",
+      "Instant AJAX side cart with free shipping progress thresholds",
+      "Seamless mobile touch swipe product discovery with 60 FPS fluidity"
+    ],
+    caseStudy: {
+      challenge: "Disruptive vegan snack brand required a bold, punchy online storefront to stand out in grocery aisles and drive direct-to-consumer subscription boxes.",
+      solution: "Crafted a high-contrast pop-art e-commerce experience with interactive flavor animations, quick-add bundles, and frictionless checkout.",
+      impact: "Boosted direct-to-consumer sales by 148%, achieved a 97 speed index, and drove high repeat purchase rates.",
+    },
+    mockup: {
+      heroTitle: "Peanuts with Attitude — Boldly Seasoned & Vegan",
+      heroSubtitle: "Ancho Chili • Nashville Hot • Lemon Pepper • Buffalo",
+      stat1: "97/100 Speed Index",
+      stat2: "0.42s Fast Render",
+      badgeText: "Artisan Vegan Snack Brand"
+    }
+  },
+  {
+    id: "crav-burgers",
+    title: "CRAV Burgers",
+    client: "CRAV | Artisan Smashed Burgers",
+    category: "E-Commerce",
+    tagline: "Artisan Smashed Burgers & Street Food Online Experience",
+    description: "High-impact, appetizing digital storefront and online ordering platform for artisan smashed burgers, featuring sizzle-effect menu showcases, crispy smash patties, signature house sauces, and seamless mobile order-ahead integration.",
+    speedScore: 99,
+    loadTime: "0.32s",
+    conversionBoost: "+190% Online Orders",
+    techStack: ["React / Next.js", "Shopify Storefront API", "Interactive Motion Loop", "Tailwind CSS", "Apple Pay / Google Pay"],
+    role: "Lead E-Commerce Developer",
+    year: "2025",
+    liveUrl: "https://www.cravburgers.shop/",
+    image: "/websites-portfolio/crav-enjoy-2026.webp",
+    fallbackImage: "/websites-portfolio/crav-enjoy-2026.webp",
+    videoPreview: "/websites-portfolio/crav-enjoy-2026.mp4",
+    isAnimatedSite: true,
+    bgGradient: "from-orange-950 via-zinc-900 to-zinc-950",
+    primaryColor: "#ea580c",
+    features: [
+      "Dynamic interactive burger menu with custom smash patty stackers and toppings",
+      "Frictionless 2-tap mobile checkout supporting Apple Pay and Google Pay",
+      "Sub-0.35s instant page transitions with zero-latency cart updates",
+      "High-converting promotional promo banners and secret sauce combo builders"
+    ],
+    caseStudy: {
+      challenge: "Artisan smash burger restaurant required a punchy, youth-centric online store to capture direct delivery orders and avoid hefty 3rd-party marketplace commissions.",
+      solution: "Engineered an ultra-fast headless e-commerce store with appetizing video loops, instant order customizer, and integrated digital wallet payment processing.",
+      impact: "Generated +190% direct order volume in first 60 days, achieved 99/100 performance index, and cut cart abandonment by 42%."
+    },
+    mockup: {
+      heroTitle: "Artisan Smashed Burgers — Crispy Edges, Juicy Centers",
+      heroSubtitle: "Double Smashed Beef • Truffle Mayo • House Potato Buns • Loaded Shakes",
+      stat1: "99/100 Speed Score",
+      stat2: "0.32s Fast Checkout",
+      badgeText: "Artisan Smash Burger Brand"
+    }
+  },
+  {
+    id: "pretty-patty-geneva",
+    title: "Pretty Patty",
+    client: "Pretty Patty (Genève, Switzerland)",
+    category: "E-Commerce",
+    tagline: "Burgers Frais et Locaux à Genève • Swiss Gourmet Smash",
+    description: "Sleek bilingual (FR/EN) digital restaurant platform and click-and-collect ordering experience for Geneva's iconic gourmet smash burger concept, highlighting 100% Swiss terroir beef, artisanal bakery brioche buns, and house sauces.",
+    speedScore: 98,
+    loadTime: "0.35s",
+    conversionBoost: "+160% Pickup & Table Orders",
+    techStack: ["Next.js / React", "Bilingual i18n (FR/EN)", "Interactive Menu Slider", "Tailwind CSS", "Stripe Checkout"],
+    role: "Creative Front-End Architect",
+    year: "2025",
+    liveUrl: "https://prettypatty.ch/",
+    image: "/websites-portfolio/pretty-patty-2026.webp",
+    fallbackImage: "/websites-portfolio/pretty-patty-2026.webp",
+    videoPreview: "/websites-portfolio/pretty-patty-2026.mp4",
+    isAnimatedSite: true,
+    bgGradient: "from-rose-950 via-zinc-900 to-zinc-950",
+    primaryColor: "#f43f5e",
+    features: [
+      "Bilingual Swiss French & English menu experience with real-time allergen tags",
+      "Click-and-collect ordering workflow with precision pickup scheduling in Geneva",
+      "Interactive 60 FPS motion presentation of Swiss local farmers & ingredients",
+      "Fluid mobile-first responsive design engineered for fast on-the-go lunch orders"
+    ],
+    caseStudy: {
+      challenge: "Geneva's premium burger hotspot needed a sophisticated online presence reflecting their commitment to local Swiss agriculture and enabling rapid click-and-collect orders.",
+      solution: "Built a bespoke multilingual web experience with interactive menu showcases, local ingredient traceability, and frictionless takeout checkout.",
+      impact: "Grew direct pickup orders by 160%, scored 98/100 Core Web Vitals, and received praise from Swiss food critics for design elegance."
+    },
+    mockup: {
+      heroTitle: "Burgers Frais & Locaux à Genève",
+      heroSubtitle: "100% Viande Suisse • Pains Briochés Artisanaux • Sauces Maison",
+      stat1: "98/100 Speed Index",
+      stat2: "0.35s Instant Render",
+      badgeText: "Geneva Gourmet Burger Concept"
+    }
+  },
+  {
+    id: "primland-residences",
+    title: "Primland Residences",
+    client: "Auberge Resorts Collection (Meadows of Dan, VA)",
+    category: "Corporate & B2B",
+    tagline: "Luxury Mountain Living & Exclusive Estate Residences",
+    description: "Immersive architectural showcase and private sales portal for luxury mountain residences within the 12,000-acre Primland Auberge resort estate in Virginia's Blue Ridge Mountains, featuring Hart Howerton luxury estates, golf amenities, and private advisor consultations.",
+    speedScore: 97,
+    loadTime: "0.40s",
+    conversionBoost: "+145% Private Tour Inquiries",
+    techStack: ["Next.js / TypeScript", "Interactive 3D Video Tour", "High-Res Estate Viewer", "Tailwind CSS", "Private CRM Integration"],
+    role: "Lead UI Architect & Web Developer",
+    year: "2025",
+    liveUrl: "https://ownprimland.com/",
+    image: "/websites-portfolio/primland-residence.webp",
+    fallbackImage: "/websites-portfolio/primland-residence.webp",
+    videoPreview: "/websites-portfolio/primland-residence.mp4",
+    isAnimatedSite: true,
+    bgGradient: "from-emerald-950 via-zinc-900 to-zinc-950",
+    primaryColor: "#10b981",
+    features: [
+      "Cinematic 60 FPS video walkthrough exploring 12,000-acre Blue Ridge mountain estates",
+      "Interactive estate site plans with Hart Howerton custom residence architectural specs",
+      "High-touch private showing booking portal with concierge schedule syncing",
+      "Sub-0.45s page loads delivering ultra-high-resolution architectural photography"
+    ],
+    caseStudy: {
+      challenge: "Ultra-luxury Auberge resort estate required a prestigious digital platform to showcase multi-million-dollar custom homes and estates to high-net-worth buyers globally.",
+      solution: "Developed an elegant, editorial-grade web application combining cinematic motion, bespoke topography maps, and seamless private tour scheduling.",
+      impact: "Generated +145% high-net-worth viewing appointments, received 97/100 speed grade, and established Primland as the pinnacle of Virginia mountain living."
+    },
+    mockup: {
+      heroTitle: "The Residences at Primland — Auberge Resorts Collection",
+      heroSubtitle: "12,000-Acre Mountain Sanctuary • Custom Estates • Championship Golf & Spa",
+      stat1: "97/100 Performance",
+      stat2: "0.40s Response Time",
+      badgeText: "Ultra-Luxury Mountain Estates"
+    }
+  },
+  {
+    id: "topas-tapas-bar",
+    title: "Tòpas Tapas & Bar",
+    client: "Tòpas by Topaze (Biel/Bienne, Switzerland)",
+    category: "Corporate & B2B",
+    tagline: "Cuisine Hispano-Suisse, Artisan Cocktails & Urban Lounge",
+    description: "Sophisticated bilingual digital experience for Biel's celebrated Spanish-Swiss fusion tapas bar and urban lounge, featuring interactive culinary menus, seasonal sharing plates, signature mixology cocktail showcases, and instant table reservations.",
+    speedScore: 98,
+    loadTime: "0.34s",
+    conversionBoost: "+180% Table Reservations",
+    techStack: ["React / Next.js", "Interactive Menu Engine", "Bilingual DE/FR", "Tailwind CSS", "Table Booking API"],
+    role: "Lead Front-End Developer",
+    year: "2025",
+    liveUrl: "https://bar-topas.ch/",
+    image: "/websites-portfolio/topas.webp",
+    fallbackImage: "/websites-portfolio/topas.webp",
+    videoPreview: "/websites-portfolio/topas.mp4",
+    isAnimatedSite: true,
+    bgGradient: "from-purple-950 via-zinc-900 to-zinc-950",
+    primaryColor: "#a855f7",
+    features: [
+      "Interactive tapas & pinchos sharing menu with Iberian wine pairing recommendations",
+      "Live table booking integration with instant SMS and email confirmation",
+      "Fluid 60 FPS video bar atmosphere preview capturing Biel's vibrant nightlife",
+      "Bilingual German & French UI with seamless localized dietary filter tags"
+    ],
+    caseStudy: {
+      challenge: "Renowned Biel tapas bar needed a chic, modern web presence to match its gourmet culinary repositioning and streamline evening table reservations.",
+      solution: "Created an immersive, high-contrast bar website with interactive cocktail cards, bilingual menu explorer, and one-tap reservation booking.",
+      impact: "Increased weekend table bookings by 180%, achieved 98/100 Core Web Vitals, and boosted private event inquiries."
+    },
+    mockup: {
+      heroTitle: "Tòpas by Topaze — Cuisine Hispano-Suisse",
+      heroSubtitle: "Tapas Créatifs • Vins Ibériques • Cocktails Signatures • Ambiance Urbaine",
+      stat1: "98/100 Core Web Vitals",
+      stat2: "0.34s Page Load",
+      badgeText: "Swiss-Spanish Tapas & Bar"
+    }
+  },
   {
     id: "mrday-bakery",
     title: "Mr.Day Snacks",
@@ -99,6 +297,45 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     }
   },
   {
+    id: "brars-ethnic-foods",
+    title: "Brar's",
+    client: "Brar's Pure Dairy & Traditional Foods (Canada)",
+    category: "E-Commerce",
+    tagline: "Canada's Leading Ethnic Dairy, Pure Ghee & Traditional Mithai Sweets",
+    description: "Premium digital brand portal and interactive e-commerce showcase for Canada's most trusted South Asian food manufacturer, featuring pure Desi Ghee, artisanal paneer, handcrafted Diwali mithai sweets, and nationwide grocery store locator.",
+    speedScore: 98,
+    loadTime: "0.38s",
+    conversionBoost: "+175% Store Inquiries",
+    techStack: ["Next.js / React", "Interactive Product Slider", "Store Locator GIS", "Tailwind CSS", "High-Speed CDN"],
+    role: "Lead Creative Developer & UI Architect",
+    year: "2025",
+    liveUrl: "https://www.brars.com/",
+    image: "/websites-portfolio/brars.webp",
+    fallbackImage: "/websites-portfolio/brars.webp",
+    videoPreview: "/websites-portfolio/brars.mp4",
+    isAnimatedSite: true,
+    bgGradient: "from-amber-950 via-zinc-900 to-zinc-950",
+    primaryColor: "#f59e0b",
+    features: [
+      "Interactive pure desi ghee & artisanal dairy product showcase with smooth video previews",
+      "Nationwide interactive store locator mapping thousands of Canadian supermarkets",
+      "Festive gift box & traditional Indian mithai sweet customization workflow",
+      "Ultra-fast 60 FPS mobile touch navigation backed by responsive image pipelines"
+    ],
+    caseStudy: {
+      challenge: "Canada's largest ethnic dairy and traditional food brand needed a modern digital experience to connect with second-generation South Asian consumers while driving retail foot traffic.",
+      solution: "Built a high-performance Next.js web application with rich sensory visual motion, bilingual product catalog, and comprehensive supermarket locator.",
+      impact: "Achieved 98/100 Core Web Vitals, increased store locator conversions by 175%, and boosted festive gift inquiries."
+    },
+    mockup: {
+      heroTitle: "Pure Dairy, Authentic Tradition — Handcrafted in Canada",
+      heroSubtitle: "Desi Ghee • Artisanal Paneer • Fresh Mithai • Authentic Indian Flavours",
+      stat1: "98/100 Performance Score",
+      stat2: "0.38s Page Render",
+      badgeText: "Premier Canadian Ethnic Dairy Brand"
+    }
+  },
+  {
     id: "brets-crisps",
     title: "Bret's French Crisps",
     client: "Bret's (Altho SAS, Brittany, France)",
@@ -135,45 +372,6 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
       stat1: "98/100 Core Web Vitals",
       stat2: "0.36s Page Load",
       badgeText: "Brittany Artisan Crisp Brand"
-    }
-  },
-  {
-    id: "henrietta-said",
-    title: "Henrietta Said",
-    client: "Henrietta Said (Craft Peanut Snacks)",
-    category: "E-Commerce",
-    tagline: "Bold Flavored Artisan Peanuts & Crunchy Vegan Snack Brand",
-    description: "High-energy, playful snack e-commerce platform showcasing vegan, boldly seasoned craft peanuts (Ancho Chili, Nashville Hot, Lemon Pepper) with interactive product motion previews, bundle-and-save tier builders, and sub-second checkout speeds.",
-    speedScore: 97,
-    loadTime: "0.42s",
-    conversionBoost: "+148% Brand Engagement",
-    techStack: ["Shopify Plus", "React / Liquid", "Interactive Motion", "Tailwind CSS", "Cart Drawer"],
-    role: "Lead Front-End Developer",
-    year: "2025",
-    liveUrl: "https://henriettasaid.com/",
-    image: "/websites-portfolio/henrietta-said-thumb.webp",
-    fallbackImage: "/websites-portfolio/henrietta-said-thumb.webp",
-    videoPreview: "/websites-portfolio/henrietta-said.mp4",
-    isAnimatedSite: true,
-    bgGradient: "from-red-950 via-zinc-900 to-zinc-950",
-    primaryColor: "#ef4444",
-    features: [
-      "Vibrant animated brand storytelling with interactive snack packaging motion",
-      "Dynamic bundle discounts (Sweet & Savory 3-pack & 6-pack tier selectors)",
-      "Instant AJAX side cart with free shipping progress thresholds",
-      "Seamless mobile touch swipe product discovery with 60 FPS fluidity"
-    ],
-    caseStudy: {
-      challenge: "Disruptive vegan snack brand required a bold, punchy online storefront to stand out in grocery aisles and drive direct-to-consumer subscription boxes.",
-      solution: "Crafted a high-contrast pop-art e-commerce experience with interactive flavor animations, quick-add bundles, and frictionless checkout.",
-      impact: "Boosted direct-to-consumer sales by 148%, achieved a 97 speed index, and drove high repeat purchase rates.",
-    },
-    mockup: {
-      heroTitle: "Peanuts with Attitude — Boldly Seasoned & Vegan",
-      heroSubtitle: "Ancho Chili • Nashville Hot • Lemon Pepper • Buffalo",
-      stat1: "97/100 Speed Index",
-      stat2: "0.42s Fast Render",
-      badgeText: "Artisan Vegan Snack Brand"
     }
   },
   {
@@ -969,7 +1167,6 @@ interface VideoCardPreviewProps {
 
 function VideoCardPreview({ videoSrc, posterSrc, alt }: VideoCardPreviewProps) {
   const videoRef = React.useRef<HTMLVideoElement>(null);
-  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -983,85 +1180,65 @@ function VideoCardPreview({ videoSrc, posterSrc, alt }: VideoCardPreviewProps) {
     video.setAttribute("muted", "true");
     video.loop = true;
 
-    const playVideo = () => {
-      video.defaultMuted = true;
-      video.muted = true;
-      const promise = video.play();
-      if (promise !== undefined) {
-        promise
-          .then(() => setIsVideoLoaded(true))
-          .catch(() => {
-            // Fallback: will retry on viewport intersection or touch
-          });
-      }
-    };
-
-    // 1. Initial attempt
-    playVideo();
-
-    // 2. Play when data is buffered
-    video.addEventListener("loadeddata", playVideo);
-    video.addEventListener("canplay", playVideo);
-
-    // 3. Autoplay automatically when card scrolls into view on mobile
     let observer: IntersectionObserver | null = null;
     if (typeof window !== "undefined" && "IntersectionObserver" in window) {
       observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
+            if (!video) return;
             if (entry.isIntersecting) {
-              playVideo();
+              video.defaultMuted = true;
+              video.muted = true;
+              const promise = video.play();
+              if (promise !== undefined) {
+                promise.catch(() => {});
+              }
+            } else {
+              video.pause();
             }
           });
         },
-        { threshold: 0.05 }
+        { threshold: 0.08 }
       );
       observer.observe(video);
+    } else {
+      video.play().catch(() => {});
     }
-
-    // 4. Mobile user interaction fallback (wakes up any strict mobile audio/video policy)
-    const handleMobileWake = () => {
-      playVideo();
-    };
-    window.addEventListener("touchstart", handleMobileWake, { passive: true, once: true });
-    window.addEventListener("scroll", handleMobileWake, { passive: true, once: true });
 
     return () => {
       if (observer) observer.disconnect();
-      video.removeEventListener("loadeddata", playVideo);
-      video.removeEventListener("canplay", playVideo);
-      window.removeEventListener("touchstart", handleMobileWake);
-      window.removeEventListener("scroll", handleMobileWake);
     };
   }, [videoSrc]);
 
   return (
-    <div className="w-full h-full relative overflow-hidden bg-zinc-950">
-      {/* Still poster image: loads instantly as sharp base */}
-      <img
-        src={posterSrc}
-        alt={alt}
-        loading="lazy"
-        decoding="async"
-        className={`absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-300 ${
-          isVideoLoaded ? "opacity-0" : "opacity-100"
-        } [image-rendering:-webkit-optimize-contrast]`}
-      />
-
-      {/* Video preview: Continuously playing and looping full-bleed edge-to-edge on mobile & desktop */}
+    <div className="w-full h-full relative overflow-hidden bg-zinc-950 flex items-start justify-center transform-gpu">
       <video
         ref={videoRef}
         src={videoSrc}
-        autoPlay
+        poster={posterSrc}
         muted
         loop
         playsInline
-        preload="auto"
-        className="absolute inset-0 w-full h-full object-cover object-top"
+        preload="metadata"
+        aria-label={alt}
+        className="w-full h-full object-cover object-top"
       />
     </div>
   );
 }
+
+const SHOWCASE_FRAME_COLORS = [
+  "#e9d5ff",
+  "#d9f99d",
+  "#bae6fd",
+  "#fde68a",
+  "#fecdd3",
+  "#a5f3fc",
+  "#c4b5fd",
+  "#fed7aa",
+  "#bbf7d0",
+  "#f9a8d4"
+];
 
 export interface WebsitePortfolioProps {
   selectedCategory?: string;
@@ -1080,6 +1257,25 @@ export function WebsitePortfolio({
   const [activeProject, setActiveProject] = useState<WebsiteProject | null>(null);
   const [viewDevice, setViewDevice] = useState<"desktop" | "mobile">("desktop");
   const [searchQuery, setSearchQuery] = useState<string>("");
+
+  // Spotlight carousel state for Homepage Video-Reference Laptop Showcase
+  const featuredSites = PORTFOLIO_SITES.slice(0, 10);
+  const [spotlightIndex, setSpotlightIndex] = useState<number>(0);
+  const [isAutoCycling, setIsAutoCycling] = useState<boolean>(true);
+  const currentSpotlight = featuredSites[spotlightIndex] || PORTFOLIO_SITES[0];
+
+  useEffect(() => {
+    if (!isAutoCycling || activeProject) return;
+    const timer = window.setInterval(() => {
+      setSpotlightIndex((prev) => (prev + 1) % featuredSites.length);
+    }, 5200);
+    return () => window.clearInterval(timer);
+  }, [isAutoCycling, activeProject, featuredSites.length]);
+
+  const selectSpotlightProject = (idx: number) => {
+    setSpotlightIndex(idx);
+    setIsAutoCycling(false);
+  };
 
   const currentCategory = propCategory !== undefined ? propCategory : internalCategory;
 
@@ -1129,304 +1325,558 @@ export function WebsitePortfolio({
     };
   }, [activeProject]);
 
-  const displayedProjects = isHomePage ? filteredProjects.slice(0, 6) : filteredProjects;
+  const displayedProjects = filteredProjects;
+
+  const renderVideoShowcaseStage = (showSeeMoreButton: boolean) => (
+    <div className="w-full space-y-10 sm:space-y-12 py-12 sm:py-20 lg:py-24 bg-[#240b4c] text-white relative overflow-hidden">
+      {/* 1. Centered Top Title Stack */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-4">
+        <motion.span
+          initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
+          whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
+          whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
+          className="font-hand text-xl sm:text-2xl font-bold px-4 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
+        >
+          websites built to convert
+        </motion.span>
+
+        <h2 className="font-display text-5xl sm:text-7xl lg:text-[84px] font-black uppercase tracking-tight leading-[0.9] text-white text-balance">
+          {showSeeMoreButton ? "Recent Work, Real Results" : "Websites Portfolio Showcase"}
+        </h2>
+
+        <p className="text-sm sm:text-base text-purple-100/85 max-w-2xl mx-auto leading-relaxed">
+          Every build pairs custom visual identity with sub-second engineering. Preview live client platforms cycling in the center, or click any card gliding behind to inspect it.
+        </p>
+      </div>
+
+      {/* 2. Layered Sliding Card Marquee + Centered MacBook Laptop Stage */}
+      <div className="relative w-full py-2 sm:py-4">
+        {/* Background Sliding Cards Track */}
+        <div
+          aria-label="Scrolling website portfolio gallery"
+          className="hidden sm:flex items-center overflow-hidden w-full absolute inset-y-0 left-0 right-0 z-10 pointer-events-auto"
+        >
+          <div className="animate-portfolio-marquee flex items-center gap-6 py-4">
+            {[...featuredSites, ...featuredSites].map((site, stripIdx) => {
+              const realIdx = stripIdx % featuredSites.length;
+              const isActive = realIdx === spotlightIndex;
+              const frameColor = SHOWCASE_FRAME_COLORS[realIdx % SHOWCASE_FRAME_COLORS.length];
+              return (
+                <button
+                  key={`${site.id}-${stripIdx}`}
+                  type="button"
+                  onClick={() => selectSpotlightProject(realIdx)}
+                  style={{ backgroundColor: frameColor }}
+                  className={`w-[230px] md:w-[270px] lg:w-[295px] aspect-[4/3] rounded-2xl p-3 sm:p-3.5 shrink-0 flex flex-col justify-between transition-all duration-300 cursor-pointer group/strip shadow-[0_20px_50px_rgba(7,3,14,0.55)] border ${
+                    isActive
+                      ? "border-white scale-[1.03] ring-2 ring-white/70"
+                      : "border-white/20 opacity-85 hover:opacity-100 hover:-translate-y-1"
+                  }`}
+                  title={`Preview ${site.title} inside laptop`}
+                >
+                  <div className="w-full flex-1 min-h-0 rounded-xl overflow-hidden bg-[#07030e] border border-black/15 relative">
+                    <img
+                      src={site.image}
+                      alt={site.title}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover object-top group-hover/strip:scale-105 transition-transform duration-500"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        if (!target.dataset.fallbackTried && site.fallbackImage && site.fallbackImage !== site.image) {
+                          target.dataset.fallbackTried = "true";
+                          target.src = site.fallbackImage;
+                        }
+                      }}
+                    />
+                  </div>
+                  <div className="pt-2 px-1 flex items-center justify-between text-[#120a22] text-xs font-bold">
+                    <span className="truncate">{site.title}</span>
+                    <span className="font-mono text-[10px] opacity-80 shrink-0 tabular-nums">
+                      {site.speedScore}/100
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Foreground Centerpiece: MacBook Pro Mockup */}
+        <div className="relative z-20 max-w-[360px] sm:max-w-[580px] lg:max-w-[700px] mx-auto px-3 sm:px-0">
+          <div className="bg-[#0d071d] border-[6px] sm:border-[10px] border-[#1a0f33] ring-1 ring-white/20 rounded-t-[1.15rem] sm:rounded-t-[1.7rem] shadow-[0_36px_95px_rgba(7,3,14,0.85)] overflow-hidden">
+            <div className="flex justify-center py-1.5 sm:py-2 bg-[#0d071d]">
+              <span className="w-1.5 h-1.5 rounded-full bg-purple-300/35 block" />
+            </div>
+
+            <div className="px-3 sm:px-4 py-1.5 sm:py-2 bg-[#140a29] border-y border-purple-400/20 flex items-center justify-between text-[10px] sm:text-[11px] font-mono gap-2">
+              <div className="flex items-center gap-1.5 shrink-0">
+                <span className="w-2 h-2 rounded-full bg-[#ff6b6b]" />
+                <span className="w-2 h-2 rounded-full bg-[#ffd93d]" />
+                <span className="w-2 h-2 rounded-full bg-[#6bcb77]" />
+              </div>
+              <a
+                href={currentSpotlight.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-purple-100 hover:text-white font-semibold truncate flex items-center gap-1.5 transition-colors"
+              >
+                <span className="uppercase tracking-wider">{currentSpotlight.title}</span>
+                <span aria-hidden="true" className="text-purple-400/60">·</span>
+                <span className="text-purple-300/85 hidden sm:inline">
+                  {currentSpotlight.liveUrl.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}
+                </span>
+                <ExternalLink className="w-3 h-3 shrink-0" />
+              </a>
+              <span className="text-emerald-400 font-bold tabular-nums shrink-0">
+                {currentSpotlight.speedScore}/100
+              </span>
+            </div>
+
+            <div className="aspect-[16/10] w-full bg-[#07030e] relative overflow-hidden">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentSpotlight.id}
+                  initial={{ opacity: 0.25, scale: 1.015 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0.25 }}
+                  transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                  className="w-full h-full relative"
+                >
+                  {currentSpotlight.videoPreview ? (
+                    <VideoCardPreview
+                      videoSrc={currentSpotlight.videoPreview}
+                      posterSrc={currentSpotlight.image}
+                      alt={`${currentSpotlight.title} live website showcase`}
+                    />
+                  ) : (
+                    <img
+                      src={currentSpotlight.image}
+                      alt={currentSpotlight.title}
+                      className="w-full h-full object-cover object-top"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        if (!target.dataset.fallbackTried && currentSpotlight.fallbackImage) {
+                          target.dataset.fallbackTried = "true";
+                          target.src = currentSpotlight.fallbackImage;
+                        }
+                      }}
+                    />
+                  )}
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </div>
+
+          <div className="w-[106%] -ml-[3%] h-3 sm:h-4 rounded-b-xl bg-gradient-to-b from-[#e4e4ee] via-[#c7c6d8] to-[#9492ad] shadow-[0_16px_34px_rgba(7,3,14,0.75)] relative">
+            <div className="w-16 sm:w-28 h-1 sm:h-1.5 bg-[#706e8d]/75 rounded-b-md mx-auto" />
+          </div>
+        </div>
+      </div>
+
+      {/* 3. Mobile Quick Strip + Prev/Next/Case Study Bar */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 space-y-6 text-center">
+        <div className="sm:hidden flex gap-3 overflow-x-auto no-scrollbar pb-1 -mx-2 px-2">
+          {featuredSites.map((site, idx) => (
+            <button
+              key={site.id}
+              type="button"
+              onClick={() => selectSpotlightProject(idx)}
+              className={`px-3.5 py-2 rounded-full text-xs font-bold whitespace-nowrap shrink-0 border transition-colors cursor-pointer ${
+                idx === spotlightIndex
+                  ? "bg-white text-[#120a22] border-white"
+                  : "bg-[#120a22]/80 text-purple-100 border-purple-400/30"
+              }`}
+            >
+              {site.title}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+          <button
+            type="button"
+            onClick={() =>
+              selectSpotlightProject(
+                spotlightIndex > 0 ? spotlightIndex - 1 : featuredSites.length - 1
+              )
+            }
+            aria-label="Previous featured website"
+            className="w-9 h-9 rounded-full bg-white/10 hover:bg-white text-white hover:text-[#120a22] border border-white/25 flex items-center justify-center transition-colors cursor-pointer"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+
+          <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 text-xs sm:text-sm font-medium px-2">
+            <span className="font-display font-black uppercase text-lg sm:text-xl tracking-wide text-white">
+              {currentSpotlight.title}
+            </span>
+            <span aria-hidden="true" className="text-purple-300/60">·</span>
+            <span className="text-purple-200">{currentSpotlight.category}</span>
+            <span aria-hidden="true" className="text-purple-300/60">·</span>
+            <span className="font-mono text-xs text-emerald-400 font-bold tabular-nums">
+              {currentSpotlight.conversionBoost}
+            </span>
+          </div>
+
+          <button
+            type="button"
+            onClick={() =>
+              selectSpotlightProject((spotlightIndex + 1) % featuredSites.length)
+            }
+            aria-label="Next featured website"
+            className="w-9 h-9 rounded-full bg-white/10 hover:bg-white text-white hover:text-[#120a22] border border-white/25 flex items-center justify-center transition-colors cursor-pointer"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setIsAutoCycling((prev) => !prev)}
+            aria-label={isAutoCycling ? "Pause showcase cycle" : "Resume showcase cycle"}
+            className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/25 flex items-center justify-center transition-colors cursor-pointer"
+            title={isAutoCycling ? "Pause auto-cycle" : "Play auto-cycle"}
+          >
+            {isAutoCycling ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
+          </button>
+        </div>
+
+        <div className="flex items-center justify-center gap-2">
+          {featuredSites.map((site, idx) => (
+            <button
+              key={site.id}
+              type="button"
+              onClick={() => selectSpotlightProject(idx)}
+              aria-label={`Preview ${site.title}`}
+              className={`h-2 rounded-full transition-all cursor-pointer ${
+                idx === spotlightIndex
+                  ? "w-7 bg-white"
+                  : "w-2 bg-white/30 hover:bg-white/60"
+              }`}
+            />
+          ))}
+        </div>
+
+        {/* 4. Bottom Action Row */}
+        <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5">
+          {showSeeMoreButton && onShowMore ? (
+            <button
+              type="button"
+              onClick={onShowMore}
+              className="px-8 py-3.5 bg-white hover:bg-[#e9d5ff] text-[#120a22] text-sm font-bold rounded-full transition-colors cursor-pointer shadow-[0_16px_40px_rgba(7,3,14,0.45)] inline-flex items-center gap-2 whitespace-nowrap"
+            >
+              <span>See my work ({PORTFOLIO_SITES.length} sites)</span>
+              <ArrowUpRight className="w-4 h-4" />
+            </button>
+          ) : (
+            <a
+              href={currentSpotlight.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-8 py-3.5 bg-white hover:bg-[#e9d5ff] text-[#120a22] text-sm font-bold rounded-full transition-colors cursor-pointer shadow-[0_16px_40px_rgba(7,3,14,0.45)] inline-flex items-center gap-2 whitespace-nowrap"
+            >
+              <span>Visit {currentSpotlight.title} Live</span>
+              <ExternalLink className="w-4 h-4" />
+            </a>
+          )}
+
+          <button
+            type="button"
+            onClick={() => setActiveProject(currentSpotlight)}
+            className="inline-flex items-center gap-2.5 text-[#e9d5ff] hover:text-white transition-colors cursor-pointer group"
+          >
+            <svg
+              width="28"
+              height="20"
+              viewBox="0 0 28 20"
+              fill="none"
+              className="text-[#e9d5ff] shrink-0 group-hover:-translate-x-0.5 transition-transform"
+              aria-hidden="true"
+            >
+              <path
+                d="M26 10C18 10 10 10 3 10M3 10L9 4M3 10L9 16"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            <span className="font-hand text-xl sm:text-2xl font-semibold underline decoration-purple-300/50 underline-offset-4">
+              or inspect {currentSpotlight.title} case study
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <section
       id="portfolio"
-      className={`${isHomePage ? "py-10 sm:py-20 border-t border-zinc-800/60" : "py-4"} scroll-mt-20 text-left`}
+      className="scroll-mt-20 text-left"
     >
-      <div className="max-w-6xl mx-auto px-3 sm:px-6 space-y-6 sm:space-y-12">
-        
-        {/* SECTION HEADER */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-8">
-          <div className="space-y-2.5 sm:space-y-3 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-purple-950/50 border border-purple-800/40 text-[10px] font-mono font-bold text-purple-400 uppercase tracking-widest rounded-md">
-              <Globe className="w-3.5 h-3.5 text-purple-400" />
-              Verified Work Showcase
+      {isHomePage ? (
+        renderVideoShowcaseStage(true)
+      ) : (
+        <div className="space-y-12 sm:space-y-16">
+          {/* Full-Bleed Reference Video Showcase at Top of View Portfolio */}
+          {renderVideoShowcaseStage(false)}
+
+          {/* Searchable & Filterable 18-Build Archive Grid */}
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
+            {/* SECTION HEADER */}
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+              <div className="space-y-3 max-w-2xl">
+                <motion.span
+                  initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
+                  whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
+                  whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
+                  viewport={{ once: true, amount: 0.25 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
+                  className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
+                >
+                  live sites, shipped &amp; fast
+                </motion.span>
+                <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white text-balance">
+                  All {PORTFOLIO_SITES.length} Website Builds
+                </h2>
+                <p className="text-zinc-300 text-sm sm:text-base leading-relaxed">
+                  Custom WordPress architectures, high-converting Shopify stores, and full-stack web apps engineered for sub-second speed and measurable conversion lifts.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-6 py-3 px-5 bg-[#120a22] border border-purple-800/40 rounded-2xl shrink-0">
+                <div>
+                  <span className="text-[11px] text-purple-300 font-semibold uppercase tracking-wider block">Core Web Vitals</span>
+                  <span className="text-white font-mono font-bold text-sm sm:text-base tabular-nums">95–99 / 100</span>
+                </div>
+                <div className="w-px h-8 bg-purple-800/40" />
+                <div>
+                  <span className="text-[11px] text-purple-300 font-semibold uppercase tracking-wider block">Deployments</span>
+                  <span className="text-[#c084fc] font-mono font-bold text-sm sm:text-base tabular-nums">150+ Live Sites</span>
+                </div>
+              </div>
             </div>
-            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-white">
-              Websites Portfolio
-            </h2>
-            <p className="text-zinc-400 text-xs sm:text-base leading-relaxed">
-              Explore custom-engineered website architectures, high-converting e-commerce applications, and high-impact graphic design systems built for maximum page speed and business growth.
-            </p>
+
+          {/* SEARCH & CATEGORY FILTERS */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pt-2 border-b border-purple-900/40 pb-5">
+            <div className="flex flex-nowrap sm:flex-wrap gap-2 overflow-x-auto no-scrollbar pb-1 sm:pb-0 -mx-1 px-1 touch-pan-x">
+              {categories.map((cat, idx) => (
+                <motion.button
+                  key={cat}
+                  initial={{ opacity: 0, y: 12, rotate: idx % 2 === 0 ? -5 : 4, scale: 0.9 }}
+                  whileInView={{ opacity: 1, y: 0, rotate: 0, scale: 1 }}
+                  whileHover={{ scale: 1.04, rotate: idx % 2 === 0 ? -1.2 : 1.2 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ type: "spring", stiffness: 290, damping: 17, delay: idx * 0.04 }}
+                  onClick={() => handleCategoryChange(cat)}
+                  className={`px-4 py-2 text-xs font-semibold tracking-wide transition-colors cursor-pointer rounded-full shrink-0 whitespace-nowrap border ${
+                    currentCategory === cat
+                      ? "bg-gradient-to-r from-[#8750f7] to-purple-600 text-white border-purple-400/50"
+                      : "bg-[#120a22] text-zinc-300 hover:text-white border-purple-900/40 hover:border-purple-500/70"
+                  }`}
+                >
+                  {cat}
+                </motion.button>
+              ))}
+            </div>
+
+            <div className="relative w-full sm:min-w-[260px] sm:w-auto">
+              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-purple-300" />
+              <input
+                type="text"
+                placeholder="Filter by tech or keyword..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-8 py-2.5 text-xs bg-[#120a22] border border-purple-900/50 rounded-full focus:border-[#8750f7] focus:outline-none text-white placeholder:text-zinc-400"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  aria-label="Clear search filter"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-purple-300 hover:text-white text-sm font-bold cursor-pointer"
+                >
+                  ×
+                </button>
+              )}
+            </div>
           </div>
 
-          {/* Quick Metrics Badge */}
-          <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-zinc-900/90 border border-purple-900/30 rounded-xl sm:rounded-2xl font-mono text-xs shrink-0 shadow-xl">
-            <div className="space-y-0.5">
-              <span className="text-[8px] sm:text-[9px] text-zinc-500 font-bold uppercase tracking-widest block">Core Web Vitals</span>
-              <span className="text-emerald-400 font-bold text-xs sm:text-sm">95–99 Average</span>
-            </div>
-            <div className="w-px h-7 sm:h-8 bg-zinc-800"></div>
-            <div className="space-y-0.5">
-              <span className="text-[8px] sm:text-[9px] text-zinc-500 font-bold uppercase tracking-widest block">Deployments</span>
-              <span className="text-purple-300 font-bold text-xs sm:text-sm">100+ Live Sites</span>
-            </div>
-          </div>
-        </div>
-
-        {/* SEARCH & CATEGORY FILTERS */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4 pt-1 sm:pt-2 border-b border-zinc-800 pb-4 sm:pb-6">
-          
-          {/* Category Tabs */}
-          <div className="flex flex-nowrap sm:flex-wrap gap-2 overflow-x-auto no-scrollbar pb-1 sm:pb-0 -mx-2 px-2 sm:mx-0 sm:px-0 touch-pan-x">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => handleCategoryChange(cat)}
-                className={`px-3 sm:px-3.5 py-1.5 text-[10px] sm:text-[11px] font-jakarta tracking-wide uppercase font-bold transition-all cursor-pointer rounded-lg shrink-0 whitespace-nowrap ${
-                  currentCategory === cat
-                    ? "bg-purple-600/20 text-purple-300 border border-purple-500/40 shadow-[0_0_15px_rgba(168,85,247,0.2)]"
-                    : "bg-zinc-900/60 text-zinc-400 hover:text-white border border-zinc-800 hover:border-zinc-700"
-                }`}
+          {/* PROJECTS GRID */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {displayedProjects.map((project, idx) => (
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.05 }}
+                transition={{ duration: 0.4, delay: (idx % 3) * 0.05, ease: [0.16, 1, 0.3, 1] }}
+                className="bg-[#120a22] border border-purple-900/40 hover:border-purple-500/70 rounded-2xl transition-all duration-200 flex flex-col justify-between group overflow-hidden shadow-[0_8px_24px_rgba(0,0,0,0.35)] hover:shadow-[0_14px_34px_rgba(135,80,247,0.18)]"
               >
-                {cat}
-              </button>
+                <div>
+                  <a
+                    href={project.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex flex-col relative w-full aspect-[16/9.5] overflow-hidden bg-[#07030e] border-b border-purple-900/40 group/img cursor-pointer"
+                    title={`Open ${project.title} live website (${project.liveUrl})`}
+                  >
+                    <div className="w-full shrink-0 z-10 px-3 py-2 bg-[#07030e] border-b border-purple-900/40 flex items-center justify-between text-[10px] font-mono gap-2">
+                      <div className="flex items-center gap-1.5 min-w-0 shrink">
+                        <span className="w-2 h-2 rounded-full bg-[#ff6b6b] shrink-0" />
+                        <span className="w-2 h-2 rounded-full bg-[#ffd93d] shrink-0" />
+                        <span className="w-2 h-2 rounded-full bg-[#6bcb77] shrink-0" />
+                        <span className="text-zinc-200 font-semibold ml-1 truncate max-w-[110px] sm:max-w-[150px]">
+                          {project.liveUrl.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0 text-[9px] text-purple-300 font-medium">
+                        <span className="whitespace-nowrap">
+                          {project.videoPreview ? "Motion preview" : "Hover to scroll"}
+                        </span>
+                        <span aria-hidden="true">·</span>
+                        <span className="text-emerald-400 font-bold tabular-nums whitespace-nowrap">
+                          {project.speedScore}/100
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="w-full flex-1 min-h-0 overflow-hidden relative bg-zinc-950">
+                      {project.videoPreview ? (
+                        <VideoCardPreview
+                          videoSrc={project.videoPreview}
+                          posterSrc={project.image}
+                          alt={`${project.title} animated preview`}
+                        />
+                      ) : (
+                        <img
+                          src={project.image}
+                          alt={`${project.title} website screenshot`}
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full h-auto block transform-gpu translate-y-0 group-hover/img:-translate-y-[calc(100%-180px)] sm:group-hover/img:-translate-y-[calc(100%-210px)] transition-transform duration-[6000ms] ease-in-out opacity-100 will-change-transform [image-rendering:-webkit-optimize-contrast]"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            if (!target.dataset.fallbackTried && project.fallbackImage && project.fallbackImage !== project.image) {
+                              target.dataset.fallbackTried = "true";
+                              target.src = project.fallbackImage;
+                            } else if (target.dataset.fallbackTried !== "final") {
+                              target.dataset.fallbackTried = "final";
+                              target.src = "/websites-portfolio/partake-foods.webp";
+                            }
+                          }}
+                        />
+                      )}
+                    </div>
+                  </a>
+
+                  <div className="p-5 sm:p-6 space-y-3 text-left">
+                    <div className="flex items-center flex-wrap gap-x-2 gap-y-1 text-[11px] font-semibold">
+                      <span className="text-[#c084fc] uppercase tracking-wider">{project.category}</span>
+                      <span aria-hidden="true" className="text-purple-400/60">·</span>
+                      <span className="text-[#34d399] font-mono tabular-nums">{project.conversionBoost}</span>
+                    </div>
+
+                    <div>
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group/title block"
+                        title={`Open ${project.title} live website (${project.liveUrl})`}
+                      >
+                        <h3 className="text-xl sm:text-2xl font-display font-black uppercase tracking-tight text-white group-hover/title:text-purple-300 transition-colors flex items-center justify-between gap-2">
+                          <span>{project.title}</span>
+                          <ArrowUpRight className="w-4 h-4 text-[#a855f7] opacity-80 group-hover/title:opacity-100 group-hover/title:translate-x-0.5 group-hover/title:-translate-y-0.5 transition-all shrink-0" />
+                        </h3>
+                      </a>
+                      <p className="text-xs text-purple-200/80 font-medium line-clamp-1 mt-0.5">
+                        {project.tagline}
+                      </p>
+                    </div>
+
+                    <p className="text-xs sm:text-[13px] text-zinc-300 leading-relaxed line-clamp-3 min-h-[54px]">
+                      {project.description}
+                    </p>
+
+                    <p className="text-[11px] font-mono text-zinc-400 pt-2 border-t border-purple-900/40 line-clamp-1">
+                      {project.techStack.slice(0, 4).join(" · ")}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="px-5 sm:px-6 pb-5 sm:pb-6 pt-0 flex items-center gap-2.5">
+                  <a
+                    href={project.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 py-2.5 px-4 bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white text-xs font-bold tracking-wide transition-colors rounded-full flex items-center justify-center gap-1.5 cursor-pointer whitespace-nowrap"
+                  >
+                    <span>Visit Live</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                  <button
+                    onClick={() => setActiveProject(project)}
+                    className="py-2.5 px-4 bg-[#180e2f] hover:bg-purple-900/50 border border-purple-700/40 text-purple-100 text-xs font-bold tracking-wide transition-colors rounded-full cursor-pointer whitespace-nowrap"
+                  >
+                    Case Study
+                  </button>
+                </div>
+              </motion.div>
             ))}
           </div>
 
-          {/* Search Bar */}
-          <div className="relative w-full sm:min-w-[240px] sm:w-auto">
-            <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
-            <input
-              type="text"
-              placeholder="Filter by tech or keyword..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 text-xs font-jakarta bg-zinc-900/90 border border-zinc-800 rounded-xl focus:border-purple-500/60 focus:outline-none text-zinc-200 placeholder:text-zinc-500"
-            />
-            {searchQuery && (
+          {filteredProjects.length === 0 && (
+            <div className="p-12 text-center bg-[#120a22] border border-purple-900/40 rounded-2xl space-y-4">
+              <p className="text-zinc-300 text-sm font-medium">
+                No website projects matched your filter query &ldquo;{searchQuery}&rdquo;.
+              </p>
               <button
-                onClick={() => setSearchQuery("")}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-200 text-xs font-jakarta"
+                onClick={() => {
+                  handleCategoryChange("All");
+                  setSearchQuery("");
+                }}
+                className="px-5 py-2.5 bg-[#8750f7] hover:bg-purple-600 text-white text-xs font-bold tracking-wide rounded-full cursor-pointer"
               >
-                ×
+                Reset Filters
               </button>
-            )}
+            </div>
+          )}
           </div>
         </div>
-
-        {/* PROJECTS GRID */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {displayedProjects.map((project, idx) => (
-            <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 35, filter: "blur(4px)" }}
-              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.6, delay: (idx % 3) * 0.08, ease: [0.16, 1, 0.3, 1] }}
-              className="bg-zinc-900/80 border border-zinc-800 hover:border-purple-500/50 rounded-2xl transition-all duration-300 flex flex-col justify-between group overflow-hidden shadow-xl"
-            >
-              <div>
-                {/* Visual Browser Mockup Window - Opens live website directly */}
-                <a 
-                  href={project.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block relative w-full aspect-[16/10] overflow-hidden bg-zinc-950 border-b border-zinc-800 group/img cursor-pointer"
-                  title={`Open ${project.title} live website (${project.liveUrl})`}
-                >
-                  {/* Browser top chrome bar */}
-                  <div className="absolute top-0 left-0 right-0 z-20 px-3 py-1.5 sm:py-2 bg-zinc-950/95 backdrop-blur-md border-b border-zinc-800/80 flex items-center justify-between text-[9px] font-mono gap-1">
-                    <div className="flex items-center gap-1.5 min-w-0 shrink">
-                      <span className="w-2 h-2 rounded-full bg-rose-500 shrink-0"></span>
-                      <span className="w-2 h-2 rounded-full bg-amber-500 shrink-0"></span>
-                      <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
-                      <span className="text-zinc-300 font-bold ml-1 truncate max-w-[90px] sm:max-w-[130px]">
-                        {project.liveUrl.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1.5 shrink-0">
-                      <span className="inline-flex items-center gap-1.5 text-[8.5px] text-purple-200 font-jakarta font-bold tracking-wider uppercase bg-purple-950/80 px-2 py-0.5 rounded border border-purple-700/50 shadow-sm opacity-90 group-hover/img:opacity-100 transition-opacity whitespace-nowrap">
-                        {project.videoPreview ? (
-                          <>
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                            Live Motion Loop
-                          </>
-                        ) : (
-                          "Hover to Scroll"
-                        )}
-                      </span>
-                      <div className="flex items-center gap-1 px-1.5 sm:px-2 py-0.5 bg-emerald-950/90 border border-emerald-800/80 text-emerald-300 font-bold rounded shrink-0">
-                        <Zap className="w-2.5 h-2.5 text-emerald-400 fill-emerald-400" />
-                        <span>{project.speedScore}/100</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Website Media Viewport: Unobstructed edge-to-edge preview */}
-                  <div className="w-full h-full pt-7 sm:pt-8 overflow-hidden relative bg-zinc-950">
-                    {project.videoPreview ? (
-                      <VideoCardPreview
-                        videoSrc={project.videoPreview}
-                        posterSrc={project.image}
-                        alt={`${project.title} animated preview`}
-                      />
-                    ) : (
-                      <img
-                        src={project.image}
-                        alt={`${project.title} website screenshot`}
-                        loading="lazy"
-                        decoding="async"
-                        className="w-full h-auto block transform-gpu translate-y-0 group-hover/img:-translate-y-[calc(100%-200px)] sm:group-hover/img:-translate-y-[calc(100%-240px)] transition-transform duration-[6000ms] ease-in-out opacity-100 will-change-transform [image-rendering:-webkit-optimize-contrast]"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          if (!target.dataset.fallbackTried && project.fallbackImage && project.fallbackImage !== project.image) {
-                            target.dataset.fallbackTried = "true";
-                            target.src = project.fallbackImage;
-                          } else if (target.dataset.fallbackTried !== "final") {
-                            target.dataset.fallbackTried = "final";
-                            target.src = "/websites-portfolio/partake-foods.webp";
-                          }
-                        }}
-                      />
-                    )}
-                  </div>
-                </a>
-
-                {/* Card Content Description & Metadata below the viewport */}
-                <div className="p-4 sm:p-5 space-y-3 text-left">
-                  {/* Category Pill and Conversion Boost Badge */}
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="px-2 py-0.5 bg-purple-950/80 border border-purple-800/60 text-purple-300 font-bold uppercase tracking-wider rounded text-[9px]">
-                      {project.category}
-                    </span>
-                    <span className="text-emerald-400 font-bold bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800/50 text-[9px] shadow-sm">
-                      {project.conversionBoost}
-                    </span>
-                  </div>
-
-                  {/* Title and Tagline - Title links directly to live site */}
-                  <div>
-                    <a
-                      href={project.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group/title block"
-                      title={`Open ${project.title} live website (${project.liveUrl})`}
-                    >
-                      <h3 className="text-base sm:text-lg font-bold font-serif text-white tracking-tight group-hover/title:text-purple-300 transition-colors flex items-center justify-between gap-1.5">
-                        <span>{project.title}</span>
-                        <ArrowUpRight className="w-4 h-4 text-purple-400 opacity-60 group-hover/title:opacity-100 group-hover/title:translate-x-0.5 group-hover/title:-translate-y-0.5 transition-all shrink-0" />
-                      </h3>
-                    </a>
-                    <p className="text-[11px] font-jakarta text-purple-300/80 font-medium line-clamp-1 mt-0.5">
-                      {project.tagline}
-                    </p>
-                  </div>
-
-                  {/* Brand Description */}
-                  <p className="text-xs text-zinc-400 leading-relaxed line-clamp-3 min-h-[50px]">
-                    {project.description}
-                  </p>
-
-                  {/* Tech Stack Pills */}
-                  <div className="flex flex-wrap gap-1 sm:gap-1.5 pt-0.5">
-                    <div className="flex sm:hidden flex-wrap gap-1">
-                      {project.techStack.slice(0, 3).map((tech) => (
-                        <span
-                          key={tech}
-                          className="px-2 py-0.5 bg-zinc-950 border border-zinc-800 text-[9px] font-jakarta text-zinc-300 font-medium rounded"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="hidden sm:flex flex-wrap gap-1.5">
-                      {project.techStack.slice(0, 4).map((tech) => (
-                        <span
-                          key={tech}
-                          className="px-2.5 py-1 bg-zinc-950 border border-zinc-800 text-[10px] font-jakarta text-zinc-300 font-semibold uppercase tracking-wider rounded"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Action Footer - Purple Button matching site theme */}
-              <div className="p-4 sm:p-6 pt-0 mt-1 sm:mt-2">
-                <a
-                  href={project.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-2.5 sm:py-3.5 bg-gradient-to-r from-purple-600 via-[#8750f7] to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-[11px] sm:text-xs font-jakarta font-bold uppercase tracking-wider transition-all duration-300 rounded-xl flex items-center justify-center gap-1.5 sm:gap-2 shadow-[0_4px_20px_rgba(135,80,247,0.35)] hover:shadow-[0_4px_25px_rgba(135,80,247,0.6)] cursor-pointer hover:scale-[1.01] active:scale-[0.99]"
-                >
-                  Visit Live <ExternalLink className="w-3.5 h-3.5" />
-                </a>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* VIEW ALL SITES CTA (ON HOMEPAGE) */}
-        {isHomePage && onShowMore && filteredProjects.length > 6 && (
-          <div className="pt-2 sm:pt-4 text-center px-3">
-            <button
-              onClick={onShowMore}
-              className="w-full max-w-sm sm:max-w-none sm:w-auto px-4 sm:px-8 py-3 sm:py-3.5 bg-zinc-900/90 hover:bg-zinc-800 text-purple-200 hover:text-white border border-purple-500/40 hover:border-purple-400 rounded-xl sm:rounded-2xl font-jakarta text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all shadow-xl hover:shadow-purple-500/20 inline-flex items-center justify-center gap-2 sm:gap-2.5 cursor-pointer active:scale-95"
-            >
-              <Globe className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-400 shrink-0" />
-              <span className="sm:hidden">Explore All {PORTFOLIO_SITES.length} Websites</span>
-              <span className="hidden sm:inline">Explore All {PORTFOLIO_SITES.length} Web Architectures</span>
-              <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-400 shrink-0" />
-            </button>
-          </div>
-        )}
-
-        {filteredProjects.length === 0 && (
-          <div className="p-12 text-center bg-zinc-900/80 border border-zinc-800 rounded-2xl font-jakarta space-y-3">
-            <p className="text-zinc-400 text-xs uppercase tracking-wide font-bold">
-              No website projects matched your filter query "{searchQuery}".
-            </p>
-            <button
-              onClick={() => {
-                handleCategoryChange("All");
-                setSearchQuery("");
-              }}
-              className="px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xs font-jakarta uppercase font-bold tracking-wider rounded-lg cursor-pointer shadow-md"
-            >
-              Reset Filters
-            </button>
-          </div>
-        )}
-
-      </div>
+      )}
 
       {/* INTERACTIVE CASE STUDY MODAL & SIMULATOR */}
       {activeProject && typeof document !== "undefined" && createPortal(
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-2 sm:p-6 bg-zinc-950/85 backdrop-blur-md overflow-y-auto">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-2 sm:p-6 bg-[#07030e]/90 backdrop-blur-md overflow-y-auto">
           <div
-            className="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-4xl w-full max-h-[92vh] overflow-y-auto shadow-2xl relative text-left my-auto transition-all animate-in fade-in zoom-in-95 duration-200"
+            className="bg-[#0d071d] text-white border border-purple-800/50 rounded-3xl max-w-4xl w-full max-h-[92vh] overflow-y-auto shadow-2xl relative text-left my-auto"
           >
               {/* Modal Top Control Header */}
-              <div className="sticky top-0 z-20 bg-zinc-950 text-zinc-100 px-4 sm:px-6 py-3.5 sm:py-4 flex items-center justify-between border-b border-zinc-800">
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-pulse shrink-0"></div>
-                  <span className="font-mono text-[10px] sm:text-xs uppercase tracking-widest font-bold text-zinc-300 truncate">
-                    Case Study Specimen // {activeProject.title}
+              <div className="sticky top-0 z-20 bg-[#120a22] text-white px-5 sm:px-6 py-4 flex items-center justify-between border-b border-purple-900/50">
+                <div className="min-w-0">
+                  <span className="font-mono text-[11px] uppercase tracking-widest font-semibold text-purple-300 truncate block">
+                    Case Study · {activeProject.title}
                   </span>
                 </div>
 
                 <div className="flex items-center gap-3 shrink-0">
                   {/* Device view switcher */}
-                  <div className="hidden sm:flex items-center bg-zinc-900 border border-zinc-800 rounded-lg p-0.5 font-jakarta text-[10px]">
+                  <div className="hidden sm:flex items-center bg-[#07030e] border border-purple-800/40 rounded-full p-0.5 text-[11px]">
                     <button
                       onClick={() => setViewDevice("desktop")}
-                      className={`px-2.5 py-1 rounded flex items-center gap-1.5 uppercase font-bold cursor-pointer transition-colors ${
-                        viewDevice === "desktop" ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-sm" : "text-zinc-400 hover:text-zinc-200"
+                      className={`px-3 py-1 rounded-full flex items-center gap-1.5 font-semibold cursor-pointer transition-colors ${
+                        viewDevice === "desktop" ? "bg-[#8750f7] text-white" : "text-zinc-400 hover:text-white"
                       }`}
                     >
                       <Monitor className="w-3 h-3" /> Desktop
                     </button>
                     <button
                       onClick={() => setViewDevice("mobile")}
-                      className={`px-2.5 py-1 rounded flex items-center gap-1.5 uppercase font-bold cursor-pointer transition-colors ${
-                        viewDevice === "mobile" ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-sm" : "text-zinc-400 hover:text-zinc-200"
+                      className={`px-3 py-1 rounded-full flex items-center gap-1.5 font-semibold cursor-pointer transition-colors ${
+                        viewDevice === "mobile" ? "bg-[#8750f7] text-white" : "text-zinc-400 hover:text-white"
                       }`}
                     >
                       <Smartphone className="w-3 h-3" /> Mobile
@@ -1435,7 +1885,8 @@ export function WebsitePortfolio({
 
                   <button
                     onClick={() => setActiveProject(null)}
-                    className="p-1.5 text-zinc-400 hover:text-white transition-colors cursor-pointer"
+                    aria-label="Close case study"
+                    className="p-1.5 rounded-full bg-purple-950/60 hover:bg-purple-800 text-white transition-colors cursor-pointer"
                   >
                     <X className="w-5 h-5" />
                   </button>
@@ -1443,36 +1894,36 @@ export function WebsitePortfolio({
               </div>
 
               {/* Modal Main Content */}
-              <div className="p-4 sm:p-8 space-y-6 sm:space-y-8">
-                
+              <div className="p-5 sm:p-8 space-y-6 sm:space-y-8">
+
                 {/* Simulated Device View Canvas */}
-                <div className="bg-zinc-950 p-2 sm:p-6 border border-zinc-800 rounded-xl sm:rounded-2xl relative overflow-hidden flex justify-center items-center">
-                  
+                <div className="bg-[#07030e] p-3 sm:p-6 border border-purple-900/40 rounded-2xl relative overflow-hidden flex justify-center items-center">
                   <div
-                    className={`w-full transition-all duration-500 ${
-                      viewDevice === "mobile" ? "max-w-sm rounded-3xl border-4 sm:border-8 border-zinc-800" : "max-w-3xl"
-                    } bg-zinc-900 text-zinc-100 border border-zinc-800 overflow-hidden shadow-2xl rounded-xl`}
+                    className={`w-full transition-all duration-300 ${
+                      viewDevice === "mobile" ? "max-w-sm rounded-3xl border-4 border-purple-800/60" : "max-w-3xl"
+                    } bg-zinc-950 text-white border border-purple-800/40 overflow-hidden shadow-xl rounded-xl`}
                   >
                     {/* Simulated Browser Address Bar */}
-                    <div className="bg-zinc-950 px-3 sm:px-4 py-2 border-b border-zinc-800 flex items-center justify-between text-[10px] font-mono text-zinc-500 gap-2">
+                    <div className="bg-[#120a22] px-4 py-2.5 border-b border-purple-900/40 flex items-center justify-between text-[11px] font-mono text-zinc-300 gap-2">
                       <div className="flex items-center gap-1.5 shrink-0">
-                        <span className="w-2 h-2 rounded-full bg-rose-500"></span>
-                        <span className="w-2 h-2 rounded-full bg-amber-500"></span>
-                        <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        <span className="w-2 h-2 rounded-full bg-[#ff6b6b]" />
+                        <span className="w-2 h-2 rounded-full bg-[#ffd93d]" />
+                        <span className="w-2 h-2 rounded-full bg-[#6bcb77]" />
                       </div>
                       <a
                         href={activeProject.liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-zinc-900 hover:bg-zinc-800 px-2 sm:px-3 py-0.5 rounded text-zinc-300 hover:text-purple-400 font-bold tracking-wider border border-zinc-800 flex items-center gap-1 transition-colors truncate max-w-[150px] sm:max-w-xs text-[9px] sm:text-[10px]"
+                        className="bg-purple-950/70 hover:bg-purple-800/70 px-3 py-0.5 rounded-full text-purple-200 font-semibold tracking-wide flex items-center gap-1 transition-colors truncate max-w-[160px] sm:max-w-xs text-[10px]"
                       >
-                        <span className="truncate">{activeProject.liveUrl.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}</span> <ExternalLink className="w-2.5 h-2.5 shrink-0" />
+                        <span className="truncate">{activeProject.liveUrl.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}</span>
+                        <ExternalLink className="w-2.5 h-2.5 shrink-0" />
                       </a>
-                      <span className="text-emerald-400 font-bold shrink-0 text-[9px] sm:text-[10px]">{activeProject.speedScore}/100</span>
+                      <span className="text-emerald-400 font-bold shrink-0 tabular-nums text-[10px]">{activeProject.speedScore}/100</span>
                     </div>
 
                     {/* Real Live Site Screenshot Preview Canvas */}
-                    <div className="relative min-h-[250px] sm:min-h-[300px] max-h-[460px] overflow-y-auto bg-zinc-950 group/preview flex items-center justify-center">
+                    <div className="relative min-h-[240px] sm:min-h-[300px] max-h-[460px] overflow-y-auto bg-zinc-950 flex flex-col items-center justify-center">
                       {activeProject.videoPreview ? (
                         <div className="w-full relative bg-zinc-950 flex flex-col items-center justify-center p-2 sm:p-4">
                           <video
@@ -1504,144 +1955,131 @@ export function WebsitePortfolio({
                       )}
 
                       {/* Floating bottom status bar with speed metric & live link */}
-                      <div className="sticky bottom-0 left-0 right-0 p-2.5 sm:p-3 bg-zinc-950/95 backdrop-blur-md border-t border-zinc-800 flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
-                        <div className="flex items-center gap-2 sm:gap-3">
-                          <span className="px-2 py-0.5 bg-purple-950/70 border border-purple-800/50 text-purple-300 font-bold uppercase rounded text-[8px] sm:text-[9px]">
-                            {activeProject.mockup.badgeText}
-                          </span>
-                          <span className="text-emerald-400 font-bold flex items-center gap-1 text-[9px] sm:text-[10px]">
-                            <Zap className="w-3 h-3 text-emerald-400 fill-emerald-400" />
-                            {activeProject.mockup.stat1}
-                          </span>
+                      <div className="sticky bottom-0 left-0 right-0 w-full p-3 bg-[#120a22]/95 backdrop-blur-md border-t border-purple-900/50 flex flex-wrap items-center justify-between gap-2 text-xs">
+                        <div className="flex items-center gap-2 text-[11px] font-mono text-purple-200">
+                          <span className="font-semibold text-white">{activeProject.mockup.badgeText}</span>
+                          <span aria-hidden="true">·</span>
+                          <span>{activeProject.mockup.stat1}</span>
                         </div>
                         <a
                           href={activeProject.liveUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="px-2.5 sm:px-3 py-1 bg-gradient-to-r from-purple-600 via-[#8750f7] to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-[9px] sm:text-[10px] uppercase tracking-wider rounded-lg flex items-center gap-1 transition-all whitespace-nowrap shadow-md cursor-pointer"
+                          className="px-3.5 py-1.5 bg-[#8750f7] hover:bg-purple-600 text-white font-bold text-[11px] rounded-full flex items-center gap-1.5 transition-colors whitespace-nowrap cursor-pointer"
                         >
-                          Visit Live Site <ExternalLink className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
+                          <span>Visit Live Site</span>
+                          <ExternalLink className="w-3 h-3" />
                         </a>
                       </div>
                     </div>
                   </div>
-
                 </div>
 
                 {/* Case Study Details Grid */}
                 <div className="grid md:grid-cols-3 gap-6 sm:gap-8">
-                  
+
                   {/* Left Column: Metrics & Stack */}
                   <div className="space-y-6">
-                    <div className="p-4 sm:p-5 bg-zinc-950 border border-zinc-800 rounded-xl space-y-3">
-                      <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest font-bold block">
+                    <div className="p-5 bg-[#120a22] border border-purple-900/40 rounded-2xl space-y-3">
+                      <span className="text-[11px] font-mono text-purple-300 uppercase tracking-wider font-bold block">
                         Project Overview
                       </span>
-                      <div className="space-y-1 font-mono text-xs text-zinc-300">
-                        <div className="flex justify-between py-1 border-b border-zinc-800 gap-2">
-                          <span className="text-zinc-500">Client:</span>
+                      <div className="space-y-2 text-xs text-zinc-300">
+                        <div className="flex justify-between py-1.5 border-b border-purple-900/30 gap-2">
+                          <span className="text-zinc-400">Client</span>
                           <span className="font-bold text-white text-right">{activeProject.client}</span>
                         </div>
-                        <div className="flex justify-between py-1 border-b border-zinc-800 gap-2">
-                          <span className="text-zinc-500">Role:</span>
+                        <div className="flex justify-between py-1.5 border-b border-purple-900/30 gap-2">
+                          <span className="text-zinc-400">Role</span>
                           <span className="font-bold text-white text-right">{activeProject.role}</span>
                         </div>
-                        <div className="flex justify-between py-1 border-b border-zinc-800 gap-2">
-                          <span className="text-zinc-500">Year Delivered:</span>
-                          <span className="font-bold text-white text-right">{activeProject.year}</span>
+                        <div className="flex justify-between py-1.5 border-b border-purple-900/30 gap-2">
+                          <span className="text-zinc-400">Year Delivered</span>
+                          <span className="font-mono font-bold text-white text-right tabular-nums">{activeProject.year}</span>
                         </div>
-                        <div className="flex justify-between py-1 gap-2">
-                          <span className="text-zinc-500">Lighthouse Score:</span>
-                          <span className="font-bold text-emerald-400 text-right">{activeProject.speedScore}/100</span>
+                        <div className="flex justify-between py-1.5 gap-2">
+                          <span className="text-zinc-400">PageSpeed</span>
+                          <span className="font-mono font-bold text-emerald-400 text-right tabular-nums">{activeProject.speedScore}/100</span>
                         </div>
                       </div>
                     </div>
 
-                    <div className="space-y-2">
-                      <span className="text-[10px] font-jakarta text-zinc-500 uppercase tracking-widest font-bold block">
-                        Tech Stack Enqueued
+                    <div className="p-5 bg-[#120a22] border border-purple-900/40 rounded-2xl space-y-2">
+                      <span className="text-[11px] font-mono text-purple-300 uppercase tracking-wider font-bold block">
+                        Tech Stack
                       </span>
-                      <div className="flex flex-wrap gap-1.5">
-                        {activeProject.techStack.map((tech) => (
-                          <span
-                            key={tech}
-                            className="px-2.5 py-1 bg-zinc-950 border border-purple-900/40 text-[10px] font-jakarta text-purple-300 font-semibold uppercase tracking-wider rounded"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
+                      <p className="text-xs text-zinc-200 font-medium leading-relaxed">
+                        {activeProject.techStack.join(" · ")}
+                      </p>
                     </div>
                   </div>
 
                   {/* Middle & Right Column: Challenge, Solution, Impact */}
-                  <div className="md:col-span-2 space-y-6">
-                    
-                    <div className="space-y-2">
-                      <h4 className="text-xs font-mono font-bold uppercase text-white tracking-wider flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 bg-rose-500 rounded-full"></span> The Challenge
+                  <div className="md:col-span-2 space-y-5">
+                    <div className="bg-[#120a22] p-5 rounded-2xl border border-purple-900/40 space-y-1.5">
+                      <h4 className="text-xs font-bold uppercase text-white tracking-wider">
+                        01. The Challenge
                       </h4>
-                      <p className="text-xs text-zinc-300 leading-relaxed bg-zinc-950 p-4 rounded-xl border border-zinc-800">
+                      <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
                         {activeProject.caseStudy.challenge}
                       </p>
                     </div>
 
-                    <div className="space-y-2">
-                      <h4 className="text-xs font-mono font-bold uppercase text-white tracking-wider flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 bg-purple-500 rounded-full"></span> The Architecture Solution
+                    <div className="bg-[#120a22] p-5 rounded-2xl border border-purple-900/40 space-y-1.5">
+                      <h4 className="text-xs font-bold uppercase text-[#c084fc] tracking-wider">
+                        02. The Architecture Solution
                       </h4>
-                      <p className="text-xs text-zinc-300 leading-relaxed bg-zinc-950 p-4 rounded-xl border border-zinc-800">
+                      <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
                         {activeProject.caseStudy.solution}
                       </p>
                     </div>
 
-                    <div className="space-y-2">
-                      <h4 className="text-xs font-mono font-bold uppercase text-white tracking-wider flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span> Business Impact
+                    <div className="bg-[#180e2f] p-5 rounded-2xl border border-purple-500/40 space-y-1.5">
+                      <h4 className="text-xs font-bold uppercase text-emerald-400 tracking-wider">
+                        03. Business Impact
                       </h4>
-                      <p className="text-xs text-emerald-300 font-bold leading-relaxed bg-emerald-500/10 p-4 rounded-xl border border-emerald-500/20">
+                      <p className="text-xs sm:text-sm text-white font-semibold leading-relaxed">
                         {activeProject.caseStudy.impact}
                       </p>
                     </div>
 
-                    <div className="space-y-2 pt-2">
-                      <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest font-bold block">
+                    <div className="space-y-2 pt-1">
+                      <span className="text-[11px] font-mono text-purple-300 uppercase tracking-wider font-bold block">
                         Key Features Delivered
                       </span>
-                      <ul className="space-y-2 text-xs text-zinc-300">
+                      <ul className="space-y-2 text-xs sm:text-sm text-zinc-300">
                         {activeProject.features.map((feat, idx) => (
                           <li key={idx} className="flex items-start gap-2.5">
-                            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                            <CheckCircle2 className="w-4 h-4 text-[#a855f7] shrink-0 mt-0.5" />
                             <span>{feat}</span>
                           </li>
                         ))}
                       </ul>
                     </div>
-
                   </div>
 
                 </div>
-
               </div>
 
               {/* Modal Bottom CTA */}
-              <div className="p-4 sm:p-6 bg-zinc-950 border-t border-zinc-800 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 rounded-b-2xl">
-                <span className="text-xs font-mono text-zinc-400 text-center sm:text-left">
-                  Ready for a custom website architecture or e-commerce application like this?
+              <div className="p-5 sm:p-6 bg-[#120a22] border-t border-purple-900/50 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+                <span className="text-xs font-medium text-zinc-400 text-center sm:text-left">
+                  Want a similar custom website architecture engineered for your brand?
                 </span>
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
                   <a
                     href={activeProject.liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-4 sm:px-5 py-2.5 sm:py-3 bg-zinc-900 border border-purple-900/50 hover:border-purple-400 text-zinc-200 hover:text-purple-300 text-xs font-jakarta font-bold uppercase tracking-wider transition-all rounded-xl flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer"
+                    className="px-5 py-2.5 bg-[#180e2f] border border-purple-700/50 hover:border-purple-400 text-white text-xs font-bold tracking-wide transition-colors rounded-full flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer"
                   >
-                    Visit Live Site <ExternalLink className="w-3.5 h-3.5" />
+                    <span>Visit Live Site</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
                   </a>
                   <a
                     href="#contact"
                     onClick={() => setActiveProject(null)}
-                    className="px-5 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-purple-600 via-[#8750f7] to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-jakarta font-bold uppercase tracking-wider transition-all rounded-xl text-center whitespace-nowrap shadow-[0_4px_20px_rgba(135,80,247,0.4)] cursor-pointer"
+                    className="px-6 py-2.5 bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white text-xs font-bold tracking-wide transition-colors rounded-full text-center whitespace-nowrap cursor-pointer"
                   >
                     Request Similar Project
                   </a>

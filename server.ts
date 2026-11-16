@@ -17,8 +17,8 @@ async function startServer() {
 
   // Static Assets - Serve public assets (images, fonts, downloads)
   const publicPath = path.join(process.cwd(), "public");
-  app.use(express.static(publicPath, { maxAge: "1h" }));
-  app.use("/public", express.static(publicPath, { maxAge: "1h" }));
+  app.use(express.static(publicPath, { maxAge: 0 }));
+  app.use("/public", express.static(publicPath, { maxAge: 0 }));
 
   // API Routes
   app.get("/api/health", (req, res) => {

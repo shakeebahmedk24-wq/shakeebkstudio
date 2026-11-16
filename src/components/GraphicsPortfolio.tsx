@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import {
   Palette,
   ExternalLink,
@@ -19,9 +19,12 @@ import {
   Bookmark,
   Smartphone,
   ArrowRight,
+  ArrowUpRight,
   ChevronLeft,
   ChevronRight,
-  Info
+  Info,
+  Play,
+  Pause
 } from "lucide-react";
 
 export interface GraphicItem {
@@ -1984,6 +1987,26 @@ export function GraphicsPortfolio({
   const [touchEndX, setTouchEndX] = useState<number | null>(null);
   const thumbnailContainerRef = useRef<HTMLDivElement>(null);
 
+  // Studio Spotlight Deck state for creative interactive brand & artboard inspection
+  const studioFeatured = GRAPHIC_PROJECTS.slice(0, 12);
+  const [studioIndex, setStudioIndex] = useState<number>(0);
+  const [isStudioCycling, setIsStudioCycling] = useState<boolean>(true);
+  const [artboardTilt, setArtboardTilt] = useState({ rotateX: 0, rotateY: 0 });
+  const currentStudioGraphic = studioFeatured[studioIndex] || GRAPHIC_PROJECTS[0];
+
+  useEffect(() => {
+    if (!isStudioCycling || lightboxIndex !== null) return;
+    const timer = window.setInterval(() => {
+      setStudioIndex((prev) => (prev + 1) % studioFeatured.length);
+    }, 4800);
+    return () => window.clearInterval(timer);
+  }, [isStudioCycling, lightboxIndex, studioFeatured.length]);
+
+  const selectStudioGraphic = (idx: number) => {
+    setStudioIndex(idx);
+    setIsStudioCycling(false);
+  };
+
   const handleTouchStart = (e: React.TouchEvent) => {
     setTouchStartX(e.targetTouches[0].clientX);
   };
@@ -2138,71 +2161,338 @@ export function GraphicsPortfolio({
     setTimeout(() => setCopiedHex(null), 2000);
   };
 
+  const studioAccentHex = currentStudioGraphic.palette?.[1] || "#8750f7";
+
   return (
     <section
       id="graphics-portfolio"
-      className={`${isHomePage ? "py-10 sm:py-20 border-t border-zinc-800/60" : "py-4"} scroll-mt-24 text-left`}
+      className={`${isHomePage ? "py-16 sm:py-24" : "pt-10 pb-16 sm:pt-14 sm:pb-24"} scroll-mt-24 text-left relative overflow-hidden`}
     >
-      <div className="max-w-6xl mx-auto px-3 sm:px-6 space-y-6 sm:space-y-12">
-        
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12 relative z-10">
+
         {/* SECTION HEADER */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-8">
-          <div className="space-y-3 sm:space-y-4 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 bg-purple-950/60 border border-purple-800/60 text-[10px] sm:text-[11px] font-jakarta font-bold text-purple-400 uppercase tracking-widest rounded-lg shadow-sm">
-              <Palette className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-400" />
-              Graphic Design & Brand Identity Studio
-            </div>
-            <h2 className="font-serif text-2xl sm:text-3xl md:text-5xl font-black tracking-tight text-white">
-              Graphic Design & Brand Identity
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div className="space-y-3 max-w-2xl">
+            <motion.span
+              initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
+              whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
+              whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
+              viewport={{ once: true, amount: 0.25 }}
+              transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
+              className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
+            >
+              marks, packaging &amp; brand systems
+            </motion.span>
+            <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white text-balance">
+              Branding &amp; Graphic Design
             </h2>
-            <p className="text-zinc-400 text-xs sm:text-base leading-relaxed font-jakarta">
-              Explore custom brand identity systems, vector logos, high-converting social media kits, luxury packaging designs, and marketing visual assets engineered for distinctive brand presence.
+            <p className="text-zinc-300 text-sm sm:text-base leading-relaxed">
+              Custom visual identity systems, vector logomarks, social kits, packaging dielines, and print collateral built to command shelves and screens alike.
             </p>
           </div>
 
-          {/* Creative Studio Badge (Desktop only) */}
-          <div className="hidden sm:flex items-center gap-4 p-4 bg-zinc-900/80 border border-zinc-800 rounded-xl font-jakarta text-xs shrink-0 backdrop-blur-sm">
-            <div className="space-y-0.5">
-              <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest block">Design Tooling</span>
-              <span className="text-white font-bold text-sm">Adobe Suite & Figma</span>
+          {/* Creative Tooling Summary */}
+          <div className="hidden sm:flex items-center gap-6 py-3 px-5 bg-[#120a22] border border-purple-800/40 rounded-2xl shrink-0">
+            <div>
+              <span className="text-[11px] text-purple-300 font-semibold uppercase tracking-wider block">Design Tooling</span>
+              <span className="text-white font-bold text-sm">Adobe Suite &amp; Figma</span>
             </div>
-            <div className="w-px h-8 bg-zinc-800"></div>
-            <div className="space-y-0.5">
-              <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest block">Vector Precision</span>
-              <span className="text-purple-300 font-bold text-sm">300 DPI Print / 4K</span>
+            <div className="w-px h-8 bg-purple-800/40" />
+            <div>
+              <span className="text-[11px] text-purple-300 font-semibold uppercase tracking-wider block">Vector Precision</span>
+              <span className="text-[#c084fc] font-mono font-bold text-sm">300 DPI Print / 4K</span>
             </div>
           </div>
         </div>
 
-        {/* CATEGORY FILTER TABS */}
-        <div className="flex flex-nowrap sm:flex-wrap gap-2 pt-1 border-b border-zinc-800/60 pb-3 sm:pb-6 overflow-x-auto no-scrollbar -mx-2 px-2 sm:mx-0 sm:px-0 touch-pan-x">
-          {categories.map((cat) => (
-            <button
+        {/* ============================================================ */}
+        {/* CREATIVE INTERACTIVE BRAND STUDIO STAGE (3D Tilt + Swatches) */}
+        {/* ============================================================ */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+          className="relative rounded-3xl bg-[#120a22] border border-purple-500/35 p-5 sm:p-8 lg:p-10 shadow-[0_24px_70px_rgba(7,3,14,0.65)] overflow-hidden"
+        >
+          {/* Dynamic Ambient Aura Tinted by Active Brand Swatch */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -top-28 -right-24 w-96 h-96 rounded-full blur-[110px] opacity-30 transition-colors duration-700"
+            style={{ backgroundColor: studioAccentHex }}
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -bottom-28 -left-24 w-80 h-80 rounded-full blur-[110px] opacity-25 bg-[#8750f7]"
+          />
+
+          <div className="grid lg:grid-cols-12 gap-7 lg:gap-10 items-center relative z-10">
+            {/* Left 7 Cols: 3D Pointer-Tilt Drafted Artboard Mat */}
+            <div
+              className="lg:col-span-7"
+              style={{ perspective: 1100 }}
+              onMouseMove={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                const y = (e.clientY - rect.top) / rect.height - 0.5;
+                setArtboardTilt({ rotateX: -y * 8, rotateY: x * 10 });
+              }}
+              onMouseLeave={() => setArtboardTilt({ rotateX: 0, rotateY: 0 })}
+            >
+              <motion.div
+                animate={{
+                  rotateX: artboardTilt.rotateX,
+                  rotateY: artboardTilt.rotateY
+                }}
+                transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                onClick={() => openLightboxByProject(currentStudioGraphic)}
+                className="relative bg-[#07030e] border border-purple-400/30 rounded-2xl p-2.5 sm:p-4 shadow-[0_24px_55px_rgba(0,0,0,0.6)] cursor-pointer group/art will-change-transform"
+                title="Click to inspect full artwork in Lightbox"
+              >
+                {/* Drafting Studio Crop Corner Accents */}
+                <span aria-hidden="true" className="hidden sm:block absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-purple-400/60 rounded-tl" />
+                <span aria-hidden="true" className="hidden sm:block absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-purple-400/60 rounded-tr" />
+                <span aria-hidden="true" className="hidden sm:block absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-purple-400/60 rounded-bl" />
+                <span aria-hidden="true" className="hidden sm:block absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-purple-400/60 rounded-br" />
+
+                {/* Floating Slanted Artboard Kicker */}
+                <motion.span
+                  key={currentStudioGraphic.id}
+                  initial={{ opacity: 0, y: -8, rotate: -8, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, rotate: -2, scale: 1 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 16 }}
+                  className="absolute -top-3 left-5 z-20 font-hand text-base sm:text-lg font-bold px-3 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] shadow-md"
+                >
+                  {currentStudioGraphic.category} · {currentStudioGraphic.dimensions}
+                </motion.span>
+
+                <div className="aspect-[16/10] w-full rounded-xl overflow-hidden bg-zinc-950 relative">
+                  <AnimatePresence mode="wait">
+                    <motion.img
+                      key={currentStudioGraphic.id}
+                      initial={{ opacity: 0.25, scale: 1.03 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0.25 }}
+                      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                      src={currentStudioGraphic.imageUrl}
+                      alt={currentStudioGraphic.title}
+                      className="w-full h-full object-cover object-center group-hover/art:scale-[1.03] transition-transform duration-500 [image-rendering:-webkit-optimize-contrast]"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        if (!target.dataset.fallbackTried && currentStudioGraphic.fallbackUrl) {
+                          target.dataset.fallbackTried = "true";
+                          target.src = currentStudioGraphic.fallbackUrl;
+                        }
+                      }}
+                    />
+                  </AnimatePresence>
+
+                  {/* Hover Inspect Trigger Overlay */}
+                  <div className="absolute inset-0 bg-[#07030e]/40 opacity-0 group-hover/art:opacity-100 transition-opacity flex items-center justify-center">
+                    <span className="px-5 py-2.5 rounded-full bg-white text-[#120a22] text-xs font-bold inline-flex items-center gap-2 shadow-2xl">
+                      <Maximize2 className="w-3.5 h-3.5" />
+                      <span>Inspect Artwork in Full Resolution</span>
+                    </span>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Right 5 Cols: Identity Breakdown + Click-to-Copy Brand Swatches */}
+            <div className="lg:col-span-5 space-y-5 text-left">
+              <div className="flex items-center justify-between gap-2 text-xs font-mono text-purple-300">
+                <span className="uppercase tracking-wider font-bold text-[#c084fc]">
+                  Studio Specimen {String(studioIndex + 1).padStart(2, "0")} / {studioFeatured.length}
+                </span>
+                <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      selectStudioGraphic(studioIndex > 0 ? studioIndex - 1 : studioFeatured.length - 1)
+                    }
+                    aria-label="Previous brand artwork"
+                    className="w-8 h-8 rounded-full bg-white/10 hover:bg-white text-white hover:text-[#120a22] border border-white/20 flex items-center justify-center transition-colors cursor-pointer"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      selectStudioGraphic((studioIndex + 1) % studioFeatured.length)
+                    }
+                    aria-label="Next brand artwork"
+                    className="w-8 h-8 rounded-full bg-white/10 hover:bg-white text-white hover:text-[#120a22] border border-white/20 flex items-center justify-center transition-colors cursor-pointer"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsStudioCycling((p) => !p)}
+                    aria-label={isStudioCycling ? "Pause studio cycle" : "Play studio cycle"}
+                    className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 flex items-center justify-center transition-colors cursor-pointer"
+                    title={isStudioCycling ? "Pause auto-cycle" : "Play auto-cycle"}
+                  >
+                    {isStudioCycling ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
+                  </button>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <span className="text-xs font-semibold text-purple-200/80 block">
+                  {currentStudioGraphic.client}
+                </span>
+                <h3 className="font-display text-3xl sm:text-5xl font-black uppercase tracking-tight leading-[0.95] text-white">
+                  {currentStudioGraphic.title}
+                </h3>
+                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed line-clamp-3">
+                  {currentStudioGraphic.description}
+                </p>
+              </div>
+
+              {/* Interactive Pantone / Hex Swatch System */}
+              <div className="space-y-2">
+                <span className="text-[11px] font-mono uppercase tracking-wider text-purple-300 font-semibold block">
+                  Brand Palette · Click Swatch to Copy Hex
+                </span>
+                <div className="grid grid-cols-4 gap-2">
+                  {currentStudioGraphic.palette.slice(0, 4).map((hex) => (
+                    <button
+                      key={hex}
+                      type="button"
+                      onClick={() => copyToClipboard(hex)}
+                      className="group/swatch text-left rounded-xl overflow-hidden bg-[#07030e] border border-purple-700/40 hover:border-white transition-all cursor-pointer"
+                      title={`Copy ${hex}`}
+                    >
+                      <div
+                        className="h-7 w-full transition-transform group-hover/swatch:scale-105"
+                        style={{ backgroundColor: hex }}
+                      />
+                      <span className="block px-2 py-1 text-[10px] font-mono font-semibold text-zinc-200 truncate">
+                        {copiedHex === hex ? "Copied!" : hex}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Font Pairing & Specs Readout */}
+              <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono text-zinc-400 pt-2 border-t border-purple-900/40">
+                <span>Type: {currentStudioGraphic.fonts.heading} + {currentStudioGraphic.fonts.body}</span>
+                <span className="text-[#c084fc] font-semibold">{currentStudioGraphic.specifications.vectorDpi}</span>
+              </div>
+
+              {/* Action Row */}
+              <div className="flex flex-wrap items-center gap-3 pt-1">
+                <button
+                  type="button"
+                  onClick={() => openLightboxByProject(currentStudioGraphic)}
+                  className="px-6 py-3 bg-white hover:bg-[#e9d5ff] text-[#120a22] text-xs sm:text-sm font-bold rounded-full transition-colors inline-flex items-center gap-2 cursor-pointer shadow-lg"
+                >
+                  <span>Open Full Lightbox</span>
+                  <Maximize2 className="w-3.5 h-3.5" />
+                </button>
+                <a
+                  href={currentStudioGraphic.behanceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-5 py-3 bg-[#180e2f] hover:bg-purple-900/60 border border-purple-600/45 text-white text-xs sm:text-sm font-semibold rounded-full inline-flex items-center gap-1.5 transition-colors"
+                >
+                  <span>Behance Case</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Continuous Sliding Mini Artboard Filmstrip */}
+          <div className="mt-8 pt-6 border-t border-purple-800/35 overflow-hidden -mx-5 sm:-mx-8 lg:-mx-10 px-4">
+            <div className="animate-portfolio-marquee flex items-center gap-4 py-2">
+              {[...studioFeatured, ...studioFeatured].map((item, stripIdx) => {
+                const realIdx = stripIdx % studioFeatured.length;
+                const isSelected = realIdx === studioIndex;
+                return (
+                  <button
+                    key={`${item.id}-${stripIdx}`}
+                    type="button"
+                    onClick={() => selectStudioGraphic(realIdx)}
+                    className={`w-[170px] sm:w-[205px] rounded-xl p-2 bg-[#07030e] border shrink-0 transition-all duration-300 cursor-pointer text-left ${
+                      realIdx % 2 === 0 ? "-rotate-1 hover:rotate-0" : "rotate-1 hover:rotate-0"
+                    } ${
+                      isSelected
+                        ? "border-white ring-2 ring-[#8750f7] scale-[1.03]"
+                        : "border-purple-700/35 opacity-80 hover:opacity-100 hover:-translate-y-1"
+                    }`}
+                    title={`Preview ${item.title}`}
+                  >
+                    <div className="aspect-[16/10] w-full rounded-lg overflow-hidden bg-zinc-950">
+                      <img
+                        src={item.imageUrl}
+                        alt={item.title}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          if (!target.dataset.fallbackTried && item.fallbackUrl) {
+                            target.dataset.fallbackTried = "true";
+                            target.src = item.fallbackUrl;
+                          }
+                        }}
+                      />
+                    </div>
+                    <div className="pt-1.5 px-1 flex items-center justify-between gap-2">
+                      <span className="text-[11px] font-bold text-white truncate">{item.title}</span>
+                      <div className="flex -space-x-1 shrink-0">
+                        {item.palette.slice(0, 3).map((c) => (
+                          <span
+                            key={c}
+                            className="w-2.5 h-2.5 rounded-full border border-white/50"
+                            style={{ backgroundColor: c }}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* CATEGORY FILTER TABS (Spring Tilt Entrance) */}
+        <div className="flex flex-nowrap sm:flex-wrap gap-2 pt-1 border-b border-purple-900/40 pb-5 overflow-x-auto no-scrollbar -mx-1 px-1 touch-pan-x">
+          {categories.map((cat, idx) => (
+            <motion.button
               key={cat}
+              initial={{ opacity: 0, y: 12, rotate: idx % 2 === 0 ? -5 : 4, scale: 0.9 }}
+              whileInView={{ opacity: 1, y: 0, rotate: 0, scale: 1 }}
+              whileHover={{ scale: 1.04, rotate: idx % 2 === 0 ? -1.2 : 1.2 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ type: "spring", stiffness: 290, damping: 17, delay: idx * 0.04 }}
               onClick={() => handleSelectCategory(cat)}
-              className={`px-3 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-[11px] font-jakarta tracking-wide uppercase font-bold rounded-lg transition-all cursor-pointer shrink-0 whitespace-nowrap ${
+              className={`px-4 py-2 text-xs font-semibold tracking-wide rounded-full transition-colors cursor-pointer shrink-0 whitespace-nowrap border ${
                 selectedCategory === cat
-                  ? "bg-purple-600 text-white font-bold shadow-[0_0_15px_rgba(168,85,247,0.4)] border border-purple-500"
-                  : "bg-zinc-900/80 text-zinc-400 hover:text-white border border-zinc-800 hover:border-purple-800/50"
+                  ? "bg-gradient-to-r from-[#8750f7] to-purple-600 text-white border-purple-400/50"
+                  : "bg-[#120a22] text-zinc-300 hover:text-white border-purple-900/40 hover:border-purple-500/70"
               }`}
             >
               {cat}
-            </button>
+            </motion.button>
           ))}
         </div>
 
-        {/* GRAPHICS GALLERY GRID: 2 Columns on mobile (Lightbox visual gallery), 3 columns on desktop */}
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
+        {/* GRAPHICS GALLERY GRID: Tilt Spring Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
           {projectsToDisplay.map((project, idx) => (
             <motion.div
               key={project.id}
-              initial={{ opacity: 0, y: 35, filter: "blur(4px)" }}
-              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.6, delay: (idx % 3) * 0.08, ease: [0.16, 1, 0.3, 1] }}
-              className="bg-zinc-900/80 border border-zinc-800/80 rounded-xl sm:rounded-2xl hover:border-purple-500/50 transition-all duration-300 flex flex-col justify-between group overflow-hidden shadow-lg backdrop-blur-sm cursor-pointer sm:cursor-default"
+              initial={{ opacity: 0, y: 22, rotate: idx % 2 === 0 ? -2.8 : 2.8, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, rotate: 0, scale: 1 }}
+              whileHover={{ y: -6, rotate: idx % 2 === 0 ? -0.7 : 0.7 }}
+              viewport={{ once: true, amount: 0.06 }}
+              transition={{ type: "spring", stiffness: 220, damping: 19, delay: (idx % 3) * 0.06 }}
+              className="bg-[#120a22] border border-purple-900/40 rounded-2xl hover:border-purple-500/70 transition-colors flex flex-col justify-between group overflow-hidden shadow-[0_8px_24px_rgba(0,0,0,0.35)] hover:shadow-[0_14px_34px_rgba(135,80,247,0.22)] cursor-pointer sm:cursor-default will-change-transform"
               onClick={() => {
-                // On mobile, tapping anywhere on the card opens the lightbox
                 if (typeof window !== "undefined" && window.innerWidth < 640) {
                   openLightboxByProject(project);
                 }
@@ -2212,7 +2502,7 @@ export function GraphicsPortfolio({
                 {/* Visual Canvas Mockup Card Container */}
                 <div
                   onClick={() => openLightboxByProject(project)}
-                  className="relative aspect-[4/3] sm:aspect-[16/10] overflow-hidden bg-zinc-950 sm:border-b border-zinc-800 flex flex-col justify-between cursor-pointer group/img"
+                  className="relative aspect-[4/3] sm:aspect-[16/10] overflow-hidden bg-[#07030e] sm:border-b border-purple-900/40 flex flex-col justify-between cursor-pointer group/img"
                   title="Click to view full artwork in Lightbox Gallery"
                 >
                   {project.imageUrl && (
@@ -2235,73 +2525,59 @@ export function GraphicsPortfolio({
                     />
                   )}
 
-                  {/* Top Category Badge */}
-                  <div className="absolute top-0 inset-x-0 p-2 sm:p-3.5 bg-gradient-to-b from-zinc-950/85 via-zinc-950/30 to-transparent flex items-center justify-between z-10 text-[8px] sm:text-[9px] font-mono">
-                    <span className="px-2 py-0.5 bg-purple-950/90 border border-purple-700/60 uppercase font-bold text-purple-300 tracking-wider rounded shadow">
-                      {project.category}
-                    </span>
-                    <span className="hidden sm:inline px-2 py-0.5 bg-zinc-900/90 text-zinc-300 font-bold uppercase rounded border border-zinc-700 shadow">
-                      {project.aspectRatio} Vector
-                    </span>
-                  </div>
-
-                  {/* Mobile-Only Bottom Title Gradient Overlay */}
-                  <div className="sm:hidden absolute bottom-0 inset-x-0 p-2 bg-gradient-to-t from-zinc-950 via-zinc-950/70 to-transparent z-10">
-                    <span className="text-[11px] font-bold text-white block truncate drop-shadow-md">
+                  {/* Subtle Measured Bottom Scrim + Mobile Title */}
+                  <div className="sm:hidden absolute bottom-0 inset-x-0 p-2.5 bg-gradient-to-t from-[#07030e]/95 via-[#07030e]/50 to-transparent z-10">
+                    <span className="text-[11px] font-bold text-white block truncate">
                       {project.title}
                     </span>
                   </div>
 
-                  {/* Desktop Color Palette Swatches Bottom Overlay */}
-                  <div className="hidden sm:flex absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-zinc-950/90 via-zinc-950/40 to-transparent items-center justify-between z-10 text-[9px] font-mono">
+                  {/* Desktop Color Palette Swatches Bottom Bar */}
+                  <div className="hidden sm:flex absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-[#07030e]/95 via-[#07030e]/45 to-transparent items-center justify-between z-10 text-[10px] font-mono">
                     <div className="flex gap-1.5">
                       {project.palette.map((color) => (
                         <span
                           key={color}
-                          className="w-3.5 h-3.5 rounded-full border border-zinc-700/80 shadow-md"
+                          className="w-3.5 h-3.5 rounded-full border border-white/60 shadow-sm"
                           style={{ backgroundColor: color }}
                           title={`Hex: ${color}`}
-                        ></span>
+                        />
                       ))}
                     </div>
-                    <span className="font-mono text-[9px] text-zinc-300 font-bold bg-zinc-950/80 px-2 py-0.5 rounded border border-zinc-800">
+                    <span className="font-mono text-[10px] text-purple-100 font-semibold bg-[#120a22]/90 border border-purple-700/40 px-2 py-0.5 rounded">
                       {project.dimensions}
                     </span>
                   </div>
                 </div>
 
-                {/* Card Title & Content Section (Desktop only to keep mobile slim like a lightbox gallery) */}
-                <div className="hidden sm:block p-6 space-y-3 text-left">
-                  <span className="text-[10px] font-jakarta uppercase tracking-widest text-purple-400 font-bold block">
-                    {project.client}
-                  </span>
-                  <h3 className="text-lg font-serif font-bold text-white tracking-tight leading-snug group-hover:text-purple-300 transition-colors">
+                {/* Card Title & Content Section (Desktop) */}
+                <div className="hidden sm:block p-6 space-y-2.5 text-left">
+                  <div className="flex items-center flex-wrap gap-x-2 text-[11px] font-semibold">
+                    <span className="text-[#c084fc] uppercase tracking-wider">{project.category}</span>
+                    <span aria-hidden="true" className="text-purple-400/60">·</span>
+                    <span className="text-zinc-400 truncate">{project.client}</span>
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-display font-black uppercase text-white tracking-tight leading-tight group-hover:text-purple-300 transition-colors">
                     {project.title}
                   </h3>
-                  <p className="text-xs text-zinc-400 leading-relaxed min-h-[50px]">
+                  <p className="text-xs sm:text-[13px] text-zinc-300 leading-relaxed line-clamp-3 min-h-[54px]">
                     {project.description}
                   </p>
 
-                  <div className="flex flex-wrap gap-1.5 pt-2">
-                    {project.tools.map((tool) => (
-                      <span
-                        key={tool}
-                        className="px-2.5 py-1 bg-zinc-800/80 border border-zinc-700/60 text-[10px] font-jakarta text-zinc-300 font-semibold uppercase tracking-wider rounded"
-                      >
-                        {tool}
-                      </span>
-                    ))}
-                  </div>
+                  <p className="text-[11px] font-mono text-zinc-400 pt-2 border-t border-purple-900/40 line-clamp-1">
+                    {project.tools.join(" · ")}
+                  </p>
                 </div>
               </div>
 
-              {/* Action Buttons (Desktop only) */}
-              <div className="hidden sm:flex p-6 pt-0 border-t border-zinc-800/50 items-center justify-between gap-3 mt-4">
+              {/* Action Button (Desktop only) */}
+              <div className="hidden sm:flex px-6 pb-6 pt-0 items-center justify-between gap-3">
                 <button
                   onClick={() => openLightboxByProject(project)}
-                  className="w-full py-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-[11px] font-jakarta font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer rounded-xl shadow-[0_0_20px_rgba(147,51,234,0.35)] hover:shadow-purple-500/50 hover:scale-[1.02]"
+                  className="w-full py-2.5 px-4 bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white text-xs font-bold tracking-wide transition-colors flex items-center justify-center gap-2 cursor-pointer rounded-full whitespace-nowrap"
                 >
-                  View in Lightbox Gallery <Maximize2 className="w-3.5 h-3.5" />
+                  <span>View in Lightbox Gallery</span>
+                  <Maximize2 className="w-3.5 h-3.5" />
                 </button>
               </div>
             </motion.div>
@@ -2310,30 +2586,30 @@ export function GraphicsPortfolio({
 
         {/* Prominent View All Graphics CTA (on Homepage) */}
         {isHomePage && onShowMore && (
-          <div className="pt-4 sm:pt-6 text-center px-3">
+          <div className="pt-4 text-center">
             <button
               onClick={onShowMore}
-              className="w-full max-w-sm sm:max-w-none sm:w-auto px-4 sm:px-8 py-3 sm:py-3.5 bg-gradient-to-r from-purple-600 via-[#8750f7] to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white rounded-xl sm:rounded-2xl font-jakarta text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all shadow-[0_0_25px_rgba(147,51,234,0.35)] hover:shadow-purple-500/50 hover:scale-[1.02] inline-flex items-center justify-center gap-2 sm:gap-3 cursor-pointer active:scale-95"
+              className="px-8 py-4 bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white rounded-full text-xs sm:text-sm font-bold tracking-wide transition-colors inline-flex items-center justify-center gap-2.5 cursor-pointer shadow-[0_10px_30px_rgba(135,80,247,0.3)]"
             >
-              <Palette className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white shrink-0" />
-              <span className="sm:hidden">View All Graphic Works ({GRAPHIC_PROJECTS.length}+)</span>
-              <span className="hidden sm:inline">View All Graphics & Branding Portfolio ({GRAPHIC_PROJECTS.length}+ Projects)</span>
-              <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white shrink-0" />
+              <span>View All Branding &amp; Graphic Works ({GRAPHIC_PROJECTS.length}+ Projects)</span>
+              <ArrowRight className="w-4 h-4 shrink-0" />
             </button>
           </div>
         )}
 
         {/* Empty State if filter returns no items */}
         {projectsToDisplay.length === 0 && (
-          <div className="p-12 text-center bg-zinc-900/60 border border-zinc-800 rounded-2xl space-y-4 max-w-xl mx-auto">
-            <Palette className="w-10 h-10 text-purple-400 mx-auto opacity-80" />
-            <h3 className="text-xl font-serif font-bold text-white">No Assets Found in &ldquo;{selectedCategory}&rdquo;</h3>
-            <p className="text-xs text-zinc-400 font-jakarta">
+          <div className="p-12 text-center bg-[#120a22] border border-purple-900/40 rounded-2xl space-y-4 max-w-xl mx-auto">
+            <Palette className="w-10 h-10 text-[#c084fc] mx-auto opacity-80" />
+            <h3 className="text-2xl font-display font-black uppercase text-white">
+              No Assets Found in &ldquo;{selectedCategory}&rdquo;
+            </h3>
+            <p className="text-xs text-zinc-300">
               Try selecting another category or view all design specimens.
             </p>
             <button
               onClick={() => handleSelectCategory("All")}
-              className="px-5 py-2.5 bg-purple-600 text-white text-xs font-jakarta font-bold uppercase tracking-wider rounded-xl hover:bg-purple-500 transition-all cursor-pointer shadow-md"
+              className="px-5 py-2.5 bg-[#8750f7] text-white text-xs font-bold tracking-wide rounded-full hover:bg-purple-600 transition-colors cursor-pointer"
             >
               Show All Design Works ({GRAPHIC_PROJECTS.length} Items)
             </button>
@@ -2344,46 +2620,44 @@ export function GraphicsPortfolio({
 
       {/* IMMERSIVE GRAPHICS LIGHTBOX GALLERY */}
       {currentGraphic && lightboxIndex !== null && typeof document !== "undefined" && createPortal(
-        <div className="fixed inset-0 z-[9999] flex flex-col justify-between bg-black/95 backdrop-blur-2xl overflow-hidden select-none animate-in fade-in duration-200">
-          
+        <div className="fixed inset-0 z-[9999] flex flex-col justify-between bg-[#07030e]/97 backdrop-blur-2xl overflow-hidden select-none">
+
           {/* 1. TOP HEADER TOOLBAR */}
-          <div className="relative z-20 px-4 sm:px-8 py-3.5 bg-zinc-950/90 border-b border-purple-900/30 flex items-center justify-between gap-4 shrink-0 shadow-lg">
-            {/* Left: Branding & Index Counter */}
+          <div className="relative z-20 px-4 sm:px-8 py-3.5 bg-[#120a22] border-b border-purple-900/50 flex items-center justify-between gap-4 shrink-0 shadow-lg text-white">
             <div className="flex items-center gap-3 min-w-0">
-              <div className="w-8 h-8 rounded-lg bg-purple-950/80 border border-purple-700/60 flex items-center justify-center shrink-0">
-                <Palette className="w-4 h-4 text-purple-400" />
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#8750f7] to-purple-700 flex items-center justify-center shrink-0">
+                <Palette className="w-4 h-4 text-white" />
               </div>
               <div className="min-w-0">
                 <div className="flex items-center gap-2">
-                  <span className="font-jakarta text-[11px] sm:text-xs font-bold uppercase tracking-wider text-white truncate">
+                  <span className="text-xs sm:text-sm font-bold tracking-tight text-white truncate">
                     {currentGraphic.title}
                   </span>
-                  <span className="text-[9px] font-jakarta font-bold px-2 py-0.5 rounded-full bg-purple-950/80 border border-purple-700/60 text-purple-300 shrink-0">
-                    {currentGraphic.category}
+                  <span className="text-[11px] font-medium text-purple-300 shrink-0">
+                    · {currentGraphic.category}
                   </span>
                 </div>
-                <span className="text-[10px] font-jakarta text-zinc-400 block truncate">
-                  Client: {currentGraphic.client} · {currentGraphic.dimensions}
+                <span className="text-[11px] text-zinc-400 block truncate">
+                  {currentGraphic.client} · {currentGraphic.dimensions}
                 </span>
               </div>
             </div>
 
             {/* Center: Graphic Index Counter */}
-            <div className="hidden md:flex items-center gap-2 px-3.5 py-1 rounded-full bg-zinc-900/90 border border-purple-900/40 font-mono text-xs text-zinc-300">
-              <span className="text-purple-400 font-bold">{lightboxIndex + 1}</span>
+            <div className="hidden md:flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#180e2f] border border-purple-800/40 font-mono text-xs text-white tabular-nums">
+              <span className="font-bold text-purple-300">{lightboxIndex + 1}</span>
               <span className="text-zinc-500">/</span>
               <span>{activeList.length}</span>
-              <span className="text-[10px] text-zinc-500 ml-1">Artwork</span>
             </div>
 
-            {/* Right: Actions (Specs toggle, Behance, Close) */}
+            {/* Right: Actions */}
             <div className="flex items-center gap-2 shrink-0">
               <button
                 onClick={() => setShowSpecsDrawer(!showSpecsDrawer)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-jakarta font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer ${
                   showSpecsDrawer
-                    ? "bg-purple-600 text-white shadow-[0_0_12px_rgba(168,85,247,0.5)]"
-                    : "bg-zinc-900 text-zinc-300 hover:text-white border border-zinc-700 hover:border-purple-500"
+                    ? "bg-[#8750f7] text-white"
+                    : "bg-[#180e2f] text-purple-200 hover:bg-purple-900/50 border border-purple-700/40"
                 }`}
                 title="Toggle Technical Specifications & Typography"
               >
@@ -2395,11 +2669,11 @@ export function GraphicsPortfolio({
                 href={currentGraphic.behanceUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-700 hover:border-purple-500 rounded-lg text-xs font-jakarta font-medium transition-all"
+                className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white rounded-full text-xs font-semibold transition-colors"
                 title="Open Behance case study in new tab"
               >
                 <span>Behance</span>
-                <ExternalLink className="w-3 h-3 text-purple-400" />
+                <ExternalLink className="w-3 h-3" />
               </a>
 
               <button
@@ -2407,12 +2681,11 @@ export function GraphicsPortfolio({
                   setLightboxIndex(null);
                   setShowSpecsDrawer(false);
                 }}
-                className="p-1.5 sm:p-2 rounded-lg bg-zinc-900/90 hover:bg-rose-950/80 border border-zinc-700 hover:border-rose-600 text-zinc-400 hover:rose-200 transition-all cursor-pointer flex items-center gap-1"
+                className="p-2 rounded-full bg-[#180e2f] hover:bg-purple-900/60 border border-purple-700/40 text-white transition-colors cursor-pointer flex items-center gap-1"
                 aria-label="Close Lightbox (Esc)"
                 title="Close (Esc)"
               >
                 <X className="w-5 h-5" />
-                <span className="hidden sm:inline font-jakarta text-[10px] text-zinc-500 uppercase">Esc</span>
               </button>
             </div>
           </div>
@@ -2424,17 +2697,17 @@ export function GraphicsPortfolio({
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
           >
-            {/* Prev Navigation Button - Overlay */}
+            {/* Prev Navigation Button */}
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 handlePrevGraphic();
               }}
-              className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-3.5 rounded-full bg-black/60 sm:bg-zinc-900/80 hover:bg-purple-600/70 border border-white/20 sm:border-zinc-700/80 text-white shadow-2xl backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer"
-              aria-label="Previous Graphic (Left Arrow)"
-              title="Previous Graphic (Left Arrow)"
+              className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 z-30 p-2.5 sm:p-3.5 rounded-full bg-[#120a22]/90 hover:bg-[#8750f7] border border-purple-600/40 text-white shadow-2xl backdrop-blur-md transition-all cursor-pointer"
+              aria-label="Previous Graphic"
+              title="Previous Graphic"
             >
-              <ChevronLeft className="w-5 h-5 sm:w-7 sm:h-7" />
+              <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
 
             {/* Central Artwork Display & Caption */}
@@ -2448,7 +2721,7 @@ export function GraphicsPortfolio({
                   key={currentGraphic.id}
                   src={currentGraphic.imageUrl}
                   alt={currentGraphic.title}
-                  className="max-h-[66vh] sm:max-h-[72vh] w-auto max-w-full object-contain rounded-xl sm:rounded-2xl border border-purple-900/40 shadow-[0_20px_70px_rgba(0,0,0,0.9)] transition-all [image-rendering:-webkit-optimize-contrast]"
+                  className="max-h-[64vh] sm:max-h-[70vh] w-auto max-w-full object-contain rounded-xl sm:rounded-2xl border border-purple-500/30 shadow-[0_20px_70px_rgba(0,0,0,0.75)] transition-all [image-rendering:-webkit-optimize-contrast]"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
                     if (!target.dataset.fallbackTried && currentGraphic.fallbackUrl) {
@@ -2460,29 +2733,22 @@ export function GraphicsPortfolio({
                     }
                   }}
                 />
-
-                {/* Subtle Click Hint on Hover */}
-                <div className="absolute inset-0 rounded-xl bg-purple-950/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
-                  <span className="hidden sm:inline px-3 py-1 bg-black/70 backdrop-blur-md text-[11px] font-mono text-purple-200 rounded-full border border-purple-500/40 shadow-lg">
-                    Click to view next →
-                  </span>
-                </div>
               </div>
 
               {/* Artwork Floating Caption & Swatches */}
-              <div className="mt-2 sm:mt-3 w-full max-w-2xl px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-zinc-950/85 border border-zinc-800/80 backdrop-blur-md flex items-center justify-between gap-2 sm:gap-3 text-left z-20">
+              <div className="mt-3 w-full max-w-2xl px-4 py-2.5 rounded-2xl bg-[#120a22]/95 border border-purple-800/40 backdrop-blur-md flex items-center justify-between gap-3 text-left z-20 text-white">
                 <div className="min-w-0 flex-1">
-                  <h4 className="text-xs sm:text-sm font-bold font-jakarta text-white truncate">
+                  <h4 className="text-xs sm:text-sm font-bold text-white truncate">
                     {currentGraphic.title}
                   </h4>
-                  <p className="text-[10px] sm:text-[11px] text-zinc-400 font-jakarta line-clamp-1">
+                  <p className="text-[11px] text-purple-200/80 line-clamp-1">
                     {currentGraphic.tagline}
                   </p>
                 </div>
 
                 {/* Quick Swatches Bar */}
-                <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
-                  <span className="text-[9px] font-mono text-zinc-500 uppercase hidden md:inline">Palette:</span>
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <span className="text-[10px] font-mono text-zinc-400 hidden md:inline">Copy Hex:</span>
                   {currentGraphic.palette.map((hex) => (
                     <button
                       key={hex}
@@ -2490,12 +2756,12 @@ export function GraphicsPortfolio({
                         e.stopPropagation();
                         copyToClipboard(hex);
                       }}
-                      className="w-4 h-4 sm:w-5 sm:h-5 rounded-full border border-white/20 hover:scale-125 transition-transform cursor-pointer relative shadow-sm"
+                      className="w-5 h-5 rounded-full border border-white/30 hover:scale-125 transition-transform cursor-pointer relative shadow-sm"
                       style={{ backgroundColor: hex }}
                       title={`Copy Hex ${hex}`}
                     >
                       {copiedHex === hex && (
-                        <span className="absolute inset-0 flex items-center justify-center text-[7px] sm:text-[8px] text-white font-bold bg-black/60 rounded-full">
+                        <span className="absolute inset-0 flex items-center justify-center text-[8px] text-white font-bold bg-black/70 rounded-full">
                           ✓
                         </span>
                       )}
@@ -2505,72 +2771,72 @@ export function GraphicsPortfolio({
               </div>
             </div>
 
-            {/* Next Navigation Button - Overlay */}
+            {/* Next Navigation Button */}
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 handleNextGraphic();
               }}
-              className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-3.5 rounded-full bg-black/60 sm:bg-zinc-900/80 hover:bg-purple-600/70 border border-white/20 sm:border-zinc-700/80 text-white shadow-2xl backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer"
-              aria-label="Next Graphic (Right Arrow)"
-              title="Next Graphic (Right Arrow)"
+              className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 z-30 p-2.5 sm:p-3.5 rounded-full bg-[#120a22]/90 hover:bg-[#8750f7] border border-purple-600/40 text-white shadow-2xl backdrop-blur-md transition-all cursor-pointer"
+              aria-label="Next Graphic"
+              title="Next Graphic"
             >
-              <ChevronRight className="w-5 h-5 sm:w-7 sm:h-7" />
+              <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
           </div>
 
           {/* 3. OPTIONAL SPECS DRAWER (SLIDE OVER) */}
           {showSpecsDrawer && (
-            <div className="absolute inset-y-0 right-0 z-40 w-full sm:w-96 bg-zinc-950/95 border-l border-purple-900/40 p-6 overflow-y-auto shadow-2xl backdrop-blur-2xl text-left animate-in slide-in-from-right duration-200 flex flex-col justify-between">
+            <div className="absolute inset-y-0 right-0 z-40 w-full sm:w-96 bg-[#0d071d] text-white border-l border-purple-800/50 p-6 overflow-y-auto shadow-2xl text-left flex flex-col justify-between">
               <div className="space-y-6">
-                <div className="flex items-center justify-between pb-3 border-b border-zinc-800">
+                <div className="flex items-center justify-between pb-3 border-b border-purple-900/40">
                   <div className="flex items-center gap-2">
-                    <Info className="w-4 h-4 text-purple-400" />
+                    <Info className="w-4 h-4 text-[#c084fc]" />
                     <h3 className="font-mono text-xs font-bold uppercase tracking-wider text-white">
                       Design System Specs
                     </h3>
                   </div>
                   <button
                     onClick={() => setShowSpecsDrawer(false)}
-                    className="p-1 rounded-md text-zinc-400 hover:text-white hover:bg-zinc-800 cursor-pointer"
+                    className="p-1.5 rounded-full text-zinc-400 hover:text-white hover:bg-purple-900/40 cursor-pointer"
                   >
                     <X className="w-4 h-4" />
                   </button>
                 </div>
 
                 {/* Typography */}
-                <div className="space-y-2 font-mono text-xs">
-                  <span className="text-[10px] text-purple-400 font-bold uppercase tracking-wider block">
+                <div className="space-y-2 text-xs">
+                  <span className="text-[11px] font-mono text-[#c084fc] font-bold uppercase tracking-wider block">
                     Typographic Pairing
                   </span>
-                  <div className="p-3 bg-zinc-900/60 rounded-lg border border-zinc-800 space-y-1.5">
+                  <div className="p-4 bg-[#120a22] rounded-xl border border-purple-900/40 space-y-2">
                     <div>
-                      <span className="text-[10px] text-zinc-500 uppercase block">Heading:</span>
-                      <span className="font-serif font-bold text-white text-sm">{currentGraphic.fonts.heading}</span>
+                      <span className="text-[10px] font-mono text-zinc-400 uppercase block">Heading</span>
+                      <span className="font-bold text-white text-sm">{currentGraphic.fonts.heading}</span>
                     </div>
-                    <div className="pt-1.5 border-t border-zinc-800/60">
-                      <span className="text-[10px] text-zinc-500 uppercase block">Body:</span>
-                      <span className="text-zinc-300">{currentGraphic.fonts.body}</span>
+                    <div className="pt-2 border-t border-purple-900/40">
+                      <span className="text-[10px] font-mono text-zinc-400 uppercase block">Body</span>
+                      <span className="text-zinc-300 font-medium">{currentGraphic.fonts.body}</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Technical Specifications */}
-                <div className="space-y-2 font-mono text-xs">
-                  <span className="text-[10px] text-purple-400 font-bold uppercase tracking-wider block">
+                <div className="space-y-2 text-xs">
+                  <span className="text-[11px] font-mono text-[#c084fc] font-bold uppercase tracking-wider block">
                     Production Standards
                   </span>
-                  <div className="p-3 bg-zinc-900/60 rounded-lg border border-zinc-800 space-y-1 text-zinc-300">
+                  <div className="p-4 bg-[#120a22] rounded-xl border border-purple-900/40 space-y-2 text-zinc-300">
                     <div className="flex justify-between py-0.5">
-                      <span className="text-zinc-500">Color Profile:</span>
+                      <span className="text-zinc-400">Color Profile</span>
                       <span className="text-white font-bold">{currentGraphic.specifications.colorSpace}</span>
                     </div>
                     <div className="flex justify-between py-0.5">
-                      <span className="text-zinc-500">Resolution:</span>
+                      <span className="text-zinc-400">Resolution</span>
                       <span className="text-white font-bold">{currentGraphic.specifications.resolution}</span>
                     </div>
                     <div className="flex justify-between py-0.5">
-                      <span className="text-zinc-500">Vector Scale:</span>
+                      <span className="text-zinc-400">Vector Scale</span>
                       <span className="text-white font-bold">{currentGraphic.specifications.vectorDpi}</span>
                     </div>
                   </div>
@@ -2578,40 +2844,33 @@ export function GraphicsPortfolio({
 
                 {/* Design Notes */}
                 <div className="space-y-2">
-                  <span className="text-[10px] font-mono text-purple-400 font-bold uppercase tracking-wider block">
+                  <span className="text-[11px] font-mono text-[#c084fc] font-bold uppercase tracking-wider block">
                     Composition Notes
                   </span>
-                  <p className="text-xs text-zinc-300 leading-relaxed bg-zinc-900/60 p-3 rounded-lg border border-zinc-800">
+                  <p className="text-xs text-zinc-200 leading-relaxed bg-[#180e2f] p-4 rounded-xl border border-purple-700/40">
                     {currentGraphic.designNotes}
                   </p>
                 </div>
 
                 {/* Software Tools */}
                 <div className="space-y-2">
-                  <span className="text-[10px] font-mono text-purple-400 font-bold uppercase tracking-wider block">
+                  <span className="text-[11px] font-mono text-[#c084fc] font-bold uppercase tracking-wider block">
                     Software Tools
                   </span>
-                  <div className="flex flex-wrap gap-1.5">
-                    {currentGraphic.tools.map((t) => (
-                      <span
-                        key={t}
-                        className="px-2 py-0.5 bg-purple-950/80 text-purple-300 border border-purple-800/50 rounded text-[10px] font-mono font-bold"
-                      >
-                        {t}
-                      </span>
-                    ))}
-                  </div>
+                  <p className="text-xs font-mono text-purple-200 font-semibold">
+                    {currentGraphic.tools.join(" · ")}
+                  </p>
                 </div>
               </div>
 
-              <div className="pt-6 mt-6 border-t border-zinc-800">
+              <div className="pt-6 mt-6 border-t border-purple-900/40">
                 <a
                   href="#contact"
                   onClick={() => {
                     setLightboxIndex(null);
                     setShowSpecsDrawer(false);
                   }}
-                  className="block w-full py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-mono text-xs font-bold uppercase tracking-wider text-center shadow-lg hover:brightness-110 cursor-pointer"
+                  className="block w-full py-3 rounded-full bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white text-xs font-bold tracking-wide text-center cursor-pointer transition-colors"
                 >
                   Request Graphics Kit
                 </a>
@@ -2620,17 +2879,16 @@ export function GraphicsPortfolio({
           )}
 
           {/* 4. BOTTOM FILMSTRIP THUMBNAIL CAROUSEL */}
-          <div className="relative z-20 bg-zinc-950/95 border-t border-purple-900/30 px-3 sm:px-6 py-2.5 shrink-0">
-            <div className="flex items-center justify-between mb-1.5 font-mono text-[10px] text-zinc-400 px-1">
+          <div className="relative z-20 bg-[#120a22] border-t border-purple-900/50 px-3 sm:px-6 py-2.5 shrink-0 text-white">
+            <div className="flex items-center justify-between mb-1.5 font-mono text-[10px] text-purple-300 px-1">
               <span>
-                All Graphics ({activeList.length} items) · Click any thumbnail to jump
+                All Graphics ({activeList.length} items)
               </span>
-              <span className="hidden sm:inline text-purple-400">
-                Use ← → arrow keys to browse · Esc to close
+              <span className="hidden sm:inline">
+                Use ← → arrow keys · Esc to close
               </span>
             </div>
 
-            {/* Scrollable Thumbnails Strip */}
             <div
               ref={thumbnailContainerRef}
               className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 scroll-smooth"
@@ -2643,8 +2901,8 @@ export function GraphicsPortfolio({
                     onClick={() => setLightboxIndex(idx)}
                     className={`relative shrink-0 w-12 h-9 sm:w-20 sm:h-14 rounded-lg overflow-hidden border transition-all cursor-pointer ${
                       isActive
-                        ? "border-purple-400 ring-2 ring-purple-500 scale-105 shadow-[0_0_15px_rgba(168,85,247,0.7)]"
-                        : "border-zinc-800 hover:border-purple-600/70 opacity-60 hover:opacity-100"
+                        ? "border-purple-400 ring-2 ring-[#8750f7] scale-105"
+                        : "border-purple-900/40 hover:border-purple-400/70 opacity-65 hover:opacity-100"
                     }`}
                     title={`${item.title} (${idx + 1}/${activeList.length})`}
                   >
@@ -2661,9 +2919,6 @@ export function GraphicsPortfolio({
                         }
                       }}
                     />
-                    {isActive && (
-                      <span className="absolute bottom-0.5 right-0.5 w-2 h-2 rounded-full bg-purple-400 shadow-[0_0_6px_rgba(168,85,247,1)]" />
-                    )}
                   </button>
                 );
               })}
