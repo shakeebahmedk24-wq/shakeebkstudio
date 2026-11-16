@@ -72,7 +72,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator", "Photoshop", "Figma", "Behance Pro"],
     behanceUrl: "https://www.behance.net/gallery/220534229/Graphic-Design-Portfolio",
-    imageUrl: "/graphics/495183220534229.67c9db72b608b.webp",
+    imageUrl: "/graphics-fast/behance-showcase-terracotta-01.webp",
     featuredImgBg: "bg-gradient-to-br from-amber-950 via-zinc-900 to-orange-950",
     specifications: {
       colorSpace: "CMYK & sRGB Pantone Match",
@@ -98,7 +98,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator", "Figma", "Photoshop", "Behance Pro"],
     behanceUrl: "https://www.behance.net/gallery/220534229/Graphic-Design-Portfolio",
-    imageUrl: "/graphics/9d55f6220534229.67c9db72b524d.webp",
+    imageUrl: "/graphics-fast/behance-showcase-royal-indigo-02.webp",
     featuredImgBg: "bg-gradient-to-br from-indigo-950 via-zinc-900 to-violet-950",
     specifications: {
       colorSpace: "sRGB Digital & Pantone Spot Profile",
@@ -124,7 +124,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator", "InDesign", "Photoshop", "Behance Pro"],
     behanceUrl: "https://www.behance.net/gallery/220534229/Graphic-Design-Portfolio",
-    imageUrl: "/graphics/b9cc95220534229.67c9db72b65fd.webp",
+    imageUrl: "/graphics-fast/behance-showcase-luxury-brass-03.webp",
     featuredImgBg: "bg-gradient-to-br from-stone-950 via-zinc-900 to-amber-950",
     specifications: {
       colorSpace: "CMYK & sRGB High-Contrast Profile",
@@ -150,7 +150,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator", "Figma", "Photoshop", "Behance Pro"],
     behanceUrl: "https://www.behance.net/gallery/220534229/Graphic-Design-Portfolio",
-    imageUrl: "/graphics/fd21c0220534229.67c9db72b5b12.webp",
+    imageUrl: "/graphics-fast/behance-showcase-cyan-navy-04.webp",
     featuredImgBg: "bg-gradient-to-br from-cyan-950 via-zinc-900 to-slate-950",
     specifications: {
       colorSpace: "sRGB Digital & CMYK Coated Profile",
@@ -176,7 +176,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Canva Pro Studio", "Adobe Illustrator", "Vector AI"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/brand-style-guide-master-01.jpg",
+    imageUrl: "/graphics-fast/brand-style-guide-master-01.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/images/q_auto:best,f_auto/gigs/446160098/original/809d9ec1a07fdbc7284cc2cc8ec3677b614b5222/design-logo-brand-style-guide-or-brand-identity-guidelines-with-branding-kit.png",
     featuredImgBg: "bg-gradient-to-br from-slate-950 via-zinc-900 to-sky-950",
     specifications: {
@@ -203,7 +203,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Canva Pro Studio", "Adobe Illustrator", "Photoshop"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/brand-style-guide-master-03.jpg",
+    imageUrl: "/graphics-fast/brand-style-guide-master-03.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/images/q_auto:best,f_auto/gigs3/446160098/original/c18805727018147c7bbc7921c5c9eba3ed680a0b/design-logo-brand-style-guide-or-brand-identity-guidelines-with-branding-kit.png",
     featuredImgBg: "bg-gradient-to-br from-stone-950 via-zinc-900 to-amber-950",
     specifications: {
@@ -230,7 +230,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator", "Canva Pro Studio", "Vector AI"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/pro-business-logo-01.jpg",
+    imageUrl: "/graphics-fast/pro-business-logo-01.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/images/q_auto:best,f_auto/gigs/468288690/original/2440b4994b7891a5e195fe136acf3f1f413add13/do-professional-business-logo-design-modern-minimalist-or-custom-design.png",
     featuredImgBg: "bg-gradient-to-br from-slate-950 via-zinc-900 to-lime-950",
     specifications: {
@@ -257,7 +257,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator", "Canva Pro Studio", "Vector AI"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/modern-minimalist-logo-kit-01.jpg",
+    imageUrl: "/graphics-fast/modern-minimalist-logo-kit-01.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/images/q_auto:best,f_auto/gigs/452286045/original/9a17ccb056f29c8603d6e10555987b0323372e03/do-modern-minimalist-logo-design-and-branding-kit.png",
     featuredImgBg: "bg-gradient-to-br from-slate-950 via-zinc-900 to-purple-950",
     specifications: {
@@ -284,7 +284,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator", "Canva Pro Studio", "Photoshop"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/modern-minimalist-logo-kit-02.jpg",
+    imageUrl: "/graphics-fast/modern-minimalist-logo-kit-02.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/images/q_auto:best,f_auto/gigs2/452286045/original/9904dbae6f367cd8c40cd49cd171414cb363b2aa/do-modern-minimalist-logo-design-and-branding-kit.jpg",
     featuredImgBg: "bg-gradient-to-br from-stone-950 via-zinc-900 to-orange-950",
     specifications: {
@@ -311,7 +311,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator", "Canva Pro Studio", "Vector AI"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/company-logo-design-01.jpg",
+    imageUrl: "/graphics-fast/company-logo-design-01.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/images/q_auto:best,f_auto/gigs/29744020/original/30583781c2143f33092256d056e924c889d017d3/a-disenar-el-logo-de-tu-empresa.jpg",
     featuredImgBg: "bg-gradient-to-br from-zinc-950 via-sky-950 to-amber-950",
     specifications: {
@@ -338,7 +338,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator", "Canva Pro Studio", "Photoshop"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/custom-brand-logo-93.jpg",
+    imageUrl: "/graphics-fast/custom-brand-logo-93.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/8705034c51b1f57b868a477066cde537-1733173101306/93.jpg",
     featuredImgBg: "bg-gradient-to-br from-pink-950 via-zinc-950 to-blue-950",
     specifications: {
@@ -365,7 +365,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator", "Canva Pro Studio", "Vector AI"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/business-logo-branding-kit-01.jpg",
+    imageUrl: "/graphics-fast/business-logo-branding-kit-01.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/images/q_auto:best,f_auto/gigs/459458490/original/93671f01b7db9dc4b1ebbc1b505774c816bcbc15/do-business-logo-design-and-branding-kit-or-brand-identity-guidelines.jpg",
     featuredImgBg: "bg-gradient-to-br from-slate-950 via-emerald-950 to-zinc-900",
     specifications: {
@@ -392,7 +392,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator", "Canva Pro Studio", "Photoshop"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/business-logo-branding-kit-02.jpg",
+    imageUrl: "/graphics-fast/business-logo-branding-kit-02.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/images/q_auto:best,f_auto/gigs2/459458490/original/57db30f9697d4ca85ec7c2936123eb6b9fdc0683/do-business-logo-design-and-branding-kit-or-brand-identity-guidelines.jpg",
     featuredImgBg: "bg-gradient-to-br from-sky-950 via-zinc-950 to-slate-900",
     specifications: {
@@ -419,7 +419,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator", "Canva Pro Studio", "Figma"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/ai-tech-app-icon-logo-01.jpg",
+    imageUrl: "/graphics-fast/ai-tech-app-icon-logo-01.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/images/q_auto:best,f_auto/gigs/467882940/original/e09839842f0eefbac8b7c5d94ed05756bf9a84a3/design-modern-minimal-ai-tech-startup-app-icon-logo-branding-kit-or-brand-book.jpg",
     featuredImgBg: "bg-gradient-to-br from-orange-950 via-cyan-950 to-zinc-950",
     specifications: {
@@ -446,7 +446,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator", "Canva Pro Studio", "Figma"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/ai-tech-app-icon-logo-02.jpg",
+    imageUrl: "/graphics-fast/ai-tech-app-icon-logo-02.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/images/q_auto:best,f_auto/gigs3/467882940/original/d102db3f5dd708aae3c6122a9356284da6de5704/design-modern-minimal-ai-tech-startup-app-icon-logo-branding-kit-or-brand-book.jpg",
     featuredImgBg: "bg-gradient-to-br from-purple-950 via-pink-950 to-slate-950",
     specifications: {
@@ -473,7 +473,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator", "Canva Pro Studio", "Photoshop"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/pagrow-brand-identity.jpg",
+    imageUrl: "/graphics-fast/pagrow-brand-identity.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/3ea21f5df67f941ab564e94f03b14e01-1767345245711/pagrow.jpg",
     featuredImgBg: "bg-gradient-to-br from-emerald-950 via-green-950 to-stone-900",
     specifications: {
@@ -500,7 +500,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator", "Canva Pro Studio", "Photoshop"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/pro-business-logo-02.jpg",
+    imageUrl: "/graphics-fast/pro-business-logo-02.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/images/q_auto:best,f_auto/gigs2/468288690/original/261a94d00d71c29c46b6e63aa7df96ce3ffb288c/do-professional-business-logo-design-modern-minimalist-or-custom-design.png",
     featuredImgBg: "bg-gradient-to-br from-zinc-950 via-emerald-950 to-slate-900",
     specifications: {
@@ -527,7 +527,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator", "Canva Pro Studio", "Vector AI"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/pro-business-logo-03.jpg",
+    imageUrl: "/graphics-fast/pro-business-logo-03.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/images/q_auto:best,f_auto/gigs3/468288690/original/5355ca8ccab7a9980358bd4b33e0b4397388ef7e/do-professional-business-logo-design-modern-minimalist-or-custom-design.png",
     featuredImgBg: "bg-gradient-to-br from-stone-950 via-amber-950 to-zinc-950",
     specifications: {
@@ -554,7 +554,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator Dielines", "Canva Pro Studio", "Photoshop 3D"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/icecream-brand-packaging.jpg",
+    imageUrl: "/graphics-fast/icecream-brand-packaging.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/f7d826d77ef94f9bc81191050d82971f-1774348683558/icecream%20brand.png",
     featuredImgBg: "bg-gradient-to-br from-rose-950 via-zinc-900 to-amber-950",
     specifications: {
@@ -581,7 +581,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator", "Canva Pro Studio", "Photoshop"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/skincare-brand-identity.jpg",
+    imageUrl: "/graphics-fast/skincare-brand-identity.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/511a095b5d16b50c107cbe4905221a3f-1774348848576/SkinCare%20(03).png",
     featuredImgBg: "bg-gradient-to-br from-emerald-950 via-stone-900 to-zinc-950",
     specifications: {
@@ -608,7 +608,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator", "Canva Pro Studio", "3D Can Renderer"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/softdrink-brand-packaging.jpg",
+    imageUrl: "/graphics-fast/softdrink-brand-packaging.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/b4244f8412360f58cfe82b085ec9dfa4-1774348959826/Softdrink%20(2).png",
     featuredImgBg: "bg-gradient-to-br from-sky-950 via-slate-900 to-orange-950",
     specifications: {
@@ -635,7 +635,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator", "Canva Pro Studio", "Photoshop"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/modern-minimalist-identity-01.jpg",
+    imageUrl: "/graphics-fast/modern-minimalist-identity-01.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/images/q_auto:best,f_auto/gigs/470071074/original/f144660d94700ce4297400f792be8a4e4017292f/design-modern-minimalist-business-logo-with-brand-identity.jpg",
     featuredImgBg: "bg-gradient-to-br from-purple-950 via-zinc-900 to-slate-950",
     specifications: {
@@ -662,7 +662,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator", "Canva Pro Studio", "Photoshop 3D"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/3d-logo-card-suite-01.jpg",
+    imageUrl: "/graphics-fast/3d-logo-card-suite-01.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/images/q_auto:best,f_auto/gigs/314390653/original/474fcfe779093c6d214d3ff482c3aae9ad33b967/minimalist-or-3d-logo-design-and-cards-for-your-business.jpeg",
     featuredImgBg: "bg-gradient-to-br from-amber-950 via-zinc-950 to-slate-900",
     specifications: {
@@ -689,7 +689,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator", "Canva Pro Studio", "Vector AI"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/3d-logo-card-suite-02.jpg",
+    imageUrl: "/graphics-fast/3d-logo-card-suite-02.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/images/q_auto:best,f_auto/gigs3/314390653/original/61d3dc6e4e9696816a6000ac6c3146b401e5e8d2/minimalist-or-3d-logo-design-and-cards-for-your-business.jpeg",
     featuredImgBg: "bg-gradient-to-br from-sky-950 via-slate-950 to-zinc-900",
     specifications: {
@@ -716,7 +716,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Canva Pro Studio", "Adobe Illustrator", "Vector AI"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/houso-brand-identity.jpg",
+    imageUrl: "/graphics-fast/houso-brand-identity.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/images/q_auto:best,f_auto/gigs/399841914/original/275004320664c5703588c0058bb2830b2d4d01f7/do-modern-unique-business-logo-design-for-your-brand.jpg",
     featuredImgBg: "bg-gradient-to-br from-slate-950 via-zinc-900 to-amber-950",
     specifications: {
@@ -743,7 +743,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Canva Pro Studio", "Adobe Illustrator", "Photoshop"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/scholara-brand-identity.jpg",
+    imageUrl: "/graphics-fast/scholara-brand-identity.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/images/q_auto:best,f_auto/gigs2/399841914/original/3f07eb9f0b4952ae561bd962f0de877e00ac3461/do-modern-unique-business-logo-design-for-your-brand.jpg",
     featuredImgBg: "bg-gradient-to-br from-zinc-950 via-slate-900 to-sky-950",
     specifications: {
@@ -770,7 +770,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Canva Pro Studio", "Adobe Illustrator", "Photoshop"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/notewell-presentation-kit.jpg",
+    imageUrl: "/graphics-fast/notewell-presentation-kit.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/9c98c064e449c79508c79306e09e7265-1776456635900/presenation%20image.jpg",
     featuredImgBg: "bg-gradient-to-br from-neutral-950 via-zinc-900 to-emerald-950",
     specifications: {
@@ -797,7 +797,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Canva Pro Studio", "Adobe Illustrator", "Photoshop"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/modern-branding-kit-01.jpg",
+    imageUrl: "/graphics-fast/modern-branding-kit-01.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/images/q_auto:best,f_auto/gigs/366978407/original/06bff92bfd5471590c6ce1f896dc6a6423217c96/design-modern-logo-branding-kit-with-complete-brand-identity.jpg",
     featuredImgBg: "bg-gradient-to-br from-emerald-950 via-zinc-900 to-amber-950",
     specifications: {
@@ -824,7 +824,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator", "Photoshop 3D", "Canva Pro Studio"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/packaging-bonjoy-burger-box-01.jpg",
+    imageUrl: "/graphics-fast/packaging-bonjoy-burger-box-01.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/images/q_auto:best,f_auto/gigs/189379364/original/fe5800440b664d2abb77d82fba39133b89658514/design-professional-business-logo-with-free-3d-mock-ups-68d6.jpg",
     featuredImgBg: "bg-gradient-to-br from-amber-950 via-zinc-950 to-slate-900",
     specifications: {
@@ -851,7 +851,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator", "Photoshop 3D", "Canva Pro"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/packaging-paws-bites-pet-food-02.jpg",
+    imageUrl: "/graphics-fast/packaging-paws-bites-pet-food-02.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/images/q_auto:best,f_auto/gigs2/189379364/original/e9c493f4e1452af740a7ec5936232b2a6cf408b1/design-professional-business-logo-with-free-3d-mock-ups-68d6.jpg",
     featuredImgBg: "bg-gradient-to-br from-amber-950 via-zinc-900 to-stone-900",
     specifications: {
@@ -878,7 +878,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator", "Photoshop 3D", "Vector AI"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/packaging-tasty-catch-takeout-box-03.jpg",
+    imageUrl: "/graphics-fast/packaging-tasty-catch-takeout-box-03.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/images/q_auto:best,f_auto/gigs3/189379364/original/b8256889ac14def9845fccc4a96f16d4df5d4fdd/design-professional-business-logo-with-free-3d-mock-ups-68d6.jpg",
     featuredImgBg: "bg-gradient-to-br from-sky-950 via-orange-950 to-zinc-900",
     specifications: {
@@ -905,7 +905,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator", "Canva Pro Studio", "Photoshop"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/packaging-lumina-floral-mailer-box-04.jpg",
+    imageUrl: "/graphics-fast/packaging-lumina-floral-mailer-box-04.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/images/q_auto:best,f_auto/gigs2/241548872/original/c2f917cc926075c3f2592b68f5ba873f5c19f4d3/design-mailer-box-design-product-box-design-along-with-3d-mockup.png",
     featuredImgBg: "bg-gradient-to-br from-amber-950 via-stone-900 to-slate-950",
     specifications: {
@@ -932,7 +932,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator", "Photoshop", "Packaging Dieline CAD"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/packaging-pawsome-cat-treat-pouch-05.jpg",
+    imageUrl: "/graphics-fast/packaging-pawsome-cat-treat-pouch-05.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/92a742216ce861d490efed22fd2785f9-1770139371884/1.png",
     featuredImgBg: "bg-gradient-to-br from-emerald-950 via-purple-950 to-zinc-950",
     specifications: {
@@ -959,7 +959,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator", "Canva Pro Studio", "Photoshop"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/packaging-ben-sue-food-suite-06.jpg",
+    imageUrl: "/graphics-fast/packaging-ben-sue-food-suite-06.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/bdde2a5f392297100767406bed8bfbce-1760112632863/3-3.png",
     featuredImgBg: "bg-gradient-to-br from-red-950 via-blue-950 to-zinc-900",
     specifications: {
@@ -986,7 +986,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator", "Photoshop", "Vector AI"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/packaging-miaow-pet-treats-07.jpg",
+    imageUrl: "/graphics-fast/packaging-miaow-pet-treats-07.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/d17786a56c2e7504ad581438b0d87982-1760112905456/1.png",
     featuredImgBg: "bg-gradient-to-br from-yellow-950 via-purple-950 to-zinc-900",
     specifications: {
@@ -1013,7 +1013,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator", "Packaging Dielines", "Photoshop"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/packaging-udcare-cosmetic-jar-08.jpg",
+    imageUrl: "/graphics-fast/packaging-udcare-cosmetic-jar-08.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/ab772d0f00f55b5f8fd9f40a19562709-1763547770092/1.png",
     featuredImgBg: "bg-gradient-to-br from-pink-950 via-fuchsia-950 to-zinc-950",
     specifications: {
@@ -1040,7 +1040,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator", "Photoshop 3D", "Canva Pro"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/packaging-regalate-beauty-tub-09.jpg",
+    imageUrl: "/graphics-fast/packaging-regalate-beauty-tub-09.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/9c4441b1ba9c8fcb92a74d44a0086fa3-1770136878195/1.png",
     featuredImgBg: "bg-gradient-to-br from-pink-950 via-zinc-950 to-neutral-900",
     specifications: {
@@ -1067,7 +1067,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator", "Photoshop 3D", "Vector CAD"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/packaging-voltra-tech-box-10.jpg",
+    imageUrl: "/graphics-fast/packaging-voltra-tech-box-10.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/a9ffb221c4eee2b6f9c0b581db5462c5-1783925710905/Voltra%20Image.jpg",
     featuredImgBg: "bg-gradient-to-br from-sky-950 via-slate-950 to-zinc-900",
     specifications: {
@@ -1094,7 +1094,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
     },
     tools: ["Adobe Illustrator", "Packaging DielineCAD", "Photoshop"],
     behanceUrl: "https://behance.net/sksolutions",
-    imageUrl: "/graphics/packaging-kraft-eco-box-11.jpg",
+    imageUrl: "/graphics-fast/packaging-kraft-eco-box-11.webp",
     fallbackUrl: "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/4d2cf32eb981f74f8d5e751565375525-1746427626810/eco%20friendly%20kraft%20amazon%20retail%20box%20packaging%20design%20brown%20cardboard.jpg",
     featuredImgBg: "bg-gradient-to-br from-amber-950 via-stone-900 to-zinc-950",
     specifications: {
@@ -1131,7 +1131,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
       "iOS Design System"
     ],
     "behanceUrl": "https://behance.net/sksolutions",
-    "imageUrl": "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/d2ed46cd48e33a2849ecea3104e50038-1731778177530/Book%20reading%20app.png",
+    "imageUrl": "/graphics-fast/mobile-app-book-reading-01.webp",
     "featuredImgBg": "bg-gradient-to-br from-indigo-950 via-slate-900 to-zinc-950",
     "specifications": {
       "colorSpace": "sRGB & P3 Display",
@@ -1170,7 +1170,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
       "Photoshop"
     ],
     "behanceUrl": "https://behance.net/sksolutions",
-    "imageUrl": "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/0d51d5217bfefe5eb08718fcb634bd76-1731746766056/track%20thumb.png",
+    "imageUrl": "/graphics-fast/mobile-app-activity-tracker-02.webp",
     "featuredImgBg": "bg-gradient-to-br from-emerald-950 via-zinc-900 to-slate-950",
     "specifications": {
       "colorSpace": "sRGB Display P3",
@@ -1209,7 +1209,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
       "Prototyping"
     ],
     "behanceUrl": "https://behance.net/sksolutions",
-    "imageUrl": "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/74eeee6f14f59598a7289cec7e173e36-1732268008483/Food%20recips%20thumb.png",
+    "imageUrl": "/graphics-fast/mobile-app-food-recipes-03.webp",
     "featuredImgBg": "bg-gradient-to-br from-orange-950 via-amber-950 to-zinc-950",
     "specifications": {
       "colorSpace": "sRGB Digital",
@@ -1248,7 +1248,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
       "Principle"
     ],
     "behanceUrl": "https://behance.net/sksolutions",
-    "imageUrl": "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/727c3586d24f08affc882498299f422c-1728225547103/shot%20130.png",
+    "imageUrl": "/graphics-fast/mobile-app-saas-interface-04.webp",
     "featuredImgBg": "bg-gradient-to-br from-sky-950 via-indigo-950 to-slate-950",
     "specifications": {
       "colorSpace": "sRGB Display",
@@ -1287,7 +1287,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
       "Adobe Illustrator"
     ],
     "behanceUrl": "https://behance.net/sksolutions",
-    "imageUrl": "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/31c7bdf559ac3385d597bba3e7e07a60-1783237014962/Step%20water.jpg",
+    "imageUrl": "/graphics-fast/mobile-app-hydration-step-counter-05.webp",
     "featuredImgBg": "bg-gradient-to-br from-cyan-950 via-teal-950 to-slate-950",
     "specifications": {
       "colorSpace": "sRGB Profile",
@@ -1326,7 +1326,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
       "Photoshop"
     ],
     "behanceUrl": "https://behance.net/sksolutions",
-    "imageUrl": "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/dc301fd2ebd20458d45bfdbb0fcb4a5a-1783237591837/Recipe%20maker.jpg",
+    "imageUrl": "/graphics-fast/mobile-app-recipe-maker-06.webp",
     "featuredImgBg": "bg-gradient-to-br from-green-950 via-yellow-950 to-zinc-950",
     "specifications": {
       "colorSpace": "sRGB Display",
@@ -1365,7 +1365,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
       "Figma Auto Layout"
     ],
     "behanceUrl": "https://behance.net/sksolutions",
-    "imageUrl": "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/07e7434405241b7f755de910997c537d-1776323585967/Money%20Tracker%20New%20app.jpg",
+    "imageUrl": "/graphics-fast/mobile-app-money-tracker-07.webp",
     "featuredImgBg": "bg-gradient-to-br from-emerald-950 via-indigo-950 to-zinc-950",
     "specifications": {
       "colorSpace": "sRGB Profile",
@@ -1404,7 +1404,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
       "Adobe XD"
     ],
     "behanceUrl": "https://behance.net/sksolutions",
-    "imageUrl": "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/c94350d0640a481ed7a98fe70b8c7741-1783237914504/Home%20rental%20app.jpg",
+    "imageUrl": "/graphics-fast/mobile-app-home-rental-08.webp",
     "featuredImgBg": "bg-gradient-to-br from-sky-950 via-amber-950 to-slate-950",
     "specifications": {
       "colorSpace": "sRGB Profile",
@@ -1443,7 +1443,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
       "After Effects"
     ],
     "behanceUrl": "https://behance.net/sksolutions",
-    "imageUrl": "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/4f0ab1a763c4ea9af892fbe398a7c473-1776324612097/Crypto%20wallet%20app.jpg",
+    "imageUrl": "/graphics-fast/mobile-app-crypto-wallet-09.webp",
     "featuredImgBg": "bg-gradient-to-br from-purple-950 via-cyan-950 to-zinc-950",
     "specifications": {
       "colorSpace": "sRGB & P3 Profile",
@@ -1482,7 +1482,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
       "Design System Matrix"
     ],
     "behanceUrl": "https://behance.net/sksolutions",
-    "imageUrl": "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/7b642e41eaba3aeff2ecdc25b1334708-1722510143483/Preview.jpg",
+    "imageUrl": "/graphics-fast/mobile-app-saas-design-system-10.webp",
     "featuredImgBg": "bg-gradient-to-br from-indigo-950 via-emerald-950 to-zinc-950",
     "specifications": {
       "colorSpace": "sRGB Display",
@@ -1521,7 +1521,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
       "Adobe Illustrator"
     ],
     "behanceUrl": "https://behance.net/sksolutions",
-    "imageUrl": "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/77328a9f44ef880139f78b276fb43eec-1709358943897/YumHub.jpg",
+    "imageUrl": "/graphics-fast/mobile-app-yumhub-food-delivery-11.webp",
     "featuredImgBg": "bg-gradient-to-br from-red-950 via-amber-950 to-zinc-950",
     "specifications": {
       "colorSpace": "sRGB Digital",
@@ -1560,7 +1560,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
       "Prototyping"
     ],
     "behanceUrl": "https://behance.net/sksolutions",
-    "imageUrl": "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/8a208495f8a1a0ba924b204e008e6e51-1784466179772/1000003537.png",
+    "imageUrl": "/graphics-fast/mobile-app-transit-mobility-12.webp",
     "featuredImgBg": "bg-gradient-to-br from-sky-950 via-slate-900 to-zinc-950",
     "specifications": {
       "colorSpace": "sRGB Display",
@@ -1599,7 +1599,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
       "Adobe XD"
     ],
     "behanceUrl": "https://behance.net/sksolutions",
-    "imageUrl": "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/d412eba436cd19770cc62a5ed1c4be30-1784466707236/1000003540.png",
+    "imageUrl": "/graphics-fast/mobile-app-task-lifestyle-dashboard-13.webp",
     "featuredImgBg": "bg-gradient-to-br from-rose-950 via-purple-950 to-slate-950",
     "specifications": {
       "colorSpace": "sRGB Profile",
@@ -1638,7 +1638,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
       "Figma Auto Layout"
     ],
     "behanceUrl": "https://behance.net/sksolutions",
-    "imageUrl": "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/379e1d31dd808a46bba724c48cae2d93-1784466949291/1000003530.png",
+    "imageUrl": "/graphics-fast/mobile-app-digital-wallet-banking-14.webp",
     "featuredImgBg": "bg-gradient-to-br from-blue-950 via-emerald-950 to-zinc-950",
     "specifications": {
       "colorSpace": "sRGB Profile",
@@ -1677,7 +1677,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
       "Photoshop"
     ],
     "behanceUrl": "https://behance.net/sksolutions",
-    "imageUrl": "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/83c238a17aacf00bcd7f3d5a356c4817-1785526195373/Untitled-4.jpg",
+    "imageUrl": "/graphics-fast/mobile-app-ecommerce-shopping-15.webp",
     "featuredImgBg": "bg-gradient-to-br from-amber-950 via-zinc-900 to-slate-950",
     "specifications": {
       "colorSpace": "sRGB Profile",
@@ -1716,7 +1716,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
       "ProtoPie"
     ],
     "behanceUrl": "https://behance.net/sksolutions",
-    "imageUrl": "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/464c8a0581f55c1ece8d1d933b4894f6-1785526436454/Order%20035%20-%20Roger%20Lai.jpg",
+    "imageUrl": "/graphics-fast/mobile-app-fintech-roger-lai-16.webp",
     "featuredImgBg": "bg-gradient-to-br from-green-950 via-indigo-950 to-slate-950",
     "specifications": {
       "colorSpace": "sRGB Display P3",
@@ -1755,7 +1755,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
       "After Effects"
     ],
     "behanceUrl": "https://behance.net/sksolutions",
-    "imageUrl": "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/d9363239e2e29a259b2ab4ea543c3a29-1751757360620/app%20mockupdfvg.jpg",
+    "imageUrl": "/graphics-fast/mobile-app-mockup-showcase-17.webp",
     "featuredImgBg": "bg-gradient-to-br from-purple-950 via-fuchsia-950 to-zinc-950",
     "specifications": {
       "colorSpace": "sRGB Profile",
@@ -1794,7 +1794,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
       "Prototyping"
     ],
     "behanceUrl": "https://behance.net/sksolutions",
-    "imageUrl": "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/73cd65984690e7a43faad05a08fd6178-1703255149352/202.png",
+    "imageUrl": "/graphics-fast/mobile-app-social-chat-18.webp",
     "featuredImgBg": "bg-gradient-to-br from-cyan-950 via-rose-950 to-slate-950",
     "specifications": {
       "colorSpace": "sRGB Display",
@@ -1833,7 +1833,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
       "Photoshop"
     ],
     "behanceUrl": "https://behance.net/sksolutions",
-    "imageUrl": "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/6a0e7e9aa9a714373acd40e5d2edc44c-1764741395399/App%20Mockup%2013.png",
+    "imageUrl": "/graphics-fast/mobile-app-ui-mockup-19.webp",
     "featuredImgBg": "bg-gradient-to-br from-blue-950 via-emerald-950 to-zinc-950",
     "specifications": {
       "colorSpace": "sRGB Profile",
@@ -1872,7 +1872,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
       "Adobe Illustrator"
     ],
     "behanceUrl": "https://behance.net/sksolutions",
-    "imageUrl": "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/88380dce6b32e4cac851fada57905de0-1735768506399/Frame%20427318992.png",
+    "imageUrl": "/graphics-fast/mobile-app-health-wellness-20.webp",
     "featuredImgBg": "bg-gradient-to-br from-purple-950 via-sky-950 to-slate-950",
     "specifications": {
       "colorSpace": "sRGB Profile",
@@ -1911,7 +1911,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
       "After Effects"
     ],
     "behanceUrl": "https://behance.net/sksolutions",
-    "imageUrl": "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/b80825a7acf416c4b78fb9854f739f18-1722247362611/5_UI.png",
+    "imageUrl": "/graphics-fast/mobile-app-creative-ui-concept-21.webp",
     "featuredImgBg": "bg-gradient-to-br from-orange-950 via-amber-950 to-zinc-950",
     "specifications": {
       "colorSpace": "sRGB Display",
@@ -1950,7 +1950,7 @@ export const GRAPHIC_PROJECTS: GraphicItem[] = [
       "Figma Tokens"
     ],
     "behanceUrl": "https://behance.net/sksolutions",
-    "imageUrl": "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto:best/v1/attachments/project_item/attachment/e5926ef8ba550c6a82d9007ca2d8d454-1729084983709/5.png",
+    "imageUrl": "/graphics-fast/mobile-app-clean-dashboard-22.webp",
     "featuredImgBg": "bg-gradient-to-br from-teal-950 via-indigo-950 to-slate-950",
     "specifications": {
       "colorSpace": "sRGB Profile",
@@ -2170,8 +2170,10 @@ export function GraphicsPortfolio({
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12 relative z-10">
 
-        {/* SECTION HEADER */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        {isHomePage && (
+          <>
+            {/* SECTION HEADER */}
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-3 max-w-2xl">
             <motion.span
               initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
@@ -2458,131 +2460,157 @@ export function GraphicsPortfolio({
             </div>
           </div>
         </motion.div>
+          </>
+        )}
 
-        {/* CATEGORY FILTER TABS (Spring Tilt Entrance) */}
-        <div className="flex flex-nowrap sm:flex-wrap gap-2 pt-1 border-b border-purple-900/40 pb-5 overflow-x-auto no-scrollbar -mx-1 px-1 touch-pan-x">
-          {categories.map((cat, idx) => (
-            <motion.button
-              key={cat}
-              initial={{ opacity: 0, y: 12, rotate: idx % 2 === 0 ? -5 : 4, scale: 0.9 }}
-              whileInView={{ opacity: 1, y: 0, rotate: 0, scale: 1 }}
-              whileHover={{ scale: 1.04, rotate: idx % 2 === 0 ? -1.2 : 1.2 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ type: "spring", stiffness: 290, damping: 17, delay: idx * 0.04 }}
-              onClick={() => handleSelectCategory(cat)}
-              className={`px-4 py-2 text-xs font-semibold tracking-wide rounded-full transition-colors cursor-pointer shrink-0 whitespace-nowrap border ${
-                selectedCategory === cat
-                  ? "bg-gradient-to-r from-[#8750f7] to-purple-600 text-white border-purple-400/50"
-                  : "bg-[#120a22] text-zinc-300 hover:text-white border-purple-900/40 hover:border-purple-500/70"
-              }`}
-            >
-              {cat}
-            </motion.button>
-          ))}
-        </div>
-
-        {/* GRAPHICS GALLERY GRID: Tilt Spring Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
-          {projectsToDisplay.map((project, idx) => (
-            <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 22, rotate: idx % 2 === 0 ? -2.8 : 2.8, scale: 0.95 }}
-              whileInView={{ opacity: 1, y: 0, rotate: 0, scale: 1 }}
-              whileHover={{ y: -6, rotate: idx % 2 === 0 ? -0.7 : 0.7 }}
-              viewport={{ once: true, amount: 0.06 }}
-              transition={{ type: "spring", stiffness: 220, damping: 19, delay: (idx % 3) * 0.06 }}
-              className="bg-[#120a22] border border-purple-900/40 rounded-2xl hover:border-purple-500/70 transition-colors flex flex-col justify-between group overflow-hidden shadow-[0_8px_24px_rgba(0,0,0,0.35)] hover:shadow-[0_14px_34px_rgba(135,80,247,0.22)] cursor-pointer sm:cursor-default will-change-transform"
-              onClick={() => {
-                if (typeof window !== "undefined" && window.innerWidth < 640) {
-                  openLightboxByProject(project);
-                }
-              }}
-            >
-              <div>
-                {/* Visual Canvas Mockup Card Container */}
-                <div
-                  onClick={() => openLightboxByProject(project)}
-                  className="relative aspect-[4/3] sm:aspect-[16/10] overflow-hidden bg-[#07030e] sm:border-b border-purple-900/40 flex flex-col justify-between cursor-pointer group/img"
-                  title="Click to view full artwork in Lightbox Gallery"
+        {!isHomePage && (
+          <>
+            {/* CATEGORY FILTER TABS (Spring Tilt Entrance) */}
+            <div className="flex flex-nowrap sm:flex-wrap gap-2 pt-1 border-b border-purple-900/40 pb-5 overflow-x-auto no-scrollbar -mx-1 px-1 touch-pan-x">
+              {categories.map((cat, idx) => (
+                <motion.button
+                  key={cat}
+                  initial={{ opacity: 0, y: 12, rotate: idx % 2 === 0 ? -5 : 4, scale: 0.9 }}
+                  whileInView={{ opacity: 1, y: 0, rotate: 0, scale: 1 }}
+                  whileHover={{ scale: 1.04, rotate: idx % 2 === 0 ? -1.2 : 1.2 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ type: "spring", stiffness: 290, damping: 17, delay: idx * 0.04 }}
+                  onClick={() => handleSelectCategory(cat)}
+                  className={`px-4 py-2 text-xs font-semibold tracking-wide rounded-full transition-colors cursor-pointer shrink-0 whitespace-nowrap border ${
+                    selectedCategory === cat
+                      ? "bg-gradient-to-r from-[#8750f7] to-purple-600 text-white border-purple-400/50"
+                      : "bg-[#120a22] text-zinc-300 hover:text-white border-purple-900/40 hover:border-purple-500/70"
+                  }`}
                 >
-                  {project.imageUrl && (
-                    <img
-                      src={project.imageUrl}
-                      alt={project.title}
-                      loading="lazy"
-                      decoding="async"
-                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 [image-rendering:-webkit-optimize-contrast]"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        if (!target.dataset.fallbackTried && project.fallbackUrl) {
-                          target.dataset.fallbackTried = "true";
-                          target.src = project.fallbackUrl;
-                        } else if (target.dataset.fallbackTried !== "final") {
-                          target.dataset.fallbackTried = "final";
-                          target.src = "/graphics/9d55f6220534229.67c9db72b524d.webp";
-                        }
-                      }}
-                    />
-                  )}
+                  {cat}
+                </motion.button>
+              ))}
+            </div>
 
-                  {/* Subtle Measured Bottom Scrim + Mobile Title */}
-                  <div className="sm:hidden absolute bottom-0 inset-x-0 p-2.5 bg-gradient-to-t from-[#07030e]/95 via-[#07030e]/50 to-transparent z-10">
-                    <span className="text-[11px] font-bold text-white block truncate">
-                      {project.title}
-                    </span>
-                  </div>
-
-                  {/* Desktop Color Palette Swatches Bottom Bar */}
-                  <div className="hidden sm:flex absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-[#07030e]/95 via-[#07030e]/45 to-transparent items-center justify-between z-10 text-[10px] font-mono">
-                    <div className="flex gap-1.5">
-                      {project.palette.map((color) => (
-                        <span
-                          key={color}
-                          className="w-3.5 h-3.5 rounded-full border border-white/60 shadow-sm"
-                          style={{ backgroundColor: color }}
-                          title={`Hex: ${color}`}
+            {/* GRAPHICS GALLERY GRID: Tilt Spring Cards */}
+            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+              {projectsToDisplay.map((project, idx) => (
+                <motion.div
+                  key={project.id}
+                  initial={{ opacity: 0, y: 22, rotate: idx % 2 === 0 ? -2.8 : 2.8, scale: 0.95 }}
+                  {...(idx < 6
+                    ? { animate: { opacity: 1, y: 0, rotate: 0, scale: 1 } }
+                    : { whileInView: { opacity: 1, y: 0, rotate: 0, scale: 1 }, viewport: { once: true, amount: "some" } })}
+                  whileHover={{ y: -6, rotate: idx % 2 === 0 ? -0.7 : 0.7 }}
+                  transition={{ type: "spring", stiffness: 220, damping: 19, delay: (idx % 3) * 0.05 }}
+                  className="bg-[#120a22] border border-purple-900/40 rounded-2xl hover:border-purple-500/70 transition-colors flex flex-col justify-between group overflow-hidden shadow-[0_8px_24px_rgba(0,0,0,0.35)] hover:shadow-[0_14px_34px_rgba(135,80,247,0.22)] cursor-pointer sm:cursor-default will-change-transform"
+                  onClick={() => {
+                    if (typeof window !== "undefined" && window.innerWidth < 640) {
+                      openLightboxByProject(project);
+                    }
+                  }}
+                >
+                  <div>
+                    {/* Visual Canvas Mockup Card Container */}
+                    <div
+                      onClick={() => openLightboxByProject(project)}
+                      className="relative aspect-[4/3] sm:aspect-[16/10] overflow-hidden bg-[#07030e] sm:border-b border-purple-900/40 flex flex-col justify-between cursor-pointer group/img"
+                      title="Click to view full artwork in Lightbox Gallery"
+                    >
+                      {project.imageUrl && (
+                        <img
+                          src={project.imageUrl}
+                          alt={project.title}
+                          loading={idx < 9 ? "eager" : "lazy"}
+                          decoding="async"
+                          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 [image-rendering:-webkit-optimize-contrast]"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            if (!target.dataset.fallbackTried && project.fallbackUrl) {
+                              target.dataset.fallbackTried = "true";
+                              target.src = project.fallbackUrl;
+                            } else if (target.dataset.fallbackTried !== "final") {
+                              target.dataset.fallbackTried = "final";
+                              target.src = "/graphics/9d55f6220534229.67c9db72b524d.webp";
+                            }
+                          }}
                         />
-                      ))}
+                      )}
+
+                      {/* Subtle Measured Bottom Scrim + Mobile Title */}
+                      <div className="sm:hidden absolute bottom-0 inset-x-0 p-2.5 bg-gradient-to-t from-[#07030e]/95 via-[#07030e]/50 to-transparent z-10">
+                        <span className="text-[11px] font-bold text-white block truncate">
+                          {project.title}
+                        </span>
+                      </div>
+
+                      {/* Desktop Color Palette Swatches Bottom Bar */}
+                      <div className="hidden sm:flex absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-[#07030e]/95 via-[#07030e]/45 to-transparent items-center justify-between z-10 text-[10px] font-mono">
+                        <div className="flex gap-1.5">
+                          {project.palette.map((color) => (
+                            <span
+                              key={color}
+                              className="w-3.5 h-3.5 rounded-full border border-white/60 shadow-sm"
+                              style={{ backgroundColor: color }}
+                              title={`Hex: ${color}`}
+                            />
+                          ))}
+                        </div>
+                        <span className="font-mono text-[10px] text-purple-100 font-semibold bg-[#120a22]/90 border border-purple-700/40 px-2 py-0.5 rounded">
+                          {project.dimensions}
+                        </span>
+                      </div>
                     </div>
-                    <span className="font-mono text-[10px] text-purple-100 font-semibold bg-[#120a22]/90 border border-purple-700/40 px-2 py-0.5 rounded">
-                      {project.dimensions}
-                    </span>
+
+                    {/* Card Title & Content Section (Desktop) */}
+                    <div className="hidden sm:block p-6 space-y-2.5 text-left">
+                      <div className="flex items-center flex-wrap gap-x-2 text-[11px] font-semibold">
+                        <span className="text-[#c084fc] uppercase tracking-wider">{project.category}</span>
+                        <span aria-hidden="true" className="text-purple-400/60">·</span>
+                        <span className="text-zinc-400 truncate">{project.client}</span>
+                      </div>
+                      <h3 className="text-xl sm:text-2xl font-display font-black uppercase text-white tracking-tight leading-tight group-hover:text-purple-300 transition-colors">
+                        {project.title}
+                      </h3>
+                      <p className="text-xs sm:text-[13px] text-zinc-300 leading-relaxed line-clamp-3 min-h-[54px]">
+                        {project.description}
+                      </p>
+
+                      <p className="text-[11px] font-mono text-zinc-400 pt-2 border-t border-purple-900/40 line-clamp-1">
+                        {project.tools.join(" · ")}
+                      </p>
+                    </div>
                   </div>
-                </div>
 
-                {/* Card Title & Content Section (Desktop) */}
-                <div className="hidden sm:block p-6 space-y-2.5 text-left">
-                  <div className="flex items-center flex-wrap gap-x-2 text-[11px] font-semibold">
-                    <span className="text-[#c084fc] uppercase tracking-wider">{project.category}</span>
-                    <span aria-hidden="true" className="text-purple-400/60">·</span>
-                    <span className="text-zinc-400 truncate">{project.client}</span>
+                  {/* Action Button (Desktop only) */}
+                  <div className="hidden sm:flex px-6 pb-6 pt-0 items-center justify-between gap-3">
+                    <button
+                      onClick={() => openLightboxByProject(project)}
+                      className="w-full py-2.5 px-4 bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white text-xs font-bold tracking-wide transition-colors flex items-center justify-center gap-2 cursor-pointer rounded-full whitespace-nowrap"
+                    >
+                      <span>View in Lightbox Gallery</span>
+                      <Maximize2 className="w-3.5 h-3.5" />
+                    </button>
                   </div>
-                  <h3 className="text-xl sm:text-2xl font-display font-black uppercase text-white tracking-tight leading-tight group-hover:text-purple-300 transition-colors">
-                    {project.title}
-                  </h3>
-                  <p className="text-xs sm:text-[13px] text-zinc-300 leading-relaxed line-clamp-3 min-h-[54px]">
-                    {project.description}
-                  </p>
+                </motion.div>
+              ))}
+            </div>
 
-                  <p className="text-[11px] font-mono text-zinc-400 pt-2 border-t border-purple-900/40 line-clamp-1">
-                    {project.tools.join(" · ")}
-                  </p>
-                </div>
-              </div>
-
-              {/* Action Button (Desktop only) */}
-              <div className="hidden sm:flex px-6 pb-6 pt-0 items-center justify-between gap-3">
+            {/* Empty State if filter returns no items */}
+            {projectsToDisplay.length === 0 && (
+              <div className="p-12 text-center bg-[#120a22] border border-purple-900/40 rounded-2xl space-y-4 max-w-xl mx-auto">
+                <Palette className="w-10 h-10 text-[#c084fc] mx-auto opacity-80" />
+                <h3 className="text-2xl font-display font-black uppercase text-white">
+                  No Assets Found in &ldquo;{selectedCategory}&rdquo;
+                </h3>
+                <p className="text-xs text-zinc-300">
+                  Try selecting another category or view all design specimens.
+                </p>
                 <button
-                  onClick={() => openLightboxByProject(project)}
-                  className="w-full py-2.5 px-4 bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white text-xs font-bold tracking-wide transition-colors flex items-center justify-center gap-2 cursor-pointer rounded-full whitespace-nowrap"
+                  onClick={() => handleSelectCategory("All")}
+                  className="px-5 py-2.5 bg-[#8750f7] text-white text-xs font-bold tracking-wide rounded-full hover:bg-purple-600 transition-colors cursor-pointer"
                 >
-                  <span>View in Lightbox Gallery</span>
-                  <Maximize2 className="w-3.5 h-3.5" />
+                  Show All Design Works ({GRAPHIC_PROJECTS.length} Items)
                 </button>
               </div>
-            </motion.div>
-          ))}
-        </div>
+            )}
+          </>
+        )}
 
         {/* Prominent View All Graphics CTA (on Homepage) */}
         {isHomePage && onShowMore && (
@@ -2593,25 +2621,6 @@ export function GraphicsPortfolio({
             >
               <span>View All Branding &amp; Graphic Works ({GRAPHIC_PROJECTS.length}+ Projects)</span>
               <ArrowRight className="w-4 h-4 shrink-0" />
-            </button>
-          </div>
-        )}
-
-        {/* Empty State if filter returns no items */}
-        {projectsToDisplay.length === 0 && (
-          <div className="p-12 text-center bg-[#120a22] border border-purple-900/40 rounded-2xl space-y-4 max-w-xl mx-auto">
-            <Palette className="w-10 h-10 text-[#c084fc] mx-auto opacity-80" />
-            <h3 className="text-2xl font-display font-black uppercase text-white">
-              No Assets Found in &ldquo;{selectedCategory}&rdquo;
-            </h3>
-            <p className="text-xs text-zinc-300">
-              Try selecting another category or view all design specimens.
-            </p>
-            <button
-              onClick={() => handleSelectCategory("All")}
-              className="px-5 py-2.5 bg-[#8750f7] text-white text-xs font-bold tracking-wide rounded-full hover:bg-purple-600 transition-colors cursor-pointer"
-            >
-              Show All Design Works ({GRAPHIC_PROJECTS.length} Items)
             </button>
           </div>
         )}

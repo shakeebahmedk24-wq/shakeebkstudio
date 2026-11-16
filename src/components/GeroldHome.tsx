@@ -562,8 +562,18 @@ export function GeroldHome({
       {/* ======================================================== */}
       {/* FLOATING VIDEO-MATCHED HEADER (Capsule Pill + Scrolled)  */}
       {/* ======================================================== */}
-      <header className="fixed top-0 left-0 right-0 z-50 pointer-events-none">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-5 flex items-center justify-between gap-4">
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          currentPage !== "home" && isScrolled
+            ? "bg-[#07030e]/95 backdrop-blur-md border-b border-purple-900/50 shadow-[0_12px_34px_rgba(7,3,14,0.65)] pointer-events-auto"
+            : "pointer-events-none"
+        }`}
+      >
+        <div
+          className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4 transition-all duration-300 ${
+            currentPage !== "home" && isScrolled ? "py-3.5 sm:py-4" : "pt-4 sm:pt-5"
+          }`}
+        >
           {/* Zone 1: Slightly Smaller White Brand Logo */}
           <a
             href="#hero"
@@ -1045,11 +1055,11 @@ export function GeroldHome({
       {currentPage === "home" && (
         <main>
           {/* ======================================================== */}
-          {/* 1. HERO SECTION (Solid Deep Obsidian #07030E)            */}
+          {/* 1. HERO SECTION (Solid Deep Royal Plum #2C1156)          */}
           {/* ======================================================== */}
           <section
             id="hero"
-            className="bg-[#07030e] text-white pt-24 pb-16 sm:pt-28 sm:pb-24 lg:pt-32 lg:pb-28 relative overflow-hidden"
+            className="bg-[#2C1156] text-white pt-24 pb-16 sm:pt-28 sm:pb-24 lg:pt-32 lg:pb-28 relative overflow-hidden"
           >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
@@ -1278,111 +1288,7 @@ export function GeroldHome({
           </motion.section>
 
           {/* ======================================================== */}
-          {/* 3. PAIN POINTS ("IS THIS YOU?" — Obsidian #07030e)       */}
-          {/* ======================================================== */}
-          <motion.section
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.06 }}
-            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-            className="py-16 sm:py-24 bg-[#07030e]"
-          >
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left space-y-10 sm:space-y-12">
-              <div className="max-w-3xl space-y-3">
-                <motion.span
-                  initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
-                  whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
-                  whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
-                  viewport={{ once: true, amount: 0.25 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
-                  className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
-                >
-                  sound familiar?
-                </motion.span>
-                <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white text-balance">
-                  Most businesses don&apos;t have a traffic problem. They have a website problem.
-                </h2>
-              </div>
-
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {painPoints.map((item, idx) => (
-                  <motion.div
-                    key={item.num}
-                    initial={{ opacity: 0, y: 18 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.08 }}
-                    transition={{ duration: 0.45, delay: (idx % 3) * 0.07 }}
-                    className="bg-[#120a22] border border-purple-900/40 hover:border-purple-600/50 rounded-2xl p-6 space-y-3 flex flex-col justify-between transition-colors"
-                  >
-                    <div className="space-y-2.5">
-                      <span className="font-mono text-xs font-bold text-[#c084fc] tabular-nums block">
-                        {item.num}.
-                      </span>
-                      <h3 className="font-display text-2xl sm:text-[26px] font-black uppercase leading-tight text-white">
-                        {item.title}
-                      </h3>
-                      <p className="text-sm text-zinc-300 leading-relaxed">
-                        {item.body}
-                      </p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </motion.section>
-
-          {/* ======================================================== */}
-          {/* 4. SOLUTION TRANSITION (Royal Plum #180e2f)              */}
-          {/* ======================================================== */}
-          <motion.section
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.08 }}
-            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-            className="mx-2 sm:mx-4 lg:mx-6 bg-[#180e2f] border border-purple-800/40 text-white rounded-[2rem] sm:rounded-[3rem] py-16 sm:py-24"
-          >
-            <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 text-left">
-              <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-end">
-                <div className="lg:col-span-7 space-y-4">
-                  <motion.span
-                    initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
-                    whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
-                    whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
-                    viewport={{ once: true, amount: 0.25 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
-                    className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
-                  >
-                    the good news?
-                  </motion.span>
-                  <h2 className="font-display text-5xl sm:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9] text-white text-balance">
-                    That&apos;s the exact bit I fix.
-                  </h2>
-                </div>
-                <div className="lg:col-span-5 space-y-5">
-                  <p className="text-base text-zinc-200 leading-relaxed">
-                    Instead of splitting your project between a slow design studio and an overwhelmed freelancer, I engineer both the visual system and the full production codebase. Every site leaves with clean code, custom branding, and measurable speed.
-                  </p>
-                  <div className="flex flex-wrap gap-3">
-                    <button
-                      onClick={() => scrollToSection("web-portfolio")}
-                      className="px-6 py-3 bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white text-xs sm:text-sm font-bold rounded-full transition-colors cursor-pointer whitespace-nowrap"
-                    >
-                      Explore Website Work
-                    </button>
-                    <button
-                      onClick={() => scrollToSection("graphics-portfolio")}
-                      className="px-6 py-3 bg-[#120a22] hover:bg-purple-900/50 border border-purple-600/40 text-white text-xs sm:text-sm font-semibold rounded-full transition-colors cursor-pointer whitespace-nowrap"
-                    >
-                      View Brand Identities
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.section>
-
-          {/* ======================================================== */}
-          {/* 5. SERVICES (Exact Reference Card Anatomy & Layout)      */}
+          {/* 3. SERVICES (Pick What Fits Right Now)                   */}
           {/* ======================================================== */}
           <motion.section
             id="services"
@@ -1471,14 +1377,154 @@ export function GeroldHome({
           </motion.section>
 
           {/* ======================================================== */}
-          {/* 6. INTERACTIVE CAPABILITY CHIPS (Royal Purple Blueprint) */}
+          {/* 4. WEBSITES PORTFOLIO (Video-Matched Dark Purple Stage)  */}
+          {/* ======================================================== */}
+          <motion.div
+            id="works"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.03 }}
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            className="bg-[#240b4c] overflow-hidden scroll-mt-20"
+          >
+            <div id="web-portfolio">
+              <WebsitePortfolio
+                isHomePage={true}
+                onShowMore={() => navigateToPage("websites")}
+              />
+            </div>
+          </motion.div>
+
+          {/* ======================================================== */}
+          {/* 5. GRAPHIC DESIGN PORTFOLIO (Deep Plum Mist #0d071d)     */}
+          {/* ======================================================== */}
+          <motion.div
+            id="graphics-portfolio"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.03 }}
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-12 sm:mt-16 mx-2 sm:mx-4 lg:mx-6 bg-[#0d071d] border border-purple-900/35 rounded-[2rem] sm:rounded-[3rem] scroll-mt-20"
+          >
+            <GraphicsPortfolio
+              isHomePage={true}
+              onShowMore={() => navigateToPage("graphics")}
+            />
+          </motion.div>
+
+          {/* ======================================================== */}
+          {/* 6. PAIN POINTS ("IS THIS YOU?" — Obsidian #07030e)       */}
           {/* ======================================================== */}
           <motion.section
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.06 }}
             transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-            className="mx-2 sm:mx-4 lg:mx-6 bg-blueprint-grid text-white rounded-[2rem] sm:rounded-[3rem] py-16 sm:py-24 overflow-hidden"
+            className="py-16 sm:py-24 bg-[#07030e]"
+          >
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left space-y-10 sm:space-y-12">
+              <div className="max-w-3xl space-y-3">
+                <motion.span
+                  initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
+                  whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
+                  whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
+                  viewport={{ once: true, amount: 0.25 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
+                  className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
+                >
+                  sound familiar?
+                </motion.span>
+                <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white text-balance">
+                  Most businesses don&apos;t have a traffic problem. They have a website problem.
+                </h2>
+              </div>
+
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {painPoints.map((item, idx) => (
+                  <motion.div
+                    key={item.num}
+                    initial={{ opacity: 0, y: 18 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.08 }}
+                    transition={{ duration: 0.45, delay: (idx % 3) * 0.07 }}
+                    className="bg-[#120a22] border border-purple-900/40 hover:border-purple-600/50 rounded-2xl p-6 space-y-3 flex flex-col justify-between transition-colors"
+                  >
+                    <div className="space-y-2.5">
+                      <span className="font-mono text-xs font-bold text-[#c084fc] tabular-nums block">
+                        {item.num}.
+                      </span>
+                      <h3 className="font-display text-2xl sm:text-[26px] font-black uppercase leading-tight text-white">
+                        {item.title}
+                      </h3>
+                      <p className="text-sm text-zinc-300 leading-relaxed">
+                        {item.body}
+                      </p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </motion.section>
+
+          {/* ======================================================== */}
+          {/* 7. SOLUTION TRANSITION (Royal Plum #180e2f)              */}
+          {/* ======================================================== */}
+          <motion.section
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.08 }}
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            className="mx-2 sm:mx-4 lg:mx-6 bg-[#180e2f] border border-purple-800/40 text-white rounded-[2rem] sm:rounded-[3rem] py-16 sm:py-24"
+          >
+            <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 text-left">
+              <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-end">
+                <div className="lg:col-span-7 space-y-4">
+                  <motion.span
+                    initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
+                    whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
+                    whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
+                    viewport={{ once: true, amount: 0.25 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
+                    className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
+                  >
+                    the good news?
+                  </motion.span>
+                  <h2 className="font-display text-5xl sm:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9] text-white text-balance">
+                    That&apos;s the exact bit I fix.
+                  </h2>
+                </div>
+                <div className="lg:col-span-5 space-y-5">
+                  <p className="text-base text-zinc-200 leading-relaxed">
+                    Instead of splitting your project between a slow design studio and an overwhelmed freelancer, I engineer both the visual system and the full production codebase. Every site leaves with clean code, custom branding, and measurable speed.
+                  </p>
+                  <div className="flex flex-wrap gap-3">
+                    <button
+                      onClick={() => scrollToSection("web-portfolio")}
+                      className="px-6 py-3 bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white text-xs sm:text-sm font-bold rounded-full transition-colors cursor-pointer whitespace-nowrap"
+                    >
+                      Explore Website Work
+                    </button>
+                    <button
+                      onClick={() => scrollToSection("graphics-portfolio")}
+                      className="px-6 py-3 bg-[#120a22] hover:bg-purple-900/50 border border-purple-600/40 text-white text-xs sm:text-sm font-semibold rounded-full transition-colors cursor-pointer whitespace-nowrap"
+                    >
+                      View Brand Identities
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.section>
+
+          {/* ======================================================== */}
+          {/* 8. INTERACTIVE CAPABILITY CHIPS (Royal Purple Blueprint) */}
+          {/* ======================================================== */}
+          <motion.section
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.06 }}
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-8 sm:mt-12 mx-2 sm:mx-4 lg:mx-6 bg-blueprint-grid text-white rounded-[2rem] sm:rounded-[3rem] py-16 sm:py-24 overflow-hidden"
           >
             <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 text-left space-y-10">
               <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -1563,42 +1609,6 @@ export function GeroldHome({
               </div>
             </div>
           </motion.section>
-
-          {/* ======================================================== */}
-          {/* 7. WEBSITES PORTFOLIO (Video-Matched Dark Purple Stage)  */}
-          {/* ======================================================== */}
-          <motion.div
-            id="works"
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.03 }}
-            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-12 sm:mt-16 bg-[#240b4c] overflow-hidden scroll-mt-20"
-          >
-            <div id="web-portfolio">
-              <WebsitePortfolio
-                isHomePage={true}
-                onShowMore={() => navigateToPage("websites")}
-              />
-            </div>
-          </motion.div>
-
-          {/* ======================================================== */}
-          {/* 8. GRAPHIC DESIGN PORTFOLIO (Deep Plum Mist #0d071d)     */}
-          {/* ======================================================== */}
-          <motion.div
-            id="graphics-portfolio"
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.03 }}
-            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-12 sm:mt-16 mx-2 sm:mx-4 lg:mx-6 bg-[#0d071d] border border-purple-900/35 rounded-[2rem] sm:rounded-[3rem] scroll-mt-20"
-          >
-            <GraphicsPortfolio
-              isHomePage={true}
-              onShowMore={() => navigateToPage("graphics")}
-            />
-          </motion.div>
 
           {/* ======================================================== */}
           {/* 9. ENGAGEMENT / PRICING MODELS (Obsidian #07030e)        */}
@@ -2305,24 +2315,110 @@ export function GeroldHome({
       {/* ======================================================== */}
       {currentPage === "websites" && (
         <main className="min-h-[85vh] overflow-x-clip">
-          <div className="bg-[#240b4c] border-b border-white/10 pt-24 sm:pt-28 pb-5">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-4">
-              <button
-                onClick={() => navigateToPage("home")}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#120a22]/80 hover:bg-[#180e2f] border border-purple-400/35 text-white text-xs font-bold tracking-wide transition-colors cursor-pointer"
-              >
-                <span>← Back to Home</span>
-              </button>
+          {/* ======================================================== */}
+          {/* WEBSITES PORTFOLIO HERO (#2C1156 Architectural Grid)     */}
+          {/* ======================================================== */}
+          <section className="bg-work-hero-grid text-white pt-24 sm:pt-28 pb-16 sm:pb-24 relative overflow-hidden border-b border-purple-400/20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-10 sm:space-y-12">
+              {/* Subpage Quick Controls */}
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <button
+                  onClick={() => navigateToPage("home")}
+                  className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-[#120a22]/75 hover:bg-[#180e2f] border border-purple-300/30 text-white text-xs font-bold tracking-wide transition-colors cursor-pointer"
+                >
+                  <span>← Back to Home</span>
+                </button>
 
-              <button
-                onClick={() => navigateToPage("graphics")}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white text-xs font-bold tracking-wide transition-colors cursor-pointer shadow-lg"
-              >
-                <span>Switch to Graphic Design (40+)</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
+                <button
+                  onClick={() => navigateToPage("graphics")}
+                  className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white text-xs font-bold tracking-wide transition-colors cursor-pointer shadow-lg"
+                >
+                  <span>Switch to Graphic Design (40+)</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              {/* Hero Grid Content */}
+              <div className="grid lg:grid-cols-12 gap-10 lg:gap-8 items-center text-left">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                  className="lg:col-span-7 space-y-6"
+                >
+                  <span className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-[#e9d5ff] block">
+                    PORTFOLIO · WEBSITES &amp; WEB APPS
+                  </span>
+
+                  <div className="inline-block relative">
+                    <h1 className="font-display text-7xl sm:text-[108px] lg:text-[134px] font-black uppercase tracking-tight leading-[0.86] text-white">
+                      THE WORK
+                    </h1>
+                    {/* Hand-drawn curved brushstroke underline */}
+                    <svg
+                      viewBox="0 0 360 22"
+                      fill="none"
+                      className="w-[58%] ml-auto mt-2 text-[#e9d5ff]"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M4 16C110 4 245 4 356 13"
+                        stroke="currentColor"
+                        strokeWidth="6"
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                  </div>
+
+                  <p className="text-base sm:text-lg text-purple-100/90 max-w-xl leading-relaxed">
+                    150+ websites, stores, and custom web builds — restaurants, B2B wholesalers, healthcare clinics, hospitality groups, and fast-growing consumer brands. Every build engineered for 95–99/100 Core Web Vitals and real conversions.
+                  </p>
+                </motion.div>
+
+                {/* Right Column: Subtle Big Vector Arrow + Tilted White Proof Card */}
+                <div className="lg:col-span-5 relative flex items-center justify-center lg:justify-end py-4">
+                  <svg
+                    viewBox="0 0 240 240"
+                    fill="none"
+                    aria-hidden="true"
+                    className="hidden sm:block absolute -top-6 right-0 w-64 h-64 text-white/[0.08] pointer-events-none select-none"
+                  >
+                    <path
+                      d="M44 196L196 44M196 44H74M196 44V166"
+                      stroke="currentColor"
+                      strokeWidth="28"
+                      strokeLinecap="square"
+                    />
+                  </svg>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20, rotate: 6, scale: 0.94 }}
+                    animate={{ opacity: 1, y: 0, rotate: 2, scale: 1 }}
+                    whileHover={{ rotate: 0, y: -4 }}
+                    transition={{ type: "spring", stiffness: 240, damping: 18 }}
+                    className="relative z-10 w-full max-w-[330px] bg-white text-[#120a22] rounded-3xl p-7 sm:p-8 shadow-[0_28px_70px_rgba(7,3,14,0.55)]"
+                  >
+                    <span className="font-mono text-[11px] font-bold uppercase tracking-widest text-zinc-500 block">
+                      WEBSITES BUILT
+                    </span>
+                    <div className="font-display text-6xl sm:text-7xl font-black text-[#6d28d9] leading-none mt-2 tabular-nums">
+                      150+
+                    </div>
+                    <div className="flex items-center gap-1 text-amber-400 mt-3">
+                      {[...Array(5)].map((_, s) => (
+                        <Star key={s} className="w-4 h-4 fill-current" />
+                      ))}
+                    </div>
+                    <div className="mt-5 pt-4 border-t border-purple-100 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-mono font-bold text-[#120a22]">
+                      <span>18 FEATURED BUILDS</span>
+                      <span aria-hidden="true" className="text-purple-400">·</span>
+                      <span>100+ 5-STAR REVIEWS</span>
+                    </div>
+                  </motion.div>
+                </div>
+              </div>
             </div>
-          </div>
+          </section>
 
           <WebsitePortfolio isHomePage={false} />
 
@@ -2351,24 +2447,110 @@ export function GeroldHome({
       {/* ======================================================== */}
       {currentPage === "graphics" && (
         <main className="min-h-[85vh] overflow-x-clip">
-          <div className="bg-[#0d071d] border-b border-purple-900/40 pt-24 sm:pt-28 pb-5">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-4">
-              <button
-                onClick={() => navigateToPage("home")}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#120a22] hover:bg-[#180e2f] border border-purple-700/45 text-white text-xs font-bold tracking-wide transition-colors cursor-pointer"
-              >
-                <span>← Back to Home</span>
-              </button>
+          {/* ======================================================== */}
+          {/* GRAPHICS PORTFOLIO HERO (#2C1156 Architectural Grid)     */}
+          {/* ======================================================== */}
+          <section className="bg-work-hero-grid text-white pt-24 sm:pt-28 pb-16 sm:pb-24 relative overflow-hidden border-b border-purple-400/20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-10 sm:space-y-12">
+              {/* Subpage Quick Controls */}
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <button
+                  onClick={() => navigateToPage("home")}
+                  className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-[#120a22]/75 hover:bg-[#180e2f] border border-purple-300/30 text-white text-xs font-bold tracking-wide transition-colors cursor-pointer"
+                >
+                  <span>← Back to Home</span>
+                </button>
 
-              <button
-                onClick={() => navigateToPage("websites")}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white text-xs font-bold tracking-wide transition-colors cursor-pointer shadow-lg"
-              >
-                <span>Switch to Websites Portfolio (15+)</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
+                <button
+                  onClick={() => navigateToPage("websites")}
+                  className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white text-xs font-bold tracking-wide transition-colors cursor-pointer shadow-lg"
+                >
+                  <span>Switch to Websites Portfolio (15+)</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              {/* Hero Grid Content */}
+              <div className="grid lg:grid-cols-12 gap-10 lg:gap-8 items-center text-left">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                  className="lg:col-span-7 space-y-6"
+                >
+                  <span className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-[#e9d5ff] block">
+                    PORTFOLIO · BRANDING &amp; GRAPHIC DESIGN
+                  </span>
+
+                  <div className="inline-block relative">
+                    <h1 className="font-display text-7xl sm:text-[108px] lg:text-[134px] font-black uppercase tracking-tight leading-[0.86] text-white">
+                      THE WORK
+                    </h1>
+                    {/* Hand-drawn curved brushstroke underline */}
+                    <svg
+                      viewBox="0 0 360 22"
+                      fill="none"
+                      className="w-[58%] ml-auto mt-2 text-[#e9d5ff]"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M4 16C110 4 245 4 356 13"
+                        stroke="currentColor"
+                        strokeWidth="6"
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                  </div>
+
+                  <p className="text-base sm:text-lg text-purple-100/90 max-w-xl leading-relaxed">
+                    40+ curated brand identity systems, custom vector logomarks, 300 DPI retail packaging dielines, mobile UI kits, and campaign collateral — every piece designed to make brands unmistakable.
+                  </p>
+                </motion.div>
+
+                {/* Right Column: Subtle Big Vector Arrow + Tilted White Proof Card */}
+                <div className="lg:col-span-5 relative flex items-center justify-center lg:justify-end py-4">
+                  <svg
+                    viewBox="0 0 240 240"
+                    fill="none"
+                    aria-hidden="true"
+                    className="hidden sm:block absolute -top-6 right-0 w-64 h-64 text-white/[0.08] pointer-events-none select-none"
+                  >
+                    <path
+                      d="M44 196L196 44M196 44H74M196 44V166"
+                      stroke="currentColor"
+                      strokeWidth="28"
+                      strokeLinecap="square"
+                    />
+                  </svg>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20, rotate: 6, scale: 0.94 }}
+                    animate={{ opacity: 1, y: 0, rotate: 2, scale: 1 }}
+                    whileHover={{ rotate: 0, y: -4 }}
+                    transition={{ type: "spring", stiffness: 240, damping: 18 }}
+                    className="relative z-10 w-full max-w-[330px] bg-white text-[#120a22] rounded-3xl p-7 sm:p-8 shadow-[0_28px_70px_rgba(7,3,14,0.55)]"
+                  >
+                    <span className="font-mono text-[11px] font-bold uppercase tracking-widest text-zinc-500 block">
+                      DESIGNS &amp; BRANDS
+                    </span>
+                    <div className="font-display text-6xl sm:text-7xl font-black text-[#6d28d9] leading-none mt-2 tabular-nums">
+                      100+
+                    </div>
+                    <div className="flex items-center gap-1 text-amber-400 mt-3">
+                      {[...Array(5)].map((_, s) => (
+                        <Star key={s} className="w-4 h-4 fill-current" />
+                      ))}
+                    </div>
+                    <div className="mt-5 pt-4 border-t border-purple-100 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-mono font-bold text-[#120a22]">
+                      <span>40+ SPECIMENS</span>
+                      <span aria-hidden="true" className="text-purple-400">·</span>
+                      <span>300 DPI PRINT &amp; VECTOR</span>
+                    </div>
+                  </motion.div>
+                </div>
+              </div>
             </div>
-          </div>
+          </section>
 
           <GraphicsPortfolio isHomePage={false} />
 

@@ -76,7 +76,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     role: "Lead Front-End Developer",
     year: "2025",
     liveUrl: "https://henriettasaid.com/",
-    image: "/websites-portfolio/henrietta-said-thumb.webp",
+    image: "/websites-fast/henrietta-said.webp",
     fallbackImage: "/websites-portfolio/henrietta-said-thumb.webp",
     videoPreview: "/websites-portfolio/henrietta-said.mp4",
     isAnimatedSite: true,
@@ -115,7 +115,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     role: "Lead E-Commerce Developer",
     year: "2025",
     liveUrl: "https://www.cravburgers.shop/",
-    image: "/websites-portfolio/crav-enjoy-2026.webp",
+    image: "/websites-fast/crav-burgers.webp",
     fallbackImage: "/websites-portfolio/crav-enjoy-2026.webp",
     videoPreview: "/websites-portfolio/crav-enjoy-2026.mp4",
     isAnimatedSite: true,
@@ -154,7 +154,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     role: "Creative Front-End Architect",
     year: "2025",
     liveUrl: "https://prettypatty.ch/",
-    image: "/websites-portfolio/pretty-patty-2026.webp",
+    image: "/websites-fast/pretty-patty-geneva.webp",
     fallbackImage: "/websites-portfolio/pretty-patty-2026.webp",
     videoPreview: "/websites-portfolio/pretty-patty-2026.mp4",
     isAnimatedSite: true,
@@ -193,7 +193,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     role: "Lead UI Architect & Web Developer",
     year: "2025",
     liveUrl: "https://ownprimland.com/",
-    image: "/websites-portfolio/primland-residence.webp",
+    image: "/websites-fast/primland-residences.webp",
     fallbackImage: "/websites-portfolio/primland-residence.webp",
     videoPreview: "/websites-portfolio/primland-residence.mp4",
     isAnimatedSite: true,
@@ -232,7 +232,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     role: "Lead Front-End Developer",
     year: "2025",
     liveUrl: "https://bar-topas.ch/",
-    image: "/websites-portfolio/topas.webp",
+    image: "/websites-fast/topas-tapas-bar.webp",
     fallbackImage: "/websites-portfolio/topas.webp",
     videoPreview: "/websites-portfolio/topas.mp4",
     isAnimatedSite: true,
@@ -271,7 +271,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     role: "Lead Creative Developer & UI Architect",
     year: "2025",
     liveUrl: "https://mrday.it/",
-    image: "/websites-portfolio/mrday.webp",
+    image: "/websites-fast/mrday-bakery.webp",
     fallbackImage: "/websites-portfolio/mrday.jpg",
     videoPreview: "/websites-portfolio/mrday-preview.mp4",
     isAnimatedSite: true,
@@ -310,7 +310,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     role: "Lead Creative Developer & UI Architect",
     year: "2025",
     liveUrl: "https://www.brars.com/",
-    image: "/websites-portfolio/brars.webp",
+    image: "/websites-fast/brars-ethnic-foods.webp",
     fallbackImage: "/websites-portfolio/brars.webp",
     videoPreview: "/websites-portfolio/brars.mp4",
     isAnimatedSite: true,
@@ -349,7 +349,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     role: "Lead Web Developer & UI Designer",
     year: "2025",
     liveUrl: "https://www.brets-crisps.com/",
-    image: "/websites-portfolio/chips.png",
+    image: "/websites-fast/brets-crisps.webp",
     fallbackImage: "/Websites Portfolio/chips.png",
     videoPreview: "/websites-portfolio/brets-crisps-preview.mp4",
     isAnimatedSite: true,
@@ -388,7 +388,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     role: "Lead Full-Stack Web Developer",
     year: "2025",
     liveUrl: "https://www.aardvarkbookclub.com/",
-    image: "/websites-portfolio/aardvark-bookclub-thumb.webp",
+    image: "/websites-fast/aardvark-bookclub.webp",
     fallbackImage: "/websites-portfolio/aardvark-bookclub-thumb.webp",
     videoPreview: "/websites-portfolio/aardvark-bookclub.mp4",
     isAnimatedSite: true,
@@ -427,7 +427,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     role: "Lead SaaS UI Developer",
     year: "2025",
     liveUrl: "https://www.dropship.io/",
-    image: "/websites-portfolio/dropship-thumb.webp",
+    image: "/websites-fast/dropship-io.webp",
     fallbackImage: "/websites-portfolio/dropship-thumb.webp",
     videoPreview: "/websites-portfolio/dropship.mp4",
     isAnimatedSite: true,
@@ -466,7 +466,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     role: "Lead Frontend Engineer",
     year: "2025",
     liveUrl: "https://voldog.com/",
-    image: "/websites-portfolio/voldog-thumb.webp",
+    image: "/websites-fast/voldog-gear.webp",
     fallbackImage: "/websites-portfolio/voldog-thumb.webp",
     videoPreview: "/websites-portfolio/voldog.mp4",
     isAnimatedSite: true,
@@ -505,7 +505,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     role: "Lead UI & Web Developer",
     year: "2025",
     liveUrl: "https://adora.com/",
-    image: "/websites-portfolio/adora.webp",
+    image: "/websites-fast/adora-skincare.webp",
     fallbackImage: "/Websites Portfolio/Adora.webp",
     bgGradient: "from-rose-950 via-zinc-900 to-zinc-950",
     primaryColor: "#f43f5e",
@@ -542,7 +542,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     role: "Senior B2B WP Engineer",
     year: "2025",
     liveUrl: "https://thebuildermarket.com/",
-    image: "/websites-portfolio/the-buildermarket.webp",
+    image: "/websites-fast/builder-market.webp",
     fallbackImage: "/Websites Portfolio/The Buildermarket.webp",
     bgGradient: "from-blue-950 via-zinc-900 to-zinc-950",
     primaryColor: "#3b82f6",
@@ -579,7 +579,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     role: "Senior Full-Stack Developer",
     year: "2025",
     liveUrl: "https://blockd.io/",
-    image: "/websites-portfolio/blockd.webp",
+    image: "/websites-fast/blockd-security.webp",
     fallbackImage: "/Websites Portfolio/blockd.webp",
     bgGradient: "from-indigo-950 via-zinc-900 to-zinc-950",
     primaryColor: "#6366f1",
@@ -616,7 +616,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     role: "E-Commerce Architect",
     year: "2025",
     liveUrl: "https://www.toynk.com/",
-    image: "/websites-portfolio/toynk-pop-culture.webp",
+    image: "/websites-fast/toynk-collectibles.webp",
     fallbackImage: "/Websites Portfolio/toynk pop culture.webp",
     bgGradient: "from-rose-950 via-zinc-900 to-zinc-950",
     primaryColor: "#ef4444",
@@ -653,7 +653,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     role: "Lead E-Commerce Engineer",
     year: "2025",
     liveUrl: "https://detach.co/",
-    image: "/websites-portfolio/detach.webp",
+    image: "/websites-fast/detach-apparel.webp",
     fallbackImage: "/Websites Portfolio/Detach.webp",
     bgGradient: "from-emerald-950 via-zinc-900 to-zinc-950",
     primaryColor: "#10b981",
@@ -690,7 +690,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     role: "Lead Horology E-Commerce Architect",
     year: "2026",
     liveUrl: "https://www.watchguys.com/",
-    image: "/websites-portfolio/watch-guys.webp",
+    image: "/websites-fast/watchguys.webp",
     fallbackImage: "/Websites Portfolio/Watch Guys.webp",
     bgGradient: "from-amber-950 via-zinc-900 to-zinc-950",
     primaryColor: "#c5a059",
@@ -727,7 +727,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     role: "Full-Stack Web Architect",
     year: "2025",
     liveUrl: "https://purepush.com/",
-    image: "/websites-portfolio/purepush.webp",
+    image: "/websites-fast/purepush-nutrition.webp",
     fallbackImage: "/Websites Portfolio/purepush.webp",
     bgGradient: "from-sky-950 via-zinc-900 to-zinc-950",
     primaryColor: "#0284c7",
@@ -764,7 +764,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     role: "Lead E-Commerce Developer",
     year: "2025",
     liveUrl: "https://slamables.com/",
-    image: "/websites-portfolio/slamables.webp",
+    image: "/websites-fast/slamables-collectibles.webp",
     fallbackImage: "/Websites Portfolio/slamables.webp",
     bgGradient: "from-purple-950 via-zinc-900 to-zinc-950",
     primaryColor: "#a855f7",
@@ -801,7 +801,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     role: "E-Commerce Specialist & UI Designer",
     year: "2024",
     liveUrl: "https://desicart.co.uk/",
-    image: "/websites-portfolio/desicart-uk.png",
+    image: "/websites-fast/desicart-uk.webp",
     fallbackImage: "/web-portfolio/desicart UK Grocery.png",
     bgGradient: "from-emerald-950 via-zinc-900 to-zinc-950",
     primaryColor: "#10b981",
@@ -838,7 +838,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     role: "Full-Stack Healthcare Developer",
     year: "2024",
     liveUrl: "https://luxcompounds.com/",
-    image: "/websites-portfolio/lux-compounds.webp",
+    image: "/websites-fast/lux-compounds.webp",
     fallbackImage: "/Websites Portfolio/lux compounds.webp",
     bgGradient: "from-cyan-950 via-zinc-900 to-zinc-950",
     primaryColor: "#06b6d4",
@@ -875,7 +875,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     role: "Lead E-Commerce Architect",
     year: "2025",
     liveUrl: "https://www.matalanme.com/",
-    image: "/websites-portfolio/matalan-clothing.webp",
+    image: "/websites-fast/matalan-me.webp",
     fallbackImage: "/Websites Portfolio/Maltan clothing.webp",
     bgGradient: "from-rose-950 via-zinc-900 to-zinc-950",
     primaryColor: "#e11d48",
@@ -912,7 +912,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     role: "Senior E-Commerce Engineer",
     year: "2025",
     liveUrl: "https://www.babyshopstores.com/",
-    image: "/websites-portfolio/matalan-clothing.webp",
+    image: "/websites-fast/babyshop-stores.webp",
     fallbackImage: "/Websites Portfolio/Maltan clothing.webp",
     bgGradient: "from-sky-950 via-zinc-900 to-zinc-950",
     primaryColor: "#0284c7",
@@ -949,7 +949,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     role: "Lead E-Commerce Developer",
     year: "2025",
     liveUrl: "https://theobroma.in/",
-    image: "/websites-portfolio/theobroma-chocolates.png",
+    image: "/websites-fast/theobroma-chocolates.webp",
     fallbackImage: "/websites-portfolio/theobroma-chocolates.png",
     bgGradient: "from-amber-950 via-zinc-900 to-zinc-950",
     primaryColor: "#d97706",
@@ -986,7 +986,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     role: "Lead Creative Developer & UI Architect",
     year: "2025",
     liveUrl: "https://broworks.net/",
-    image: "/websites-portfolio/broworks.png",
+    image: "/websites-fast/broworks-agency.webp",
     fallbackImage: "/websites-portfolio/broworks.png",
     bgGradient: "from-yellow-950 via-zinc-900 to-zinc-950",
     primaryColor: "#eab308",
@@ -1023,7 +1023,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     role: "Lead Creative Developer",
     year: "2025",
     liveUrl: "http://atomato.co/",
-    image: "/websites-portfolio/atomato.png",
+    image: "/websites-fast/atomato-studio.webp",
     fallbackImage: "/websites-portfolio/atomato.png",
     bgGradient: "from-zinc-900 via-zinc-900 to-zinc-950",
     primaryColor: "#a1a1aa",
@@ -1060,7 +1060,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     role: "Lead E-Commerce Developer",
     year: "2025",
     liveUrl: "https://www.slight-twist.co.nz/",
-    image: "/websites-portfolio/slight-twist.png",
+    image: "/websites-fast/slight-twist.webp",
     fallbackImage: "/websites-portfolio/slight-twist.png",
     bgGradient: "from-orange-950 via-zinc-900 to-zinc-950",
     primaryColor: "#f97316",
@@ -1097,7 +1097,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     role: "Lead UI & Web Developer",
     year: "2025",
     liveUrl: "https://drinkjoyrush.com/",
-    image: "/websites-portfolio/joyrush.png",
+    image: "/websites-fast/joyrush-energy.webp",
     fallbackImage: "/websites-portfolio/joyrush.png",
     bgGradient: "from-emerald-950 via-zinc-900 to-zinc-950",
     primaryColor: "#10b981",
@@ -1134,7 +1134,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     role: "Lead E-Commerce Developer",
     year: "2025",
     liveUrl: "https://partakefoods.com/",
-    image: "/websites-portfolio/partake-foods.webp",
+    image: "/websites-fast/partake-foods.webp",
     fallbackImage: "/Websites Portfolio/partake foods.webp",
     bgGradient: "from-amber-950 via-zinc-900 to-zinc-950",
     primaryColor: "#f59e0b",
@@ -1163,10 +1163,17 @@ interface VideoCardPreviewProps {
   videoSrc: string;
   posterSrc: string;
   alt: string;
+  playOnlyOnHover?: boolean;
 }
 
-function VideoCardPreview({ videoSrc, posterSrc, alt }: VideoCardPreviewProps) {
+function VideoCardPreview({ videoSrc, posterSrc, alt, playOnlyOnHover = false }: VideoCardPreviewProps) {
   const videoRef = React.useRef<HTMLVideoElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isVideoReady, setIsVideoReady] = useState(false);
+
+  useEffect(() => {
+    setIsVideoReady(false);
+  }, [videoSrc]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -1179,6 +1186,15 @@ function VideoCardPreview({ videoSrc, posterSrc, alt }: VideoCardPreviewProps) {
     video.setAttribute("webkit-playsinline", "true");
     video.setAttribute("muted", "true");
     video.loop = true;
+
+    if (playOnlyOnHover) {
+      if (isHovered) {
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+      }
+      return;
+    }
 
     let observer: IntersectionObserver | null = null;
     if (typeof window !== "undefined" && "IntersectionObserver" in window) {
@@ -1208,21 +1224,39 @@ function VideoCardPreview({ videoSrc, posterSrc, alt }: VideoCardPreviewProps) {
     return () => {
       if (observer) observer.disconnect();
     };
-  }, [videoSrc]);
+  }, [videoSrc, playOnlyOnHover, isHovered]);
+
+  const shouldMountVideo = !playOnlyOnHover || isHovered;
 
   return (
-    <div className="w-full h-full relative overflow-hidden bg-zinc-950 flex items-start justify-center transform-gpu">
-      <video
-        ref={videoRef}
-        src={videoSrc}
-        poster={posterSrc}
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        aria-label={alt}
+    <div
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="w-full h-full relative overflow-hidden bg-zinc-950 flex items-start justify-center"
+    >
+      <img
+        src={posterSrc}
+        alt={alt}
+        loading="eager"
+        decoding="async"
         className="w-full h-full object-cover object-top"
       />
+      {shouldMountVideo && (
+        <video
+          ref={videoRef}
+          src={videoSrc}
+          poster={posterSrc}
+          muted
+          loop
+          playsInline
+          preload={playOnlyOnHover ? "auto" : "metadata"}
+          onPlaying={() => setIsVideoReady(true)}
+          aria-label={alt}
+          className={`absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-300 ${
+            isVideoReady ? "opacity-100" : "opacity-0"
+          }`}
+        />
+      )}
     </div>
   );
 }
@@ -1380,7 +1414,7 @@ export function WebsitePortfolio({
                     <img
                       src={site.image}
                       alt={site.title}
-                      loading="lazy"
+                      loading="eager"
                       decoding="async"
                       className="w-full h-full object-cover object-top group-hover/strip:scale-105 transition-transform duration-500"
                       onError={(e) => {
@@ -1620,11 +1654,8 @@ export function WebsitePortfolio({
       {isHomePage ? (
         renderVideoShowcaseStage(true)
       ) : (
-        <div className="space-y-12 sm:space-y-16">
-          {/* Full-Bleed Reference Video Showcase at Top of View Portfolio */}
-          {renderVideoShowcaseStage(false)}
-
-          {/* Searchable & Filterable 18-Build Archive Grid */}
+        <div className="pt-12 sm:pt-16">
+          {/* Searchable & Filterable Archive Grid */}
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
             {/* SECTION HEADER */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -1710,9 +1741,10 @@ export function WebsitePortfolio({
               <motion.div
                 key={project.id}
                 initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.05 }}
-                transition={{ duration: 0.4, delay: (idx % 3) * 0.05, ease: [0.16, 1, 0.3, 1] }}
+                {...(idx < 6
+                  ? { animate: { opacity: 1, y: 0 } }
+                  : { whileInView: { opacity: 1, y: 0 }, viewport: { once: true, amount: "some" } })}
+                transition={{ duration: 0.38, delay: (idx % 3) * 0.04, ease: [0.16, 1, 0.3, 1] }}
                 className="bg-[#120a22] border border-purple-900/40 hover:border-purple-500/70 rounded-2xl transition-all duration-200 flex flex-col justify-between group overflow-hidden shadow-[0_8px_24px_rgba(0,0,0,0.35)] hover:shadow-[0_14px_34px_rgba(135,80,247,0.18)]"
               >
                 <div>
@@ -1734,7 +1766,7 @@ export function WebsitePortfolio({
                       </div>
                       <div className="flex items-center gap-2 shrink-0 text-[9px] text-purple-300 font-medium">
                         <span className="whitespace-nowrap">
-                          {project.videoPreview ? "Motion preview" : "Hover to scroll"}
+                          {project.videoPreview ? "Hover to preview" : "Hover to scroll"}
                         </span>
                         <span aria-hidden="true">·</span>
                         <span className="text-emerald-400 font-bold tabular-nums whitespace-nowrap">
@@ -1743,20 +1775,21 @@ export function WebsitePortfolio({
                       </div>
                     </div>
 
-                    <div className="w-full flex-1 min-h-0 overflow-hidden relative bg-zinc-950">
+                    <div className="w-full flex-1 min-h-0 overflow-hidden relative bg-zinc-950 portfolio-scroll-viewport">
                       {project.videoPreview ? (
                         <VideoCardPreview
                           videoSrc={project.videoPreview}
                           posterSrc={project.image}
                           alt={`${project.title} animated preview`}
+                          playOnlyOnHover
                         />
                       ) : (
                         <img
                           src={project.image}
                           alt={`${project.title} website screenshot`}
-                          loading="lazy"
+                          loading={idx < 9 ? "eager" : "lazy"}
                           decoding="async"
-                          className="w-full h-auto block transform-gpu translate-y-0 group-hover/img:-translate-y-[calc(100%-180px)] sm:group-hover/img:-translate-y-[calc(100%-210px)] transition-transform duration-[6000ms] ease-in-out opacity-100 will-change-transform [image-rendering:-webkit-optimize-contrast]"
+                          className="portfolio-scroll-img"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;
                             if (!target.dataset.fallbackTried && project.fallbackImage && project.fallbackImage !== project.image) {
