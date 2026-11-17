@@ -1374,7 +1374,11 @@ export function WebsitePortfolio({
   const displayedProjects = filteredProjects;
 
   const renderVideoShowcaseStage = (showSeeMoreButton: boolean) => (
-    <div className="w-full space-y-10 sm:space-y-12 py-12 sm:py-20 lg:py-24 bg-[#0D071E] text-white relative overflow-hidden">
+    <div
+      className={`w-full space-y-10 sm:space-y-12 bg-[#0D071E] text-white relative overflow-hidden ${
+        showSeeMoreButton ? "py-12 sm:py-20 lg:py-24" : "pt-6 sm:pt-10 pb-12 sm:pb-16"
+      }`}
+    >
       {/* 1. Centered Top Title Stack */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
@@ -1676,9 +1680,11 @@ export function WebsitePortfolio({
       {isHomePage ? (
         renderVideoShowcaseStage(true)
       ) : (
-        <div className="pt-12 sm:pt-16">
-          {/* Searchable & Filterable Archive Grid */}
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
+        <>
+          {renderVideoShowcaseStage(false)}
+          <div className="pt-10 sm:pt-14 border-t border-purple-900/40">
+            {/* Searchable & Filterable Archive Grid */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
             {/* SECTION HEADER */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
               <div className="space-y-3 max-w-2xl">
@@ -1907,6 +1913,7 @@ export function WebsitePortfolio({
           )}
           </div>
         </div>
+        </>
       )}
 
       {/* INTERACTIVE CASE STUDY MODAL & SIMULATOR */}
