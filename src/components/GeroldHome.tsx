@@ -459,7 +459,7 @@ export function GeroldHome({
             <img
               src="/Shakeeb_logo_white-removebg-preview-1.png"
               alt="Shakeeb"
-              className="h-5 sm:h-[26px] w-auto object-contain transition-transform duration-200 group-hover:scale-[1.03]"
+              className="h-3.5 sm:h-[26px] max-w-[135px] sm:max-w-none w-auto object-contain transition-transform duration-200 group-hover:scale-[1.03]"
             />
           </a>
 
@@ -689,7 +689,7 @@ export function GeroldHome({
                 <img
                   src="/Shakeeb_logo_white-removebg-preview-1.png"
                   alt="Shakeeb"
-                  className="h-6 sm:h-[26px] w-auto object-contain"
+                  className="h-3.5 sm:h-[26px] max-w-[135px] sm:max-w-none w-auto object-contain"
                 />
               </button>
 
@@ -933,21 +933,14 @@ export function GeroldHome({
                     I&apos;m <strong className="text-white font-bold">Shakeeb Ahmed Khan</strong> — a full-stack WordPress, Shopify, React &amp; AI developer paired with a senior graphic design studio. I help ambitious brands replace sluggish, patched-together websites with sub-second stores and cohesive visual identities.
                   </p>
 
-                  {/* Primary Action + Gradient Download CV Pill */}
+                  {/* Two Hero Actions: See Live Work & Download CV */}
                   <div className="flex flex-wrap items-center gap-2.5 sm:gap-3.5 pt-2">
                     <button
-                      onClick={() => openHireWithService("Full Website & Brand Build")}
+                      onClick={() => scrollToSection("web-portfolio")}
                       className="px-5 sm:px-7 py-3 sm:py-3.5 bg-white hover:bg-[#e9d5ff] text-[#120a22] text-xs sm:text-sm font-bold tracking-wide rounded-full transition-colors inline-flex items-center gap-2 cursor-pointer whitespace-nowrap shadow-xl"
                     >
-                      <span>Start a Project</span>
+                      <span>See Live Work</span>
                       <ArrowRight className="w-4 h-4" />
-                    </button>
-
-                    <button
-                      onClick={() => scrollToSection("web-portfolio")}
-                      className="px-5 sm:px-6 py-3 sm:py-3.5 bg-white/10 hover:bg-white/20 border border-white/25 text-white text-xs sm:text-sm font-semibold rounded-full transition-colors cursor-pointer whitespace-nowrap"
-                    >
-                      See Live Work
                     </button>
 
                     <a
@@ -955,7 +948,7 @@ export function GeroldHome({
                       download="Shakeeb_Khan_CV.pdf"
                       target="_blank"
                       rel="noreferrer"
-                      className="px-5 sm:px-6 py-3 sm:py-3.5 rounded-full bg-gradient-to-r from-[#8750f7] via-[#6d28d9] to-[#a855f7] hover:brightness-110 text-white text-xs sm:text-sm font-bold inline-flex items-center gap-2 whitespace-nowrap shadow-[0_10px_28px_rgba(7,3,14,0.35)] border border-white/20 transition-all"
+                      className="px-5 sm:px-7 py-3 sm:py-3.5 rounded-full bg-gradient-to-r from-[#8750f7] via-[#6d28d9] to-[#a855f7] hover:brightness-110 text-white text-xs sm:text-sm font-bold inline-flex items-center gap-2 whitespace-nowrap shadow-[0_10px_28px_rgba(7,3,14,0.35)] border border-white/20 transition-all"
                     >
                       <Download className="w-4 h-4 shrink-0" />
                       <span>Download CV</span>
@@ -2401,7 +2394,7 @@ export function GeroldHome({
             <img
               src="/Shakeeb_logo_white-removebg-preview-1.png"
               alt="Shakeeb"
-              className="h-6 w-auto object-contain"
+              className="h-4 sm:h-6 max-w-[155px] sm:max-w-none w-auto object-contain"
             />
             <span>© 2026 Shakeeb Ahmed Khan. All rights reserved.</span>
           </div>
