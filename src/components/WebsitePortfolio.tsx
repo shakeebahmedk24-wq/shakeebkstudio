@@ -1376,17 +1376,16 @@ export function WebsitePortfolio({
   const renderVideoShowcaseStage = (showSeeMoreButton: boolean) => (
     <div className="w-full space-y-10 sm:space-y-12 py-12 sm:py-20 lg:py-24 bg-[#0D071E] text-white relative overflow-hidden">
       {/* 1. Centered Top Title Stack */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-4">
-        <motion.span
-          initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
-          whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
-          whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
-          viewport={{ once: true, amount: 0.25 }}
-          transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
-          className="font-hand text-xl sm:text-2xl font-bold px-4 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
-        >
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: "some" }}
+        transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+        className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-4"
+      >
+        <span className="font-hand text-xl sm:text-2xl font-bold px-4 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block -rotate-2 hover:rotate-1 transition-transform duration-200 shadow-sm cursor-default">
           websites built to convert
-        </motion.span>
+        </span>
 
         <h2 className="font-display text-5xl sm:text-7xl lg:text-[84px] font-black uppercase tracking-tight leading-[0.9] text-white text-balance">
           {showSeeMoreButton ? "Recent Work, Real Results" : "Websites Portfolio Showcase"}
@@ -1395,7 +1394,7 @@ export function WebsitePortfolio({
         <p className="text-sm sm:text-base text-purple-100/85 max-w-2xl mx-auto leading-relaxed">
           Every build pairs custom visual identity with sub-second engineering. Hover any preview to open that live website, or pick any site gliding behind to inspect it.
         </p>
-      </div>
+      </motion.div>
 
       {/* 2. Layered Sliding Card Marquee + Centered MacBook Laptop Stage */}
       <div className="relative w-full py-4 sm:py-4">

@@ -437,11 +437,11 @@ export function GeroldHome({
         }`}
       >
         <div
-          className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4 transition-all duration-300 ${
-            currentPage !== "home" && isScrolled ? "py-3.5 sm:py-4" : "pt-4 sm:pt-5"
+          className={`max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 flex items-center justify-between gap-3 transition-all duration-300 ${
+            currentPage !== "home" && isScrolled ? "py-3.5 sm:py-4" : "pt-3.5 sm:pt-5"
           }`}
         >
-          {/* Zone 1: Slightly Smaller White Brand Logo */}
+          {/* Zone 1: Crisp Left White Brand Logo */}
           <a
             href="#hero"
             onClick={(e) => {
@@ -459,7 +459,7 @@ export function GeroldHome({
             <img
               src="/Shakeeb_logo_white-removebg-preview-1.png"
               alt="Shakeeb"
-              className="h-3.5 sm:h-[26px] max-w-[135px] sm:max-w-none w-auto object-contain transition-transform duration-200 group-hover:scale-[1.03]"
+              className="w-[116px] sm:w-auto sm:h-[26px] h-auto object-contain transition-transform duration-200 group-hover:scale-[1.03]"
             />
           </a>
 
@@ -633,20 +633,26 @@ export function GeroldHome({
             </nav>
           </div>
 
-          {/* Zone 3: White Avatar "Book a call" Pill + Circular Menu Trigger (on scroll / mobile) */}
+          {/* Zone 3: Equal-Height White "Book a call" Pill + Circular Menu Trigger */}
           <div className="pointer-events-auto flex items-center gap-2 sm:gap-2.5 shrink-0">
             <button
               onClick={() => openHireWithService("WordPress & WooCommerce Build")}
-              className="inline-flex items-center gap-2.5 pl-1 pr-3.5 sm:pl-1.5 sm:pr-4 py-1 bg-white hover:bg-purple-50 text-[#120a22] text-xs font-bold tracking-wide rounded-full transition-all cursor-pointer whitespace-nowrap shadow-[0_12px_32px_rgba(7,3,14,0.32)]"
+              className="h-11 inline-flex items-center gap-2.5 pl-1 pr-4 bg-white hover:bg-purple-50 text-[#120a22] text-[13px] font-semibold tracking-tight rounded-full transition-colors cursor-pointer whitespace-nowrap shadow-[0_12px_32px_rgba(7,3,14,0.32)]"
             >
-              <img
-                src="/shakeeb-avatar.webp"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = "/shakeeb_profile.jpg";
-                }}
-                alt="Shakeeb"
-                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover object-center border border-purple-300/80 shrink-0"
-              />
+              <span className="relative w-9 h-9 rounded-full bg-[#6d28d9] shrink-0">
+                <img
+                  src="/shakeeb-avatar.webp"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = "/shakeeb_profile.jpg";
+                  }}
+                  alt="Shakeeb"
+                  className="w-full h-full rounded-full object-cover object-center"
+                />
+                <span
+                  aria-hidden="true"
+                  className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-[#38c172] ring-2 ring-white"
+                />
+              </span>
               <span>Book a call</span>
             </button>
 
@@ -656,12 +662,12 @@ export function GeroldHome({
                 setFullMenuOpen(true);
               }}
               aria-label="Open full navigation menu"
-              className={`w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white hover:bg-purple-50 text-[#120a22] shadow-[0_12px_32px_rgba(7,3,14,0.32)] flex flex-col items-center justify-center gap-1.5 transition-all cursor-pointer shrink-0 ${
+              className={`w-11 h-11 rounded-full bg-white hover:bg-purple-50 shadow-[0_12px_32px_rgba(7,3,14,0.32)] flex-col items-center justify-center gap-[5px] transition-colors cursor-pointer shrink-0 ${
                 isScrolled ? "flex" : "flex lg:hidden"
               }`}
             >
-              <span className="w-4 h-[2px] bg-[#120a22] rounded-full block" />
-              <span className="w-4 h-[2px] bg-[#120a22] rounded-full block" />
+              <span className="w-4 h-[1.5px] bg-[#6d28d9] rounded-full block" />
+              <span className="w-4 h-[1.5px] bg-[#6d28d9] rounded-full block" />
             </button>
           </div>
         </div>
@@ -680,42 +686,48 @@ export function GeroldHome({
             className="fixed inset-0 z-[100] bg-[#120A21] text-white flex flex-col justify-between p-5 sm:p-8 lg:p-10 overflow-y-auto"
           >
             {/* Top Bar inside Overlay */}
-            <div className="max-w-7xl w-full mx-auto flex items-center justify-between gap-4">
+            <div className="max-w-7xl w-full mx-auto flex items-center justify-between gap-3">
               <button
                 onClick={() => navigateToPage("home")}
-                className="cursor-pointer focus:outline-none"
+                className="cursor-pointer focus:outline-none shrink-0"
                 title="Shakeeb Ahmed Khan"
               >
                 <img
                   src="/Shakeeb_logo_white-removebg-preview-1.png"
                   alt="Shakeeb"
-                  className="h-3.5 sm:h-[26px] max-w-[135px] sm:max-w-none w-auto object-contain"
+                  className="w-[116px] sm:w-auto sm:h-[26px] h-auto object-contain"
                 />
               </button>
 
-              <div className="flex items-center gap-2.5">
+              <div className="flex items-center gap-2 shrink-0">
                 <button
                   onClick={() => {
                     setFullMenuOpen(false);
                     openHireWithService("WordPress & WooCommerce Build");
                   }}
-                  className="inline-flex items-center gap-2.5 pl-1 pr-4 py-1 bg-white hover:bg-purple-50 text-[#120a22] text-xs font-bold rounded-full transition-colors cursor-pointer"
+                  className="h-11 inline-flex items-center gap-2.5 pl-1 pr-4 bg-white hover:bg-purple-50 text-[#120a22] text-[13px] font-semibold tracking-tight rounded-full transition-colors cursor-pointer whitespace-nowrap shadow-lg"
                 >
-                  <img
-                    src="/shakeeb-avatar.webp"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = "/shakeeb_profile.jpg";
-                    }}
-                    alt="Shakeeb"
-                    className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover object-center border border-purple-300/80 shrink-0"
-                  />
+                  <span className="relative w-9 h-9 rounded-full bg-[#6d28d9] shrink-0">
+                    <img
+                      src="/shakeeb-avatar.webp"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = "/shakeeb_profile.jpg";
+                      }}
+                      alt="Shakeeb"
+                      className="w-full h-full rounded-full object-cover object-center"
+                    />
+                    <span
+                      aria-hidden="true"
+                      className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-[#38c172] ring-2 ring-white"
+                    />
+                  </span>
                   <span>Book a call</span>
                 </button>
 
                 <button
                   onClick={() => setFullMenuOpen(false)}
                   aria-label="Close navigation menu"
-                  className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white hover:bg-purple-50 text-[#120a22] flex items-center justify-center transition-colors cursor-pointer shadow-lg"
+                  className="w-11 h-11 rounded-full bg-white hover:bg-purple-50 text-[#6d28d9] flex items-center justify-center transition-colors cursor-pointer shadow-lg shrink-0"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -1092,10 +1104,10 @@ export function GeroldHome({
                   ].map((stat, idx) => (
                     <motion.div
                       key={stat.value}
-                      initial={{ opacity: 0, y: 16 }}
+                      initial={{ opacity: 0, y: 10 }}
                       whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, amount: 0.1 }}
-                      transition={{ duration: 0.4, delay: idx * 0.06 }}
+                      viewport={{ once: true, amount: "some" }}
+                      transition={{ duration: 0.35, delay: idx * 0.04, ease: [0.22, 1, 0.36, 1] }}
                       className="p-4 sm:p-5 rounded-2xl bg-white/[0.04] border border-purple-400/20 hover:border-purple-400/50 transition-colors"
                     >
                       <div
@@ -1155,47 +1167,43 @@ export function GeroldHome({
           {/* ======================================================== */}
           {/* 3. SERVICES (Pick What Fits Right Now)                   */}
           {/* ======================================================== */}
-          <motion.section
+          <section
             id="services"
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.05 }}
-            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-            className="py-16 sm:py-24 bg-[#0D071E] scroll-mt-20"
+            className="py-10 sm:py-24 bg-[#0D071E] scroll-mt-20 overflow-x-clip"
           >
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left space-y-10 sm:space-y-12">
-              <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                <div className="space-y-3 max-w-2xl">
-                  <motion.span
-                    initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
-                    whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
-                    whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
-                    viewport={{ once: true, amount: 0.25 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
-                    className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
-                  >
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left space-y-6 sm:space-y-12">
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: "some" }}
+                transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+                className="flex flex-col md:flex-row md:items-end justify-between gap-3 sm:gap-6"
+              >
+                <div className="space-y-2.5 sm:space-y-3 max-w-2xl">
+                  <span className="font-hand text-lg sm:text-2xl font-bold px-3 sm:px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block -rotate-2 hover:rotate-1 transition-transform duration-200 shadow-sm cursor-default">
                     pick what fits right now
-                  </motion.span>
-                  <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white text-balance">
+                  </span>
+                  <h2 className="font-display text-[38px] sm:text-6xl md:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white text-balance">
                     How I Can Help
                   </h2>
                 </div>
-                <p className="text-sm sm:text-base text-zinc-300 max-w-md">
+                <p className="text-xs sm:text-base text-zinc-300 max-w-md leading-relaxed">
                   Focused engineering and design sprints built to make your digital presence faster, sharper, and easier to convert on.
                 </p>
-              </div>
+              </motion.div>
 
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Desktop & Tablet 3x2 Grid */}
+              <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {servicesList.map((srv, idx) => {
                   const IconComp = srv.icon;
                   return (
                     <motion.div
                       key={srv.num}
-                      initial={{ opacity: 0, y: 20 }}
+                      initial={{ opacity: 0, y: 12 }}
                       whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, amount: 0.06 }}
-                      transition={{ duration: 0.45, delay: (idx % 3) * 0.07 }}
-                      className="bg-[#120A21] border border-purple-800/45 hover:border-purple-400/70 rounded-3xl p-6 sm:p-8 text-left flex flex-col justify-between gap-7 transition-all duration-300 hover:-translate-y-1 shadow-[0_10px_30px_rgba(0,0,0,0.35)] hover:shadow-[0_18px_40px_rgba(135,80,247,0.18)] group"
+                      viewport={{ once: true, amount: "some" }}
+                      transition={{ duration: 0.38, delay: (idx % 3) * 0.05, ease: [0.22, 1, 0.36, 1] }}
+                      className="bg-[#120A21] border border-purple-800/45 hover:border-purple-400/70 rounded-3xl p-6 sm:p-8 text-left flex flex-col justify-between gap-7 transition-[transform,border-color] duration-200 hover:-translate-y-1 shadow-[0_10px_30px_rgba(0,0,0,0.35)] hover:shadow-[0_18px_40px_rgba(135,80,247,0.18)] group"
                     >
                       <div className="space-y-5">
                         {/* Reference Top Row: Square Solid Purple Icon + Slanted Handwritten Tag */}
@@ -1203,16 +1211,9 @@ export function GeroldHome({
                           <div className="w-12 h-12 rounded-2xl bg-[#6d28d9] flex items-center justify-center text-white shadow-[0_6px_18px_rgba(109,40,217,0.45)] shrink-0 group-hover:scale-105 transition-transform">
                             <IconComp className="w-6 h-6" />
                           </div>
-                          <motion.span
-                            initial={{ opacity: 0, y: 12, rotate: -9, scale: 0.86 }}
-                            whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
-                            whileHover={{ rotate: 1.5, scale: 1.05 }}
-                            viewport={{ once: true, amount: 0.2 }}
-                            transition={{ type: "spring", stiffness: 320, damping: 16, delay: (idx % 3) * 0.08 }}
-                            className="font-hand text-sm sm:text-lg font-bold px-2.5 sm:px-3 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] shadow-sm inline-block"
-                          >
+                          <span className="font-hand text-sm sm:text-lg font-bold px-2.5 sm:px-3 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] shadow-sm inline-block -rotate-2 group-hover:rotate-1 transition-transform duration-200">
                             {srv.note}
-                          </motion.span>
+                          </span>
                         </div>
 
                         <div className="space-y-3">
@@ -1228,7 +1229,7 @@ export function GeroldHome({
                       <div className="pt-1">
                         <button
                           onClick={() => openHireWithService(srv.title)}
-                          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-purple-500/45 hover:border-white hover:bg-[#6d28d9] text-white text-xs sm:text-sm font-semibold transition-all cursor-pointer whitespace-nowrap"
+                          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-purple-500/45 hover:border-white hover:bg-[#6d28d9] text-white text-xs sm:text-sm font-semibold transition-colors cursor-pointer whitespace-nowrap"
                         >
                           <span>{srv.ctaLabel}</span>
                           <ArrowUpRight className="w-4 h-4 text-[#c084fc] group-hover:text-white transition-colors" />
@@ -1239,17 +1240,69 @@ export function GeroldHome({
                 })}
               </div>
             </div>
-          </motion.section>
+
+            {/* Mobile Single-Line Marquee Strip (Compact, Zero-Lag GPU Motion) */}
+            <div className="md:hidden relative mt-6 overflow-hidden">
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-y-0 left-0 w-6 bg-gradient-to-r from-[#0D071E] to-transparent z-10"
+              />
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-y-0 right-0 w-6 bg-gradient-to-l from-[#0D071E] to-transparent z-10"
+              />
+              <div className="animate-services-marquee flex items-stretch gap-3.5 pl-4">
+                {[0, 1].map((loopIdx) => (
+                  <div key={loopIdx} className="flex items-stretch gap-3.5 shrink-0 pr-3.5">
+                    {servicesList.map((srv) => {
+                      const IconComp = srv.icon;
+                      return (
+                        <div
+                          key={`${loopIdx}-${srv.num}`}
+                          className="w-[264px] shrink-0 bg-[#120A21] border border-purple-800/45 rounded-2xl p-4 text-left flex flex-col justify-between gap-3.5 shadow-[0_8px_24px_rgba(0,0,0,0.35)]"
+                        >
+                          <div className="space-y-2.5">
+                            <div className="flex items-center justify-between gap-2">
+                              <div className="w-9 h-9 rounded-xl bg-[#6d28d9] flex items-center justify-center text-white shrink-0">
+                                <IconComp className="w-4 h-4" />
+                              </div>
+                              <span className="font-hand text-sm font-bold px-2.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] -rotate-2 inline-block truncate max-w-[165px]">
+                                {srv.note}
+                              </span>
+                            </div>
+
+                            <div className="space-y-1">
+                              <h3 className="text-base font-bold tracking-tight text-white leading-snug">
+                                {srv.title}
+                              </h3>
+                              <p className="text-xs text-zinc-300/90 leading-relaxed line-clamp-2">
+                                {srv.desc}
+                              </p>
+                            </div>
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={() => openHireWithService(srv.title)}
+                            className="inline-flex items-center justify-center gap-1.5 w-full px-3.5 py-2 rounded-full border border-purple-500/45 bg-purple-950/40 active:bg-[#6d28d9] text-white text-xs font-semibold transition-colors cursor-pointer whitespace-nowrap"
+                          >
+                            <span>{srv.ctaLabel}</span>
+                            <ArrowUpRight className="w-3.5 h-3.5 text-[#c084fc]" />
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
 
           {/* ======================================================== */}
           {/* 4. WEBSITES PORTFOLIO (#0D071E)                          */}
           {/* ======================================================== */}
-          <motion.div
+          <div
             id="works"
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.03 }}
-            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
             className="bg-[#0D071E] overflow-hidden scroll-mt-20"
           >
             <div id="web-portfolio">
@@ -1258,55 +1311,46 @@ export function GeroldHome({
                 onShowMore={() => navigateToPage("websites")}
               />
             </div>
-          </motion.div>
+          </div>
 
           {/* ======================================================== */}
           {/* 5. GRAPHIC DESIGN PORTFOLIO (#0D071E)                    */}
           {/* ======================================================== */}
-          <motion.div
+          <div
             id="graphics-portfolio"
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.03 }}
-            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
             className="mt-8 sm:mt-12 mx-2 sm:mx-4 lg:mx-6 bg-[#0D071E] border border-purple-800/40 rounded-[2rem] sm:rounded-[3rem] scroll-mt-20"
           >
             <GraphicsPortfolio
               isHomePage={true}
               onShowMore={() => navigateToPage("graphics")}
             />
-          </motion.div>
+          </div>
 
           {/* ======================================================== */}
           {/* 5B. WAYS TO WORK WITH ME ("HOW I CAN HELP" CAROUSEL)     */}
           {/* ======================================================== */}
-          <motion.section
+          <section
             id="ways-to-work"
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.05 }}
-            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-            className="py-16 sm:py-24 bg-[#0D071E] scroll-mt-20 overflow-hidden"
+            className="py-12 sm:py-24 bg-[#0D071E] scroll-mt-20 overflow-hidden"
           >
             {/* Header Row with Title + Subtitle + Left/Right Slider Controls */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left space-y-5 sm:space-y-6">
-              <motion.span
-                initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
-                whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
-                whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
-                viewport={{ once: true, amount: 0.25 }}
-                transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
-                className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
-              >
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: "some" }}
+              transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+              className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left space-y-4 sm:space-y-6"
+            >
+              <span className="font-hand text-lg sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block -rotate-2 hover:rotate-1 transition-transform duration-200 shadow-sm cursor-default">
                 ways to work with me
-              </motion.span>
+              </span>
 
-              <h2 className="font-display text-5xl sm:text-7xl lg:text-[82px] font-black uppercase tracking-tight leading-[0.92] text-white text-balance">
+              <h2 className="font-display text-[42px] sm:text-7xl lg:text-[82px] font-black uppercase tracking-tight leading-[0.92] text-white text-balance">
                 How I Can Help
               </h2>
 
-              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-5 pt-1">
-                <p className="text-sm sm:text-base text-zinc-300 max-w-xl leading-relaxed">
+              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 sm:gap-5 pt-1">
+                <p className="text-xs sm:text-base text-zinc-300 max-w-xl leading-relaxed">
                   Six ways in, from a one-off audit to a site I build and run for you. Every one of them is custom, and every one gets me. Not a team you never meet, not a chatbot.
                 </p>
 
@@ -1339,7 +1383,7 @@ export function GeroldHome({
                   </button>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Horizontal Sliding Track (Shows ~3.4 cards on Desktop with Right Bleed, Swipe on Mobile) */}
             <div
@@ -1555,7 +1599,7 @@ export function GeroldHome({
                 );
               })}
             </div>
-          </motion.section>
+          </section>
 
           {/* ======================================================== */}
           {/* 6. ABOUT, EXPERIENCE, EDUCATION & CORE STACK (#120A21)   */}
@@ -1569,16 +1613,9 @@ export function GeroldHome({
                 {/* Left Scrolling Column: Experience, Education, Tech Stack */}
                 <div className="lg:col-span-7 space-y-10 sm:space-y-12 min-w-0">
                   <div className="space-y-3">
-                    <motion.span
-                      initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
-                      whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
-                      whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
-                      viewport={{ once: true, amount: 0.25 }}
-                      transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
-                      className="font-hand text-lg sm:text-2xl font-bold px-3 sm:px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
-                    >
+                    <span className="font-hand text-lg sm:text-2xl font-bold px-3 sm:px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block -rotate-2 hover:rotate-1 transition-transform duration-200 shadow-sm cursor-default">
                       the track record
-                    </motion.span>
+                    </span>
                     <h2 className="font-display text-[36px] sm:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-[0.95] text-white text-balance">
                       Experience &amp; Education
                     </h2>
@@ -1599,10 +1636,10 @@ export function GeroldHome({
                       {experiences.map((exp, idx) => (
                         <motion.div
                           key={idx}
-                          initial={{ opacity: 0, x: -12 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          viewport={{ once: true, amount: 0.1 }}
-                          transition={{ duration: 0.4, delay: idx * 0.05 }}
+                          initial={{ opacity: 0, y: 10 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true, amount: "some" }}
+                          transition={{ duration: 0.34, delay: idx * 0.04, ease: [0.22, 1, 0.36, 1] }}
                           className="relative group"
                         >
                           {/* Glowing Timeline Node */}
@@ -1640,10 +1677,10 @@ export function GeroldHome({
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
                       <motion.div
-                        initial={{ opacity: 0, y: 16 }}
+                        initial={{ opacity: 0, y: 10 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, amount: 0.1 }}
-                        transition={{ duration: 0.45 }}
+                        viewport={{ once: true, amount: "some" }}
+                        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                         className="bg-[#0D071E] border border-purple-700/40 hover:border-purple-400/70 rounded-2xl overflow-hidden transition-colors"
                       >
                         <div className="h-1 w-full bg-gradient-to-r from-[#8750f7] via-[#c084fc] to-[#5b21b6]" />
@@ -1665,10 +1702,10 @@ export function GeroldHome({
                       </motion.div>
 
                       <motion.div
-                        initial={{ opacity: 0, y: 16 }}
+                        initial={{ opacity: 0, y: 10 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, amount: 0.1 }}
-                        transition={{ duration: 0.45, delay: 0.08 }}
+                        viewport={{ once: true, amount: "some" }}
+                        transition={{ duration: 0.35, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
                         className="bg-[#0D071E] border border-purple-700/40 hover:border-purple-400/70 rounded-2xl overflow-hidden transition-colors"
                       >
                         <div className="h-1 w-full bg-gradient-to-r from-[#c084fc] via-[#8750f7] to-[#5b21b6]" />
@@ -1734,8 +1771,8 @@ export function GeroldHome({
                               <motion.div
                                 initial={{ width: 0 }}
                                 whileInView={{ width: `${skill.percent}%` }}
-                                viewport={{ once: true, amount: 0.1 }}
-                                transition={{ duration: 0.75, ease: "easeOut" }}
+                                viewport={{ once: true, amount: "some" }}
+                                transition={{ duration: 0.55, ease: "easeOut" }}
                                 className="h-full bg-gradient-to-r from-[#8750f7] via-[#a855f7] to-[#e9d5ff] rounded-full"
                               />
                             </div>
@@ -1826,30 +1863,25 @@ export function GeroldHome({
           {/* ======================================================== */}
           {/* 8. FAQ ACCORDION (#0D071E)                               */}
           {/* ======================================================== */}
-          <motion.section
+          <section
             id="faq"
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.06 }}
-            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
             className="mt-8 sm:mt-12 mx-2 sm:mx-4 lg:mx-6 bg-[#0D071E] border border-purple-800/40 rounded-[2rem] sm:rounded-[3rem] py-16 sm:py-24 scroll-mt-20"
           >
             <div className="max-w-4xl mx-auto px-5 sm:px-8 text-left space-y-10">
-              <div className="space-y-3">
-                <motion.span
-                  initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
-                  whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
-                  whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
-                  viewport={{ once: true, amount: 0.25 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
-                  className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
-                >
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: "some" }}
+                transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+                className="space-y-3"
+              >
+                <span className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block -rotate-2 hover:rotate-1 transition-transform duration-200 shadow-sm cursor-default">
                   straight answers
-                </motion.span>
+                </span>
                 <h2 className="font-display text-4xl sm:text-6xl font-black uppercase tracking-tight leading-[0.95] text-white">
                   Good Questions, Straight Answers
                 </h2>
-              </div>
+              </motion.div>
 
               <div className="space-y-3">
                 {faqs.map((faq, idx) => {
@@ -1890,32 +1922,27 @@ export function GeroldHome({
                 })}
               </div>
             </div>
-          </motion.section>
+          </section>
 
           {/* ======================================================== */}
           {/* 9. POST-FAQ ACTION BAR BANNER (Visual Triad Showcase)    */}
           {/* ======================================================== */}
-          <motion.section
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.08 }}
-            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+          <section
             className="mt-8 sm:mt-12 mx-2 sm:mx-4 lg:mx-6"
           >
             <div className="bg-experience-gradient border border-purple-500/35 rounded-[2rem] sm:rounded-[3rem] px-5 sm:px-10 lg:px-14 pt-10 sm:pt-14 lg:pt-16 pb-0 overflow-hidden shadow-[0_24px_60px_rgba(91,33,182,0.28)] relative">
               <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-end text-left">
                 {/* Left Column: Hook Tag + Display Headline + Dual CTA Buttons */}
-                <div className="lg:col-span-6 space-y-4 sm:space-y-5 pb-2 lg:pb-14">
-                  <motion.span
-                    initial={{ opacity: 0, y: 14, rotate: -9, scale: 0.88 }}
-                    whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
-                    whileHover={{ rotate: 1.5, scale: 1.05 }}
-                    viewport={{ once: true, amount: 0.25 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 16 }}
-                    className="font-hand text-lg sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
-                  >
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: "some" }}
+                  transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+                  className="lg:col-span-6 space-y-4 sm:space-y-5 pb-2 lg:pb-14"
+                >
+                  <span className="font-hand text-lg sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block -rotate-2 hover:rotate-1 transition-transform duration-200 shadow-sm cursor-default">
                     last thing, promise
-                  </motion.span>
+                  </span>
 
                   <h2 className="font-display text-4xl sm:text-6xl lg:text-[64px] font-black uppercase tracking-tight leading-[0.9] text-balance">
                     <span className="text-[#d8b4fe] block">Ready for a website that</span>
@@ -1945,7 +1972,7 @@ export function GeroldHome({
                       <ArrowUpRight className="w-4 h-4" />
                     </button>
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Right Column: Three Staggered Website Screen Mockups Flush at Bottom */}
                 <div className="lg:col-span-6 grid grid-cols-3 gap-2.5 sm:gap-4 items-end pt-2 lg:pt-0">
@@ -1993,7 +2020,7 @@ export function GeroldHome({
                 </div>
               </div>
             </div>
-          </motion.section>
+          </section>
         </main>
       )}
 
@@ -2264,17 +2291,19 @@ export function GeroldHome({
       {/* ======================================================== */}
       {/* 14. MONUMENTAL ROYAL PURPLE FOOTER ("LET'S TALK")        */}
       {/* ======================================================== */}
-      <motion.footer
+      <footer
         id="contact"
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.05 }}
-        transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
         className="mt-12 sm:mt-16 bg-experience-gradient border-t border-purple-500/30 text-white rounded-t-[2rem] sm:rounded-t-[3rem] pt-14 sm:pt-20 pb-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
       >
         <div className="max-w-7xl mx-auto space-y-12">
           {/* Top Pre-Footer Conversion Hook */}
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 text-left">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: "some" }}
+            transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 text-left"
+          >
             <div className="space-y-4 max-w-2xl">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shrink-0">
@@ -2287,16 +2316,9 @@ export function GeroldHome({
                     className="w-full h-full object-cover object-center"
                   />
                 </div>
-                <motion.span
-                  initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
-                  whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
-                  whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
-                  viewport={{ once: true, amount: 0.25 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
-                  className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
-                >
+                <span className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block -rotate-2 hover:rotate-1 transition-transform duration-200 shadow-sm cursor-default">
                   ready when you are
-                </motion.span>
+                </span>
               </div>
               <h2 className="font-display text-3xl sm:text-5xl font-black uppercase tracking-tight leading-[0.95] text-white">
                 Need a faster site, a new store, or a complete brand refresh?
@@ -2321,7 +2343,7 @@ export function GeroldHome({
                 <span>Resume PDF</span>
               </a>
             </div>
-          </div>
+          </motion.div>
 
           {/* Monumental Full-Width Display Wordmark */}
           <div className="border-y border-white/20 py-4 sm:py-6 text-center select-none overflow-hidden">
@@ -2399,7 +2421,7 @@ export function GeroldHome({
             <span>© 2026 Shakeeb Ahmed Khan. All rights reserved.</span>
           </div>
         </div>
-      </motion.footer>
+      </footer>
 
       {/* ======================================================== */}
       {/* HIRE ME / PROJECT INQUIRY MODAL                          */}

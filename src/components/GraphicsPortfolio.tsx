@@ -2109,18 +2109,17 @@ export function GraphicsPortfolio({
         {isHomePage && (
           <>
             {/* SECTION HEADER */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div className="space-y-3 max-w-2xl">
-            <motion.span
-              initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
-              whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
-              whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
-              viewport={{ once: true, amount: 0.25 }}
-              transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
-              className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: "some" }}
+              transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+              className="flex flex-col md:flex-row md:items-end justify-between gap-6"
             >
+          <div className="space-y-3 max-w-2xl">
+            <span className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block -rotate-2 hover:rotate-1 transition-transform duration-200 shadow-sm cursor-default">
               marks, packaging &amp; brand systems
-            </motion.span>
+            </span>
             <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white text-balance">
               Branding &amp; Graphic Design
             </h2>
@@ -2141,27 +2140,27 @@ export function GraphicsPortfolio({
               <span className="text-[#c084fc] font-mono font-bold text-sm">300 DPI Print / 4K</span>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* ============================================================ */}
         {/* CREATIVE INTERACTIVE BRAND STUDIO STAGE (3D Tilt + Swatches) */}
         {/* ============================================================ */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true, amount: "some" }}
+          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           className="relative rounded-3xl bg-[#120a22] border border-purple-500/35 p-5 sm:p-8 lg:p-10 shadow-[0_24px_70px_rgba(7,3,14,0.65)] overflow-hidden"
         >
           {/* Dynamic Ambient Aura Tinted by Active Brand Swatch */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -top-28 -right-24 w-96 h-96 rounded-full blur-[110px] opacity-30 transition-colors duration-700"
+            className="pointer-events-none absolute -top-28 -right-24 w-72 sm:w-96 h-72 sm:h-96 rounded-full blur-[64px] sm:blur-[110px] opacity-30 transition-colors duration-700"
             style={{ backgroundColor: studioAccentHex }}
           />
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -bottom-28 -left-24 w-80 h-80 rounded-full blur-[110px] opacity-25 bg-[#8750f7]"
+            className="pointer-events-none absolute -bottom-28 -left-24 w-64 sm:w-80 h-64 sm:h-80 rounded-full blur-[64px] sm:blur-[110px] opacity-25 bg-[#8750f7]"
           />
 
           <div className="grid lg:grid-cols-12 gap-7 lg:gap-10 items-center relative z-10">

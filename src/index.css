@@ -182,6 +182,26 @@
   animation-play-state: paused;
 }
 
+/* Mobile Single-Line Services Marquee (GPU Composited) */
+@keyframes services-marquee {
+  0% { transform: translate3d(0%, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+
+.animate-services-marquee {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  animation: services-marquee 28s linear infinite;
+}
+
+.animate-services-marquee:hover,
+.animate-services-marquee:active {
+  animation-play-state: paused;
+}
+
 /* Hide scrollbars utility for horizontal pill strips */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
@@ -217,5 +237,8 @@
   }
   .animate-portfolio-marquee {
     animation-duration: 56s;
+  }
+  .animate-services-marquee {
+    animation-duration: 48s;
   }
 }
