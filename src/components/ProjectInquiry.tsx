@@ -51,12 +51,12 @@ export function ProjectInquiry({ onCopySuccess }: ProjectInquiryProps) {
       `Name: ${form.name}\n` +
       `Email: ${form.email}\n`
     );
-    return `mailto:shakeebahmedk24@gmail.com?subject=${subject}&body=${body}`;
+    return `mailto:shakeebkhanstudio@gmail.com?subject=${subject}&body=${body}`;
   };
 
   const getWhatsAppLink = () => {
     const text = `Hello Shakeeb, my name is ${form.name}. I am looking for ${form.service} with a budget of ${form.budget}. Here is a brief of what I need: ${form.message}. You can reach me back at ${form.email}`;
-    return `https://wa.me/923320203701?text=${encodeURIComponent(text)}`;
+    return `https://wa.me/923363445281?text=${encodeURIComponent(text)}`;
   };
 
   return (
@@ -91,11 +91,11 @@ export function ProjectInquiry({ onCopySuccess }: ProjectInquiryProps) {
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest font-bold">Email Channel</div>
-                  <div className="text-xs sm:text-sm font-bold text-white mt-0.5 break-all">shakeebahmedk24@gmail.com</div>
+                  <div className="text-xs sm:text-sm font-bold text-white mt-0.5 break-all">shakeebkhanstudio@gmail.com</div>
                 </div>
               </div>
               <button
-                onClick={() => handleCopy("shakeebahmedk24@gmail.com", "Email")}
+                onClick={() => handleCopy("shakeebkhanstudio@gmail.com", "Email")}
                 className="p-2 sm:p-2.5 rounded-xl bg-zinc-950 hover:bg-zinc-800 text-zinc-400 hover:text-white border border-zinc-800 transition-colors cursor-pointer shrink-0"
               >
                 {copiedChannel === "Email" ? <Check className="w-4 h-4 text-emerald-400 stroke-[3]" /> : <Copy className="w-4 h-4" />}
@@ -110,11 +110,11 @@ export function ProjectInquiry({ onCopySuccess }: ProjectInquiryProps) {
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest font-bold">WhatsApp Hotline</div>
-                  <div className="text-xs sm:text-sm font-bold text-white mt-0.5 break-all">+92-332-0203701</div>
+                  <div className="text-xs sm:text-sm font-bold text-white mt-0.5 break-all">+92 336 3445281</div>
                 </div>
               </div>
               <button
-                onClick={() => handleCopy("+923320203701", "Phone")}
+                onClick={() => handleCopy("+92 336 3445281", "Phone")}
                 className="p-2 sm:p-2.5 rounded-xl bg-zinc-950 hover:bg-zinc-800 text-zinc-400 hover:text-white border border-zinc-800 transition-colors cursor-pointer shrink-0"
               >
                 {copiedChannel === "Phone" ? <Check className="w-4 h-4 text-emerald-400 stroke-[3]" /> : <Copy className="w-4 h-4" />}

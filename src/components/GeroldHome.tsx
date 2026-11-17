@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { WebsitePortfolio } from "./WebsitePortfolio";
 import { GraphicsPortfolio } from "./GraphicsPortfolio";
 import {
+  ArrowLeft,
   ArrowRight,
   ArrowUp,
   ArrowUpRight,
@@ -19,6 +20,7 @@ import {
   ChevronDown,
   Download,
   Star,
+  Search,
   Gauge,
   Layers,
   ShoppingBag,
@@ -53,8 +55,34 @@ export function GeroldHome({
   const [showHireModal, setShowHireModal] = useState(false);
   const [hireFormSubmitted, setHireFormSubmitted] = useState(false);
   const [activeSkillCategory, setActiveSkillCategory] = useState<"all" | "design" | "dev">("all");
+  const [canScrollServicesLeft, setCanScrollServicesLeft] = useState(false);
+  const [canScrollServicesRight, setCanScrollServicesRight] = useState(true);
 
   const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const servicesTrackRef = useRef<HTMLDivElement | null>(null);
+
+  const updateServicesScrollState = () => {
+    const el = servicesTrackRef.current;
+    if (!el) return;
+    setCanScrollServicesLeft(el.scrollLeft > 8);
+    setCanScrollServicesRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 8);
+  };
+
+  useEffect(() => {
+    updateServicesScrollState();
+    window.addEventListener("resize", updateServicesScrollState);
+    return () => window.removeEventListener("resize", updateServicesScrollState);
+  }, []);
+
+  const scrollServicesBy = (dir: "left" | "right") => {
+    const el = servicesTrackRef.current;
+    if (!el) return;
+    const step = Math.min(400, el.clientWidth * 0.85);
+    el.scrollBy({
+      left: dir === "right" ? step : -step,
+      behavior: "smooth"
+    });
+  };
 
   // Hire modal form fields
   const [hireName, setHireName] = useState("");
@@ -278,6 +306,51 @@ export function GeroldHome({
     }
   ];
 
+  const waysToWorkList = [
+    {
+      id: "health-check",
+      title: "Website Health Check",
+      desc: "A video walkthrough of your current site and a PDF of what to fix. The good, the bad and the ugly.",
+      ctaLabel: "See the health check",
+      actionType: "hire" as const
+    },
+    {
+      id: "custom-design",
+      title: "Custom Website Design",
+      desc: "Designed and built around your brand in WordPress, Shopify, or React. I build it, then it’s yours to run — no developer needed.",
+      ctaLabel: "See custom builds",
+      actionType: "websites" as const
+    },
+    {
+      id: "managed-website",
+      title: "Managed-For-You Website",
+      desc: "Built, then looked after every month. Updates, fixes, performance and security, so you can focus on running your business.",
+      ctaLabel: "See Managed-For-You",
+      actionType: "hire" as const
+    },
+    {
+      id: "seo-growth",
+      title: "SEO Growth Plan",
+      desc: "For Managed-For-You clients who want a quarterly audit, fixes and tune-ups so the site keeps climbing — with a plain English report each time.",
+      ctaLabel: "See the SEO plan",
+      actionType: "hire" as const
+    },
+    {
+      id: "branding-copy",
+      title: "Branding & Brand Systems",
+      desc: "A logo, visual identity, packaging and the copy to go with the build, so it all arrives as one thing instead of being stitched together later.",
+      ctaLabel: "See the add-ons",
+      actionType: "graphics" as const
+    },
+    {
+      id: "white-label",
+      title: "White-Label Agency Builds",
+      desc: "For agencies. You send the Figma, I build it in WordPress, Shopify or React exactly as designed, under your name. The client stays yours.",
+      ctaLabel: "See white-label",
+      actionType: "hire" as const
+    }
+  ];
+
   const experiences = [
     {
       company: "Brandilyst (Remote)",
@@ -331,7 +404,7 @@ export function GeroldHome({
   const faqs = [
     {
       q: "How do I get a fixed quotation for my project?",
-      a: "Click 'Book a Call' or email shakeebahmedk24@gmail.com (+92-332-0203701) with your goals, reference links, and target timeline. Within 24 hours I send back a clear milestone plan and fixed-price quote — no hourly padding or surprise add-ons."
+      a: "Click 'Book a Call' or email shakeebkhanstudio@gmail.com (+92 336 3445281) with your goals, reference links, and target timeline. Within 24 hours I send back a clear milestone plan and fixed-price quote — no hourly padding or surprise add-ons."
     },
     {
       q: "Do you handle both the branding/UI design and the code build?",
@@ -1212,20 +1285,296 @@ export function GeroldHome({
           </motion.div>
 
           {/* ======================================================== */}
-          {/* 6. ABOUT, EXPERIENCE, EDUCATION & CORE STACK (#120A21)   */}
+          {/* 5B. WAYS TO WORK WITH ME ("HOW I CAN HELP" CAROUSEL)     */}
           {/* ======================================================== */}
           <motion.section
-            id="resume"
+            id="ways-to-work"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.04 }}
+            viewport={{ once: true, amount: 0.05 }}
             transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-8 sm:mt-12 mx-2 sm:mx-4 lg:mx-6 bg-[#120A21] border border-purple-800/45 text-white rounded-[2rem] sm:rounded-[3rem] py-16 sm:py-24 scroll-mt-20 relative overflow-hidden"
+            className="py-16 sm:py-24 bg-[#0D071E] scroll-mt-20 overflow-hidden"
           >
-            <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 text-left relative z-10">
-              <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+            {/* Header Row with Title + Subtitle + Left/Right Slider Controls */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left space-y-5 sm:space-y-6">
+              <motion.span
+                initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
+                whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
+                whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
+                viewport={{ once: true, amount: 0.25 }}
+                transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
+                className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
+              >
+                ways to work with me
+              </motion.span>
+
+              <h2 className="font-display text-5xl sm:text-7xl lg:text-[82px] font-black uppercase tracking-tight leading-[0.92] text-white text-balance">
+                How I Can Help
+              </h2>
+
+              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-5 pt-1">
+                <p className="text-sm sm:text-base text-zinc-300 max-w-xl leading-relaxed">
+                  Six ways in, from a one-off audit to a site I build and run for you. Every one of them is custom, and every one gets me. Not a team you never meet, not a chatbot.
+                </p>
+
+                <div className="flex items-center gap-2.5 shrink-0 self-start sm:self-end">
+                  <button
+                    type="button"
+                    onClick={() => scrollServicesBy("left")}
+                    disabled={!canScrollServicesLeft}
+                    aria-label="Scroll ways to work left"
+                    className={`w-11 h-11 rounded-full flex items-center justify-center border transition-all cursor-pointer ${
+                      canScrollServicesLeft
+                        ? "bg-white text-[#120a22] border-white hover:bg-[#e9d5ff] shadow-lg"
+                        : "bg-transparent text-zinc-500 border-purple-500/30 cursor-not-allowed opacity-60"
+                    }`}
+                  >
+                    <ArrowLeft className="w-4 h-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => scrollServicesBy("right")}
+                    disabled={!canScrollServicesRight}
+                    aria-label="Scroll ways to work right"
+                    className={`w-11 h-11 rounded-full flex items-center justify-center border transition-all cursor-pointer ${
+                      canScrollServicesRight
+                        ? "bg-[#8750f7] hover:bg-purple-500 text-white border-[#a855f7] shadow-[0_8px_24px_rgba(135,80,247,0.45)]"
+                        : "bg-transparent text-zinc-500 border-purple-500/30 cursor-not-allowed opacity-60"
+                    }`}
+                  >
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Horizontal Sliding Track (Shows ~3.4 cards on Desktop with Right Bleed, Swipe on Mobile) */}
+            <div
+              ref={servicesTrackRef}
+              onScroll={updateServicesScrollState}
+              className="mt-10 sm:mt-12 flex items-stretch gap-5 sm:gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth touch-pan-x px-4 sm:px-6 lg:pl-[max(2rem,calc((100vw-80rem)/2+2rem))] lg:pr-10 pb-4"
+            >
+              {waysToWorkList.map((srv) => {
+                const handleCardAction = () => {
+                  if (srv.actionType === "websites") {
+                    navigateToPage("websites");
+                  } else if (srv.actionType === "graphics") {
+                    navigateToPage("graphics");
+                  } else {
+                    openHireWithService(srv.title);
+                  }
+                };
+
+                return (
+                  <div
+                    key={srv.id}
+                    className="w-[82vw] sm:w-[345px] lg:w-[375px] shrink-0 snap-start bg-[#120A21] border border-purple-800/45 hover:border-purple-400/75 rounded-3xl p-4 sm:p-5 flex flex-col justify-between gap-6 transition-all duration-300 shadow-[0_14px_38px_rgba(0,0,0,0.4)] hover:shadow-[0_20px_48px_rgba(135,80,247,0.2)] group"
+                  >
+                    <div className="space-y-5">
+                      {/* Custom Card Preview Visual Box */}
+                      <div className="h-[195px] sm:h-[210px] w-full rounded-2xl overflow-hidden bg-gradient-to-br from-[#6d28d9] via-[#5b21b6] to-[#3b0764] border border-purple-400/25 relative flex items-center justify-center p-4 select-none">
+                        {srv.id === "health-check" && (
+                          <div className="w-full space-y-2 flex flex-col items-center">
+                            {[
+                              { text: "Slow on mobile", shift: "-translate-x-5 -rotate-1" },
+                              { text: "Enquiry form not sending", shift: "translate-x-4 rotate-1" },
+                              { text: "Page titles missing", shift: "-translate-x-3 -rotate-1" },
+                              { text: "Images far too heavy", shift: "translate-x-5 rotate-1" }
+                            ].map((alert) => (
+                              <div
+                                key={alert.text}
+                                className={`px-3 py-1.5 rounded-lg bg-[#0d071d]/90 border border-white/15 shadow-lg flex items-center gap-2 text-[11px] font-semibold text-white whitespace-nowrap transition-transform duration-300 group-hover:scale-[1.03] ${alert.shift}`}
+                              >
+                                <span className="w-4 h-4 rounded-full bg-rose-500 text-white flex items-center justify-center shrink-0">
+                                  <X className="w-2.5 h-2.5 stroke-[3]" />
+                                </span>
+                                <span>{alert.text}</span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+
+                        {srv.id === "custom-design" && (
+                          <div className="w-[90%] h-[92%] bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col border border-white/30 transition-transform duration-300 group-hover:-translate-y-1">
+                            <div className="px-2.5 py-1.5 bg-zinc-100 border-b border-zinc-200 flex items-center justify-between">
+                              <div className="flex items-center gap-1">
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#ff6b6b]" />
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#ffd93d]" />
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#6bcb77]" />
+                              </div>
+                              <div className="w-16 h-1.5 rounded-full bg-zinc-300" />
+                            </div>
+                            <div className="m-2 rounded-lg bg-[#2e1065] p-2.5 space-y-1.5">
+                              <div className="w-14 h-1.5 rounded-full bg-purple-300/75" />
+                              <div className="w-24 h-2.5 rounded bg-white" />
+                              <div className="w-10 h-2.5 rounded-full bg-[#8750f7]" />
+                            </div>
+                            <div className="px-2 pb-2 grid grid-cols-2 gap-1.5 flex-1">
+                              <div className="rounded-md bg-purple-100/80 border border-purple-200 p-1.5 space-y-1">
+                                <div className="w-6 h-6 rounded bg-[#6d28d9]/20" />
+                                <div className="w-12 h-1.5 rounded bg-purple-900/30" />
+                              </div>
+                              <div className="rounded-md bg-purple-50 border border-purple-200 p-1.5 space-y-1">
+                                <div className="w-6 h-6 rounded bg-[#8750f7]/25" />
+                                <div className="w-10 h-1.5 rounded bg-purple-900/25" />
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {srv.id === "managed-website" && (
+                          <div className="relative w-[82%] bg-white text-[#120a22] rounded-xl shadow-2xl p-2.5 border border-white/25 transition-transform duration-300 group-hover:-translate-y-1">
+                            <div className="bg-[#6d28d9] text-white text-[9px] font-mono font-bold uppercase tracking-widest py-1 rounded-md text-center mb-2">
+                              THIS MONTH
+                            </div>
+                            <div className="grid grid-cols-7 gap-1 text-[8px] font-mono font-bold text-zinc-400 text-center mb-1">
+                              {["S", "M", "T", "W", "T", "F", "S"].map((d, i) => (
+                                <span key={i}>{d}</span>
+                              ))}
+                            </div>
+                            <div className="grid grid-cols-7 gap-1 text-[9px] font-mono font-semibold text-zinc-700 text-center">
+                              {Array.from({ length: 21 }, (_, idx) => {
+                                const day = idx + 1;
+                                const isActiveDay = day === 14;
+                                return (
+                                  <span
+                                    key={day}
+                                    className={`py-0.5 rounded-full ${
+                                      isActiveDay
+                                        ? "bg-[#8750f7] text-white font-bold shadow"
+                                        : "text-zinc-700"
+                                    }`}
+                                  >
+                                    {day}
+                                  </span>
+                                );
+                              })}
+                            </div>
+                            <div className="mt-2 flex items-center justify-center">
+                              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#ede9fe] text-[#5b21b6] text-[10px] font-bold">
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                                <span>All sorted</span>
+                              </span>
+                            </div>
+                          </div>
+                        )}
+
+                        {srv.id === "seo-growth" && (
+                          <div className="w-[90%] space-y-1.5 transition-transform duration-300 group-hover:-translate-y-0.5">
+                            <div className="bg-white text-[#120a22] rounded-full px-3 py-1.5 flex items-center gap-2 text-[11px] font-semibold shadow-md">
+                              <Search className="w-3 h-3 text-[#6d28d9] shrink-0" />
+                              <span className="truncate">best brand web studio</span>
+                            </div>
+                            <div className="bg-[#0d071d] border border-[#c084fc] rounded-xl px-3 py-2 shadow-lg flex items-center justify-between gap-2">
+                              <div className="space-y-0.5 text-left">
+                                <div className="text-[11px] font-bold text-white">Your business</div>
+                                <div className="w-24 h-1 rounded-full bg-purple-400/50" />
+                              </div>
+                              <span className="px-1.5 py-0.5 rounded bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 font-mono text-[9px] font-bold">
+                                #1 ↑
+                              </span>
+                            </div>
+                            <div className="bg-white/10 border border-white/15 rounded-lg px-3 py-1.5 text-left text-[10px] text-purple-100/75">
+                              A listings site
+                            </div>
+                            <div className="bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-left text-[10px] text-purple-200/55">
+                              The competitor down the road
+                            </div>
+                          </div>
+                        )}
+
+                        {srv.id === "branding-copy" && (
+                          <div className="w-[86%] bg-white text-[#120a22] rounded-xl shadow-2xl p-3.5 space-y-3 border border-white/25 text-left transition-transform duration-300 group-hover:-translate-y-1">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-1.5">
+                                <span className="w-5 h-5 rounded-full bg-[#6d28d9] inline-block" />
+                                <span className="w-3 h-5 rounded-sm bg-[#120a22] inline-block" />
+                              </div>
+                              <span className="font-mono text-[8px] font-bold uppercase tracking-widest text-zinc-400">
+                                BRAND KIT
+                              </span>
+                            </div>
+                            <div>
+                              <div className="font-display text-2xl font-black uppercase tracking-tight leading-none text-[#120a22]">
+                                YOUR BRAND.
+                              </div>
+                              <div className="mt-1.5 space-y-1">
+                                <div className="w-4/5 h-1.5 rounded-full bg-zinc-200" />
+                                <div className="w-3/5 h-1.5 rounded-full bg-zinc-200" />
+                              </div>
+                            </div>
+                            <div className="grid grid-cols-4 gap-1.5 pt-1">
+                              <span className="h-6 rounded-md bg-[#120a22]" />
+                              <span className="h-6 rounded-md bg-[#5b21b6]" />
+                              <span className="h-6 rounded-md bg-[#8750f7]" />
+                              <span className="h-6 rounded-md bg-[#e9d5ff]" />
+                            </div>
+                          </div>
+                        )}
+
+                        {srv.id === "white-label" && (
+                          <div className="w-[90%] h-[90%] bg-[#0d071d] border border-purple-300/35 rounded-xl overflow-hidden shadow-2xl flex flex-col text-left transition-transform duration-300 group-hover:-translate-y-1">
+                            <div className="px-3 py-1.5 bg-[#180e2f] border-b border-purple-500/30 flex items-center justify-between">
+                              <span className="font-mono text-[9px] font-bold tracking-widest text-[#e9d5ff]">
+                                HOMEPAGE / DESKTOP
+                              </span>
+                              <span className="font-mono text-[8px] text-purple-300/75">1440px</span>
+                            </div>
+                            <div className="p-2.5 flex-1 grid grid-cols-12 gap-2">
+                              <div className="col-span-7 rounded-lg bg-[#6d28d9]/35 border border-purple-400/40 p-2 flex flex-col justify-between">
+                                <div className="space-y-1">
+                                  <div className="w-10 h-1 rounded bg-[#e9d5ff]" />
+                                  <div className="w-16 h-2 rounded bg-white" />
+                                </div>
+                                <div className="w-12 h-2 rounded-full bg-[#8750f7]" />
+                              </div>
+                              <div className="col-span-5 flex flex-col gap-1.5">
+                                <div className="flex-1 rounded-lg bg-white/10 border border-white/15" />
+                                <div className="flex-1 rounded-lg bg-white/5 border border-white/10" />
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Title & Description */}
+                      <div className="space-y-2 text-left px-1">
+                        <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-white leading-snug group-hover:text-[#e9d5ff] transition-colors">
+                          {srv.title}
+                        </h3>
+                        <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed min-h-[60px]">
+                          {srv.desc}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="pt-1 px-1 text-left">
+                      <button
+                        type="button"
+                        onClick={handleCardAction}
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-purple-400/45 hover:border-white hover:bg-white hover:text-[#120a22] text-white text-xs sm:text-sm font-semibold transition-all cursor-pointer whitespace-nowrap"
+                      >
+                        <span>{srv.ctaLabel}</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </motion.section>
+
+          {/* ======================================================== */}
+          {/* 6. ABOUT, EXPERIENCE, EDUCATION & CORE STACK (#120A21)   */}
+          {/* ======================================================== */}
+          <section
+            id="resume"
+            className="mt-8 sm:mt-12 mx-2 sm:mx-4 lg:mx-6 bg-[#120A21] border border-purple-800/45 text-white rounded-[2rem] sm:rounded-[3rem] py-12 sm:py-20 lg:py-24 scroll-mt-20 relative overflow-x-clip"
+          >
+            <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-10 text-left relative z-10">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-12 items-stretch">
                 {/* Left Scrolling Column: Experience, Education, Tech Stack */}
-                <div className="lg:col-span-7 space-y-12">
+                <div className="lg:col-span-7 space-y-10 sm:space-y-12 min-w-0">
                   <div className="space-y-3">
                     <motion.span
                       initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
@@ -1233,25 +1582,25 @@ export function GeroldHome({
                       whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
                       viewport={{ once: true, amount: 0.25 }}
                       transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
-                      className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
+                      className="font-hand text-lg sm:text-2xl font-bold px-3 sm:px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
                     >
                       the track record
                     </motion.span>
-                    <h2 className="font-display text-4xl sm:text-6xl font-black uppercase tracking-tight leading-[0.95] text-white">
+                    <h2 className="font-display text-[36px] sm:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-[0.95] text-white text-balance">
                       Experience &amp; Education
                     </h2>
                   </div>
 
                   {/* Creative Gradient Timeline: Work History */}
-                  <div className="space-y-5">
-                    <h3 className="text-xs font-mono uppercase tracking-widest text-purple-200 font-bold">
+                  <div className="space-y-4 sm:space-y-5">
+                    <h3 className="text-[11px] sm:text-xs font-mono uppercase tracking-widest text-purple-200 font-bold">
                       Work History (2019 – 2026)
                     </h3>
-                    <div className="relative pl-6 sm:pl-8 space-y-4">
+                    <div className="relative pl-5 sm:pl-8 space-y-3.5 sm:space-y-4">
                       {/* Vertical Glowing Timeline Spine */}
                       <div
                         aria-hidden="true"
-                        className="absolute left-2 sm:left-2.5 top-3 bottom-3 w-[2px] bg-gradient-to-b from-[#e9d5ff] via-[#a855f7] to-purple-900/20 rounded-full"
+                        className="absolute left-1.5 sm:left-2.5 top-3 bottom-3 w-[2px] bg-gradient-to-b from-[#e9d5ff] via-[#a855f7] to-purple-900/20 rounded-full"
                       />
 
                       {experiences.map((exp, idx) => (
@@ -1260,29 +1609,29 @@ export function GeroldHome({
                           initial={{ opacity: 0, x: -12 }}
                           whileInView={{ opacity: 1, x: 0 }}
                           viewport={{ once: true, amount: 0.1 }}
-                          transition={{ duration: 0.4, delay: idx * 0.06 }}
+                          transition={{ duration: 0.4, delay: idx * 0.05 }}
                           className="relative group"
                         >
                           {/* Glowing Timeline Node */}
                           <span
                             aria-hidden="true"
-                            className="absolute -left-[22px] sm:-left-[27px] top-6 w-3.5 h-3.5 rounded-full bg-[#120A21] border-2 border-[#c084fc] group-hover:bg-[#c084fc] group-hover:scale-125 shadow-[0_0_12px_rgba(192,132,252,0.75)] transition-all"
+                            className="absolute -left-[20px] sm:-left-[27px] top-5 sm:top-6 w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full bg-[#120A21] border-2 border-[#c084fc] group-hover:bg-[#c084fc] group-hover:scale-125 shadow-[0_0_12px_rgba(192,132,252,0.75)] transition-all"
                           />
 
-                          <div className="bg-[#0D071E] border border-purple-700/40 hover:border-purple-400/70 rounded-2xl p-5 sm:p-6 transition-all duration-300 flex flex-col sm:flex-row sm:items-start justify-between gap-3">
-                            <div className="space-y-1.5">
-                              <div className="flex items-center gap-2 text-sm sm:text-base font-bold text-white">
-                                <Briefcase className="w-4 h-4 text-[#c084fc] shrink-0" />
+                          <div className="bg-[#0D071E] border border-purple-700/40 hover:border-purple-400/70 rounded-2xl p-4 sm:p-6 transition-all duration-300 flex flex-col sm:flex-row sm:items-start justify-between gap-2.5 sm:gap-3">
+                            <div className="space-y-1.5 min-w-0">
+                              <div className="flex items-start gap-2 text-sm sm:text-base font-bold text-white leading-snug">
+                                <Briefcase className="w-4 h-4 text-[#c084fc] shrink-0 mt-0.5" />
                                 <span>{exp.role}</span>
                               </div>
-                              <div className="text-xs font-semibold text-[#e9d5ff] uppercase tracking-wider">
+                              <div className="text-[11px] sm:text-xs font-semibold text-[#e9d5ff] uppercase tracking-wider">
                                 {exp.company}
                               </div>
                               <p className="text-xs sm:text-sm text-zinc-200/90 leading-relaxed max-w-xl pt-1">
                                 {exp.desc}
                               </p>
                             </div>
-                            <span className="font-mono text-xs text-white font-semibold whitespace-nowrap tabular-nums px-3 py-1 rounded-full bg-purple-950/70 border border-purple-400/30 self-start">
+                            <span className="font-mono text-[11px] sm:text-xs text-white font-semibold whitespace-nowrap tabular-nums px-2.5 sm:px-3 py-1 rounded-full bg-purple-950/70 border border-purple-400/30 self-start shrink-0">
                               {exp.period}
                             </span>
                           </div>
@@ -1293,10 +1642,10 @@ export function GeroldHome({
 
                   {/* Education List */}
                   <div className="space-y-4">
-                    <h3 className="text-xs font-mono uppercase tracking-widest text-purple-200 font-bold">
+                    <h3 className="text-[11px] sm:text-xs font-mono uppercase tracking-widest text-purple-200 font-bold">
                       Academic Background
                     </h3>
-                    <div className="grid sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
                       <motion.div
                         initial={{ opacity: 0, y: 16 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -1305,12 +1654,12 @@ export function GeroldHome({
                         className="bg-[#0D071E] border border-purple-700/40 hover:border-purple-400/70 rounded-2xl overflow-hidden transition-colors"
                       >
                         <div className="h-1 w-full bg-gradient-to-r from-[#8750f7] via-[#c084fc] to-[#5b21b6]" />
-                        <div className="p-5 space-y-2">
+                        <div className="p-4 sm:p-5 space-y-2">
                           <div className="flex items-center justify-between text-xs font-mono text-[#e9d5ff]">
                             <span>2019 – 2023</span>
                             <GraduationCap className="w-4 h-4" />
                           </div>
-                          <h4 className="font-display text-2xl font-black uppercase text-white leading-tight">
+                          <h4 className="font-display text-xl sm:text-2xl font-black uppercase text-white leading-tight">
                             University of Karachi
                           </h4>
                           <p className="text-xs font-semibold text-purple-200">
@@ -1330,12 +1679,12 @@ export function GeroldHome({
                         className="bg-[#0D071E] border border-purple-700/40 hover:border-purple-400/70 rounded-2xl overflow-hidden transition-colors"
                       >
                         <div className="h-1 w-full bg-gradient-to-r from-[#c084fc] via-[#8750f7] to-[#5b21b6]" />
-                        <div className="p-5 space-y-2">
+                        <div className="p-4 sm:p-5 space-y-2">
                           <div className="flex items-center justify-between text-xs font-mono text-[#e9d5ff]">
                             <span>2018 – 2022</span>
                             <GraduationCap className="w-4 h-4" />
                           </div>
-                          <h4 className="font-display text-2xl font-black uppercase text-white leading-tight">
+                          <h4 className="font-display text-xl sm:text-2xl font-black uppercase text-white leading-tight">
                             Aptech Computer Education
                           </h4>
                           <p className="text-xs font-semibold text-purple-200">
@@ -1350,18 +1699,12 @@ export function GeroldHome({
                   </div>
 
                   {/* Filterable Core Stack */}
-                  <div className="space-y-5">
-                    <div className="flex flex-wrap items-center justify-between gap-3">
-                      <h3 className="text-xs font-mono uppercase tracking-widest text-purple-200 font-bold">
+                  <div className="space-y-4 sm:space-y-5">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <h3 className="text-[11px] sm:text-xs font-mono uppercase tracking-widest text-purple-200 font-bold">
                         Core Tech Stack
                       </h3>
-                      <motion.div
-                        initial={{ opacity: 0, y: 12, rotate: -3, scale: 0.94 }}
-                        whileInView={{ opacity: 1, y: 0, rotate: 0, scale: 1 }}
-                        viewport={{ once: true, amount: 0.2 }}
-                        transition={{ type: "spring", stiffness: 270, damping: 18 }}
-                        className="flex flex-wrap items-center gap-1.5 bg-[#0D071E] p-1 rounded-full border border-purple-700/40"
-                      >
+                      <div className="grid grid-cols-3 sm:inline-flex items-center gap-1 bg-[#0D071E] p-1 rounded-full border border-purple-700/40 w-full sm:w-auto">
                         {[
                           { id: "all" as const, label: "All Stack" },
                           { id: "dev" as const, label: "Engineering" },
@@ -1370,7 +1713,7 @@ export function GeroldHome({
                           <button
                             key={tab.id}
                             onClick={() => setActiveSkillCategory(tab.id)}
-                            className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors cursor-pointer ${
+                            className={`px-2.5 sm:px-3.5 py-1.5 rounded-full text-[11px] sm:text-xs font-semibold transition-colors cursor-pointer text-center whitespace-nowrap ${
                               activeSkillCategory === tab.id
                                 ? "bg-gradient-to-r from-[#8750f7] to-purple-600 text-white"
                                 : "text-zinc-300 hover:text-white"
@@ -1379,20 +1722,20 @@ export function GeroldHome({
                             {tab.label}
                           </button>
                         ))}
-                      </motion.div>
+                      </div>
                     </div>
 
-                    <div className="grid sm:grid-cols-2 gap-3.5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5">
                       {stackItems
                         .filter((s) => activeSkillCategory === "all" || s.category === activeSkillCategory)
                         .map((skill) => (
                           <div
                             key={skill.id}
-                            className="bg-[#0D071E] border border-purple-700/40 rounded-xl p-4 space-y-2.5"
+                            className="bg-[#0D071E] border border-purple-700/40 rounded-xl p-3.5 sm:p-4 space-y-2.5"
                           >
-                            <div className="flex items-center justify-between gap-2 text-sm font-bold text-white">
+                            <div className="flex items-center justify-between gap-2 text-xs sm:text-sm font-bold text-white">
                               <span>{skill.name}</span>
-                              <span className="font-mono text-xs text-[#e9d5ff] tabular-nums">{skill.percent}%</span>
+                              <span className="font-mono text-xs text-[#e9d5ff] tabular-nums shrink-0">{skill.percent}%</span>
                             </div>
                             <div className="w-full h-2 bg-purple-950/90 rounded-full overflow-hidden">
                               <motion.div
@@ -1409,101 +1752,83 @@ export function GeroldHome({
                   </div>
                 </div>
 
-                {/* Right Sticky Bio Card */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.1 }}
-                  transition={{ duration: 0.5 }}
-                  className="lg:col-span-5 lg:sticky lg:top-24"
-                >
-                  <div className="bg-[#0D071E] text-white rounded-3xl p-6 sm:p-8 space-y-6 border border-purple-700/45 shadow-[0_24px_60px_rgba(0,0,0,0.45)]">
-                    <div className="flex items-center gap-4">
-                      <div className="w-20 h-20 rounded-2xl overflow-hidden bg-[#07030e] border border-purple-400/40 shrink-0">
-                        <img
-                          src="/shakeeb-avatar.webp"
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).src = "/shakeeb_profile.jpg";
-                          }}
-                          alt="Shakeeb Ahmed Khan"
-                          className="w-full h-full object-cover object-center"
-                        />
+                {/* Right Sticky Bio Card (Sticks smoothly while left column scrolls, then moves with section) */}
+                <div className="lg:col-span-5 min-w-0">
+                  <div className="lg:sticky lg:top-24">
+                    <div className="bg-[#0D071E] text-white rounded-3xl p-5 sm:p-8 space-y-5 sm:space-y-6 border border-purple-700/45 shadow-[0_24px_60px_rgba(0,0,0,0.45)]">
+                      <div className="flex items-center gap-3.5 sm:gap-4">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden bg-[#07030e] border border-purple-400/40 shrink-0">
+                          <img
+                            src="/shakeeb-avatar.webp"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = "/shakeeb_profile.jpg";
+                            }}
+                            alt="Shakeeb Ahmed Khan"
+                            className="w-full h-full object-cover object-center"
+                          />
+                        </div>
+                        <div className="min-w-0">
+                          <span className="font-hand text-xl sm:text-2xl text-[#e9d5ff] font-bold block leading-none">
+                            Founder &amp; Lead Dev
+                          </span>
+                          <h3 className="font-display text-2xl sm:text-3xl font-black uppercase text-white leading-tight mt-1">
+                            Shakeeb Ahmed Khan
+                          </h3>
+                          <span className="text-[11px] sm:text-xs font-medium text-purple-200/85 block mt-0.5">
+                            BSCS · WordPress, Shopify, AI &amp; Brand Design
+                          </span>
+                        </div>
                       </div>
-                      <div>
-                        <span className="font-hand text-2xl text-[#e9d5ff] font-bold block leading-none">
-                          Founder &amp; Lead Dev
-                        </span>
-                        <h3 className="font-display text-3xl font-black uppercase text-white leading-tight mt-1">
-                          Shakeeb Ahmed Khan
-                        </h3>
-                        <span className="text-xs font-medium text-purple-200/85">
-                          BSCS · WordPress, Shopify, AI &amp; Brand Design
-                        </span>
+
+                      <p className="text-xs sm:text-sm text-zinc-200 leading-relaxed">
+                        Over the past 7+ years I&apos;ve partnered with founders, restaurants, B2B wholesalers, and creative agencies across the US, Switzerland, the UK, and Canada — shipping 150+ projects that pair memorable design with dependable speed.
+                      </p>
+
+                      <div className="space-y-2.5 pt-3 border-t border-purple-500/25 text-xs font-medium text-zinc-200">
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <MapPin className="w-4 h-4 text-[#c084fc] shrink-0" />
+                          <span>Karachi, Pakistan (Serving Clients Globally)</span>
+                        </div>
+                        <a
+                          href="mailto:shakeebkhanstudio@gmail.com"
+                          className="flex items-center gap-2.5 hover:text-[#e9d5ff] transition-colors min-w-0 break-all"
+                        >
+                          <Mail className="w-4 h-4 text-[#c084fc] shrink-0" />
+                          <span>shakeebkhanstudio@gmail.com</span>
+                        </a>
+                        <a
+                          href="tel:+923363445281"
+                          className="flex items-center gap-2.5 hover:text-[#e9d5ff] transition-colors min-w-0"
+                        >
+                          <Phone className="w-4 h-4 text-[#c084fc] shrink-0" />
+                          <span>+92 336 3445281</span>
+                        </a>
                       </div>
-                    </div>
 
-                    <p className="text-sm text-zinc-200 leading-relaxed">
-                      Over the past 7+ years I&apos;ve partnered with founders, restaurants, B2B wholesalers, and creative agencies across the US, Switzerland, the UK, and Canada — shipping 150+ projects that pair memorable design with dependable speed.
-                    </p>
-
-                    <div className="space-y-2.5 pt-2 border-t border-purple-500/25 text-xs font-medium text-zinc-200">
-                      <div className="flex items-center gap-2.5">
-                        <MapPin className="w-4 h-4 text-[#c084fc] shrink-0" />
-                        <span>Karachi, Pakistan (Serving Clients Globally)</span>
+                      <div className="flex flex-col sm:flex-row gap-3 pt-1">
+                        <button
+                          onClick={() => openHireWithService("WordPress & WooCommerce Build")}
+                          className="flex-1 min-h-[44px] py-3 px-5 bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white text-xs font-bold rounded-full transition-colors cursor-pointer whitespace-nowrap"
+                        >
+                          Hire Shakeeb
+                        </button>
+                        <a
+                          href="/assets/aistudio/Shakeeb_Khan_Website_Developer_CV_75f2e3fe.pdf"
+                          download="Shakeeb_Khan_CV.pdf"
+                          target="_blank"
+                          rel="noreferrer"
+                          className="min-h-[44px] py-3 px-5 bg-white/5 hover:bg-purple-900/50 border border-purple-400/35 text-purple-100 text-xs font-bold rounded-full inline-flex items-center justify-center gap-1.5 transition-colors whitespace-nowrap"
+                        >
+                          <Download className="w-3.5 h-3.5" />
+                          <span>Resume PDF</span>
+                        </a>
                       </div>
-                      <a
-                        href="mailto:shakeebkhanstudio@gmail.com"
-                        className="md:hidden flex items-center gap-2.5 hover:text-[#e9d5ff]"
-                      >
-                        <Mail className="w-4 h-4 text-[#c084fc] shrink-0" />
-                        <span>shakeebkhanstudio@gmail.com</span>
-                      </a>
-                      <a
-                        href="mailto:shakeebahmedk24@gmail.com"
-                        className="hidden md:flex items-center gap-2.5 hover:text-[#e9d5ff]"
-                      >
-                        <Mail className="w-4 h-4 text-[#c084fc] shrink-0" />
-                        <span>shakeebahmedk24@gmail.com</span>
-                      </a>
-                      <a
-                        href="tel:923363445281"
-                        className="md:hidden flex items-center gap-2.5 hover:text-[#e9d5ff]"
-                      >
-                        <Phone className="w-4 h-4 text-[#c084fc] shrink-0" />
-                        <span>+92-336-3445281</span>
-                      </a>
-                      <a
-                        href="tel:+923320203701"
-                        className="hidden md:flex items-center gap-2.5 hover:text-[#e9d5ff]"
-                      >
-                        <Phone className="w-4 h-4 text-[#c084fc] shrink-0" />
-                        <span>+92-332-0203701</span>
-                      </a>
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row gap-3 pt-1">
-                      <button
-                        onClick={() => openHireWithService("WordPress & WooCommerce Build")}
-                        className="flex-1 py-3 px-5 bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white text-xs font-bold rounded-full transition-colors cursor-pointer whitespace-nowrap"
-                      >
-                        Hire Shakeeb
-                      </button>
-                      <a
-                        href="/assets/aistudio/Shakeeb_Khan_Website_Developer_CV_75f2e3fe.pdf"
-                        download="Shakeeb_Khan_CV.pdf"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="py-3 px-5 bg-white/5 hover:bg-purple-900/50 border border-purple-400/35 text-purple-100 text-xs font-bold rounded-full inline-flex items-center justify-center gap-1.5 transition-colors whitespace-nowrap"
-                      >
-                        <Download className="w-3.5 h-3.5" />
-                        <span>Resume PDF</span>
-                      </a>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               </div>
             </div>
-          </motion.section>
+          </section>
 
           {/* ======================================================== */}
           {/* 8. FAQ ACCORDION (#0D071E)                               */}
@@ -1570,6 +1895,109 @@ export function GeroldHome({
                     </div>
                   );
                 })}
+              </div>
+            </div>
+          </motion.section>
+
+          {/* ======================================================== */}
+          {/* 9. POST-FAQ ACTION BAR BANNER (Visual Triad Showcase)    */}
+          {/* ======================================================== */}
+          <motion.section
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.08 }}
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-8 sm:mt-12 mx-2 sm:mx-4 lg:mx-6"
+          >
+            <div className="bg-experience-gradient border border-purple-500/35 rounded-[2rem] sm:rounded-[3rem] px-5 sm:px-10 lg:px-14 pt-10 sm:pt-14 lg:pt-16 pb-0 overflow-hidden shadow-[0_24px_60px_rgba(91,33,182,0.28)] relative">
+              <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-end text-left">
+                {/* Left Column: Hook Tag + Display Headline + Dual CTA Buttons */}
+                <div className="lg:col-span-6 space-y-4 sm:space-y-5 pb-2 lg:pb-14">
+                  <motion.span
+                    initial={{ opacity: 0, y: 14, rotate: -9, scale: 0.88 }}
+                    whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
+                    whileHover={{ rotate: 1.5, scale: 1.05 }}
+                    viewport={{ once: true, amount: 0.25 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 16 }}
+                    className="font-hand text-lg sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
+                  >
+                    last thing, promise
+                  </motion.span>
+
+                  <h2 className="font-display text-4xl sm:text-6xl lg:text-[64px] font-black uppercase tracking-tight leading-[0.9] text-balance">
+                    <span className="text-[#d8b4fe] block">Ready for a website that</span>
+                    <span className="text-white block">keeps getting better?</span>
+                  </h2>
+
+                  <p className="text-sm sm:text-base text-purple-100/90 max-w-lg leading-relaxed">
+                    One developer &amp; designer on every call, page and fix, with 150+ sites and 7+ years behind me. No pitch, no account manager, just straight answers.
+                  </p>
+
+                  <div className="flex flex-wrap items-center gap-3 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => openHireWithService("Full Website & Brand Build")}
+                      className="px-6 sm:px-7 py-3 sm:py-3.5 bg-white hover:bg-[#e9d5ff] text-[#120a22] text-xs sm:text-sm font-bold rounded-full inline-flex items-center gap-2 transition-colors cursor-pointer whitespace-nowrap shadow-xl"
+                    >
+                      <span>Book a free call</span>
+                      <ArrowUpRight className="w-4 h-4" />
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => navigateToPage("websites")}
+                      className="px-6 sm:px-7 py-3 sm:py-3.5 bg-white/10 hover:bg-white/20 border border-white/30 text-white text-xs sm:text-sm font-semibold rounded-full inline-flex items-center gap-2 transition-colors cursor-pointer whitespace-nowrap"
+                    >
+                      <span>See my work</span>
+                      <ArrowUpRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Right Column: Three Staggered Website Screen Mockups Flush at Bottom */}
+                <div className="lg:col-span-6 grid grid-cols-3 gap-2.5 sm:gap-4 items-end pt-2 lg:pt-0">
+                  <button
+                    type="button"
+                    onClick={() => navigateToPage("websites")}
+                    className="group relative h-[155px] xs:h-[185px] sm:h-[250px] lg:h-[275px] rounded-t-xl sm:rounded-t-2xl overflow-hidden border border-b-0 border-white/20 bg-[#0d071d] shadow-[0_-12px_36px_rgba(7,3,14,0.55)] cursor-pointer transition-transform duration-300 hover:-translate-y-1.5"
+                    aria-label="Inspect Blockd security website build"
+                  >
+                    <img
+                      src="/websites-fast/blockd-security.webp"
+                      alt="Blockd Cybersecurity Web Platform"
+                      loading="lazy"
+                      className="w-full h-full object-cover object-top"
+                    />
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => navigateToPage("websites")}
+                    className="group relative h-[210px] xs:h-[245px] sm:h-[335px] lg:h-[370px] rounded-t-xl sm:rounded-t-2xl overflow-hidden border border-b-0 border-white/30 bg-[#0d071d] shadow-[0_-16px_45px_rgba(7,3,14,0.65)] cursor-pointer transition-transform duration-300 hover:-translate-y-2"
+                    aria-label="Inspect WatchGuys luxury watch e-commerce build"
+                  >
+                    <img
+                      src="/websites-fast/watchguys.webp"
+                      alt="WatchGuys Luxury Horology E-Commerce"
+                      loading="lazy"
+                      className="w-full h-full object-cover object-top"
+                    />
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => navigateToPage("websites")}
+                    className="group relative h-[180px] xs:h-[215px] sm:h-[295px] lg:h-[325px] rounded-t-xl sm:rounded-t-2xl overflow-hidden border border-b-0 border-white/25 bg-white shadow-[0_-14px_40px_rgba(7,3,14,0.6)] cursor-pointer transition-transform duration-300 hover:-translate-y-1.5"
+                    aria-label="Inspect Adora beauty store build"
+                  >
+                    <img
+                      src="/websites-fast/adora-skincare.webp"
+                      alt="Adora Organic Beauty Storefront"
+                      loading="lazy"
+                      className="w-full h-full object-cover object-top"
+                    />
+                  </button>
+                </div>
               </div>
             </div>
           </motion.section>
@@ -1849,7 +2277,7 @@ export function GeroldHome({
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.05 }}
         transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-        className="mt-12 sm:mt-16 bg-blueprint-grid text-white rounded-t-[2rem] sm:rounded-t-[3rem] pt-14 sm:pt-20 pb-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
+        className="mt-12 sm:mt-16 bg-experience-gradient border-t border-purple-500/30 text-white rounded-t-[2rem] sm:rounded-t-[3rem] pt-14 sm:pt-20 pb-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
       >
         <div className="max-w-7xl mx-auto space-y-12">
           {/* Top Pre-Footer Conversion Hook */}
@@ -1918,34 +2346,20 @@ export function GeroldHome({
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 sm:gap-6">
               <a
                 href="mailto:shakeebkhanstudio@gmail.com"
-                className="md:hidden hover:text-[#e9d5ff] inline-flex items-center gap-1.5"
+                className="hover:text-[#e9d5ff] inline-flex items-center gap-1.5 transition-colors"
               >
                 <Mail className="w-4 h-4" />
                 <span>shakeebkhanstudio@gmail.com</span>
-              </a>
-              <a
-                href="mailto:shakeebahmedk24@gmail.com"
-                className="hidden md:inline-flex hover:text-[#e9d5ff] items-center gap-1.5"
-              >
-                <Mail className="w-4 h-4" />
-                <span>shakeebahmedk24@gmail.com</span>
               </a>
 
               <span className="text-white/40">/</span>
 
               <a
-                href="tel:923363445281"
-                className="md:hidden hover:text-[#e9d5ff] inline-flex items-center gap-1.5"
+                href="tel:+923363445281"
+                className="hover:text-[#e9d5ff] inline-flex items-center gap-1.5 transition-colors"
               >
                 <Phone className="w-4 h-4" />
-                <span>+92-336-3445281</span>
-              </a>
-              <a
-                href="tel:+923320203701"
-                className="hidden md:inline-flex hover:text-[#e9d5ff] items-center gap-1.5"
-              >
-                <Phone className="w-4 h-4" />
-                <span>+92-332-0203701</span>
+                <span>+92 336 3445281</span>
               </a>
 
               <span className="text-white/40">/</span>

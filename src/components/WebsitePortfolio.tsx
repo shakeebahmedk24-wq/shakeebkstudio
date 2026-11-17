@@ -1171,6 +1171,25 @@ function VideoCardPreview({ videoSrc, posterSrc, alt, playOnlyOnHover = false }:
   const [isHovered, setIsHovered] = useState(false);
   const [isVideoReady, setIsVideoReady] = useState(false);
 
+  const attemptPlay = React.useCallback((video: HTMLVideoElement | null) => {
+    if (!video) return;
+    video.defaultMuted = true;
+    video.muted = true;
+    video.playsInline = true;
+    video.loop = true;
+    video.setAttribute("muted", "");
+    video.setAttribute("playsinline", "");
+    video.setAttribute("webkit-playsinline", "");
+    const promise = video.play();
+    if (promise !== undefined) {
+      promise
+        .then(() => {
+          setIsVideoReady(true);
+        })
+        .catch(() => {});
+    }
+  }, []);
+
   useEffect(() => {
     setIsVideoReady(false);
   }, [videoSrc]);
@@ -1179,22 +1198,16 @@ function VideoCardPreview({ videoSrc, posterSrc, alt, playOnlyOnHover = false }:
     const video = videoRef.current;
     if (!video) return;
 
-    video.defaultMuted = true;
-    video.muted = true;
-    video.playsInline = true;
-    video.setAttribute("playsinline", "true");
-    video.setAttribute("webkit-playsinline", "true");
-    video.setAttribute("muted", "true");
-    video.loop = true;
-
     if (playOnlyOnHover) {
       if (isHovered) {
-        video.play().catch(() => {});
+        attemptPlay(video);
       } else {
         video.pause();
       }
       return;
     }
+
+    attemptPlay(video);
 
     let observer: IntersectionObserver | null = null;
     if (typeof window !== "undefined" && "IntersectionObserver" in window) {
@@ -1203,28 +1216,21 @@ function VideoCardPreview({ videoSrc, posterSrc, alt, playOnlyOnHover = false }:
           entries.forEach((entry) => {
             if (!video) return;
             if (entry.isIntersecting) {
-              video.defaultMuted = true;
-              video.muted = true;
-              const promise = video.play();
-              if (promise !== undefined) {
-                promise.catch(() => {});
-              }
+              attemptPlay(video);
             } else {
               video.pause();
             }
           });
         },
-        { threshold: 0.08 }
+        { threshold: 0.01 }
       );
       observer.observe(video);
-    } else {
-      video.play().catch(() => {});
     }
 
     return () => {
       if (observer) observer.disconnect();
     };
-  }, [videoSrc, playOnlyOnHover, isHovered]);
+  }, [videoSrc, playOnlyOnHover, isHovered, attemptPlay]);
 
   const shouldMountVideo = !playOnlyOnHover || isHovered;
 
@@ -1246,10 +1252,17 @@ function VideoCardPreview({ videoSrc, posterSrc, alt, playOnlyOnHover = false }:
           ref={videoRef}
           src={videoSrc}
           poster={posterSrc}
+          autoPlay={!playOnlyOnHover}
           muted
           loop
           playsInline
-          preload={playOnlyOnHover ? "auto" : "metadata"}
+          preload={playOnlyOnHover ? "metadata" : "auto"}
+          onLoadedData={() => {
+            if (!playOnlyOnHover) attemptPlay(videoRef.current);
+          }}
+          onCanPlay={() => {
+            if (!playOnlyOnHover || isHovered) attemptPlay(videoRef.current);
+          }}
           onPlaying={() => setIsVideoReady(true)}
           aria-label={alt}
           className={`absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-300 ${
@@ -1304,11 +1317,10 @@ export function WebsitePortfolio({
       setSpotlightIndex((prev) => (prev + 1) % featuredSites.length);
     }, 5200);
     return () => window.clearInterval(timer);
-  }, [isAutoCycling, activeProject, featuredSites.length]);
+  }, [isAutoCycling, activeProject, featuredSites.length, spotlightIndex]);
 
   const selectSpotlightProject = (idx: number) => {
     setSpotlightIndex(idx);
-    setIsAutoCycling(false);
   };
 
   const currentCategory = propCategory !== undefined ? propCategory : internalCategory;
@@ -1381,18 +1393,21 @@ export function WebsitePortfolio({
         </h2>
 
         <p className="text-sm sm:text-base text-purple-100/85 max-w-2xl mx-auto leading-relaxed">
-          Every build pairs custom visual identity with sub-second engineering. Preview live client platforms cycling in the center, or click any card gliding behind to inspect it.
+          Every build pairs custom visual identity with sub-second engineering. Hover any preview to open that live website, or pick any site gliding behind to inspect it.
         </p>
       </div>
 
       {/* 2. Layered Sliding Card Marquee + Centered MacBook Laptop Stage */}
-      <div className="relative w-full py-2 sm:py-4">
-        {/* Background Sliding Cards Track */}
+      <div className="relative w-full py-4 sm:py-4">
+        {/* Background Sliding Cards Track (Visible on Mobile & Desktop) */}
         <div
           aria-label="Scrolling website portfolio gallery"
-          className="hidden sm:flex items-center overflow-hidden w-full absolute inset-y-0 left-0 right-0 z-10 pointer-events-auto"
+          className="flex items-center overflow-hidden w-full absolute inset-y-0 left-0 right-0 z-10 pointer-events-auto"
         >
-          <div className="animate-portfolio-marquee flex items-center gap-6 py-4">
+          <div
+            className="animate-portfolio-marquee flex items-center gap-3.5 sm:gap-6 py-4"
+            style={{ animationPlayState: isAutoCycling ? "running" : "paused" }}
+          >
             {[...featuredSites, ...featuredSites].map((site, stripIdx) => {
               const realIdx = stripIdx % featuredSites.length;
               const isActive = realIdx === spotlightIndex;
@@ -1403,14 +1418,14 @@ export function WebsitePortfolio({
                   type="button"
                   onClick={() => selectSpotlightProject(realIdx)}
                   style={{ backgroundColor: frameColor }}
-                  className={`w-[230px] md:w-[270px] lg:w-[295px] aspect-[4/3] rounded-2xl p-3 sm:p-3.5 shrink-0 flex flex-col justify-between transition-all duration-300 cursor-pointer group/strip shadow-[0_20px_50px_rgba(7,3,14,0.55)] border ${
+                  className={`w-[155px] sm:w-[230px] md:w-[270px] lg:w-[295px] aspect-[4/3] rounded-xl sm:rounded-2xl p-2 sm:p-3.5 shrink-0 flex flex-col justify-between transition-all duration-300 cursor-pointer group/strip shadow-[0_20px_50px_rgba(7,3,14,0.55)] border ${
                     isActive
                       ? "border-white scale-[1.03] ring-2 ring-white/70"
-                      : "border-white/20 opacity-85 hover:opacity-100 hover:-translate-y-1"
+                      : "border-white/20 opacity-90 hover:opacity-100 hover:-translate-y-1"
                   }`}
                   title={`Preview ${site.title} inside laptop`}
                 >
-                  <div className="w-full flex-1 min-h-0 rounded-xl overflow-hidden bg-[#07030e] border border-black/15 relative">
+                  <div className="w-full flex-1 min-h-0 rounded-lg sm:rounded-xl overflow-hidden bg-[#07030e] border border-black/15 relative">
                     <img
                       src={site.image}
                       alt={site.title}
@@ -1426,9 +1441,9 @@ export function WebsitePortfolio({
                       }}
                     />
                   </div>
-                  <div className="pt-2 px-1 flex items-center justify-between text-[#120a22] text-xs font-bold">
+                  <div className="pt-1.5 sm:pt-2 px-0.5 sm:px-1 flex items-center justify-between text-[#120a22] text-[10px] sm:text-xs font-bold gap-1">
                     <span className="truncate">{site.title}</span>
-                    <span className="font-mono text-[10px] opacity-80 shrink-0 tabular-nums">
+                    <span className="font-mono text-[9px] sm:text-[10px] opacity-80 shrink-0 tabular-nums">
                       {site.speedScore}/100
                     </span>
                   </div>
@@ -1439,44 +1454,44 @@ export function WebsitePortfolio({
         </div>
 
         {/* Foreground Centerpiece: MacBook Pro Mockup */}
-        <div className="relative z-20 max-w-[360px] sm:max-w-[580px] lg:max-w-[700px] mx-auto px-3 sm:px-0">
-          <div className="bg-[#0d071d] border-[6px] sm:border-[10px] border-[#1a0f33] ring-1 ring-white/20 rounded-t-[1.15rem] sm:rounded-t-[1.7rem] shadow-[0_36px_95px_rgba(7,3,14,0.85)] overflow-hidden">
-            <div className="flex justify-center py-1.5 sm:py-2 bg-[#0d071d]">
+        <div className="relative z-20 max-w-[265px] sm:max-w-[580px] lg:max-w-[700px] mx-auto px-2 sm:px-0">
+          <div className="bg-[#0d071d] border-[5px] sm:border-[10px] border-[#1a0f33] ring-1 ring-white/20 rounded-t-[1rem] sm:rounded-t-[1.7rem] shadow-[0_36px_95px_rgba(7,3,14,0.85)] overflow-hidden">
+            <div className="flex justify-center py-1 sm:py-2 bg-[#0d071d]">
               <span className="w-1.5 h-1.5 rounded-full bg-purple-300/35 block" />
             </div>
 
-            <div className="px-3 sm:px-4 py-1.5 sm:py-2 bg-[#140a29] border-y border-purple-400/20 flex items-center justify-between text-[10px] sm:text-[11px] font-mono gap-2">
-              <div className="flex items-center gap-1.5 shrink-0">
-                <span className="w-2 h-2 rounded-full bg-[#ff6b6b]" />
-                <span className="w-2 h-2 rounded-full bg-[#ffd93d]" />
-                <span className="w-2 h-2 rounded-full bg-[#6bcb77]" />
+            <div className="px-2.5 sm:px-4 py-1 sm:py-2 bg-[#140a29] border-y border-purple-400/20 flex items-center justify-between text-[9px] sm:text-[11px] font-mono gap-2">
+              <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
+                <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#ff6b6b]" />
+                <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#ffd93d]" />
+                <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#6bcb77]" />
               </div>
-              <a
-                href={currentSpotlight.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-purple-100 hover:text-white font-semibold truncate flex items-center gap-1.5 transition-colors"
-              >
-                <span className="uppercase tracking-wider">{currentSpotlight.title}</span>
-                <span aria-hidden="true" className="text-purple-400/60">·</span>
-                <span className="text-purple-300/85 hidden sm:inline">
+              <div className="text-purple-100 font-semibold truncate flex items-center gap-1.5 min-w-0">
+                <span className="uppercase tracking-wider truncate">{currentSpotlight.title}</span>
+                <span aria-hidden="true" className="text-purple-400/60 hidden sm:inline">·</span>
+                <span className="text-purple-300/85 hidden sm:inline truncate">
                   {currentSpotlight.liveUrl.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}
                 </span>
-                <ExternalLink className="w-3 h-3 shrink-0" />
-              </a>
+              </div>
               <span className="text-emerald-400 font-bold tabular-nums shrink-0">
                 {currentSpotlight.speedScore}/100
               </span>
             </div>
 
-            <div className="aspect-[16/10] w-full bg-[#07030e] relative overflow-hidden">
+            <a
+              href={currentSpotlight.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={`Open ${currentSpotlight.title} live website`}
+              className="group/screen block aspect-[16/10] w-full bg-[#07030e] relative overflow-hidden cursor-pointer"
+            >
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentSpotlight.id}
-                  initial={{ opacity: 0.25, scale: 1.015 }}
+                  initial={{ opacity: 0.35, scale: 1.01 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0.25 }}
-                  transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                  exit={{ opacity: 0.35 }}
+                  transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
                   className="w-full h-full relative"
                 >
                   {currentSpotlight.videoPreview ? (
@@ -1501,11 +1516,19 @@ export function WebsitePortfolio({
                   )}
                 </motion.div>
               </AnimatePresence>
-            </div>
+
+              {/* Hover to Open Website Overlay */}
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#07030e]/85 via-[#07030e]/20 to-transparent opacity-0 group-hover/screen:opacity-100 transition-opacity duration-200 flex items-end justify-center p-3 sm:p-5">
+                <span className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-white text-[#120a22] font-bold text-[11px] sm:text-xs shadow-[0_12px_30px_rgba(0,0,0,0.5)]">
+                  <span>Open {currentSpotlight.title}</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </span>
+              </div>
+            </a>
           </div>
 
-          <div className="w-[106%] -ml-[3%] h-3 sm:h-4 rounded-b-xl bg-gradient-to-b from-[#e4e4ee] via-[#c7c6d8] to-[#9492ad] shadow-[0_16px_34px_rgba(7,3,14,0.75)] relative">
-            <div className="w-16 sm:w-28 h-1 sm:h-1.5 bg-[#706e8d]/75 rounded-b-md mx-auto" />
+          <div className="w-[106%] -ml-[3%] h-2.5 sm:h-4 rounded-b-xl bg-gradient-to-b from-[#e4e4ee] via-[#c7c6d8] to-[#9492ad] shadow-[0_16px_34px_rgba(7,3,14,0.75)] relative">
+            <div className="w-12 sm:w-28 h-1 sm:h-1.5 bg-[#706e8d]/75 rounded-b-md mx-auto" />
           </div>
         </div>
       </div>
@@ -1802,6 +1825,12 @@ export function WebsitePortfolio({
                           }}
                         />
                       )}
+                      <div className="pointer-events-none absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-[#07030e]/85 via-[#07030e]/30 to-transparent opacity-0 group-hover/img:opacity-100 transition-opacity duration-200 flex justify-end">
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white text-[#120a22] font-bold text-[11px] shadow-lg">
+                          <span>Open {project.title}</span>
+                          <ExternalLink className="w-3 h-3" />
+                        </span>
+                      </div>
                     </div>
                   </a>
 

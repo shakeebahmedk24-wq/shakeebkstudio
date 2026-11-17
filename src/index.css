@@ -212,8 +212,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-marquee,
+  .animate-marquee {
+    animation-duration: 48s;
+  }
   .animate-portfolio-marquee {
-    animation: none;
+    animation-duration: 56s;
   }
 }
