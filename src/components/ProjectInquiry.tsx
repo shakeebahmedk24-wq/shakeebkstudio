@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Mail, Phone, Globe, ExternalLink, Copy, Check, Send } from "lucide-react";
+import { Mail, Phone, Copy, Check, Send } from "lucide-react";
 
 interface ProjectInquiryProps {
   onCopySuccess: (label: string) => void;
@@ -120,27 +120,6 @@ export function ProjectInquiry({ onCopySuccess }: ProjectInquiryProps) {
                 {copiedChannel === "Phone" ? <Check className="w-4 h-4 text-emerald-400 stroke-[3]" /> : <Copy className="w-4 h-4" />}
               </button>
             </div>
-
-            {/* Portfolio Link */}
-            <a
-              href="https://behance.net/sksolutions"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-3.5 sm:p-5 rounded-2xl bg-zinc-900/80 border border-zinc-800 flex items-center justify-between gap-3 shadow-xl hover:border-amber-500/40 transition-all group min-w-0"
-            >
-              <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
-                <div className="p-2.5 sm:p-3 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 shrink-0">
-                  <Globe className="w-5 h-5" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <div className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest font-bold">Graphic Portfolio</div>
-                  <div className="text-xs sm:text-sm font-bold text-white mt-0.5 break-all">behance.net/sksolutions</div>
-                </div>
-              </div>
-              <div className="p-2 sm:p-2.5 rounded-xl bg-zinc-950 text-zinc-400 group-hover:text-amber-400 border border-zinc-800 transition-colors shrink-0">
-                <ExternalLink className="w-4 h-4" />
-              </div>
-            </a>
 
           </div>
         </div>

@@ -49,7 +49,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#07030e] text-[#f3f4f6] font-sans antialiased selection:bg-purple-600/40 selection:text-white relative">
+    <div className="min-h-screen bg-[#0D071E] text-[#f3f4f6] font-sans antialiased selection:bg-purple-600/40 selection:text-white relative">
       <GeroldHome />
     </div>
   );

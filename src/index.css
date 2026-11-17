@@ -13,9 +13,9 @@
   --color-purple: #6d28d9;
   --color-purple-vivid: #8750f7;
   --color-purple-light: #a855f7;
-  --color-void: #07030e;
-  --color-surface: #120a22;
-  --color-mist: #0d071d;
+  --color-void: #0d071e;
+  --color-surface: #120a21;
+  --color-mist: #0d071e;
   --color-ink: #f3f4f6;
   --color-ink-soft: #d4d4d8;
   --color-muted: #a1a1aa;
@@ -38,7 +38,7 @@
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
     font-family: 'Plus Jakarta Sans', sans-serif;
-    background-color: #07030e;
+    background-color: #0d071e;
     color: #f3f4f6;
   }
 
@@ -64,7 +64,7 @@
 
   body {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    background-color: #07030e;
+    background-color: #0d071e;
     color: #f3f4f6;
     min-height: 100%;
   }
@@ -74,22 +74,25 @@
   }
 }
 
-/* Signature Ency architectural grid rendered in Shakeeb Royal Purple */
+/* Signature architectural grid rendered in #120A21 */
 .bg-blueprint-grid {
-  background-color: #5b21b6;
+  background-color: #120a21;
   background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    linear-gradient(to right, rgba(168, 85, 247, 0.075) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(168, 85, 247, 0.075) 1px, transparent 1px);
   background-size: 48px 48px;
 }
 
-/* Deep Royal Plum #2C1156 architectural grid hero for Websites & Graphics pages */
+/* Deep-violet radial/linear hero gradient + architectural grid for Websites & Graphics pages */
 .bg-work-hero-grid {
-  background-color: #2C1156;
+  background-color: #120726;
   background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.055) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
-  background-size: 64px 64px;
+    linear-gradient(to right, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    radial-gradient(circle at 12% 20%, rgba(168, 85, 247, 0.24), transparent 45%),
+    radial-gradient(circle at 88% 80%, rgba(109, 40, 217, 0.32), transparent 50%),
+    linear-gradient(135deg, #120726 0%, #1d0c3d 50%, #0d051a 100%);
+  background-size: 64px 64px, 64px 64px, 100% 100%, 100% 100%, 100% 100%;
 }
 
 /* Website Portfolio Card Hover Full-Page Scroll (Slow & Readable 12s Pan) */

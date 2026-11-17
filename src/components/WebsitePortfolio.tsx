@@ -1362,7 +1362,7 @@ export function WebsitePortfolio({
   const displayedProjects = filteredProjects;
 
   const renderVideoShowcaseStage = (showSeeMoreButton: boolean) => (
-    <div className="w-full space-y-10 sm:space-y-12 py-12 sm:py-20 lg:py-24 bg-[#240b4c] text-white relative overflow-hidden">
+    <div className="w-full space-y-10 sm:space-y-12 py-12 sm:py-20 lg:py-24 bg-[#0D071E] text-white relative overflow-hidden">
       {/* 1. Centered Top Title Stack */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-4">
         <motion.span
@@ -1678,12 +1678,12 @@ export function WebsitePortfolio({
                 </p>
               </div>
 
-              <div className="flex items-center gap-6 py-3 px-5 bg-[#120a22] border border-purple-800/40 rounded-2xl shrink-0">
+              <div className="flex flex-wrap items-center gap-4 sm:gap-6 py-3 px-4 sm:px-5 bg-[#120A21] border border-purple-800/40 rounded-2xl shrink-0">
                 <div>
                   <span className="text-[11px] text-purple-300 font-semibold uppercase tracking-wider block">Core Web Vitals</span>
                   <span className="text-white font-mono font-bold text-sm sm:text-base tabular-nums">95–99 / 100</span>
                 </div>
-                <div className="w-px h-8 bg-purple-800/40" />
+                <div className="hidden xs:block sm:block w-px h-8 bg-purple-800/40" />
                 <div>
                   <span className="text-[11px] text-purple-300 font-semibold uppercase tracking-wider block">Deployments</span>
                   <span className="text-[#c084fc] font-mono font-bold text-sm sm:text-base tabular-nums">150+ Live Sites</span>

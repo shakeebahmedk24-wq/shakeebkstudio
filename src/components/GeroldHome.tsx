@@ -16,10 +16,8 @@ import {
   GraduationCap,
   Briefcase,
   ChevronRight,
-  ChevronLeft,
   ChevronDown,
   Download,
-  RotateCcw,
   Star,
   Gauge,
   Layers,
@@ -33,87 +31,6 @@ interface GeroldHomeProps {
   initialPortfolioTab?: "all" | "case_studies" | "websites" | "graphics";
   onNavigateToPortfolio?: (type?: "all" | "web" | "graphics") => void;
 }
-
-interface CapabilityChip {
-  id: string;
-  label: string;
-  tilt: number;
-  summary: string;
-  stack: string;
-}
-
-const CAPABILITY_CHIPS: CapabilityChip[] = [
-  {
-    id: "wp",
-    label: "WordPress & WooCommerce",
-    tilt: -2,
-    summary: "Bespoke theme architecture, custom PHP hooks, ACF blocks, and high-concurrency WooCommerce stores.",
-    stack: "PHP 8.3 · Gutenberg · ACF Pro · Redis"
-  },
-  {
-    id: "shopify",
-    label: "Shopify Plus & Liquid",
-    tilt: 2,
-    summary: "Conversion-tuned e-commerce storefronts with bundle builders, AJAX cart drawers, and sub-second PDP loads.",
-    stack: "Liquid · Storefront API · Recharge · Stripe"
-  },
-  {
-    id: "react",
-    label: "React, Next.js & AI Apps",
-    tilt: -1.5,
-    summary: "Modern web applications, interactive dashboards, bilingual i18n experiences, and Gemini AI integrations.",
-    stack: "React 19 · TypeScript · Next.js · Tailwind"
-  },
-  {
-    id: "cwv",
-    label: "95+ Core Web Vitals",
-    tilt: 1.5,
-    summary: "Aggressive asset optimization, WebP media pipelines, script pruning, and edge caching so pages load under 0.4s.",
-    stack: "Lighthouse 95–99 · Zero CLS · CDN"
-  },
-  {
-    id: "brand",
-    label: "Brand Identity & Logos",
-    tilt: -2.5,
-    summary: "Geometric monograms, complete brand books, typography systems, and print-ready 300 DPI collateral.",
-    stack: "Illustrator · Figma · Brand Guidelines"
-  },
-  {
-    id: "uiux",
-    label: "Figma UI/UX Systems",
-    tilt: 2,
-    summary: "Clean wireframes, high-contrast responsive interfaces, interactive prototypes, and tokenized design libraries.",
-    stack: "Figma · Design Tokens · Prototyping"
-  },
-  {
-    id: "packaging",
-    label: "Packaging & Social Kits",
-    tilt: -1,
-    summary: "Retail can, bottle, box, and pouch dielines alongside campaign-ready social templates and display ads.",
-    stack: "Photoshop · Print Dielines · Social Kits"
-  },
-  {
-    id: "whitelabel",
-    label: "White-Label Agency Partner",
-    tilt: 2.5,
-    summary: "Dependable senior dev & design capacity under strict NDA with crisp documentation and clean commits.",
-    stack: "NDA Friendly · Async Looms · Handoff Docs"
-  },
-  {
-    id: "mobile",
-    label: "Mobile-First Checkout UX",
-    tilt: -1.5,
-    summary: "Thumb-friendly navigation, 44px+ tap targets, and friction-free digital wallet checkout optimization.",
-    stack: "Apple Pay · Google Pay · Responsive QA"
-  },
-  {
-    id: "care",
-    label: "Maintenance & Backups",
-    tilt: 1,
-    summary: "Ongoing security patching, staging deployments, plugin audits, and fast fixes when you need a hand.",
-    stack: "Staging QA · Backups · Priority Support"
-  }
-];
 
 export function GeroldHome({
   initialPortfolioTab = "all",
@@ -133,15 +50,10 @@ export function GeroldHome({
   const [hoveredOverlayLink, setHoveredOverlayLink] = useState<string | null>(null);
   const [heroTilt, setHeroTilt] = useState({ rotateX: 0, rotateY: 0 });
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
-  const [testimonialIndex, setTestimonialIndex] = useState(0);
   const [showHireModal, setShowHireModal] = useState(false);
   const [hireFormSubmitted, setHireFormSubmitted] = useState(false);
   const [activeSkillCategory, setActiveSkillCategory] = useState<"all" | "design" | "dev">("all");
-  const [engagementPlan, setEngagementPlan] = useState<"project" | "partner">("project");
-  const [selectedChip, setSelectedChip] = useState<CapabilityChip>(CAPABILITY_CHIPS[0]);
-  const [chipResetKey, setChipResetKey] = useState(0);
 
-  const chipBoardRef = useRef<HTMLDivElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   // Hire modal form fields
@@ -309,47 +221,6 @@ export function GeroldHome({
     setShowHireModal(true);
   };
 
-  const getInitials = (name: string) =>
-    name
-      .split(" ")
-      .filter(Boolean)
-      .slice(0, 2)
-      .map((n) => n[0].toUpperCase())
-      .join("");
-
-  const painPoints = [
-    {
-      num: "01",
-      title: "Great product, sluggish first impression",
-      body: "Customers land from an ad, hit a 4-second blank screen or shifting layout, and bounce before scrolling past the hero."
-    },
-    {
-      num: "02",
-      title: "Your developer and designer don't talk",
-      body: "Brand files sit in one folder while bloated templates break your typography, spacing, and mobile hierarchy in production."
-    },
-    {
-      num: "03",
-      title: "Mobile checkout feels clunky",
-      body: "Over 70% of food, retail, and service traffic arrives on phones — cramped buttons and slow carts quietly kill conversions."
-    },
-    {
-      num: "04",
-      title: "Locked behind fragile page builders",
-      body: "Every tiny menu tweak or promo banner requires fighting twenty nested plugins instead of clean, maintainable components."
-    },
-    {
-      num: "05",
-      title: "Agency handoffs to junior contractors",
-      body: "You pitched senior partners on the sales call, then watched communication slow down once actual build tickets began."
-    },
-    {
-      num: "06",
-      title: "Traffic grows, rankings lag behind",
-      body: "Weak semantic structure, unoptimized images, and missing schema keep Google PageSpeed in the 40s instead of 95+."
-    }
-  ];
-
   const servicesList = [
     {
       num: "01.",
@@ -404,81 +275,6 @@ export function GeroldHome({
       isNew: false,
       title: "White-Label Agency Partner",
       desc: "Running an agency and need dependable senior WordPress, Shopify, and design bandwidth under strict NDA? You get direct communication, staging QA, Loom walkthroughs, and pixel-accurate builds on schedule."
-    }
-  ];
-
-  const testimonials = [
-    {
-      name: "Denise Woodard",
-      role: "Founder & CEO, Partake Foods",
-      project: "WooCommerce Replatform & Speed Overhaul",
-      metric: "+145% Sales Growth · 0.39s Load",
-      quote:
-        "Shakeeb completely rebuilt our WooCommerce architecture from scratch. Our mobile page load speed dropped from 4.2 seconds down to 0.39s, and our monthly conversion rate climbed by +145% within the first 60 days."
-    },
-    {
-      name: "Marcus Sterling",
-      role: "VP of Digital Growth, The Builder Market",
-      project: "B2B Quotation Portal & Catalog Engine",
-      metric: "+110% Contractor RFQs",
-      quote:
-        "Finding an engineer who understands both high-throughput B2B databases and sleek, modern UI is rare. Shakeeb built our dynamic RFQ quotation engine and wholesale pricing tiers with flawless execution."
-    },
-    {
-      name: "Elena Rostova",
-      role: "Brand Director, Adora Organic Skincare",
-      project: "D2C Luxury Skincare & Shade Finder",
-      metric: "+160% Conversion Rate · 99/100 CWV",
-      quote:
-        "Shakeeb transformed Adora's digital presence into a luxury editorial experience. The interactive skincare quiz and sub-second checkout drawer contributed to an immediate 160% lift in direct sales."
-    },
-    {
-      name: "Khurram Siddiqui",
-      role: "Operations Director, DesiCart UK",
-      project: "Multi-Vendor Postal Code Grocery System",
-      metric: "-38% Cart Abandonment",
-      quote:
-        "Managing thousands of perishable SKUs and dynamic UK postal code delivery slots requires bulletproof engineering. Shakeeb optimized our queries, cutting checkout drop-offs by 38% during peak holidays."
-    },
-    {
-      name: "David M. Klein",
-      role: "Head of E-Commerce, Toynk Pop Culture",
-      project: "High-Traffic Collectibles & Drop Architecture",
-      metric: "Zero Downtime · 25k+ SKUs",
-      quote:
-        "We carry over 25,000 licensed pop culture collectibles. Shakeeb restructured our faceted search and caching layers. During Black Friday drops, the site handled massive concurrency without a hiccup."
-    },
-    {
-      name: "Farhan Bashir",
-      role: "Creative Director, Brandilyst Digital",
-      project: "Enterprise Design System & Web Deployment",
-      metric: "12+ Joint Client Launches",
-      quote:
-        "I have collaborated with Shakeeb across more than a dozen enterprise WordPress and branding projects. His ability to translate complex design systems into responsive, lag-free sites is unmatched."
-    },
-    {
-      name: "Rachel Vance",
-      role: "Managing Partner, Lumina MedSpa",
-      project: "Medical Booking System & HIPAA-Ready Portal",
-      metric: "+85% Mobile Inbound Bookings",
-      quote:
-        "Shakeeb designed and developed our private patient booking portal. His multi-step scheduling calendar and instant inquiry routing doubled our inbound consultations within thirty days."
-    },
-    {
-      name: "Sarah Jenkins",
-      role: "Chief Marketing Officer, Qantra Security",
-      project: "Enterprise SaaS Web Platform & Brand Mark",
-      metric: "99/100 PageSpeed · +92% Demo CVR",
-      quote:
-        "Shakeeb refined our brand identity, vector icon sets, and interactive product tour. Our demo booking conversion rate jumped by 92% immediately upon launch."
-    },
-    {
-      name: "Jonathan Briggs",
-      role: "Executive Publisher, Briggs Media",
-      project: "High-Traffic Editorial Hub",
-      metric: "400K+ Monthly Readers · 0 CLS",
-      quote:
-        "Shakeeb eliminated our cumulative layout shifts, brought our Core Web Vitals straight to 98, and restructured our article templates cleanly."
     }
   ];
 
@@ -555,10 +351,8 @@ export function GeroldHome({
     }
   ];
 
-  const desktopTestimonialPages = Math.ceil(testimonials.length / 3);
-
   return (
-    <div className="min-h-screen bg-[#07030e] text-[#f3f4f6] font-sans antialiased selection:bg-[#8750f7] selection:text-white relative overflow-x-clip">
+    <div className="min-h-screen bg-[#0D071E] text-[#f3f4f6] font-sans antialiased selection:bg-[#8750f7] selection:text-white relative overflow-x-clip">
       {/* ======================================================== */}
       {/* FLOATING VIDEO-MATCHED HEADER (Capsule Pill + Scrolled)  */}
       {/* ======================================================== */}
@@ -592,7 +386,7 @@ export function GeroldHome({
             <img
               src="/Shakeeb_logo_white-removebg-preview-1.png"
               alt="Shakeeb"
-              className="h-6 sm:h-[26px] w-auto object-contain transition-transform duration-200 group-hover:scale-[1.03]"
+              className="h-5 sm:h-[26px] w-auto object-contain transition-transform duration-200 group-hover:scale-[1.03]"
             />
           </a>
 
@@ -684,13 +478,6 @@ export function GeroldHome({
                 </AnimatePresence>
               </div>
 
-              <button
-                onClick={() => scrollToSection("pricing")}
-                className="px-3.5 py-1.5 rounded-full text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6] transition-colors cursor-pointer whitespace-nowrap"
-              >
-                Pricing
-              </button>
-
               {/* Portfolio Dropdown */}
               <div
                 className="relative"
@@ -774,18 +561,18 @@ export function GeroldHome({
           </div>
 
           {/* Zone 3: White Avatar "Book a call" Pill + Circular Menu Trigger (on scroll / mobile) */}
-          <div className="pointer-events-auto flex items-center gap-2.5 shrink-0">
+          <div className="pointer-events-auto flex items-center gap-2 sm:gap-2.5 shrink-0">
             <button
               onClick={() => openHireWithService("WordPress & WooCommerce Build")}
-              className="inline-flex items-center gap-2.5 pl-1.5 pr-4 py-1.5 bg-white hover:bg-purple-50 text-[#120a22] text-xs font-bold tracking-wide rounded-full transition-all cursor-pointer whitespace-nowrap shadow-[0_12px_32px_rgba(7,3,14,0.32)]"
+              className="inline-flex items-center gap-2.5 pl-1 pr-3.5 sm:pl-1.5 sm:pr-4 py-1 bg-white hover:bg-purple-50 text-[#120a22] text-xs font-bold tracking-wide rounded-full transition-all cursor-pointer whitespace-nowrap shadow-[0_12px_32px_rgba(7,3,14,0.32)]"
             >
               <img
-                src="/Gemini_Generated_Image_bvflr0bvflr0bvfl.jpg"
+                src="/shakeeb-avatar.webp"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = "/shakeeb_profile.jpg";
                 }}
                 alt="Shakeeb"
-                className="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover object-top border border-purple-300"
+                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover object-center border border-purple-300/80 shrink-0"
               />
               <span>Book a call</span>
             </button>
@@ -796,7 +583,7 @@ export function GeroldHome({
                 setFullMenuOpen(true);
               }}
               aria-label="Open full navigation menu"
-              className={`w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white hover:bg-purple-50 text-[#120a22] shadow-[0_12px_32px_rgba(7,3,14,0.32)] flex flex-col items-center justify-center gap-1.5 transition-all cursor-pointer shrink-0 ${
+              className={`w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white hover:bg-purple-50 text-[#120a22] shadow-[0_12px_32px_rgba(7,3,14,0.32)] flex flex-col items-center justify-center gap-1.5 transition-all cursor-pointer shrink-0 ${
                 isScrolled ? "flex" : "flex lg:hidden"
               }`}
             >
@@ -817,7 +604,7 @@ export function GeroldHome({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: "-4%" }}
             transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 z-[100] bg-[#240b4c] text-white flex flex-col justify-between p-5 sm:p-8 lg:p-10 overflow-y-auto"
+            className="fixed inset-0 z-[100] bg-[#120A21] text-white flex flex-col justify-between p-5 sm:p-8 lg:p-10 overflow-y-auto"
           >
             {/* Top Bar inside Overlay */}
             <div className="max-w-7xl w-full mx-auto flex items-center justify-between gap-4">
@@ -839,15 +626,15 @@ export function GeroldHome({
                     setFullMenuOpen(false);
                     openHireWithService("WordPress & WooCommerce Build");
                   }}
-                  className="inline-flex items-center gap-2.5 pl-1.5 pr-4 py-1.5 bg-white hover:bg-purple-50 text-[#120a22] text-xs font-bold rounded-full transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-2.5 pl-1 pr-4 py-1 bg-white hover:bg-purple-50 text-[#120a22] text-xs font-bold rounded-full transition-colors cursor-pointer"
                 >
                   <img
-                    src="/Gemini_Generated_Image_bvflr0bvflr0bvfl.jpg"
+                    src="/shakeeb-avatar.webp"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = "/shakeeb_profile.jpg";
                     }}
                     alt="Shakeeb"
-                    className="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover object-top"
+                    className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover object-center border border-purple-300/80 shrink-0"
                   />
                   <span>Book a call</span>
                 </button>
@@ -945,21 +732,6 @@ export function GeroldHome({
                 </AnimatePresence>
               </div>
 
-              {/* PRICING */}
-              <button
-                onMouseEnter={() => setHoveredOverlayLink("pricing")}
-                onMouseLeave={() => setHoveredOverlayLink(null)}
-                onClick={() => scrollToSection("pricing")}
-                className="group flex items-center gap-3 font-display text-5xl sm:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white hover:text-[#e9d5ff] transition-colors cursor-pointer"
-              >
-                <ArrowUpRight
-                  className={`w-8 h-8 sm:w-12 sm:h-12 text-[#e9d5ff] transition-all duration-200 ${
-                    hoveredOverlayLink === "pricing" ? "opacity-100 scale-100" : "opacity-0 -ml-10 sm:-ml-14 scale-75"
-                  }`}
-                />
-                <span>PRICING</span>
-              </button>
-
               {/* PORTFOLIO (Expandable Websites / Graphics / CV) */}
               <div>
                 <button
@@ -1055,44 +827,44 @@ export function GeroldHome({
       {currentPage === "home" && (
         <main>
           {/* ======================================================== */}
-          {/* 1. HERO SECTION (Solid Deep Royal Plum #2C1156)          */}
+          {/* 1. UNIFIED HERO + EXPERIENCE & PROOF SECTION             */}
           {/* ======================================================== */}
           <section
             id="hero"
-            className="bg-[#2C1156] text-white pt-24 pb-16 sm:pt-28 sm:pb-24 lg:pt-32 lg:pb-28 relative overflow-hidden"
+            className="bg-experience-gradient text-white pt-24 pb-10 sm:pt-28 sm:pb-12 lg:pt-32 lg:pb-14 border-b border-purple-500/30 rounded-b-[2rem] sm:rounded-b-[3rem] relative z-10 overflow-hidden shadow-[0_24px_60px_rgba(91,33,182,0.22)]"
           >
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16">
+              <div className="grid lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-12 items-center">
                 {/* Left Column: Heavy Condensed Headline & Value Proposition */}
                 <motion.div
                   initial={{ opacity: 0, y: 24 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                  className="lg:col-span-7 space-y-6 text-left"
+                  className="lg:col-span-7 space-y-5 sm:space-y-6 text-left"
                 >
                   <motion.span
                     initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
                     animate={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
                     whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
                     transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
-                    className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
+                    className="font-hand text-lg sm:text-2xl font-bold px-3 sm:px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
                   >
                     WordPress, AI &amp; Brand Developer · 7+ years
                   </motion.span>
 
-                  <h1 className="font-display text-5xl sm:text-7xl lg:text-[92px] font-black uppercase tracking-tight leading-[0.92] text-white text-balance">
+                  <h1 className="font-display text-[44px] sm:text-7xl lg:text-[92px] font-black uppercase tracking-tight leading-[0.92] text-white text-balance">
                     Websites &amp; brands that keep getting better
                   </h1>
 
-                  <p className="text-base sm:text-lg text-purple-100 leading-relaxed max-w-2xl">
+                  <p className="text-sm sm:text-lg text-purple-100 leading-relaxed max-w-2xl">
                     I&apos;m <strong className="text-white font-bold">Shakeeb Ahmed Khan</strong> — a full-stack WordPress, Shopify, React &amp; AI developer paired with a senior graphic design studio. I help ambitious brands replace sluggish, patched-together websites with sub-second stores and cohesive visual identities.
                   </p>
 
-                  {/* Primary Action + Gradient Download CV Pill (Reference-matched) */}
-                  <div className="flex flex-wrap items-center gap-3.5 pt-2">
+                  {/* Primary Action + Gradient Download CV Pill */}
+                  <div className="flex flex-wrap items-center gap-2.5 sm:gap-3.5 pt-2">
                     <button
                       onClick={() => openHireWithService("Full Website & Brand Build")}
-                      className="px-7 py-3.5 bg-white hover:bg-[#e9d5ff] text-[#120a22] text-sm font-bold tracking-wide rounded-full transition-colors inline-flex items-center gap-2 cursor-pointer whitespace-nowrap shadow-xl"
+                      className="px-5 sm:px-7 py-3 sm:py-3.5 bg-white hover:bg-[#e9d5ff] text-[#120a22] text-xs sm:text-sm font-bold tracking-wide rounded-full transition-colors inline-flex items-center gap-2 cursor-pointer whitespace-nowrap shadow-xl"
                     >
                       <span>Start a Project</span>
                       <ArrowRight className="w-4 h-4" />
@@ -1100,7 +872,7 @@ export function GeroldHome({
 
                     <button
                       onClick={() => scrollToSection("web-portfolio")}
-                      className="px-6 py-3.5 bg-white/10 hover:bg-white/20 border border-white/25 text-white text-sm font-semibold rounded-full transition-colors cursor-pointer whitespace-nowrap"
+                      className="px-5 sm:px-6 py-3 sm:py-3.5 bg-white/10 hover:bg-white/20 border border-white/25 text-white text-xs sm:text-sm font-semibold rounded-full transition-colors cursor-pointer whitespace-nowrap"
                     >
                       See Live Work
                     </button>
@@ -1110,7 +882,7 @@ export function GeroldHome({
                       download="Shakeeb_Khan_CV.pdf"
                       target="_blank"
                       rel="noreferrer"
-                      className="px-6 py-3.5 rounded-full bg-gradient-to-r from-[#8750f7] via-[#6d28d9] to-[#a855f7] hover:brightness-110 text-white text-sm font-bold inline-flex items-center gap-2 whitespace-nowrap shadow-[0_10px_28px_rgba(7,3,14,0.35)] border border-white/20 transition-all"
+                      className="px-5 sm:px-6 py-3 sm:py-3.5 rounded-full bg-gradient-to-r from-[#8750f7] via-[#6d28d9] to-[#a855f7] hover:brightness-110 text-white text-xs sm:text-sm font-bold inline-flex items-center gap-2 whitespace-nowrap shadow-[0_10px_28px_rgba(7,3,14,0.35)] border border-white/20 transition-all"
                     >
                       <Download className="w-4 h-4 shrink-0" />
                       <span>Download CV</span>
@@ -1118,11 +890,8 @@ export function GeroldHome({
                   </div>
                 </motion.div>
 
-                {/* Right Column: Framed Portrait with Subtle Interactive 3D Tilt */}
-                <motion.div
-                  initial={{ opacity: 0, y: 28, scale: 0.96 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ duration: 0.7, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+                {/* Right Column: Framed Portrait (Starts Anti-Clockwise -> Original Position) */}
+                <div
                   className="lg:col-span-5 flex flex-col items-center lg:items-end"
                   style={{ perspective: 1000 }}
                 >
@@ -1136,49 +905,89 @@ export function GeroldHome({
                     }}
                     onMouseLeave={() => setHeroTilt({ rotateX: 0, rotateY: 0 })}
                   >
-                    {/* Interactive Subtle-Tilt Portrait Card */}
+                    {/* Anti-Clockwise Entrance -> Resting Clockwise Position */}
                     <motion.div
-                      animate={{
-                        rotateX: heroTilt.rotateX,
-                        rotateY: heroTilt.rotateY
-                      }}
-                      transition={{ type: "spring", stiffness: 220, damping: 20 }}
-                      className="bg-[#120a22] p-3 sm:p-4 rounded-3xl border-2 border-purple-500/45 shadow-[0_28px_65px_rgba(135,80,247,0.18)] rotate-[2deg] hover:rotate-[0.5deg] transition-transform duration-300 will-change-transform"
+                      initial={{ opacity: 0, y: 26, rotate: -11, scale: 0.94 }}
+                      whileInView={{ opacity: 1, y: 0, rotate: 2, scale: 1 }}
+                      whileHover={{ rotate: 0.5 }}
+                      viewport={{ once: true, amount: 0.2 }}
+                      transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+                      className="will-change-transform"
                     >
-                      <div className="aspect-[4/4.3] w-full rounded-2xl overflow-hidden bg-[#07030e]">
-                        <img
-                          src="/Gemini_Generated_Image_bvflr0bvflr0bvfl.jpg"
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).src = "/shakeeb_profile.jpg";
-                          }}
-                          alt="Shakeeb Ahmed Khan — WordPress, AI & Custom Web Developer"
-                          className="w-full h-full object-cover object-top"
-                        />
-                      </div>
-                      <div className="pt-3 pb-1 px-1 flex items-center justify-between text-white">
-                        <div>
-                          <span className="font-display font-black uppercase text-xl leading-none block">
-                            Shakeeb Ahmed Khan
-                          </span>
-                          <span className="text-xs text-purple-200 font-medium">
-                            Karachi, Pakistan · Remote Worldwide
+                      <motion.div
+                        animate={{
+                          rotateX: heroTilt.rotateX,
+                          rotateY: heroTilt.rotateY
+                        }}
+                        transition={{ type: "spring", stiffness: 220, damping: 20 }}
+                        className="bg-[#120a22] p-3 sm:p-4 rounded-3xl border-2 border-purple-500/45 shadow-[0_28px_65px_rgba(135,80,247,0.18)] will-change-transform"
+                      >
+                        <div className="aspect-[4/4.3] w-full rounded-2xl overflow-hidden bg-[#07030e]">
+                          <img
+                            src="/Gemini_Generated_Image_bvflr0bvflr0bvfl.jpg"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = "/shakeeb_profile.jpg";
+                            }}
+                            alt="Shakeeb Ahmed Khan — WordPress, AI & Custom Web Developer"
+                            className="w-full h-full object-cover object-top"
+                          />
+                        </div>
+                        <div className="pt-3 pb-1 px-1 flex items-center justify-between text-white">
+                          <div>
+                            <span className="font-display font-black uppercase text-xl leading-none block">
+                              Shakeeb Ahmed Khan
+                            </span>
+                            <span className="text-xs text-purple-200 font-medium">
+                              Karachi, Pakistan · Remote Worldwide
+                            </span>
+                          </div>
+                          <span className="font-mono text-xs font-bold text-[#c084fc] tabular-nums">
+                            150+ Shipped
                           </span>
                         </div>
-                        <span className="font-mono text-xs font-bold text-[#c084fc] tabular-nums">
-                          150+ Shipped
-                        </span>
-                      </div>
+                      </motion.div>
                     </motion.div>
 
-                    {/* Handwritten Arrow & Note (Desktop) */}
+                    {/* Handwritten Tracing & Untracing Arrow + Note */}
                     <div className="hidden sm:flex items-center gap-2 mt-4 justify-center lg:justify-start pl-2">
-                      <svg width="36" height="24" viewBox="0 0 36 24" fill="none" className="text-[#e9d5ff] shrink-0" aria-hidden="true">
-                        <path
-                          d="M2 20C10 20 18 14 22 4M22 4L14 7M22 4L26 11"
+                      <svg width="38" height="26" viewBox="0 0 36 24" fill="none" className="text-[#e9d5ff] shrink-0" aria-hidden="true">
+                        <motion.path
+                          d="M2 20C10 20 18 14 22 4"
                           stroke="currentColor"
-                          strokeWidth="2"
+                          strokeWidth="2.2"
                           strokeLinecap="round"
                           strokeLinejoin="round"
+                          initial={{ pathLength: 0, opacity: 0.35 }}
+                          animate={{
+                            pathLength: [0, 1, 1, 0],
+                            opacity: [0.35, 1, 1, 0.35]
+                          }}
+                          transition={{
+                            duration: 2.8,
+                            repeat: Infinity,
+                            repeatDelay: 0.35,
+                            times: [0, 0.42, 0.68, 1],
+                            ease: "easeInOut"
+                          }}
+                        />
+                        <motion.path
+                          d="M14 7L22 4L26 11"
+                          stroke="currentColor"
+                          strokeWidth="2.2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          initial={{ pathLength: 0, opacity: 0 }}
+                          animate={{
+                            pathLength: [0, 0, 1, 1, 0],
+                            opacity: [0, 0, 1, 1, 0]
+                          }}
+                          transition={{
+                            duration: 2.8,
+                            repeat: Infinity,
+                            repeatDelay: 0.35,
+                            times: [0, 0.28, 0.48, 0.68, 1],
+                            ease: "easeInOut"
+                          }}
                         />
                       </svg>
                       <span className="font-hand text-xl text-[#e9d5ff] -rotate-2">
@@ -1186,106 +995,96 @@ export function GeroldHome({
                       </span>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               </div>
-            </div>
-          </section>
 
-          {/* ======================================================== */}
-          {/* 2. EXPERIENCE & PROOF STRIP (Rich Gradient Backdrop)     */}
-          {/* ======================================================== */}
-          <motion.section
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.08 }}
-            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-            className="bg-experience-gradient border-y border-purple-500/35 rounded-b-[2rem] sm:rounded-b-[3rem] relative z-10 overflow-hidden shadow-[0_24px_60px_rgba(91,33,182,0.22)]"
-          >
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-9 sm:py-12 space-y-7 relative">
-              {/* Quantitative Experience Metrics Strip */}
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 border-b border-purple-400/20 pb-7 text-left">
-                {[
-                  {
-                    value: "150+",
-                    label: "Websites & brands delivered",
-                    highlight: false
-                  },
-                  {
-                    value: "7+ Years",
-                    label: "Full-stack web & UI experience",
-                    highlight: true
-                  },
-                  {
-                    value: "95–99",
-                    label: "Average Google PageSpeed score",
-                    highlight: false
-                  },
-                  {
-                    value: "100+",
-                    label: "Verified 5-star client reviews",
-                    highlight: false
-                  }
-                ].map((stat, idx) => (
-                  <motion.div
-                    key={stat.value}
-                    initial={{ opacity: 0, y: 16 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.1 }}
-                    transition={{ duration: 0.4, delay: idx * 0.06 }}
-                    className="p-4 sm:p-5 rounded-2xl bg-white/[0.04] border border-purple-400/20 hover:border-purple-400/50 transition-colors"
-                  >
-                    <div
-                      className={`font-display text-4xl sm:text-5xl font-black tabular-nums leading-none ${
-                        stat.highlight
-                          ? "bg-gradient-to-r from-[#e9d5ff] via-[#c084fc] to-[#a855f7] bg-clip-text text-transparent"
-                          : "text-white"
-                      }`}
+              {/* Merged Experience & Proof Strip (Seamlessly inside Hero Section — No Top Line) */}
+              <div className="space-y-7 pt-2">
+                {/* Quantitative Experience Metrics Strip */}
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 border-b border-purple-400/20 pb-7 text-left">
+                  {[
+                    {
+                      value: "150+",
+                      label: "Websites & brands delivered",
+                      highlight: false
+                    },
+                    {
+                      value: "7+ Years",
+                      label: "Full-stack web & UI experience",
+                      highlight: true
+                    },
+                    {
+                      value: "95–99",
+                      label: "Average Google PageSpeed score",
+                      highlight: false
+                    },
+                    {
+                      value: "100+",
+                      label: "Verified 5-star client reviews",
+                      highlight: false
+                    }
+                  ].map((stat, idx) => (
+                    <motion.div
+                      key={stat.value}
+                      initial={{ opacity: 0, y: 16 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.1 }}
+                      transition={{ duration: 0.4, delay: idx * 0.06 }}
+                      className="p-4 sm:p-5 rounded-2xl bg-white/[0.04] border border-purple-400/20 hover:border-purple-400/50 transition-colors"
                     >
-                      {stat.value}
-                    </div>
-                    <div className="text-xs sm:text-sm font-medium text-purple-100/85 mt-1.5">
-                      {stat.label}
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
+                      <div
+                        className={`font-display text-4xl sm:text-5xl font-black tabular-nums leading-none ${
+                          stat.highlight
+                            ? "bg-gradient-to-r from-[#e9d5ff] via-[#c084fc] to-[#a855f7] bg-clip-text text-transparent"
+                            : "text-white"
+                        }`}
+                      >
+                        {stat.value}
+                      </div>
+                      <div className="text-xs sm:text-sm font-medium text-purple-100/85 mt-1.5">
+                        {stat.label}
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
 
-              {/* Client Brand Roster Marquee */}
-              <div className="flex items-center gap-4 overflow-hidden">
-                <span className="font-hand text-xl sm:text-2xl text-[#e9d5ff] font-bold shrink-0 whitespace-nowrap">
-                  Trusted by:
-                </span>
-                <div className="overflow-hidden flex-1">
-                  <div className="animate-marquee flex items-center gap-8 font-display text-xl sm:text-2xl font-black uppercase tracking-wide text-white">
-                    {[...Array(2)].map((_, loopIdx) => (
-                      <React.Fragment key={loopIdx}>
-                        <span>Henrietta Said</span>
-                        <span className="text-[#c084fc]">·</span>
-                        <span>CRAV Burgers</span>
-                        <span className="text-[#c084fc]">·</span>
-                        <span>Pretty Patty Genève</span>
-                        <span className="text-[#c084fc]">·</span>
-                        <span>Primland Residences</span>
-                        <span className="text-[#c084fc]">·</span>
-                        <span>Tòpas Tapas &amp; Bar</span>
-                        <span className="text-[#c084fc]">·</span>
-                        <span>Brar&apos;s Foods</span>
-                        <span className="text-[#c084fc]">·</span>
-                        <span>Mr.Day Italy</span>
-                        <span className="text-[#c084fc]">·</span>
-                        <span>Partake Foods</span>
-                        <span className="text-[#c084fc]">·</span>
-                        <span>Toynk</span>
-                        <span className="text-[#c084fc]">·</span>
-                        <span>DesiCart UK</span>
-                        <span className="text-[#c084fc]">·</span>
-                      </React.Fragment>
-                    ))}
+                {/* Client Brand Roster Marquee */}
+                <div className="flex items-center gap-4 overflow-hidden">
+                  <span className="font-hand text-xl sm:text-2xl text-[#e9d5ff] font-bold shrink-0 whitespace-nowrap">
+                    Trusted by:
+                  </span>
+                  <div className="overflow-hidden flex-1">
+                    <div className="animate-marquee flex items-center gap-8 font-display text-xl sm:text-2xl font-black uppercase tracking-wide text-white">
+                      {[...Array(2)].map((_, loopIdx) => (
+                        <React.Fragment key={loopIdx}>
+                          <span>Henrietta Said</span>
+                          <span className="text-[#c084fc]">·</span>
+                          <span>CRAV Burgers</span>
+                          <span className="text-[#c084fc]">·</span>
+                          <span>Pretty Patty Genève</span>
+                          <span className="text-[#c084fc]">·</span>
+                          <span>Primland Residences</span>
+                          <span className="text-[#c084fc]">·</span>
+                          <span>Tòpas Tapas &amp; Bar</span>
+                          <span className="text-[#c084fc]">·</span>
+                          <span>Brar&apos;s Foods</span>
+                          <span className="text-[#c084fc]">·</span>
+                          <span>Mr.Day Italy</span>
+                          <span className="text-[#c084fc]">·</span>
+                          <span>Partake Foods</span>
+                          <span className="text-[#c084fc]">·</span>
+                          <span>Toynk</span>
+                          <span className="text-[#c084fc]">·</span>
+                          <span>DesiCart UK</span>
+                          <span className="text-[#c084fc]">·</span>
+                        </React.Fragment>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </motion.section>
+          </section>
 
           {/* ======================================================== */}
           {/* 3. SERVICES (Pick What Fits Right Now)                   */}
@@ -1296,7 +1095,7 @@ export function GeroldHome({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.05 }}
             transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-            className="py-16 sm:py-24 bg-[#07030e] scroll-mt-20"
+            className="py-16 sm:py-24 bg-[#0D071E] scroll-mt-20"
           >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left space-y-10 sm:space-y-12">
               <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -1330,11 +1129,11 @@ export function GeroldHome({
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true, amount: 0.06 }}
                       transition={{ duration: 0.45, delay: (idx % 3) * 0.07 }}
-                      className="bg-[#120a22] border border-purple-800/45 hover:border-purple-400/70 rounded-3xl p-7 sm:p-8 text-left flex flex-col justify-between gap-7 transition-all duration-300 hover:-translate-y-1 shadow-[0_10px_30px_rgba(0,0,0,0.35)] hover:shadow-[0_18px_40px_rgba(135,80,247,0.18)] group"
+                      className="bg-[#120A21] border border-purple-800/45 hover:border-purple-400/70 rounded-3xl p-6 sm:p-8 text-left flex flex-col justify-between gap-7 transition-all duration-300 hover:-translate-y-1 shadow-[0_10px_30px_rgba(0,0,0,0.35)] hover:shadow-[0_18px_40px_rgba(135,80,247,0.18)] group"
                     >
                       <div className="space-y-5">
                         {/* Reference Top Row: Square Solid Purple Icon + Slanted Handwritten Tag */}
-                        <div className="flex items-center justify-between gap-3">
+                        <div className="flex flex-wrap items-center justify-between gap-2.5">
                           <div className="w-12 h-12 rounded-2xl bg-[#6d28d9] flex items-center justify-center text-white shadow-[0_6px_18px_rgba(109,40,217,0.45)] shrink-0 group-hover:scale-105 transition-transform">
                             <IconComp className="w-6 h-6" />
                           </div>
@@ -1344,7 +1143,7 @@ export function GeroldHome({
                             whileHover={{ rotate: 1.5, scale: 1.05 }}
                             viewport={{ once: true, amount: 0.2 }}
                             transition={{ type: "spring", stiffness: 320, damping: 16, delay: (idx % 3) * 0.08 }}
-                            className="font-hand text-base sm:text-lg font-bold px-3 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] shadow-sm whitespace-nowrap inline-block"
+                            className="font-hand text-sm sm:text-lg font-bold px-2.5 sm:px-3 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] shadow-sm inline-block"
                           >
                             {srv.note}
                           </motion.span>
@@ -1377,7 +1176,7 @@ export function GeroldHome({
           </motion.section>
 
           {/* ======================================================== */}
-          {/* 4. WEBSITES PORTFOLIO (Video-Matched Dark Purple Stage)  */}
+          {/* 4. WEBSITES PORTFOLIO (#0D071E)                          */}
           {/* ======================================================== */}
           <motion.div
             id="works"
@@ -1385,7 +1184,7 @@ export function GeroldHome({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.03 }}
             transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-            className="bg-[#240b4c] overflow-hidden scroll-mt-20"
+            className="bg-[#0D071E] overflow-hidden scroll-mt-20"
           >
             <div id="web-portfolio">
               <WebsitePortfolio
@@ -1396,7 +1195,7 @@ export function GeroldHome({
           </motion.div>
 
           {/* ======================================================== */}
-          {/* 5. GRAPHIC DESIGN PORTFOLIO (Deep Plum Mist #0d071d)     */}
+          {/* 5. GRAPHIC DESIGN PORTFOLIO (#0D071E)                    */}
           {/* ======================================================== */}
           <motion.div
             id="graphics-portfolio"
@@ -1404,7 +1203,7 @@ export function GeroldHome({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.03 }}
             transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-12 sm:mt-16 mx-2 sm:mx-4 lg:mx-6 bg-[#0d071d] border border-purple-900/35 rounded-[2rem] sm:rounded-[3rem] scroll-mt-20"
+            className="mt-8 sm:mt-12 mx-2 sm:mx-4 lg:mx-6 bg-[#0D071E] border border-purple-800/40 rounded-[2rem] sm:rounded-[3rem] scroll-mt-20"
           >
             <GraphicsPortfolio
               isHomePage={true}
@@ -1413,336 +1212,7 @@ export function GeroldHome({
           </motion.div>
 
           {/* ======================================================== */}
-          {/* 6. PAIN POINTS ("IS THIS YOU?" — Obsidian #07030e)       */}
-          {/* ======================================================== */}
-          <motion.section
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.06 }}
-            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-            className="py-16 sm:py-24 bg-[#07030e]"
-          >
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left space-y-10 sm:space-y-12">
-              <div className="max-w-3xl space-y-3">
-                <motion.span
-                  initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
-                  whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
-                  whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
-                  viewport={{ once: true, amount: 0.25 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
-                  className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
-                >
-                  sound familiar?
-                </motion.span>
-                <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white text-balance">
-                  Most businesses don&apos;t have a traffic problem. They have a website problem.
-                </h2>
-              </div>
-
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {painPoints.map((item, idx) => (
-                  <motion.div
-                    key={item.num}
-                    initial={{ opacity: 0, y: 18 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.08 }}
-                    transition={{ duration: 0.45, delay: (idx % 3) * 0.07 }}
-                    className="bg-[#120a22] border border-purple-900/40 hover:border-purple-600/50 rounded-2xl p-6 space-y-3 flex flex-col justify-between transition-colors"
-                  >
-                    <div className="space-y-2.5">
-                      <span className="font-mono text-xs font-bold text-[#c084fc] tabular-nums block">
-                        {item.num}.
-                      </span>
-                      <h3 className="font-display text-2xl sm:text-[26px] font-black uppercase leading-tight text-white">
-                        {item.title}
-                      </h3>
-                      <p className="text-sm text-zinc-300 leading-relaxed">
-                        {item.body}
-                      </p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </motion.section>
-
-          {/* ======================================================== */}
-          {/* 7. SOLUTION TRANSITION (Royal Plum #180e2f)              */}
-          {/* ======================================================== */}
-          <motion.section
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.08 }}
-            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-            className="mx-2 sm:mx-4 lg:mx-6 bg-[#180e2f] border border-purple-800/40 text-white rounded-[2rem] sm:rounded-[3rem] py-16 sm:py-24"
-          >
-            <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 text-left">
-              <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-end">
-                <div className="lg:col-span-7 space-y-4">
-                  <motion.span
-                    initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
-                    whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
-                    whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
-                    viewport={{ once: true, amount: 0.25 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
-                    className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
-                  >
-                    the good news?
-                  </motion.span>
-                  <h2 className="font-display text-5xl sm:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.9] text-white text-balance">
-                    That&apos;s the exact bit I fix.
-                  </h2>
-                </div>
-                <div className="lg:col-span-5 space-y-5">
-                  <p className="text-base text-zinc-200 leading-relaxed">
-                    Instead of splitting your project between a slow design studio and an overwhelmed freelancer, I engineer both the visual system and the full production codebase. Every site leaves with clean code, custom branding, and measurable speed.
-                  </p>
-                  <div className="flex flex-wrap gap-3">
-                    <button
-                      onClick={() => scrollToSection("web-portfolio")}
-                      className="px-6 py-3 bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white text-xs sm:text-sm font-bold rounded-full transition-colors cursor-pointer whitespace-nowrap"
-                    >
-                      Explore Website Work
-                    </button>
-                    <button
-                      onClick={() => scrollToSection("graphics-portfolio")}
-                      className="px-6 py-3 bg-[#120a22] hover:bg-purple-900/50 border border-purple-600/40 text-white text-xs sm:text-sm font-semibold rounded-full transition-colors cursor-pointer whitespace-nowrap"
-                    >
-                      View Brand Identities
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.section>
-
-          {/* ======================================================== */}
-          {/* 8. INTERACTIVE CAPABILITY CHIPS (Royal Purple Blueprint) */}
-          {/* ======================================================== */}
-          <motion.section
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.06 }}
-            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-8 sm:mt-12 mx-2 sm:mx-4 lg:mx-6 bg-blueprint-grid text-white rounded-[2rem] sm:rounded-[3rem] py-16 sm:py-24 overflow-hidden"
-          >
-            <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 text-left space-y-10">
-              <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                <div className="space-y-3 max-w-2xl">
-                  <motion.span
-                    initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
-                    whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
-                    whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
-                    viewport={{ once: true, amount: 0.25 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
-                    className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
-                  >
-                    go on, click or drag them around
-                  </motion.span>
-                  <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white text-balance">
-                    Everything Your Site Needs, Either Way
-                  </h2>
-                </div>
-
-                <button
-                  onClick={() => setChipResetKey((k) => k + 1)}
-                  className="self-start md:self-auto px-4 py-2 rounded-full bg-[#120a22]/70 hover:bg-[#120a22] border border-white/25 text-white text-xs font-semibold inline-flex items-center gap-2 transition-colors cursor-pointer whitespace-nowrap"
-                >
-                  <RotateCcw className="w-3.5 h-3.5" />
-                  <span>Reset Board</span>
-                </button>
-              </div>
-
-              {/* Interactive Draggable / Clickable Chip Cloud */}
-              <div
-                ref={chipBoardRef}
-                key={chipResetKey}
-                className="flex flex-wrap gap-3 sm:gap-4 p-5 sm:p-8 rounded-3xl bg-[#120a22]/60 border border-purple-300/25"
-              >
-                {CAPABILITY_CHIPS.map((chip, idx) => {
-                  const isSelected = selectedChip.id === chip.id;
-                  return (
-                    <motion.button
-                      key={chip.id}
-                      type="button"
-                      drag
-                      dragConstraints={chipBoardRef}
-                      dragElastic={0.15}
-                      initial={{ opacity: 0, y: 16, rotate: chip.tilt * 3.5, scale: 0.88 }}
-                      whileInView={{ opacity: 1, y: 0, rotate: chip.tilt, scale: 1 }}
-                      viewport={{ once: true, amount: 0.15 }}
-                      transition={{ type: "spring", stiffness: 280, damping: 17, delay: idx * 0.035 }}
-                      whileHover={{ scale: 1.05, rotate: chip.tilt * -0.5 }}
-                      whileTap={{ scale: 0.97 }}
-                      onClick={() => setSelectedChip(chip)}
-                      className={`px-4 sm:px-5 py-2.5 sm:py-3 rounded-full text-xs sm:text-sm font-bold cursor-grab active:cursor-grabbing transition-colors whitespace-nowrap select-none border ${
-                        isSelected
-                          ? "bg-white text-[#120a22] border-white shadow-lg"
-                          : "bg-[#180e2f] text-white border-purple-400/40 hover:border-white"
-                      }`}
-                    >
-                      {chip.label}
-                    </motion.button>
-                  );
-                })}
-              </div>
-
-              {/* Active Capability Detail Readout */}
-              <div className="bg-[#120a22] text-white rounded-2xl p-6 sm:p-7 flex flex-col md:flex-row md:items-center justify-between gap-6 border border-purple-400/40 shadow-xl">
-                <div className="space-y-1.5 max-w-2xl">
-                  <span className="font-mono text-xs font-bold text-[#c084fc] uppercase tracking-wider block">
-                    Selected Capability · {selectedChip.stack}
-                  </span>
-                  <h3 className="font-display text-2xl sm:text-3xl font-black uppercase text-white">
-                    {selectedChip.label}
-                  </h3>
-                  <p className="text-sm text-zinc-300 leading-relaxed">
-                    {selectedChip.summary}
-                  </p>
-                </div>
-                <button
-                  onClick={() => openHireWithService(selectedChip.label)}
-                  className="px-6 py-3 bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white text-xs sm:text-sm font-bold rounded-full transition-colors whitespace-nowrap shrink-0 cursor-pointer"
-                >
-                  Include in My Quote
-                </button>
-              </div>
-            </div>
-          </motion.section>
-
-          {/* ======================================================== */}
-          {/* 9. ENGAGEMENT / PRICING MODELS (Obsidian #07030e)        */}
-          {/* ======================================================== */}
-          <motion.section
-            id="pricing"
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.06 }}
-            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-            className="py-16 sm:py-24 bg-[#07030e] scroll-mt-20"
-          >
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-left space-y-10">
-              <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                <div className="space-y-3 max-w-2xl">
-                  <motion.span
-                    initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
-                    whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
-                    whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
-                    viewport={{ once: true, amount: 0.25 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
-                    className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
-                  >
-                    transparent from day one
-                  </motion.span>
-                  <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white text-balance">
-                    Handled For You, Or Handed To You
-                  </h2>
-                </div>
-
-                {/* 2-Option Segmented Toggle */}
-                <motion.div
-                  initial={{ opacity: 0, y: 14, rotate: -3, scale: 0.94 }}
-                  whileInView={{ opacity: 1, y: 0, rotate: 0, scale: 1 }}
-                  viewport={{ once: true, amount: 0.25 }}
-                  transition={{ type: "spring", stiffness: 260, damping: 18 }}
-                  className="inline-flex p-1.5 bg-[#120a22] border border-purple-900/40 rounded-full self-start md:self-auto"
-                >
-                  <button
-                    onClick={() => setEngagementPlan("project")}
-                    className={`px-5 py-2.5 rounded-full text-xs font-bold transition-colors cursor-pointer whitespace-nowrap ${
-                      engagementPlan === "project"
-                        ? "bg-gradient-to-r from-[#8750f7] to-purple-600 text-white"
-                        : "text-zinc-300 hover:text-white"
-                    }`}
-                  >
-                    Custom Project Build
-                  </button>
-                  <button
-                    onClick={() => setEngagementPlan("partner")}
-                    className={`px-5 py-2.5 rounded-full text-xs font-bold transition-colors cursor-pointer whitespace-nowrap ${
-                      engagementPlan === "partner"
-                        ? "bg-gradient-to-r from-[#8750f7] to-purple-600 text-white"
-                        : "text-zinc-300 hover:text-white"
-                    }`}
-                  >
-                    Ongoing Monthly Partner
-                  </button>
-                </motion.div>
-              </div>
-
-              {/* Ruled Notebook Breakdown Card */}
-              <div className="bg-notebook-purple border border-purple-700/50 rounded-3xl p-6 sm:p-10 grid lg:grid-cols-12 gap-8 items-center shadow-lg">
-                <div className="lg:col-span-7 space-y-4">
-                  <span className="font-mono text-xs font-bold uppercase tracking-wider text-[#c084fc] block">
-                    {engagementPlan === "project"
-                      ? "Fixed-Scope Delivery · 2–4 Week Sprint"
-                      : "Dedicated Retainer · Cancel Any Month"}
-                  </span>
-                  <h3 className="font-display text-3xl sm:text-5xl font-black uppercase text-white leading-[0.95]">
-                    {engagementPlan === "project"
-                      ? "End-to-End Site & Brand Launch"
-                      : "Your Embedded Web & Design Team"}
-                  </h3>
-                  <p className="text-sm sm:text-base text-zinc-300 leading-relaxed">
-                    {engagementPlan === "project"
-                      ? "Ideal when you want a fast, custom-engineered WordPress, Shopify, or React site plus cohesive brand graphics launched cleanly with full ownership."
-                      : "Best for growing stores and agencies shipping weekly landing pages, speed updates, fresh campaigns, and continuous conversion improvements."}
-                  </p>
-
-                  <div className="grid sm:grid-cols-2 gap-3 pt-2 text-xs sm:text-sm font-medium text-purple-100">
-                    {(engagementPlan === "project"
-                      ? [
-                          "Custom UI design & brand kit included",
-                          "95–99/100 Google PageSpeed tuned",
-                          "Full responsive & mobile QA pass",
-                          "100% source code & vector file IP transfer"
-                        ]
-                      : [
-                          "Priority dev & graphic design queue",
-                          "Core Web Vitals & uptime monitoring",
-                          "New landing pages, sections & campaigns",
-                          "Direct Slack, WhatsApp & email channel"
-                        ]
-                    ).map((bullet, idx) => (
-                      <div key={idx} className="flex items-start gap-2">
-                        <Check className="w-4 h-4 text-[#a855f7] shrink-0 mt-0.5" />
-                        <span>{bullet}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="lg:col-span-5 bg-[#120a22] border border-purple-700/50 rounded-2xl p-6 sm:p-7 space-y-5">
-                  <div className="space-y-1">
-                    <span className="text-xs font-semibold text-purple-300 uppercase tracking-wider block">
-                      {engagementPlan === "project" ? "Milestone Proposal" : "Monthly Capacity"}
-                    </span>
-                    <div className="font-display text-4xl font-black uppercase text-white">
-                      {engagementPlan === "project" ? "Fixed Quote in 24h" : "Flexible Monthly Sprint"}
-                    </div>
-                  </div>
-                  <p className="text-xs text-zinc-300 leading-relaxed">
-                    Share what you are building and receive a line-by-line deliverables breakdown before committing a dollar.
-                  </p>
-                  <button
-                    onClick={() =>
-                      openHireWithService(
-                        engagementPlan === "project"
-                          ? "Fixed-Scope Website & Brand Build"
-                          : "Ongoing Monthly Dev & Design Retainer"
-                      )
-                    }
-                    className="w-full py-3.5 px-6 bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white text-xs sm:text-sm font-bold tracking-wide rounded-full transition-colors cursor-pointer"
-                  >
-                    {engagementPlan === "project" ? "Request Fixed Quote" : "Check Monthly Availability"}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </motion.section>
-
-          {/* ======================================================== */}
-          {/* 10. ABOUT, EXPERIENCE, EDUCATION & CORE STACK (Gradient) */}
+          {/* 6. ABOUT, EXPERIENCE, EDUCATION & CORE STACK (#120A21)   */}
           {/* ======================================================== */}
           <motion.section
             id="resume"
@@ -1750,7 +1220,7 @@ export function GeroldHome({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.04 }}
             transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-            className="mx-2 sm:mx-4 lg:mx-6 bg-experience-gradient border border-purple-500/30 text-white rounded-[2rem] sm:rounded-[3rem] py-16 sm:py-24 scroll-mt-20 relative overflow-hidden"
+            className="mt-8 sm:mt-12 mx-2 sm:mx-4 lg:mx-6 bg-[#120A21] border border-purple-800/45 text-white rounded-[2rem] sm:rounded-[3rem] py-16 sm:py-24 scroll-mt-20 relative overflow-hidden"
           >
             <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 text-left relative z-10">
               <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
@@ -1796,10 +1266,10 @@ export function GeroldHome({
                           {/* Glowing Timeline Node */}
                           <span
                             aria-hidden="true"
-                            className="absolute -left-[22px] sm:-left-[27px] top-6 w-3.5 h-3.5 rounded-full bg-[#120a22] border-2 border-[#c084fc] group-hover:bg-[#c084fc] group-hover:scale-125 shadow-[0_0_12px_rgba(192,132,252,0.75)] transition-all"
+                            className="absolute -left-[22px] sm:-left-[27px] top-6 w-3.5 h-3.5 rounded-full bg-[#120A21] border-2 border-[#c084fc] group-hover:bg-[#c084fc] group-hover:scale-125 shadow-[0_0_12px_rgba(192,132,252,0.75)] transition-all"
                           />
 
-                          <div className="bg-white/[0.045] backdrop-blur-sm border border-purple-400/20 hover:border-purple-300/60 hover:bg-white/[0.08] rounded-2xl p-5 sm:p-6 transition-all duration-300 flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+                          <div className="bg-[#0D071E] border border-purple-700/40 hover:border-purple-400/70 rounded-2xl p-5 sm:p-6 transition-all duration-300 flex flex-col sm:flex-row sm:items-start justify-between gap-3">
                             <div className="space-y-1.5">
                               <div className="flex items-center gap-2 text-sm sm:text-base font-bold text-white">
                                 <Briefcase className="w-4 h-4 text-[#c084fc] shrink-0" />
@@ -1832,7 +1302,7 @@ export function GeroldHome({
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, amount: 0.1 }}
                         transition={{ duration: 0.45 }}
-                        className="bg-[#0e071c]/85 backdrop-blur-sm border border-purple-400/25 hover:border-purple-300/60 rounded-2xl overflow-hidden transition-colors"
+                        className="bg-[#0D071E] border border-purple-700/40 hover:border-purple-400/70 rounded-2xl overflow-hidden transition-colors"
                       >
                         <div className="h-1 w-full bg-gradient-to-r from-[#8750f7] via-[#c084fc] to-[#5b21b6]" />
                         <div className="p-5 space-y-2">
@@ -1857,7 +1327,7 @@ export function GeroldHome({
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, amount: 0.1 }}
                         transition={{ duration: 0.45, delay: 0.08 }}
-                        className="bg-[#0e071c]/85 backdrop-blur-sm border border-purple-400/25 hover:border-purple-300/60 rounded-2xl overflow-hidden transition-colors"
+                        className="bg-[#0D071E] border border-purple-700/40 hover:border-purple-400/70 rounded-2xl overflow-hidden transition-colors"
                       >
                         <div className="h-1 w-full bg-gradient-to-r from-[#c084fc] via-[#8750f7] to-[#5b21b6]" />
                         <div className="p-5 space-y-2">
@@ -1890,7 +1360,7 @@ export function GeroldHome({
                         whileInView={{ opacity: 1, y: 0, rotate: 0, scale: 1 }}
                         viewport={{ once: true, amount: 0.2 }}
                         transition={{ type: "spring", stiffness: 270, damping: 18 }}
-                        className="flex items-center gap-1.5 bg-[#0e071c]/85 p-1 rounded-full border border-purple-400/25"
+                        className="flex flex-wrap items-center gap-1.5 bg-[#0D071E] p-1 rounded-full border border-purple-700/40"
                       >
                         {[
                           { id: "all" as const, label: "All Stack" },
@@ -1918,7 +1388,7 @@ export function GeroldHome({
                         .map((skill) => (
                           <div
                             key={skill.id}
-                            className="bg-[#0e071c]/85 backdrop-blur-sm border border-purple-400/20 rounded-xl p-4 space-y-2.5"
+                            className="bg-[#0D071E] border border-purple-700/40 rounded-xl p-4 space-y-2.5"
                           >
                             <div className="flex items-center justify-between gap-2 text-sm font-bold text-white">
                               <span>{skill.name}</span>
@@ -1947,16 +1417,16 @@ export function GeroldHome({
                   transition={{ duration: 0.5 }}
                   className="lg:col-span-5 lg:sticky lg:top-24"
                 >
-                  <div className="bg-[#0e071c]/90 backdrop-blur-md text-white rounded-3xl p-6 sm:p-8 space-y-6 border border-purple-400/35 shadow-[0_24px_60px_rgba(0,0,0,0.45)]">
+                  <div className="bg-[#0D071E] text-white rounded-3xl p-6 sm:p-8 space-y-6 border border-purple-700/45 shadow-[0_24px_60px_rgba(0,0,0,0.45)]">
                     <div className="flex items-center gap-4">
                       <div className="w-20 h-20 rounded-2xl overflow-hidden bg-[#07030e] border border-purple-400/40 shrink-0">
                         <img
-                          src="/Gemini_Generated_Image_bvflr0bvflr0bvfl.jpg"
+                          src="/shakeeb-avatar.webp"
                           onError={(e) => {
                             (e.target as HTMLImageElement).src = "/shakeeb_profile.jpg";
                           }}
                           alt="Shakeeb Ahmed Khan"
-                          className="w-full h-full object-cover object-top"
+                          className="w-full h-full object-cover object-center"
                         />
                       </div>
                       <div>
@@ -2036,211 +1506,7 @@ export function GeroldHome({
           </motion.section>
 
           {/* ======================================================== */}
-          {/* 11. CLIENT TESTIMONIALS (Royal Purple Blueprint Grid)    */}
-          {/* ======================================================== */}
-          <motion.section
-            id="testimonials"
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.05 }}
-            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-8 sm:mt-12 mx-2 sm:mx-4 lg:mx-6 bg-blueprint-grid text-white rounded-[2rem] sm:rounded-[3rem] py-16 sm:py-24 scroll-mt-20"
-          >
-            <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 text-left space-y-10">
-              <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                <div className="space-y-3 max-w-2xl">
-                  <motion.span
-                    initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
-                    whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
-                    whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
-                    viewport={{ once: true, amount: 0.25 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
-                    className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
-                  >
-                    verified client feedback
-                  </motion.span>
-                  <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white">
-                    What Clients Say
-                  </h2>
-                </div>
-
-                {/* Desktop Pagination Controls */}
-                <div className="hidden md:flex items-center gap-3">
-                  <span className="font-mono text-xs text-purple-200 tabular-nums">
-                    {testimonialIndex + 1} / {desktopTestimonialPages}
-                  </span>
-                  <button
-                    onClick={() =>
-                      setTestimonialIndex((prev) =>
-                        prev > 0 ? prev - 1 : desktopTestimonialPages - 1
-                      )
-                    }
-                    className="p-2.5 rounded-full bg-[#120a22]/75 hover:bg-white text-white hover:text-[#120a22] border border-white/25 transition-colors cursor-pointer"
-                    aria-label="Previous testimonials"
-                  >
-                    <ChevronLeft className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={() =>
-                      setTestimonialIndex((prev) =>
-                        prev < desktopTestimonialPages - 1 ? prev + 1 : 0
-                      )
-                    }
-                    className="p-2.5 rounded-full bg-[#120a22]/75 hover:bg-white text-white hover:text-[#120a22] border border-white/25 transition-colors cursor-pointer"
-                    aria-label="Next testimonials"
-                  >
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-
-              {/* Desktop 3-Card Row */}
-              <div className="hidden md:grid md:grid-cols-3 gap-6">
-                {testimonials
-                  .slice(testimonialIndex * 3, testimonialIndex * 3 + 3)
-                  .map((t, idx) => (
-                    <motion.div
-                      key={`${testimonialIndex}-${idx}`}
-                      initial={{ opacity: 0, y: 16 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, amount: 0.08 }}
-                      transition={{ duration: 0.4, delay: idx * 0.06 }}
-                      className="bg-[#120a22] text-white border border-purple-400/35 rounded-2xl p-7 flex flex-col justify-between gap-6 shadow-xl"
-                    >
-                      <div className="space-y-4">
-                        <div className="flex items-center justify-between gap-2">
-                          <div className="flex items-center gap-0.5 text-[#c084fc]">
-                            {[...Array(5)].map((_, s) => (
-                              <Star key={s} className="w-3.5 h-3.5 fill-current" />
-                            ))}
-                          </div>
-                          <span className="font-mono text-[11px] font-bold text-[#34d399] tabular-nums">
-                            {t.metric}
-                          </span>
-                        </div>
-                        <p className="text-sm text-zinc-200 leading-relaxed">
-                          &ldquo;{t.quote}&rdquo;
-                        </p>
-                      </div>
-
-                      <div className="pt-4 border-t border-purple-900/50 flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-[#180e2f] border border-purple-500/40 flex items-center justify-center font-display font-black text-base text-purple-200 shrink-0">
-                          {getInitials(t.name)}
-                        </div>
-                        <div className="min-w-0">
-                          <div className="text-sm font-bold text-white truncate">{t.name}</div>
-                          <div className="text-xs text-purple-200/75 truncate">{t.role}</div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-              </div>
-
-              {/* Mobile Scroll Strip */}
-              <div className="md:hidden flex gap-4 overflow-x-auto no-scrollbar pb-2 -mx-2 px-2">
-                {testimonials.map((t, idx) => (
-                  <div
-                    key={idx}
-                    className="w-[290px] shrink-0 bg-[#120a22] text-white border border-purple-400/35 rounded-2xl p-5 flex flex-col justify-between gap-4 shadow-lg"
-                  >
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between text-[11px] font-mono font-bold text-[#34d399]">
-                        <div className="flex items-center gap-0.5 text-[#c084fc]">
-                          {[...Array(5)].map((_, s) => (
-                            <Star key={s} className="w-3 h-3 fill-current" />
-                          ))}
-                        </div>
-                        <span>{t.metric}</span>
-                      </div>
-                      <p className="text-xs text-zinc-200 leading-relaxed">
-                        &ldquo;{t.quote}&rdquo;
-                      </p>
-                    </div>
-                    <div className="pt-3 border-t border-purple-900/50 flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-full bg-[#180e2f] border border-purple-500/40 flex items-center justify-center font-display font-black text-sm text-purple-200 shrink-0">
-                        {getInitials(t.name)}
-                      </div>
-                      <div className="min-w-0">
-                        <div className="text-xs font-bold text-white truncate">{t.name}</div>
-                        <div className="text-[11px] text-purple-200/75 truncate">{t.role}</div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </motion.section>
-
-          {/* ======================================================== */}
-          {/* 12. HOW IT WORKS (Obsidian #07030e)                      */}
-          {/* ======================================================== */}
-          <motion.section
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.06 }}
-            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-            className="py-16 sm:py-24 bg-[#07030e]"
-          >
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left space-y-10 sm:space-y-12">
-              <div className="max-w-2xl space-y-3">
-                <motion.span
-                  initial={{ opacity: 0, y: 18, rotate: -10, scale: 0.85 }}
-                  whileInView={{ opacity: 1, y: 0, rotate: -2.2, scale: 1 }}
-                  whileHover={{ rotate: 1.5, scale: 1.05, y: -2 }}
-                  viewport={{ once: true, amount: 0.25 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 16, mass: 0.7 }}
-                  className="font-hand text-xl sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block shadow-sm cursor-default"
-                >
-                  simple process, no bureaucracy
-                </motion.span>
-                <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white">
-                  How It Works
-                </h2>
-              </div>
-
-              <div className="grid md:grid-cols-3 gap-6">
-                {[
-                  {
-                    step: "01",
-                    title: "Discovery & Fixed Quote",
-                    desc: "We hop on a focused 20-minute call or exchange project notes. Within 24 hours you receive an exact milestone schedule and transparent fixed quote."
-                  },
-                  {
-                    step: "02",
-                    title: "Design & Engineering Sprint",
-                    desc: "You review clickable Figma designs or staging URLs directly via Loom and live preview links — fast async feedback with zero agency phone-tag."
-                  },
-                  {
-                    step: "03",
-                    title: "Launch, Speed Check & Handover",
-                    desc: "I ship your site to production, verify 95+ Google PageSpeed scores across mobile & desktop, and hand over all source files with 100% ownership."
-                  }
-                ].map((s, idx) => (
-                  <motion.div
-                    key={s.step}
-                    initial={{ opacity: 0, y: 18 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.08 }}
-                    transition={{ duration: 0.45, delay: idx * 0.08 }}
-                    className="bg-[#120a22] border border-purple-900/40 hover:border-purple-500/50 rounded-2xl p-6 sm:p-8 space-y-4 transition-colors"
-                  >
-                    <span className="font-display text-5xl font-black text-[#c084fc] leading-none block tabular-nums">
-                      {s.step}
-                    </span>
-                    <h3 className="font-display text-2xl sm:text-3xl font-black uppercase text-white">
-                      {s.title}
-                    </h3>
-                    <p className="text-sm text-zinc-300 leading-relaxed">
-                      {s.desc}
-                    </p>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </motion.section>
-
-          {/* ======================================================== */}
-          {/* 13. FAQ ACCORDION (Deep Plum Mist #0d071d)               */}
+          {/* 8. FAQ ACCORDION (#0D071E)                               */}
           {/* ======================================================== */}
           <motion.section
             id="faq"
@@ -2248,7 +1514,7 @@ export function GeroldHome({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.06 }}
             transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-            className="mx-2 sm:mx-4 lg:mx-6 bg-[#0d071d] border border-purple-900/35 rounded-[2rem] sm:rounded-[3rem] py-16 sm:py-24 scroll-mt-20"
+            className="mt-8 sm:mt-12 mx-2 sm:mx-4 lg:mx-6 bg-[#0D071E] border border-purple-800/40 rounded-[2rem] sm:rounded-[3rem] py-16 sm:py-24 scroll-mt-20"
           >
             <div className="max-w-4xl mx-auto px-5 sm:px-8 text-left space-y-10">
               <div className="space-y-3">
@@ -2273,11 +1539,11 @@ export function GeroldHome({
                   return (
                     <div
                       key={idx}
-                      className="bg-[#120a22] border border-purple-900/40 rounded-2xl overflow-hidden"
+                      className="bg-[#120A21] border border-purple-800/45 rounded-2xl overflow-hidden"
                     >
                       <button
                         onClick={() => setActiveFaq(isOpen ? null : idx)}
-                        className="w-full px-6 py-5 flex items-center justify-between text-left gap-4 hover:bg-[#180e2f] transition-colors cursor-pointer"
+                        className="w-full px-5 sm:px-6 py-5 flex items-center justify-between text-left gap-4 hover:bg-[#1a1030] transition-colors cursor-pointer"
                       >
                         <span className="text-sm sm:text-base font-bold text-white">
                           {faq.q}
@@ -2351,7 +1617,7 @@ export function GeroldHome({
                   </span>
 
                   <div className="inline-block relative">
-                    <h1 className="font-display text-7xl sm:text-[108px] lg:text-[134px] font-black uppercase tracking-tight leading-[0.86] text-white">
+                    <h1 className="font-display text-6xl sm:text-[108px] lg:text-[134px] font-black uppercase tracking-tight leading-[0.86] text-white">
                       THE WORK
                     </h1>
                     {/* Hand-drawn curved brushstroke underline */}
@@ -2483,7 +1749,7 @@ export function GeroldHome({
                   </span>
 
                   <div className="inline-block relative">
-                    <h1 className="font-display text-7xl sm:text-[108px] lg:text-[134px] font-black uppercase tracking-tight leading-[0.86] text-white">
+                    <h1 className="font-display text-6xl sm:text-[108px] lg:text-[134px] font-black uppercase tracking-tight leading-[0.86] text-white">
                       THE WORK
                     </h1>
                     {/* Hand-drawn curved brushstroke underline */}
@@ -2592,12 +1858,12 @@ export function GeroldHome({
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shrink-0">
                   <img
-                    src="/Gemini_Generated_Image_bvflr0bvflr0bvfl.jpg"
+                    src="/shakeeb-avatar.webp"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = "/shakeeb_profile.jpg";
                     }}
                     alt="Shakeeb Ahmed Khan"
-                    className="w-full h-full object-cover object-top"
+                    className="w-full h-full object-cover object-center"
                   />
                 </div>
                 <motion.span
@@ -2641,7 +1907,7 @@ export function GeroldHome({
             <button
               type="button"
               onClick={() => openHireWithService("General Inquiry")}
-              className="font-display font-black uppercase tracking-tight leading-[0.82] text-white hover:text-[#e9d5ff] transition-colors cursor-pointer text-[20vw] sm:text-[18vw] lg:text-[175px] block w-full"
+              className="font-display font-black uppercase tracking-tight leading-[0.82] text-white hover:text-[#e9d5ff] transition-colors cursor-pointer text-[17vw] sm:text-[18vw] lg:text-[175px] block w-full"
             >
               LET&apos;S TALK
             </button>
@@ -2690,15 +1956,6 @@ export function GeroldHome({
             </div>
 
             <div className="flex items-center gap-5 text-xs sm:text-sm font-semibold">
-              <a
-                href="https://behance.net/sksolutions"
-                target="_blank"
-                rel="noreferrer"
-                className="hover:text-[#e9d5ff] transition-colors inline-flex items-center gap-1"
-              >
-                <span>Behance</span>
-                <ArrowUpRight className="w-3.5 h-3.5" />
-              </a>
               <a
                 href="https://linkedin.com"
                 target="_blank"
