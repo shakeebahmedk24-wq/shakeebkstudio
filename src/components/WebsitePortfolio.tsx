@@ -1484,14 +1484,14 @@ export function WebsitePortfolio({
               title={`Open ${currentSpotlight.title} live website`}
               className="group/screen block aspect-[16/10] w-full bg-[#07030e] relative overflow-hidden cursor-pointer"
             >
-              <AnimatePresence mode="wait">
+              <AnimatePresence initial={false}>
                 <motion.div
                   key={currentSpotlight.id}
-                  initial={{ opacity: 0.35, scale: 1.01 }}
+                  initial={{ opacity: 0, scale: 1.02 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0.35 }}
-                  transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-                  className="w-full h-full relative"
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                  className="absolute inset-0 w-full h-full will-change-[opacity,transform]"
                 >
                   {currentSpotlight.videoPreview ? (
                     <VideoCardPreview

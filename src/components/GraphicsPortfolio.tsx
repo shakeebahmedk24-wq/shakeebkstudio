@@ -1938,6 +1938,17 @@ export function GraphicsPortfolio({
     return () => window.clearInterval(timer);
   }, [isStudioCycling, lightboxIndex, studioFeatured.length]);
 
+  useEffect(() => {
+    const nextItem = studioFeatured[(studioIndex + 1) % studioFeatured.length];
+    const prevItem = studioFeatured[(studioIndex - 1 + studioFeatured.length) % studioFeatured.length];
+    [nextItem, prevItem].forEach((item) => {
+      if (item?.imageUrl) {
+        const img = new Image();
+        img.src = item.imageUrl;
+      }
+    });
+  }, [studioIndex, studioFeatured]);
+
   const selectStudioGraphic = (idx: number) => {
     setStudioIndex(idx);
     setIsStudioCycling(false);
@@ -2195,25 +2206,25 @@ export function GraphicsPortfolio({
                 {/* Floating Slanted Artboard Kicker */}
                 <motion.span
                   key={currentStudioGraphic.id}
-                  initial={{ opacity: 0, y: -8, rotate: -8, scale: 0.9 }}
-                  animate={{ opacity: 1, y: 0, rotate: -2, scale: 1 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 16 }}
-                  className="absolute -top-3 left-3 sm:left-5 max-w-[calc(100%-24px)] truncate z-20 font-hand text-sm sm:text-lg font-bold px-2.5 sm:px-3 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] shadow-md"
+                  initial={{ opacity: 0, y: -4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                  className="absolute -top-3 left-3 sm:left-5 max-w-[calc(100%-24px)] truncate z-20 font-hand text-sm sm:text-lg font-bold px-2.5 sm:px-3 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] -rotate-2 shadow-md"
                 >
                   {currentStudioGraphic.category} · {currentStudioGraphic.dimensions}
                 </motion.span>
 
                 <div className="aspect-[16/10] w-full rounded-xl overflow-hidden bg-zinc-950 relative">
-                  <AnimatePresence mode="wait">
+                  <AnimatePresence initial={false}>
                     <motion.img
                       key={currentStudioGraphic.id}
-                      initial={{ opacity: 0.25, scale: 1.03 }}
+                      initial={{ opacity: 0, scale: 1.04 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0.25 }}
-                      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
                       src={currentStudioGraphic.imageUrl}
                       alt={currentStudioGraphic.title}
-                      className="w-full h-full object-cover object-center group-hover/art:scale-[1.03] transition-transform duration-500 [image-rendering:-webkit-optimize-contrast]"
+                      className="absolute inset-0 w-full h-full object-cover object-center group-hover/art:scale-[1.03] transition-transform duration-500 [image-rendering:-webkit-optimize-contrast] will-change-[opacity,transform]"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         if (!target.dataset.fallbackTried && currentStudioGraphic.fallbackUrl) {
@@ -2286,8 +2297,8 @@ export function GraphicsPortfolio({
                 </p>
               </div>
 
-              {/* Interactive Pantone / Hex Swatch System */}
-              <div className="space-y-2">
+              {/* Interactive Pantone / Hex Swatch System (Hidden on Mobile) */}
+              <div className="hidden md:block space-y-2">
                 <span className="text-[11px] font-mono uppercase tracking-wider text-purple-300 font-semibold block">
                   Brand Palette · Click Swatch to Copy Hex
                 </span>
@@ -2312,8 +2323,8 @@ export function GraphicsPortfolio({
                 </div>
               </div>
 
-              {/* Font Pairing & Specs Readout */}
-              <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono text-zinc-400 pt-2 border-t border-purple-900/40">
+              {/* Font Pairing & Specs Readout (Hidden on Mobile) */}
+              <div className="hidden md:flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono text-zinc-400 pt-2 border-t border-purple-900/40">
                 <span>Type: {currentStudioGraphic.fonts.heading} + {currentStudioGraphic.fonts.body}</span>
                 <span className="text-[#c084fc] font-semibold">{currentStudioGraphic.specifications.vectorDpi}</span>
               </div>

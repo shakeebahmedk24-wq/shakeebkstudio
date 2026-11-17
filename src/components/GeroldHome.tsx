@@ -679,11 +679,11 @@ export function GeroldHome({
       <AnimatePresence>
         {fullMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: "-4%" }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: "-4%" }}
-            transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 z-[100] bg-[#120A21] text-white flex flex-col justify-between p-5 sm:p-8 lg:p-10 overflow-y-auto"
+            initial={{ y: "-100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "-100%" }}
+            transition={{ duration: 0.44, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 z-[100] bg-[#120A21] text-white flex flex-col justify-between p-5 sm:p-8 lg:p-10 overflow-y-auto overscroll-contain will-change-transform"
           >
             {/* Top Bar inside Overlay */}
             <div className="max-w-7xl w-full mx-auto flex items-center justify-between gap-3">
@@ -737,7 +737,10 @@ export function GeroldHome({
             {/* Monumental Big Shoulders Display Navigation List */}
             <div className="max-w-7xl w-full mx-auto py-8 my-auto text-left space-y-2 sm:space-y-3">
               {/* HOME */}
-              <button
+              <motion.button
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.34, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
                 onMouseEnter={() => setHoveredOverlayLink("home")}
                 onMouseLeave={() => setHoveredOverlayLink(null)}
                 onClick={() => navigateToPage("home")}
@@ -749,10 +752,13 @@ export function GeroldHome({
                   }`}
                 />
                 <span>HOME</span>
-              </button>
+              </motion.button>
 
               {/* ABOUT */}
-              <button
+              <motion.button
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.34, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}
                 onMouseEnter={() => setHoveredOverlayLink("about")}
                 onMouseLeave={() => setHoveredOverlayLink(null)}
                 onClick={() => scrollToSection("resume")}
@@ -764,10 +770,14 @@ export function GeroldHome({
                   }`}
                 />
                 <span>ABOUT</span>
-              </button>
+              </motion.button>
 
               {/* SERVICES (Accordion matching Video 00:12-00:13) */}
-              <div>
+              <motion.div
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.34, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              >
                 <button
                   onMouseEnter={() => setHoveredOverlayLink("services")}
                   onMouseLeave={() => setHoveredOverlayLink(null)}
@@ -815,10 +825,14 @@ export function GeroldHome({
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </div>
+              </motion.div>
 
               {/* PORTFOLIO (Expandable Websites / Graphics / CV) */}
-              <div>
+              <motion.div
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.34, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
+              >
                 <button
                   onMouseEnter={() => setHoveredOverlayLink("portfolio")}
                   onMouseLeave={() => setHoveredOverlayLink(null)}
@@ -864,10 +878,13 @@ export function GeroldHome({
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </div>
+              </motion.div>
 
               {/* CONTACT */}
-              <button
+              <motion.button
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.34, delay: 0.28, ease: [0.22, 1, 0.36, 1] }}
                 onMouseEnter={() => setHoveredOverlayLink("contact")}
                 onMouseLeave={() => setHoveredOverlayLink(null)}
                 onClick={() => scrollToSection("contact")}
@@ -879,11 +896,16 @@ export function GeroldHome({
                   }`}
                 />
                 <span>CONTACT</span>
-              </button>
+              </motion.button>
             </div>
 
             {/* Bottom Row Actions */}
-            <div className="max-w-7xl w-full mx-auto pt-4 border-t border-white/20 flex flex-wrap items-center gap-4">
+            <motion.div
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.32, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="max-w-7xl w-full mx-auto pt-4 border-t border-white/20 flex flex-wrap items-center gap-4"
+            >
               <button
                 onClick={() => {
                   setFullMenuOpen(false);
@@ -904,7 +926,7 @@ export function GeroldHome({
                 <Download className="w-4 h-4" />
                 <span>Download CV</span>
               </a>
-            </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
