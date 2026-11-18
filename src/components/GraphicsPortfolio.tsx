@@ -2112,8 +2112,7 @@ export function GraphicsPortfolio({
 
   return (
     <section
-      id="graphics-portfolio"
-      className={`${isHomePage ? "py-16 sm:py-24" : "pt-10 pb-16 sm:pt-14 sm:pb-24"} scroll-mt-24 text-left relative overflow-hidden`}
+      className={`${isHomePage ? "py-16 sm:py-24" : "pt-10 pb-16 sm:pt-14 sm:pb-24"} scroll-mt-24 text-left relative overflow-x-clip`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12 relative z-10">
 
@@ -2161,17 +2160,17 @@ export function GraphicsPortfolio({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: "some" }}
           transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          className="relative rounded-3xl bg-[#120a22] border border-purple-500/35 p-5 sm:p-8 lg:p-10 shadow-[0_24px_70px_rgba(7,3,14,0.65)] overflow-hidden"
+          className="relative rounded-3xl bg-[#120a22] border border-purple-500/35 p-5 sm:p-8 lg:p-10 shadow-[0_24px_70px_rgba(7,3,14,0.65)] overflow-x-clip"
         >
-          {/* Dynamic Ambient Aura Tinted by Active Brand Swatch */}
+          {/* Dynamic Ambient Aura Tinted by Active Brand Swatch (Desktop only to prevent mobile blur jank) */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -top-28 -right-24 w-72 sm:w-96 h-72 sm:h-96 rounded-full blur-[64px] sm:blur-[110px] opacity-30 transition-colors duration-700"
+            className="hidden sm:block pointer-events-none absolute -top-28 -right-24 w-96 h-96 rounded-full blur-[110px] opacity-30 transition-colors duration-700"
             style={{ backgroundColor: studioAccentHex }}
           />
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -bottom-28 -left-24 w-64 sm:w-80 h-64 sm:h-80 rounded-full blur-[64px] sm:blur-[110px] opacity-25 bg-[#8750f7]"
+            className="hidden sm:block pointer-events-none absolute -bottom-28 -left-24 w-80 h-80 rounded-full blur-[110px] opacity-25 bg-[#8750f7]"
           />
 
           <div className="grid lg:grid-cols-12 gap-7 lg:gap-10 items-center relative z-10">
@@ -2180,6 +2179,7 @@ export function GraphicsPortfolio({
               className="lg:col-span-7"
               style={{ perspective: 1100 }}
               onMouseMove={(e) => {
+                if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) return;
                 const rect = e.currentTarget.getBoundingClientRect();
                 const x = (e.clientX - rect.left) / rect.width - 0.5;
                 const y = (e.clientY - rect.top) / rect.height - 0.5;
@@ -2344,7 +2344,7 @@ export function GraphicsPortfolio({
           </div>
 
           {/* Continuous Sliding Mini Artboard Filmstrip */}
-          <div className="mt-8 pt-6 border-t border-purple-800/35 overflow-hidden -mx-5 sm:-mx-8 lg:-mx-10 px-4">
+          <div className="mt-8 pt-6 border-t border-purple-800/35 overflow-x-clip -mx-5 sm:-mx-8 lg:-mx-10 px-4 [touch-action:pan-x_pan-y]">
             <div className="animate-portfolio-marquee flex items-center gap-4 py-2">
               {[...studioFeatured, ...studioFeatured].map((item, stripIdx) => {
                 const realIdx = stripIdx % studioFeatured.length;
@@ -2403,7 +2403,7 @@ export function GraphicsPortfolio({
         {!isHomePage && (
           <>
             {/* CATEGORY FILTER TABS (Spring Tilt Entrance) */}
-            <div className="flex flex-nowrap sm:flex-wrap gap-2 pt-1 border-b border-purple-900/40 pb-5 overflow-x-auto no-scrollbar -mx-1 px-1 touch-pan-x">
+            <div className="flex flex-nowrap sm:flex-wrap gap-2 pt-1 border-b border-purple-900/40 pb-5 overflow-x-auto no-scrollbar -mx-1 px-1 [touch-action:pan-x_pan-y]">
               {categories.map((cat, idx) => (
                 <motion.button
                   key={cat}
@@ -2435,7 +2435,7 @@ export function GraphicsPortfolio({
                     : { whileInView: { opacity: 1, y: 0, rotate: 0, scale: 1 }, viewport: { once: true, amount: "some" } })}
                   whileHover={{ y: -6, rotate: idx % 2 === 0 ? -0.7 : 0.7 }}
                   transition={{ type: "spring", stiffness: 220, damping: 19, delay: (idx % 3) * 0.05 }}
-                  className="bg-[#120a22] border border-purple-900/40 rounded-2xl hover:border-purple-500/70 transition-colors flex flex-col justify-between group overflow-hidden shadow-[0_8px_24px_rgba(0,0,0,0.35)] hover:shadow-[0_14px_34px_rgba(135,80,247,0.22)] cursor-pointer sm:cursor-default will-change-transform"
+                  className="bg-[#120a22] border border-purple-900/40 rounded-2xl hover:border-purple-500/70 transition-colors flex flex-col justify-between group overflow-hidden shadow-[0_8px_24px_rgba(0,0,0,0.35)] hover:shadow-[0_14px_34px_rgba(135,80,247,0.22)] cursor-pointer sm:cursor-default"
                   onClick={() => {
                     if (typeof window !== "undefined" && window.innerWidth < 640) {
                       openLightboxByProject(project);

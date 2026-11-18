@@ -1,25 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "motion/react";
 import {
-  Globe,
   ExternalLink,
-  ShoppingBag,
-  Zap,
-  Smartphone,
-  Monitor,
-  CheckCircle2,
-  X,
   ArrowUpRight,
-  Cpu,
-  Palette,
   Search,
-  Shield,
-  Layers,
-  Sparkles,
-  BarChart3,
-  Clock,
-  Filter,
   Play,
   Pause,
   ChevronLeft,
@@ -978,7 +962,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     client: "Broworks Studio (US & Europe)",
     category: "Corporate & B2B",
     tagline: "Web Intelligence, Built In — Modern Agency for B2B & Enterprise",
-    description: "High-impact enterprise digital agency platform engineered for AI search discovery (AEO/GEO), rapid client pipeline generation, interactive case study showcases, and sub-0.35s page transitions.",
+    description: "High-impact enterprise digital agency platform engineered for AI search discovery (AEO/GEO), rapid client pipeline generation, interactive project showcases, and sub-0.35s page transitions.",
     speedScore: 99,
     loadTime: "0.33s",
     conversionBoost: "+256% Pipeline Growth",
@@ -993,7 +977,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     features: [
       "Engineered for answer engines (ChatGPT, Perplexity, Claude citation indexing)",
       "Adaptive modular CMS architecture with zero-code marketing workflows",
-      "Fluid 60 FPS interactive case study previews and client impact metrics",
+      "Fluid 60 FPS interactive project previews and client impact metrics",
       "Ultra-optimized enterprise performance with 99/100 Core Web Vitals"
     ],
     caseStudy: {
@@ -1015,7 +999,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     client: "Atomato Creative Technology",
     category: "Corporate & B2B",
     tagline: "Digital Product Design & Creative Technology Studio",
-    description: "Avant-garde design engineering studio portfolio featuring fluid scroll dynamics, interactive case study showcases, refined typography, and sub-0.35s page transitions.",
+    description: "Avant-garde design engineering studio portfolio featuring fluid scroll dynamics, interactive project showcases, refined typography, and sub-0.35s page transitions.",
     speedScore: 99,
     loadTime: "0.31s",
     conversionBoost: "+180% Inbound Leads",
@@ -1029,7 +1013,7 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     primaryColor: "#a1a1aa",
     features: [
       "Bespoke inertia-based smooth scrolling powered by Lenis and Framer Motion",
-      "Dynamic responsive case study reveals with high-DPI visual galleries",
+      "Dynamic responsive project reveals with high-DPI visual galleries",
       "Minimalist brutalist typography hierarchy optimized for creative directors",
       "Sub-0.32s page loads backed by edge rendering and modern asset compression"
     ],
@@ -1167,9 +1151,21 @@ interface VideoCardPreviewProps {
 }
 
 function VideoCardPreview({ videoSrc, posterSrc, alt, playOnlyOnHover = false }: VideoCardPreviewProps) {
-  const videoRef = React.useRef<HTMLVideoElement>(null);
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const videoRef = React.useRef<HTMLVideoElement | null>(null);
   const [isHovered, setIsHovered] = useState(false);
+  const [isInView, setIsInView] = useState(!playOnlyOnHover);
+  const [isTouchOnly, setIsTouchOnly] = useState(false);
   const [isVideoReady, setIsVideoReady] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(hover: none), (pointer: coarse)");
+    const update = () => setIsTouchOnly(mq.matches);
+    update();
+    mq.addEventListener?.("change", update);
+    return () => mq.removeEventListener?.("change", update);
+  }, []);
 
   const attemptPlay = React.useCallback((video: HTMLVideoElement | null) => {
     if (!video) return;
@@ -1194,48 +1190,67 @@ function VideoCardPreview({ videoSrc, posterSrc, alt, playOnlyOnHover = false }:
     setIsVideoReady(false);
   }, [videoSrc]);
 
+  // Observe visibility so offscreen mobile videos pause/unmount to preserve hardware decoders
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container || typeof window === "undefined" || !("IntersectionObserver" in window)) {
+      setIsInView(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          setIsInView(entry.isIntersecting);
+        });
+      },
+      { rootMargin: "80px 0px", threshold: 0.05 }
+    );
+    observer.observe(container);
+
+    return () => observer.disconnect();
+  }, [videoSrc]);
+
+  // Mobile/touch auto-plays visible cards; desktop plays spotlight when visible & grid cards on hover
+  const shouldPlay = playOnlyOnHover
+    ? (isTouchOnly ? isInView : isHovered)
+    : isInView;
+  const shouldMountVideo = playOnlyOnHover
+    ? (isTouchOnly ? isInView : isHovered)
+    : true;
+
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    if (playOnlyOnHover) {
-      if (isHovered) {
-        attemptPlay(video);
-      } else {
-        video.pause();
+    if (shouldPlay) {
+      attemptPlay(video);
+    } else {
+      video.pause();
+    }
+  }, [videoSrc, shouldPlay, shouldMountVideo, attemptPlay]);
+
+  const attachVideoRef = React.useCallback(
+    (node: HTMLVideoElement | null) => {
+      videoRef.current = node;
+      if (node) {
+        node.defaultMuted = true;
+        node.muted = true;
+        node.playsInline = true;
+        node.setAttribute("muted", "");
+        node.setAttribute("playsinline", "");
+        node.setAttribute("webkit-playsinline", "");
+        if (shouldPlay) {
+          attemptPlay(node);
+        }
       }
-      return;
-    }
-
-    attemptPlay(video);
-
-    let observer: IntersectionObserver | null = null;
-    if (typeof window !== "undefined" && "IntersectionObserver" in window) {
-      observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (!video) return;
-            if (entry.isIntersecting) {
-              attemptPlay(video);
-            } else {
-              video.pause();
-            }
-          });
-        },
-        { threshold: 0.01 }
-      );
-      observer.observe(video);
-    }
-
-    return () => {
-      if (observer) observer.disconnect();
-    };
-  }, [videoSrc, playOnlyOnHover, isHovered, attemptPlay]);
-
-  const shouldMountVideo = !playOnlyOnHover || isHovered;
+    },
+    [shouldPlay, attemptPlay]
+  );
 
   return (
     <div
+      ref={containerRef}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className="w-full h-full relative overflow-hidden bg-zinc-950 flex items-start justify-center"
@@ -1249,21 +1264,30 @@ function VideoCardPreview({ videoSrc, posterSrc, alt, playOnlyOnHover = false }:
       />
       {shouldMountVideo && (
         <video
-          ref={videoRef}
+          key={videoSrc}
+          ref={attachVideoRef}
           src={videoSrc}
           poster={posterSrc}
-          autoPlay={!playOnlyOnHover}
+          autoPlay={shouldPlay}
           muted
           loop
           playsInline
-          preload={playOnlyOnHover ? "metadata" : "auto"}
+          preload={shouldPlay ? "auto" : "metadata"}
+          onLoadedMetadata={() => {
+            if (shouldPlay) attemptPlay(videoRef.current);
+          }}
           onLoadedData={() => {
-            if (!playOnlyOnHover) attemptPlay(videoRef.current);
+            if (shouldPlay) attemptPlay(videoRef.current);
           }}
           onCanPlay={() => {
-            if (!playOnlyOnHover || isHovered) attemptPlay(videoRef.current);
+            if (shouldPlay) attemptPlay(videoRef.current);
           }}
           onPlaying={() => setIsVideoReady(true)}
+          onTimeUpdate={(e) => {
+            if (!isVideoReady && e.currentTarget.currentTime > 0) {
+              setIsVideoReady(true);
+            }
+          }}
           aria-label={alt}
           className={`absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-300 ${
             isVideoReady ? "opacity-100" : "opacity-0"
@@ -1301,8 +1325,6 @@ export function WebsitePortfolio({
   onShowMore,
 }: WebsitePortfolioProps = {}) {
   const [internalCategory, setInternalCategory] = useState<string>("All");
-  const [activeProject, setActiveProject] = useState<WebsiteProject | null>(null);
-  const [viewDevice, setViewDevice] = useState<"desktop" | "mobile">("desktop");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   // Spotlight carousel state for Homepage Video-Reference Laptop Showcase
@@ -1312,12 +1334,12 @@ export function WebsitePortfolio({
   const currentSpotlight = featuredSites[spotlightIndex] || PORTFOLIO_SITES[0];
 
   useEffect(() => {
-    if (!isAutoCycling || activeProject) return;
+    if (!isAutoCycling) return;
     const timer = window.setInterval(() => {
       setSpotlightIndex((prev) => (prev + 1) % featuredSites.length);
     }, 5200);
     return () => window.clearInterval(timer);
-  }, [isAutoCycling, activeProject, featuredSites.length, spotlightIndex]);
+  }, [isAutoCycling, featuredSites.length, spotlightIndex]);
 
   const selectSpotlightProject = (idx: number) => {
     setSpotlightIndex(idx);
@@ -1347,35 +1369,11 @@ export function WebsitePortfolio({
     return matchesCategory && matchesSearch;
   });
 
-  // Lock background scroll when case study modal is open
-  useEffect(() => {
-    if (activeProject) {
-      document.body.style.overflow = "hidden";
-      const lenis = (window as any).__lenis;
-      if (lenis && typeof lenis.stop === "function") {
-        lenis.stop();
-      }
-    } else {
-      document.body.style.overflow = "";
-      const lenis = (window as any).__lenis;
-      if (lenis && typeof lenis.start === "function") {
-        lenis.start();
-      }
-    }
-    return () => {
-      document.body.style.overflow = "";
-      const lenis = (window as any).__lenis;
-      if (lenis && typeof lenis.start === "function") {
-        lenis.start();
-      }
-    };
-  }, [activeProject]);
-
   const displayedProjects = filteredProjects;
 
   const renderVideoShowcaseStage = (showSeeMoreButton: boolean) => (
     <div
-      className={`w-full space-y-10 sm:space-y-12 bg-[#0D071E] text-white relative overflow-hidden ${
+      className={`w-full space-y-10 sm:space-y-12 bg-[#0D071E] text-white relative overflow-x-clip ${
         showSeeMoreButton ? "py-12 sm:py-20 lg:py-24" : "pt-6 sm:pt-10 pb-12 sm:pb-16"
       }`}
     >
@@ -1405,7 +1403,7 @@ export function WebsitePortfolio({
         {/* Background Sliding Cards Track (Visible on Mobile & Desktop) */}
         <div
           aria-label="Scrolling website portfolio gallery"
-          className="flex items-center overflow-hidden w-full absolute inset-y-0 left-0 right-0 z-10 pointer-events-auto"
+          className="flex items-center overflow-x-clip w-full absolute inset-y-0 left-0 right-0 z-10 pointer-events-auto [touch-action:pan-x_pan-y]"
         >
           <div
             className="animate-portfolio-marquee flex items-center gap-3.5 sm:gap-6 py-4"
@@ -1536,9 +1534,9 @@ export function WebsitePortfolio({
         </div>
       </div>
 
-      {/* 3. Mobile Quick Strip + Prev/Next/Case Study Bar */}
+      {/* 3. Mobile Quick Strip + Prev/Next Bar */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 space-y-6 text-center">
-        <div className="sm:hidden flex gap-3 overflow-x-auto no-scrollbar pb-1 -mx-2 px-2">
+        <div className="sm:hidden flex gap-3 overflow-x-auto no-scrollbar pb-1 -mx-2 px-2 [touch-action:pan-x_pan-y]">
           {featuredSites.map((site, idx) => (
             <button
               key={site.id}
@@ -1622,14 +1620,28 @@ export function WebsitePortfolio({
         {/* 4. Bottom Action Row */}
         <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5">
           {showSeeMoreButton && onShowMore ? (
-            <button
-              type="button"
-              onClick={onShowMore}
-              className="px-8 py-3.5 bg-white hover:bg-[#e9d5ff] text-[#120a22] text-sm font-bold rounded-full transition-colors cursor-pointer shadow-[0_16px_40px_rgba(7,3,14,0.45)] inline-flex items-center gap-2 whitespace-nowrap"
-            >
-              <span>See my work ({PORTFOLIO_SITES.length} sites)</span>
-              <ArrowUpRight className="w-4 h-4" />
-            </button>
+            <>
+              <button
+                type="button"
+                onClick={onShowMore}
+                className="px-8 py-3.5 bg-white hover:bg-[#e9d5ff] text-[#120a22] text-sm font-bold rounded-full transition-colors cursor-pointer shadow-[0_16px_40px_rgba(7,3,14,0.45)] inline-flex items-center gap-2 whitespace-nowrap"
+              >
+                <span>See my work ({PORTFOLIO_SITES.length} sites)</span>
+                <ArrowUpRight className="w-4 h-4" />
+              </button>
+
+              <a
+                href={currentSpotlight.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2.5 text-[#e9d5ff] hover:text-white transition-colors cursor-pointer group"
+              >
+                <span className="font-hand text-xl sm:text-2xl font-semibold underline decoration-purple-300/50 underline-offset-4">
+                  or visit {currentSpotlight.title} live
+                </span>
+                <ExternalLink className="w-4 h-4 text-[#e9d5ff] group-hover:translate-x-0.5 transition-transform" />
+              </a>
+            </>
           ) : (
             <a
               href={currentSpotlight.liveUrl}
@@ -1641,32 +1653,6 @@ export function WebsitePortfolio({
               <ExternalLink className="w-4 h-4" />
             </a>
           )}
-
-          <button
-            type="button"
-            onClick={() => setActiveProject(currentSpotlight)}
-            className="inline-flex items-center gap-2.5 text-[#e9d5ff] hover:text-white transition-colors cursor-pointer group"
-          >
-            <svg
-              width="28"
-              height="20"
-              viewBox="0 0 28 20"
-              fill="none"
-              className="text-[#e9d5ff] shrink-0 group-hover:-translate-x-0.5 transition-transform"
-              aria-hidden="true"
-            >
-              <path
-                d="M26 10C18 10 10 10 3 10M3 10L9 4M3 10L9 16"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <span className="font-hand text-xl sm:text-2xl font-semibold underline decoration-purple-300/50 underline-offset-4">
-              or inspect {currentSpotlight.title} case study
-            </span>
-          </button>
         </div>
       </div>
     </div>
@@ -1721,7 +1707,7 @@ export function WebsitePortfolio({
 
           {/* SEARCH & CATEGORY FILTERS */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pt-2 border-b border-purple-900/40 pb-5">
-            <div className="flex flex-nowrap sm:flex-wrap gap-2 overflow-x-auto no-scrollbar pb-1 sm:pb-0 -mx-1 px-1 touch-pan-x">
+            <div className="flex flex-nowrap sm:flex-wrap gap-2 overflow-x-auto no-scrollbar pb-1 sm:pb-0 -mx-1 px-1 [touch-action:pan-x_pan-y]">
               {categories.map((cat, idx) => (
                 <motion.button
                   key={cat}
@@ -1793,8 +1779,11 @@ export function WebsitePortfolio({
                         </span>
                       </div>
                       <div className="flex items-center gap-2 shrink-0 text-[9px] text-purple-300 font-medium">
-                        <span className="whitespace-nowrap">
+                        <span className="hidden sm:inline whitespace-nowrap">
                           {project.videoPreview ? "Hover to preview" : "Hover to scroll"}
+                        </span>
+                        <span className="sm:hidden whitespace-nowrap">
+                          {project.videoPreview ? "Live motion" : "Tap to visit"}
                         </span>
                         <span aria-hidden="true">·</span>
                         <span className="text-emerald-400 font-bold tabular-nums whitespace-nowrap">
@@ -1874,22 +1863,16 @@ export function WebsitePortfolio({
                   </div>
                 </div>
 
-                <div className="px-5 sm:px-6 pb-5 sm:pb-6 pt-0 flex items-center gap-2.5">
+                <div className="px-5 sm:px-6 pb-5 sm:pb-6 pt-0">
                   <a
                     href={project.liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 py-2.5 px-4 bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white text-xs font-bold tracking-wide transition-colors rounded-full flex items-center justify-center gap-1.5 cursor-pointer whitespace-nowrap"
+                    className="w-full py-2.5 px-4 bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white text-xs font-bold tracking-wide transition-colors rounded-full flex items-center justify-center gap-1.5 cursor-pointer whitespace-nowrap"
                   >
-                    <span>Visit Live</span>
+                    <span>Visit Live Site</span>
                     <ExternalLink className="w-3.5 h-3.5" />
                   </a>
-                  <button
-                    onClick={() => setActiveProject(project)}
-                    className="py-2.5 px-4 bg-[#180e2f] hover:bg-purple-900/50 border border-purple-700/40 text-purple-100 text-xs font-bold tracking-wide transition-colors rounded-full cursor-pointer whitespace-nowrap"
-                  >
-                    Case Study
-                  </button>
                 </div>
               </motion.div>
             ))}
@@ -1915,248 +1898,6 @@ export function WebsitePortfolio({
         </div>
         </>
       )}
-
-      {/* INTERACTIVE CASE STUDY MODAL & SIMULATOR */}
-      {activeProject && typeof document !== "undefined" && createPortal(
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-2 sm:p-6 bg-[#07030e]/90 backdrop-blur-md overflow-y-auto">
-          <div
-            className="bg-[#0d071d] text-white border border-purple-800/50 rounded-3xl max-w-4xl w-full max-h-[92vh] overflow-y-auto shadow-2xl relative text-left my-auto"
-          >
-              {/* Modal Top Control Header */}
-              <div className="sticky top-0 z-20 bg-[#120a22] text-white px-5 sm:px-6 py-4 flex items-center justify-between border-b border-purple-900/50">
-                <div className="min-w-0">
-                  <span className="font-mono text-[11px] uppercase tracking-widest font-semibold text-purple-300 truncate block">
-                    Case Study · {activeProject.title}
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-3 shrink-0">
-                  {/* Device view switcher */}
-                  <div className="hidden sm:flex items-center bg-[#07030e] border border-purple-800/40 rounded-full p-0.5 text-[11px]">
-                    <button
-                      onClick={() => setViewDevice("desktop")}
-                      className={`px-3 py-1 rounded-full flex items-center gap-1.5 font-semibold cursor-pointer transition-colors ${
-                        viewDevice === "desktop" ? "bg-[#8750f7] text-white" : "text-zinc-400 hover:text-white"
-                      }`}
-                    >
-                      <Monitor className="w-3 h-3" /> Desktop
-                    </button>
-                    <button
-                      onClick={() => setViewDevice("mobile")}
-                      className={`px-3 py-1 rounded-full flex items-center gap-1.5 font-semibold cursor-pointer transition-colors ${
-                        viewDevice === "mobile" ? "bg-[#8750f7] text-white" : "text-zinc-400 hover:text-white"
-                      }`}
-                    >
-                      <Smartphone className="w-3 h-3" /> Mobile
-                    </button>
-                  </div>
-
-                  <button
-                    onClick={() => setActiveProject(null)}
-                    aria-label="Close case study"
-                    className="p-1.5 rounded-full bg-purple-950/60 hover:bg-purple-800 text-white transition-colors cursor-pointer"
-                  >
-                    <X className="w-5 h-5" />
-                  </button>
-                </div>
-              </div>
-
-              {/* Modal Main Content */}
-              <div className="p-5 sm:p-8 space-y-6 sm:space-y-8">
-
-                {/* Simulated Device View Canvas */}
-                <div className="bg-[#07030e] p-3 sm:p-6 border border-purple-900/40 rounded-2xl relative overflow-hidden flex justify-center items-center">
-                  <div
-                    className={`w-full transition-all duration-300 ${
-                      viewDevice === "mobile" ? "max-w-sm rounded-3xl border-4 border-purple-800/60" : "max-w-3xl"
-                    } bg-zinc-950 text-white border border-purple-800/40 overflow-hidden shadow-xl rounded-xl`}
-                  >
-                    {/* Simulated Browser Address Bar */}
-                    <div className="bg-[#120a22] px-4 py-2.5 border-b border-purple-900/40 flex items-center justify-between text-[11px] font-mono text-zinc-300 gap-2">
-                      <div className="flex items-center gap-1.5 shrink-0">
-                        <span className="w-2 h-2 rounded-full bg-[#ff6b6b]" />
-                        <span className="w-2 h-2 rounded-full bg-[#ffd93d]" />
-                        <span className="w-2 h-2 rounded-full bg-[#6bcb77]" />
-                      </div>
-                      <a
-                        href={activeProject.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="bg-purple-950/70 hover:bg-purple-800/70 px-3 py-0.5 rounded-full text-purple-200 font-semibold tracking-wide flex items-center gap-1 transition-colors truncate max-w-[160px] sm:max-w-xs text-[10px]"
-                      >
-                        <span className="truncate">{activeProject.liveUrl.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}</span>
-                        <ExternalLink className="w-2.5 h-2.5 shrink-0" />
-                      </a>
-                      <span className="text-emerald-400 font-bold shrink-0 tabular-nums text-[10px]">{activeProject.speedScore}/100</span>
-                    </div>
-
-                    {/* Real Live Site Screenshot Preview Canvas */}
-                    <div className="relative min-h-[240px] sm:min-h-[300px] max-h-[460px] overflow-y-auto bg-zinc-950 flex flex-col items-center justify-center">
-                      {activeProject.videoPreview ? (
-                        <div className="w-full relative bg-zinc-950 flex flex-col items-center justify-center p-2 sm:p-4">
-                          <video
-                            src={activeProject.videoPreview}
-                            controls
-                            playsInline
-                            preload="metadata"
-                            className="w-full h-auto max-h-[440px] object-contain mx-auto block shadow-2xl rounded-lg"
-                          />
-                        </div>
-                      ) : (
-                        <img
-                          src={activeProject.image}
-                          alt={`${activeProject.title} live website screenshot`}
-                          loading="lazy"
-                          decoding="async"
-                          className="w-full h-auto object-cover object-top [image-rendering:-webkit-optimize-contrast] transform-gpu"
-                          onError={(e) => {
-                            const target = e.target as HTMLImageElement;
-                            if (!target.dataset.fallbackTried && activeProject.fallbackImage && activeProject.fallbackImage !== activeProject.image) {
-                              target.dataset.fallbackTried = "true";
-                              target.src = activeProject.fallbackImage;
-                            } else if (target.dataset.fallbackTried !== "final") {
-                              target.dataset.fallbackTried = "final";
-                              target.src = "/websites-portfolio/partake-foods.webp";
-                            }
-                          }}
-                        />
-                      )}
-
-                      {/* Floating bottom status bar with speed metric & live link */}
-                      <div className="sticky bottom-0 left-0 right-0 w-full p-3 bg-[#120a22]/95 backdrop-blur-md border-t border-purple-900/50 flex flex-wrap items-center justify-between gap-2 text-xs">
-                        <div className="flex items-center gap-2 text-[11px] font-mono text-purple-200">
-                          <span className="font-semibold text-white">{activeProject.mockup.badgeText}</span>
-                          <span aria-hidden="true">·</span>
-                          <span>{activeProject.mockup.stat1}</span>
-                        </div>
-                        <a
-                          href={activeProject.liveUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="px-3.5 py-1.5 bg-[#8750f7] hover:bg-purple-600 text-white font-bold text-[11px] rounded-full flex items-center gap-1.5 transition-colors whitespace-nowrap cursor-pointer"
-                        >
-                          <span>Visit Live Site</span>
-                          <ExternalLink className="w-3 h-3" />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Case Study Details Grid */}
-                <div className="grid md:grid-cols-3 gap-6 sm:gap-8">
-
-                  {/* Left Column: Metrics & Stack */}
-                  <div className="space-y-6">
-                    <div className="p-5 bg-[#120a22] border border-purple-900/40 rounded-2xl space-y-3">
-                      <span className="text-[11px] font-mono text-purple-300 uppercase tracking-wider font-bold block">
-                        Project Overview
-                      </span>
-                      <div className="space-y-2 text-xs text-zinc-300">
-                        <div className="flex justify-between py-1.5 border-b border-purple-900/30 gap-2">
-                          <span className="text-zinc-400">Client</span>
-                          <span className="font-bold text-white text-right">{activeProject.client}</span>
-                        </div>
-                        <div className="flex justify-between py-1.5 border-b border-purple-900/30 gap-2">
-                          <span className="text-zinc-400">Role</span>
-                          <span className="font-bold text-white text-right">{activeProject.role}</span>
-                        </div>
-                        <div className="flex justify-between py-1.5 border-b border-purple-900/30 gap-2">
-                          <span className="text-zinc-400">Year Delivered</span>
-                          <span className="font-mono font-bold text-white text-right tabular-nums">{activeProject.year}</span>
-                        </div>
-                        <div className="flex justify-between py-1.5 gap-2">
-                          <span className="text-zinc-400">PageSpeed</span>
-                          <span className="font-mono font-bold text-emerald-400 text-right tabular-nums">{activeProject.speedScore}/100</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="p-5 bg-[#120a22] border border-purple-900/40 rounded-2xl space-y-2">
-                      <span className="text-[11px] font-mono text-purple-300 uppercase tracking-wider font-bold block">
-                        Tech Stack
-                      </span>
-                      <p className="text-xs text-zinc-200 font-medium leading-relaxed">
-                        {activeProject.techStack.join(" · ")}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Middle & Right Column: Challenge, Solution, Impact */}
-                  <div className="md:col-span-2 space-y-5">
-                    <div className="bg-[#120a22] p-5 rounded-2xl border border-purple-900/40 space-y-1.5">
-                      <h4 className="text-xs font-bold uppercase text-white tracking-wider">
-                        01. The Challenge
-                      </h4>
-                      <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
-                        {activeProject.caseStudy.challenge}
-                      </p>
-                    </div>
-
-                    <div className="bg-[#120a22] p-5 rounded-2xl border border-purple-900/40 space-y-1.5">
-                      <h4 className="text-xs font-bold uppercase text-[#c084fc] tracking-wider">
-                        02. The Architecture Solution
-                      </h4>
-                      <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
-                        {activeProject.caseStudy.solution}
-                      </p>
-                    </div>
-
-                    <div className="bg-[#180e2f] p-5 rounded-2xl border border-purple-500/40 space-y-1.5">
-                      <h4 className="text-xs font-bold uppercase text-emerald-400 tracking-wider">
-                        03. Business Impact
-                      </h4>
-                      <p className="text-xs sm:text-sm text-white font-semibold leading-relaxed">
-                        {activeProject.caseStudy.impact}
-                      </p>
-                    </div>
-
-                    <div className="space-y-2 pt-1">
-                      <span className="text-[11px] font-mono text-purple-300 uppercase tracking-wider font-bold block">
-                        Key Features Delivered
-                      </span>
-                      <ul className="space-y-2 text-xs sm:text-sm text-zinc-300">
-                        {activeProject.features.map((feat, idx) => (
-                          <li key={idx} className="flex items-start gap-2.5">
-                            <CheckCircle2 className="w-4 h-4 text-[#a855f7] shrink-0 mt-0.5" />
-                            <span>{feat}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-
-              {/* Modal Bottom CTA */}
-              <div className="p-5 sm:p-6 bg-[#120a22] border-t border-purple-900/50 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
-                <span className="text-xs font-medium text-zinc-400 text-center sm:text-left">
-                  Want a similar custom website architecture engineered for your brand?
-                </span>
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
-                  <a
-                    href={activeProject.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-5 py-2.5 bg-[#180e2f] border border-purple-700/50 hover:border-purple-400 text-white text-xs font-bold tracking-wide transition-colors rounded-full flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer"
-                  >
-                    <span>Visit Live Site</span>
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </a>
-                  <a
-                    href="#contact"
-                    onClick={() => setActiveProject(null)}
-                    className="px-6 py-2.5 bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white text-xs font-bold tracking-wide transition-colors rounded-full text-center whitespace-nowrap cursor-pointer"
-                  >
-                    Request Similar Project
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>,
-          document.body
-        )}
     </section>
   );
 }

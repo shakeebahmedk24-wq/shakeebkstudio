@@ -30,7 +30,7 @@ import {
 } from "lucide-react";
 
 interface GeroldHomeProps {
-  initialPortfolioTab?: "all" | "case_studies" | "websites" | "graphics";
+  initialPortfolioTab?: "all" | "websites" | "graphics";
   onNavigateToPortfolio?: (type?: "all" | "web" | "graphics") => void;
 }
 
@@ -938,7 +938,7 @@ export function GeroldHome({
           {/* ======================================================== */}
           <section
             id="hero"
-            className="bg-experience-gradient text-white pt-24 pb-10 sm:pt-28 sm:pb-12 lg:pt-32 lg:pb-14 border-b border-purple-500/30 rounded-b-[2rem] sm:rounded-b-[3rem] relative z-10 overflow-hidden shadow-[0_24px_60px_rgba(91,33,182,0.22)]"
+            className="bg-experience-gradient text-white pt-24 pb-10 sm:pt-28 sm:pb-12 lg:pt-32 lg:pb-14 border-b border-purple-500/30 rounded-b-[2rem] sm:rounded-b-[3rem] relative z-10 overflow-x-clip shadow-[0_24px_60px_rgba(91,33,182,0.22)]"
           >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16">
               <div className="grid lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-12 items-center">
@@ -998,6 +998,7 @@ export function GeroldHome({
                   <div
                     className="relative w-full max-w-[380px] sm:max-w-[420px]"
                     onMouseMove={(e) => {
+                      if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) return;
                       const rect = e.currentTarget.getBoundingClientRect();
                       const x = (e.clientX - rect.left) / rect.width - 0.5;
                       const y = (e.clientY - rect.top) / rect.height - 0.5;
@@ -1012,7 +1013,6 @@ export function GeroldHome({
                       whileHover={{ rotate: 0.5 }}
                       viewport={{ once: true, amount: 0.2 }}
                       transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
-                      className="will-change-transform"
                     >
                       <motion.div
                         animate={{
@@ -1020,7 +1020,7 @@ export function GeroldHome({
                           rotateY: heroTilt.rotateY
                         }}
                         transition={{ type: "spring", stiffness: 220, damping: 20 }}
-                        className="bg-[#120a22] p-3 sm:p-4 rounded-3xl border-2 border-purple-500/45 shadow-[0_28px_65px_rgba(135,80,247,0.18)] will-change-transform"
+                        className="bg-[#120a22] p-3 sm:p-4 rounded-3xl border-2 border-purple-500/45 shadow-[0_28px_65px_rgba(135,80,247,0.18)]"
                       >
                         <div className="aspect-[4/4.3] w-full rounded-2xl overflow-hidden bg-[#07030e]">
                           <img
@@ -1149,11 +1149,11 @@ export function GeroldHome({
                 </div>
 
                 {/* Client Brand Roster Marquee */}
-                <div className="flex items-center gap-4 overflow-hidden">
+                <div className="flex items-center gap-4 overflow-x-clip">
                   <span className="font-hand text-xl sm:text-2xl text-[#e9d5ff] font-bold shrink-0 whitespace-nowrap">
                     Trusted by:
                   </span>
-                  <div className="overflow-hidden flex-1">
+                  <div className="overflow-x-clip flex-1">
                     <div className="animate-marquee flex items-center gap-8 font-display text-xl sm:text-2xl font-black uppercase tracking-wide text-white">
                       {[...Array(2)].map((_, loopIdx) => (
                         <React.Fragment key={loopIdx}>
@@ -1264,7 +1264,7 @@ export function GeroldHome({
             </div>
 
             {/* Mobile Single-Line Marquee Strip (Compact, Zero-Lag GPU Motion) */}
-            <div className="md:hidden relative mt-6 overflow-hidden">
+            <div className="md:hidden relative mt-6 overflow-x-clip [touch-action:pan-y]">
               <div
                 aria-hidden="true"
                 className="pointer-events-none absolute inset-y-0 left-0 w-6 bg-gradient-to-r from-[#0D071E] to-transparent z-10"
@@ -1325,7 +1325,7 @@ export function GeroldHome({
           {/* ======================================================== */}
           <div
             id="works"
-            className="bg-[#0D071E] overflow-hidden scroll-mt-20"
+            className="bg-[#0D071E] overflow-x-clip scroll-mt-20"
           >
             <div id="web-portfolio">
               <WebsitePortfolio
@@ -1353,7 +1353,7 @@ export function GeroldHome({
           {/* ======================================================== */}
           <section
             id="ways-to-work"
-            className="py-12 sm:py-24 bg-[#0D071E] scroll-mt-20 overflow-hidden"
+            className="py-12 sm:py-24 bg-[#0D071E] scroll-mt-20 overflow-x-clip"
           >
             {/* Header Row with Title + Subtitle + Left/Right Slider Controls */}
             <motion.div
@@ -1411,7 +1411,7 @@ export function GeroldHome({
             <div
               ref={servicesTrackRef}
               onScroll={updateServicesScrollState}
-              className="mt-10 sm:mt-12 flex items-stretch gap-5 sm:gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth touch-pan-x px-4 sm:px-6 lg:pl-[max(2rem,calc((100vw-80rem)/2+2rem))] lg:pr-10 pb-4"
+              className="mt-10 sm:mt-12 flex items-stretch gap-5 sm:gap-6 overflow-x-auto no-scrollbar snap-x snap-proximity [touch-action:pan-x_pan-y] px-4 sm:px-6 lg:pl-[max(2rem,calc((100vw-80rem)/2+2rem))] lg:pr-10 pb-4"
             >
               {waysToWorkList.map((srv) => {
                 const handleCardAction = () => {
@@ -2101,7 +2101,7 @@ export function GeroldHome({
           {/* ======================================================== */}
           {/* GRAPHICS PORTFOLIO HERO (#2C1156 Architectural Grid)     */}
           {/* ======================================================== */}
-          <section className="bg-work-hero-grid text-white pt-24 sm:pt-28 pb-16 sm:pb-24 relative overflow-hidden border-b border-purple-400/20">
+          <section className="bg-work-hero-grid text-white pt-24 sm:pt-28 pb-16 sm:pb-24 relative overflow-x-clip border-b border-purple-400/20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-10 sm:space-y-12">
               {/* Subpage Quick Controls */}
               <div className="flex flex-wrap items-center justify-between gap-4">
@@ -2230,7 +2230,7 @@ export function GeroldHome({
       {/* ======================================================== */}
       <footer
         id="contact"
-        className="mt-12 sm:mt-16 bg-experience-gradient border-t border-purple-500/30 text-white rounded-t-[2rem] sm:rounded-t-[3rem] pt-14 sm:pt-20 pb-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
+        className="mt-12 sm:mt-16 bg-experience-gradient border-t border-purple-500/30 text-white rounded-t-[2rem] sm:rounded-t-[3rem] pt-14 sm:pt-20 pb-8 px-4 sm:px-6 lg:px-8 relative overflow-x-clip"
       >
         <div className="max-w-7xl mx-auto space-y-12">
           {/* Top Pre-Footer Conversion Hook */}
