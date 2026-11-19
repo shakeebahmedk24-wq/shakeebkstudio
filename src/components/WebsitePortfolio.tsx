@@ -1455,7 +1455,7 @@ export function WebsitePortfolio({
         </div>
 
         {/* Foreground Centerpiece: MacBook Pro Mockup */}
-        <div className="relative z-20 max-w-[265px] sm:max-w-[580px] lg:max-w-[700px] mx-auto px-2 sm:px-0">
+        <div className="relative z-20 max-w-[265px] sm:max-w-[600px] lg:max-w-[760px] mx-auto px-2 sm:px-0">
           <div className="bg-[#0d071d] border-[5px] sm:border-[10px] border-[#1a0f33] ring-1 ring-white/20 rounded-t-[1rem] sm:rounded-t-[1.7rem] shadow-[0_36px_95px_rgba(7,3,14,0.85)] overflow-hidden">
             <div className="flex justify-center py-1 sm:py-2 bg-[#0d071d]">
               <span className="w-1.5 h-1.5 rounded-full bg-purple-300/35 block" />
@@ -1670,7 +1670,7 @@ export function WebsitePortfolio({
           {renderVideoShowcaseStage(false)}
           <div className="pt-10 sm:pt-14 border-t border-purple-900/40">
             {/* Searchable & Filterable Archive Grid */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
+            <div className="max-w-[1480px] mx-auto px-4 sm:px-6 lg:px-10 space-y-8 sm:space-y-12">
             {/* SECTION HEADER */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
               <div className="space-y-3 max-w-2xl">

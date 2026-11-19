@@ -2114,7 +2114,7 @@ export function GraphicsPortfolio({
     <section
       className={`${isHomePage ? "py-16 sm:py-24" : "pt-10 pb-16 sm:pt-14 sm:pb-24"} scroll-mt-24 text-left relative overflow-x-clip`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12 relative z-10">
+      <div className="max-w-[1480px] mx-auto px-4 sm:px-6 lg:px-10 space-y-10 sm:space-y-12 relative z-10">
 
         {isHomePage && (
           <>

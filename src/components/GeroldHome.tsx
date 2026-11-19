@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { WebsitePortfolio } from "./WebsitePortfolio";
 import { GraphicsPortfolio } from "./GraphicsPortfolio";
+import { WebsiteHealthChecker } from "./WebsiteHealthChecker";
 import {
   ArrowLeft,
   ArrowRight,
@@ -38,7 +39,9 @@ export function GeroldHome({
   initialPortfolioTab = "all",
   onNavigateToPortfolio
 }: GeroldHomeProps) {
-  const [currentPage, setCurrentPage] = useState<"home" | "websites" | "graphics">(
+  const [currentPage, setCurrentPage] = useState<
+    "home" | "websites" | "graphics" | "health-checker"
+  >(
     initialPortfolioTab === "websites"
       ? "websites"
       : initialPortfolioTab === "graphics"
@@ -57,9 +60,12 @@ export function GeroldHome({
   const [activeSkillCategory, setActiveSkillCategory] = useState<"all" | "design" | "dev">("all");
   const [canScrollServicesLeft, setCanScrollServicesLeft] = useState(false);
   const [canScrollServicesRight, setCanScrollServicesRight] = useState(true);
+  const [canScrollHelpLeft, setCanScrollHelpLeft] = useState(false);
+  const [canScrollHelpRight, setCanScrollHelpRight] = useState(true);
 
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const servicesTrackRef = useRef<HTMLDivElement | null>(null);
+  const helpTrackRef = useRef<HTMLDivElement | null>(null);
 
   const updateServicesScrollState = () => {
     const el = servicesTrackRef.current;
@@ -68,10 +74,22 @@ export function GeroldHome({
     setCanScrollServicesRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 8);
   };
 
+  const updateHelpScrollState = () => {
+    const el = helpTrackRef.current;
+    if (!el) return;
+    setCanScrollHelpLeft(el.scrollLeft > 8);
+    setCanScrollHelpRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 8);
+  };
+
   useEffect(() => {
     updateServicesScrollState();
-    window.addEventListener("resize", updateServicesScrollState);
-    return () => window.removeEventListener("resize", updateServicesScrollState);
+    updateHelpScrollState();
+    const handleResize = () => {
+      updateServicesScrollState();
+      updateHelpScrollState();
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const scrollServicesBy = (dir: "left" | "right") => {
@@ -84,17 +102,26 @@ export function GeroldHome({
     });
   };
 
+  const scrollHelpBy = (dir: "left" | "right") => {
+    const el = helpTrackRef.current;
+    if (!el) return;
+    const step = Math.max(220, el.clientWidth * 0.65);
+    el.scrollBy({
+      left: dir === "right" ? step : -step,
+      behavior: "smooth"
+    });
+  };
+
   // Hire modal form fields
   const [hireName, setHireName] = useState("");
   const [hireEmail, setHireEmail] = useState("");
   const [hireService, setHireService] = useState("WordPress & WooCommerce Build");
   const [hireMessage, setHireMessage] = useState("");
 
-  // Track scroll position for floating header <-> pill morph
+  // Track scroll position for sticky header state
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 90);
-      if (window.scrollY > 90) setOpenDesktopDropdown(null);
     };
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -151,6 +178,13 @@ export function GeroldHome({
         } else if (hash === "#graphics-page" || hash === "#graphics" || hash === "#graphics-portfolio") {
           setCurrentPage("graphics");
           window.scrollTo({ top: 0, behavior: "smooth" });
+        } else if (
+          hash === "#health-checker" ||
+          hash === "#health-check" ||
+          hash === "#health-checker-page"
+        ) {
+          setCurrentPage("health-checker");
+          window.scrollTo({ top: 0, behavior: "smooth" });
         } else {
           setCurrentPage("home");
         }
@@ -168,11 +202,14 @@ export function GeroldHome({
     };
   }, []);
 
-  const navigateToPage = (page: "home" | "websites" | "graphics", targetSectionId?: string) => {
+  const navigateToPage = (
+    page: "home" | "websites" | "graphics" | "health-checker",
+    targetSectionId?: string
+  ) => {
     setCurrentPage(page);
     setFullMenuOpen(false);
     setOpenDesktopDropdown(null);
-    if (onNavigateToPortfolio && page !== "home") {
+    if (onNavigateToPortfolio && (page === "websites" || page === "graphics")) {
       onNavigateToPortfolio(page === "websites" ? "web" : "graphics");
     }
 
@@ -210,6 +247,11 @@ export function GeroldHome({
       const lenis = (window as any).__lenis;
       if (lenis && typeof lenis.scrollTo === "function") lenis.scrollTo(0, { immediate: true });
       else window.scrollTo({ top: 0, behavior: "smooth" });
+    } else if (page === "health-checker") {
+      window.location.hash = "health-checker";
+      const lenis = (window as any).__lenis;
+      if (lenis && typeof lenis.scrollTo === "function") lenis.scrollTo(0, { immediate: true });
+      else window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
@@ -243,8 +285,9 @@ export function GeroldHome({
     }
   };
 
-  const openHireWithService = (serviceLabel: string) => {
+  const openHireWithService = (serviceLabel: string, prefillBrief?: string) => {
     setHireService(serviceLabel);
+    setHireMessage(prefillBrief ?? "");
     setHireFormSubmitted(false);
     setShowHireModal(true);
   };
@@ -254,7 +297,7 @@ export function GeroldHome({
       num: "01.",
       icon: Gauge,
       note: "score stuck below 95?",
-      ctaLabel: "Request speed audit",
+      ctaLabel: "Run free speed audit",
       isNew: true,
       title: "Website Speed & Health Audit",
       desc: "Already have a live site that feels sluggish? I audit your scripts, CSS, database queries, and Core Web Vitals, strip bloat cleanly, and push mobile load times under 0.5 seconds without breaking your layout."
@@ -311,8 +354,8 @@ export function GeroldHome({
       id: "health-check",
       title: "Website Health Check",
       desc: "A video walkthrough of your current site and a PDF of what to fix. The good, the bad and the ugly.",
-      ctaLabel: "See the health check",
-      actionType: "hire" as const
+      ctaLabel: "Run free health check",
+      actionType: "health_checker" as const
     },
     {
       id: "custom-design",
@@ -427,18 +470,18 @@ export function GeroldHome({
   return (
     <div className="min-h-screen bg-[#0D071E] text-[#f3f4f6] font-sans antialiased selection:bg-[#8750f7] selection:text-white relative overflow-x-clip">
       {/* ======================================================== */}
-      {/* FLOATING VIDEO-MATCHED HEADER (Capsule Pill + Scrolled)  */}
+      {/* FLOATING HEADER (Exact Design-by-Ency Pill Proportions)  */}
       {/* ======================================================== */}
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          currentPage !== "home" && isScrolled
-            ? "bg-[#07030e]/95 backdrop-blur-md border-b border-purple-900/50 shadow-[0_12px_34px_rgba(7,3,14,0.65)] pointer-events-auto"
-            : "pointer-events-none"
+        className={`fixed top-0 left-0 right-0 z-50 transition-[background-color,box-shadow] duration-200 ${
+          isScrolled
+            ? "bg-[#0D071E] shadow-[0_12px_32px_rgba(7,3,14,0.72)] pointer-events-auto"
+            : "bg-transparent pointer-events-none"
         }`}
       >
         <div
-          className={`max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 flex items-center justify-between gap-3 transition-all duration-300 ${
-            currentPage !== "home" && isScrolled ? "py-3.5 sm:py-4" : "pt-3.5 sm:pt-5"
+          className={`max-w-[1480px] mx-auto px-4 sm:px-6 lg:px-10 flex items-center justify-between gap-3 ${
+            isScrolled ? "py-3 sm:py-3.5" : "py-4 sm:py-5 lg:py-6"
           }`}
         >
           {/* Zone 1: Crisp Left White Brand Logo */}
@@ -449,36 +492,28 @@ export function GeroldHome({
               if (currentPage !== "home") navigateToPage("home");
               else scrollToTop();
             }}
-            className={`pointer-events-auto flex items-center shrink-0 whitespace-nowrap focus:outline-none group transition-all duration-300 ${
-              isScrolled && currentPage === "home"
-                ? "opacity-0 pointer-events-none md:opacity-0"
-                : "opacity-100"
-            }`}
+            className="pointer-events-auto flex items-center shrink-0 whitespace-nowrap focus:outline-none group"
             title="Shakeeb Ahmed Khan"
           >
             <img
               src="/Shakeeb_logo_white-removebg-preview-1.png"
               alt="Shakeeb"
-              className="w-[116px] sm:w-auto sm:h-[26px] h-auto object-contain transition-transform duration-200 group-hover:scale-[1.03]"
+              className="w-[116px] sm:w-auto sm:h-[30px] lg:h-[34px] h-auto object-contain transition-transform duration-200 group-hover:scale-[1.03]"
             />
           </a>
 
-          {/* Zone 2: Centered Floating White Capsule Nav (Desktop Top State) */}
+          {/* Zone 2: Centered Floating White Capsule Nav (Desktop, 52px-54px tall matching reference) */}
           <div
             ref={dropdownRef}
-            className={`hidden lg:flex items-center justify-center transition-all duration-300 ${
-              isScrolled
-                ? "opacity-0 -translate-y-4 pointer-events-none"
-                : "opacity-100 translate-y-0 pointer-events-auto"
-            }`}
+            className="hidden lg:flex items-center justify-center pointer-events-auto"
           >
-            <nav className="relative bg-white text-[#120a22] rounded-full px-1.5 py-1.5 shadow-[0_12px_32px_rgba(7,3,14,0.32)] border border-purple-200/60 flex items-center gap-0.5 text-[13px] font-medium">
+            <nav className="relative h-[52px] xl:h-[54px] bg-white text-[#120a22] rounded-full p-1.5 shadow-[0_14px_38px_rgba(7,3,14,0.34)] flex items-center gap-0.5 xl:gap-1 text-[14px] xl:text-[15px] font-medium">
               <button
                 onClick={() => navigateToPage("home")}
-                className={`px-3.5 py-1.5 rounded-full transition-colors cursor-pointer whitespace-nowrap ${
+                className={`h-10 xl:h-[42px] px-4 xl:px-5 rounded-full inline-flex items-center justify-center transition-colors cursor-pointer whitespace-nowrap ${
                   currentPage === "home"
-                    ? "bg-[#ede9fe] text-[#5b21b6] font-semibold"
-                    : "text-[#120a22] hover:bg-purple-50"
+                    ? "bg-[#6d28d9] text-white font-semibold shadow-sm"
+                    : "text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6]"
                 }`}
               >
                 Home
@@ -486,7 +521,7 @@ export function GeroldHome({
 
               <button
                 onClick={() => scrollToSection("resume")}
-                className="px-3.5 py-1.5 rounded-full text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6] transition-colors cursor-pointer whitespace-nowrap"
+                className="h-10 xl:h-[42px] px-4 xl:px-5 rounded-full inline-flex items-center justify-center text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6] transition-colors cursor-pointer whitespace-nowrap"
               >
                 About
               </button>
@@ -501,16 +536,16 @@ export function GeroldHome({
                   onClick={() =>
                     setOpenDesktopDropdown((prev) => (prev === "services" ? null : "services"))
                   }
-                  className={`px-3.5 py-1.5 rounded-full transition-colors cursor-pointer whitespace-nowrap inline-flex items-center gap-1 ${
+                  className={`h-10 xl:h-[42px] px-4 xl:px-5 rounded-full transition-colors cursor-pointer whitespace-nowrap inline-flex items-center gap-1.5 ${
                     openDesktopDropdown === "services"
-                      ? "bg-[#ede9fe] text-[#5b21b6] font-semibold"
+                      ? "bg-[#6d28d9] text-white font-semibold shadow-sm"
                       : "text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6]"
                   }`}
                 >
                   <span>Services</span>
                   <ChevronDown
-                    className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                      openDesktopDropdown === "services" ? "rotate-180 text-[#5b21b6]" : ""
+                    className={`w-4 h-4 transition-transform duration-200 ${
+                      openDesktopDropdown === "services" ? "rotate-180 text-white" : ""
                     }`}
                   />
                 </button>
@@ -522,7 +557,7 @@ export function GeroldHome({
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 6, scale: 0.97 }}
                       transition={{ duration: 0.18, ease: "easeOut" }}
-                      className="absolute left-0 top-full pt-2.5 w-[290px] z-50"
+                      className="absolute left-0 top-full pt-3 w-[300px] z-50"
                     >
                       <div className="bg-white rounded-2xl shadow-[0_20px_50px_rgba(7,3,14,0.35)] border border-purple-200/70 p-2 space-y-0.5 text-left">
                         {servicesList.map((srv) => (
@@ -530,9 +565,10 @@ export function GeroldHome({
                             key={srv.num}
                             onClick={() => {
                               setOpenDesktopDropdown(null);
-                              scrollToSection("services");
+                              if (srv.num === "01.") navigateToPage("health-checker");
+                              else scrollToSection("services");
                             }}
-                            className="w-full px-3 py-2.5 rounded-xl text-[13px] font-medium text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6] flex items-center justify-between gap-2 transition-colors group/item cursor-pointer text-left"
+                            className="w-full px-3.5 py-2.5 rounded-xl text-[13.5px] font-medium text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6] flex items-center justify-between gap-2 transition-colors group/item cursor-pointer text-left"
                           >
                             <span className="flex items-center gap-2 min-w-0">
                               <ArrowRight className="w-3.5 h-3.5 text-[#6d28d9] opacity-0 -ml-1 group-hover/item:opacity-100 group-hover/item:ml-0 transition-all shrink-0" />
@@ -561,18 +597,22 @@ export function GeroldHome({
                   onClick={() =>
                     setOpenDesktopDropdown((prev) => (prev === "portfolio" ? null : "portfolio"))
                   }
-                  className={`px-3.5 py-1.5 rounded-full transition-colors cursor-pointer whitespace-nowrap inline-flex items-center gap-1 ${
+                  className={`h-10 xl:h-[42px] px-4 xl:px-5 rounded-full transition-colors cursor-pointer whitespace-nowrap inline-flex items-center gap-1.5 ${
                     openDesktopDropdown === "portfolio" ||
                     currentPage === "websites" ||
                     currentPage === "graphics"
-                      ? "bg-[#ede9fe] text-[#5b21b6] font-semibold"
+                      ? "bg-[#6d28d9] text-white font-semibold shadow-sm"
                       : "text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6]"
                   }`}
                 >
                   <span>Portfolio</span>
                   <ChevronDown
-                    className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                      openDesktopDropdown === "portfolio" ? "rotate-180 text-[#5b21b6]" : ""
+                    className={`w-4 h-4 transition-transform duration-200 ${
+                      openDesktopDropdown === "portfolio"
+                        ? "rotate-180 text-white"
+                        : currentPage === "websites" || currentPage === "graphics"
+                        ? "text-white"
+                        : ""
                     }`}
                   />
                 </button>
@@ -584,12 +624,12 @@ export function GeroldHome({
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 6, scale: 0.97 }}
                       transition={{ duration: 0.18, ease: "easeOut" }}
-                      className="absolute left-0 top-full pt-2.5 w-[245px] z-50"
+                      className="absolute left-0 top-full pt-3 w-[255px] z-50"
                     >
                       <div className="bg-white rounded-2xl shadow-[0_20px_50px_rgba(7,3,14,0.35)] border border-purple-200/70 p-2 space-y-0.5 text-left">
                         <button
                           onClick={() => navigateToPage("websites")}
-                          className="w-full px-3 py-2.5 rounded-xl text-[13px] font-medium text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6] flex items-center justify-between gap-2 transition-colors group/item cursor-pointer"
+                          className="w-full px-3.5 py-2.5 rounded-xl text-[13.5px] font-medium text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6] flex items-center justify-between gap-2 transition-colors group/item cursor-pointer"
                         >
                           <span className="flex items-center gap-2">
                             <ArrowRight className="w-3.5 h-3.5 text-[#6d28d9] opacity-0 group-hover/item:opacity-100 transition-opacity" />
@@ -598,7 +638,7 @@ export function GeroldHome({
                         </button>
                         <button
                           onClick={() => navigateToPage("graphics")}
-                          className="w-full px-3 py-2.5 rounded-xl text-[13px] font-medium text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6] flex items-center justify-between gap-2 transition-colors group/item cursor-pointer"
+                          className="w-full px-3.5 py-2.5 rounded-xl text-[13.5px] font-medium text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6] flex items-center justify-between gap-2 transition-colors group/item cursor-pointer"
                         >
                           <span className="flex items-center gap-2">
                             <ArrowRight className="w-3.5 h-3.5 text-[#6d28d9] opacity-0 group-hover/item:opacity-100 transition-opacity" />
@@ -611,7 +651,7 @@ export function GeroldHome({
                           target="_blank"
                           rel="noreferrer"
                           onClick={() => setOpenDesktopDropdown(null)}
-                          className="w-full px-3 py-2.5 rounded-xl text-[13px] font-medium text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6] flex items-center justify-between gap-2 transition-colors group/item cursor-pointer"
+                          className="w-full px-3.5 py-2.5 rounded-xl text-[13.5px] font-medium text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6] flex items-center justify-between gap-2 transition-colors group/item cursor-pointer"
                         >
                           <span className="flex items-center gap-2">
                             <Download className="w-3.5 h-3.5 text-[#6d28d9]" />
@@ -625,8 +665,19 @@ export function GeroldHome({
               </div>
 
               <button
+                onClick={() => navigateToPage("health-checker")}
+                className={`h-10 xl:h-[42px] px-4 xl:px-5 rounded-full inline-flex items-center justify-center transition-colors cursor-pointer whitespace-nowrap ${
+                  currentPage === "health-checker"
+                    ? "bg-[#6d28d9] text-white font-semibold shadow-sm"
+                    : "text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6]"
+                }`}
+              >
+                Health Check
+              </button>
+
+              <button
                 onClick={() => scrollToSection("contact")}
-                className="px-3.5 py-1.5 rounded-full text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6] transition-colors cursor-pointer whitespace-nowrap"
+                className="h-10 xl:h-[42px] px-4 xl:px-5 rounded-full inline-flex items-center justify-center text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6] transition-colors cursor-pointer whitespace-nowrap"
               >
                 Contact
               </button>
@@ -637,9 +688,9 @@ export function GeroldHome({
           <div className="pointer-events-auto flex items-center gap-2 sm:gap-2.5 shrink-0">
             <button
               onClick={() => openHireWithService("WordPress & WooCommerce Build")}
-              className="h-11 inline-flex items-center gap-2.5 pl-1 pr-4 bg-white hover:bg-purple-50 text-[#120a22] text-[13px] font-semibold tracking-tight rounded-full transition-colors cursor-pointer whitespace-nowrap shadow-[0_12px_32px_rgba(7,3,14,0.32)]"
+              className="h-11 lg:h-[52px] xl:h-[54px] inline-flex items-center gap-2.5 lg:gap-3 pl-1 lg:pl-1.5 pr-4 lg:pr-5 xl:pr-6 bg-white hover:bg-purple-50 text-[#120a22] text-[13px] lg:text-[14px] xl:text-[15px] font-semibold tracking-tight rounded-full transition-colors cursor-pointer whitespace-nowrap shadow-[0_14px_38px_rgba(7,3,14,0.34)]"
             >
-              <span className="relative w-9 h-9 rounded-full bg-[#6d28d9] shrink-0">
+              <span className="relative w-9 h-9 lg:w-10 lg:h-10 xl:w-[42px] xl:h-[42px] rounded-full bg-[#6d28d9] shrink-0">
                 <img
                   src="/shakeeb-avatar.webp"
                   onError={(e) => {
@@ -650,7 +701,7 @@ export function GeroldHome({
                 />
                 <span
                   aria-hidden="true"
-                  className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-[#38c172] ring-2 ring-white"
+                  className="absolute bottom-0 right-0 w-2.5 h-2.5 lg:w-3 lg:h-3 rounded-full bg-[#38c172] ring-2 ring-white"
                 />
               </span>
               <span>Book a call</span>
@@ -662,9 +713,7 @@ export function GeroldHome({
                 setFullMenuOpen(true);
               }}
               aria-label="Open full navigation menu"
-              className={`w-11 h-11 rounded-full bg-white hover:bg-purple-50 shadow-[0_12px_32px_rgba(7,3,14,0.32)] flex-col items-center justify-center gap-[5px] transition-colors cursor-pointer shrink-0 ${
-                isScrolled ? "flex" : "flex lg:hidden"
-              }`}
+              className="flex lg:hidden w-11 h-11 rounded-full bg-white hover:bg-purple-50 shadow-[0_12px_32px_rgba(7,3,14,0.32)] flex-col items-center justify-center gap-[5px] transition-colors cursor-pointer shrink-0"
             >
               <span className="w-4 h-[1.5px] bg-[#6d28d9] rounded-full block" />
               <span className="w-4 h-[1.5px] bg-[#6d28d9] rounded-full block" />
@@ -686,7 +735,7 @@ export function GeroldHome({
             className="fixed inset-0 z-[100] bg-[#120A21] text-white flex flex-col justify-between p-5 sm:p-8 lg:p-10 overflow-y-auto overscroll-contain will-change-transform"
           >
             {/* Top Bar inside Overlay */}
-            <div className="max-w-7xl w-full mx-auto flex items-center justify-between gap-3">
+            <div className="max-w-[1480px] w-full mx-auto flex items-center justify-between gap-3">
               <button
                 onClick={() => navigateToPage("home")}
                 className="cursor-pointer focus:outline-none shrink-0"
@@ -695,7 +744,7 @@ export function GeroldHome({
                 <img
                   src="/Shakeeb_logo_white-removebg-preview-1.png"
                   alt="Shakeeb"
-                  className="w-[116px] sm:w-auto sm:h-[26px] h-auto object-contain"
+                  className="w-[116px] sm:w-auto sm:h-[30px] lg:h-[34px] h-auto object-contain"
                 />
               </button>
 
@@ -705,9 +754,9 @@ export function GeroldHome({
                     setFullMenuOpen(false);
                     openHireWithService("WordPress & WooCommerce Build");
                   }}
-                  className="h-11 inline-flex items-center gap-2.5 pl-1 pr-4 bg-white hover:bg-purple-50 text-[#120a22] text-[13px] font-semibold tracking-tight rounded-full transition-colors cursor-pointer whitespace-nowrap shadow-lg"
+                  className="h-11 lg:h-[52px] inline-flex items-center gap-2.5 pl-1 lg:pl-1.5 pr-4 lg:pr-5 bg-white hover:bg-purple-50 text-[#120a22] text-[13px] lg:text-[14px] font-semibold tracking-tight rounded-full transition-colors cursor-pointer whitespace-nowrap shadow-lg"
                 >
-                  <span className="relative w-9 h-9 rounded-full bg-[#6d28d9] shrink-0">
+                  <span className="relative w-9 h-9 lg:w-10 lg:h-10 rounded-full bg-[#6d28d9] shrink-0">
                     <img
                       src="/shakeeb-avatar.webp"
                       onError={(e) => {
@@ -718,7 +767,7 @@ export function GeroldHome({
                     />
                     <span
                       aria-hidden="true"
-                      className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-[#38c172] ring-2 ring-white"
+                      className="absolute bottom-0 right-0 w-2.5 h-2.5 lg:w-3 lg:h-3 rounded-full bg-[#38c172] ring-2 ring-white"
                     />
                   </span>
                   <span>Book a call</span>
@@ -727,7 +776,7 @@ export function GeroldHome({
                 <button
                   onClick={() => setFullMenuOpen(false)}
                   aria-label="Close navigation menu"
-                  className="w-11 h-11 rounded-full bg-white hover:bg-purple-50 text-[#6d28d9] flex items-center justify-center transition-colors cursor-pointer shadow-lg shrink-0"
+                  className="w-11 h-11 lg:w-[52px] lg:h-[52px] rounded-full bg-white hover:bg-purple-50 text-[#6d28d9] flex items-center justify-center transition-colors cursor-pointer shadow-lg shrink-0"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -735,7 +784,7 @@ export function GeroldHome({
             </div>
 
             {/* Monumental Big Shoulders Display Navigation List */}
-            <div className="max-w-7xl w-full mx-auto py-8 my-auto text-left space-y-2 sm:space-y-3">
+            <div className="max-w-[1480px] w-full mx-auto py-8 my-auto text-left space-y-2 sm:space-y-3">
               {/* HOME */}
               <motion.button
                 initial={{ opacity: 0, y: 18 }}
@@ -811,7 +860,11 @@ export function GeroldHome({
                       {servicesList.map((srv) => (
                         <button
                           key={srv.num}
-                          onClick={() => scrollToSection("services")}
+                          onClick={() =>
+                            srv.num === "01."
+                              ? navigateToPage("health-checker")
+                              : scrollToSection("services")
+                          }
                           className="flex items-center gap-2.5 text-base sm:text-xl font-medium text-purple-100 hover:text-white transition-colors cursor-pointer text-left"
                         >
                           <span>{srv.title}</span>
@@ -880,6 +933,24 @@ export function GeroldHome({
                 </AnimatePresence>
               </motion.div>
 
+              {/* HEALTH CHECK */}
+              <motion.button
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.34, delay: 0.26, ease: [0.22, 1, 0.36, 1] }}
+                onMouseEnter={() => setHoveredOverlayLink("health-checker")}
+                onMouseLeave={() => setHoveredOverlayLink(null)}
+                onClick={() => navigateToPage("health-checker")}
+                className="group flex items-center gap-3 font-display text-5xl sm:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white hover:text-[#e9d5ff] transition-colors cursor-pointer"
+              >
+                <ArrowUpRight
+                  className={`w-8 h-8 sm:w-12 sm:h-12 text-[#e9d5ff] transition-all duration-200 ${
+                    hoveredOverlayLink === "health-checker" ? "opacity-100 scale-100" : "opacity-0 -ml-10 sm:-ml-14 scale-75"
+                  }`}
+                />
+                <span>HEALTH CHECK</span>
+              </motion.button>
+
               {/* CONTACT */}
               <motion.button
                 initial={{ opacity: 0, y: 18 }}
@@ -904,7 +975,7 @@ export function GeroldHome({
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.32, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="max-w-7xl w-full mx-auto pt-4 border-t border-white/20 flex flex-wrap items-center gap-4"
+              className="max-w-[1480px] w-full mx-auto pt-4 border-t border-white/20 flex flex-wrap items-center gap-4"
             >
               <button
                 onClick={() => {
@@ -940,7 +1011,7 @@ export function GeroldHome({
             id="hero"
             className="bg-experience-gradient text-white pt-24 pb-10 sm:pt-28 sm:pb-12 lg:pt-32 lg:pb-14 border-b border-purple-500/30 rounded-b-[2rem] sm:rounded-b-[3rem] relative z-10 overflow-x-clip shadow-[0_24px_60px_rgba(91,33,182,0.22)]"
           >
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16">
+            <div className="max-w-[1480px] mx-auto px-4 sm:px-6 lg:px-10 space-y-12 sm:space-y-14">
               <div className="grid lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-12 items-center">
                 {/* Left Column: Heavy Condensed Headline & Value Proposition */}
                 <motion.div
@@ -959,7 +1030,7 @@ export function GeroldHome({
                     WordPress, AI &amp; Brand Developer · 7+ years
                   </motion.span>
 
-                  <h1 className="font-display text-[44px] sm:text-7xl lg:text-[92px] font-black uppercase tracking-tight leading-[0.92] text-white text-balance">
+                  <h1 className="font-display text-[44px] sm:text-7xl lg:text-[96px] xl:text-[106px] font-black uppercase tracking-tight leading-[0.9] text-white text-balance">
                     Websites &amp; brands that keep getting better
                   </h1>
 
@@ -996,7 +1067,7 @@ export function GeroldHome({
                   style={{ perspective: 1000 }}
                 >
                   <div
-                    className="relative w-full max-w-[380px] sm:max-w-[420px]"
+                    className="relative w-full max-w-[380px] sm:max-w-[430px] lg:max-w-[465px]"
                     onMouseMove={(e) => {
                       if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) return;
                       const rect = e.currentTarget.getBoundingClientRect();
@@ -1193,7 +1264,7 @@ export function GeroldHome({
             id="services"
             className="py-10 sm:py-24 bg-[#0D071E] scroll-mt-20 overflow-x-clip"
           >
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left space-y-6 sm:space-y-12">
+            <div className="max-w-[1480px] mx-auto px-4 sm:px-6 lg:px-10 text-left space-y-6 sm:space-y-12">
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -1209,9 +1280,41 @@ export function GeroldHome({
                     How I Can Help
                   </h2>
                 </div>
-                <p className="text-xs sm:text-base text-zinc-300 max-w-md leading-relaxed">
-                  Focused engineering and design sprints built to make your digital presence faster, sharper, and easier to convert on.
-                </p>
+                <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+                  <p className="text-xs sm:text-base text-zinc-300 max-w-md leading-relaxed">
+                    Focused engineering and design sprints built to make your digital presence faster, sharper, and easier to convert on.
+                  </p>
+
+                  {/* Mobile Scroll Arrows for Services Peek Carousel */}
+                  <div className="flex md:hidden items-center gap-2 pt-1">
+                    <button
+                      type="button"
+                      onClick={() => scrollHelpBy("left")}
+                      disabled={!canScrollHelpLeft}
+                      aria-label="Scroll services left"
+                      className={`w-10 h-10 rounded-full flex items-center justify-center border transition-all cursor-pointer ${
+                        canScrollHelpLeft
+                          ? "bg-white text-[#120a22] border-white shadow-lg"
+                          : "bg-transparent text-zinc-500 border-purple-500/30 cursor-not-allowed opacity-60"
+                      }`}
+                    >
+                      <ArrowLeft className="w-4 h-4" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => scrollHelpBy("right")}
+                      disabled={!canScrollHelpRight}
+                      aria-label="Scroll services right"
+                      className={`w-10 h-10 rounded-full flex items-center justify-center border transition-all cursor-pointer ${
+                        canScrollHelpRight
+                          ? "bg-[#8750f7] text-white border-[#a855f7] shadow-[0_6px_20px_rgba(135,80,247,0.45)]"
+                          : "bg-transparent text-zinc-500 border-purple-500/30 cursor-not-allowed opacity-60"
+                      }`}
+                    >
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
               </motion.div>
 
               {/* Desktop & Tablet 3x2 Grid */}
@@ -1250,7 +1353,11 @@ export function GeroldHome({
 
                       <div className="pt-1">
                         <button
-                          onClick={() => openHireWithService(srv.title)}
+                          onClick={() =>
+                            srv.num === "01."
+                              ? navigateToPage("health-checker")
+                              : openHireWithService(srv.title)
+                          }
                           className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-purple-500/45 hover:border-white hover:bg-[#6d28d9] text-white text-xs sm:text-sm font-semibold transition-colors cursor-pointer whitespace-nowrap"
                         >
                           <span>{srv.ctaLabel}</span>
@@ -1263,60 +1370,54 @@ export function GeroldHome({
               </div>
             </div>
 
-            {/* Mobile Single-Line Marquee Strip (Compact, Zero-Lag GPU Motion) */}
-            <div className="md:hidden relative mt-6 overflow-x-clip [touch-action:pan-y]">
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-y-0 left-0 w-6 bg-gradient-to-r from-[#0D071E] to-transparent z-10"
-              />
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-y-0 right-0 w-6 bg-gradient-to-l from-[#0D071E] to-transparent z-10"
-              />
-              <div className="animate-services-marquee flex items-stretch gap-3.5 pl-4">
-                {[0, 1].map((loopIdx) => (
-                  <div key={loopIdx} className="flex items-stretch gap-3.5 shrink-0 pr-3.5">
-                    {servicesList.map((srv) => {
-                      const IconComp = srv.icon;
-                      return (
-                        <div
-                          key={`${loopIdx}-${srv.num}`}
-                          className="w-[264px] shrink-0 bg-[#120A21] border border-purple-800/45 rounded-2xl p-4 text-left flex flex-col justify-between gap-3.5 shadow-[0_8px_24px_rgba(0,0,0,0.35)]"
-                        >
-                          <div className="space-y-2.5">
-                            <div className="flex items-center justify-between gap-2">
-                              <div className="w-9 h-9 rounded-xl bg-[#6d28d9] flex items-center justify-center text-white shrink-0">
-                                <IconComp className="w-4 h-4" />
-                              </div>
-                              <span className="font-hand text-sm font-bold px-2.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] -rotate-2 inline-block truncate max-w-[165px]">
-                                {srv.note}
-                              </span>
-                            </div>
-
-                            <div className="space-y-1">
-                              <h3 className="text-base font-bold tracking-tight text-white leading-snug">
-                                {srv.title}
-                              </h3>
-                              <p className="text-xs text-zinc-300/90 leading-relaxed line-clamp-2">
-                                {srv.desc}
-                              </p>
-                            </div>
-                          </div>
-
-                          <button
-                            type="button"
-                            onClick={() => openHireWithService(srv.title)}
-                            className="inline-flex items-center justify-center gap-1.5 w-full px-3.5 py-2 rounded-full border border-purple-500/45 bg-purple-950/40 active:bg-[#6d28d9] text-white text-xs font-semibold transition-colors cursor-pointer whitespace-nowrap"
-                          >
-                            <span>{srv.ctaLabel}</span>
-                            <ArrowUpRight className="w-3.5 h-3.5 text-[#c084fc]" />
-                          </button>
+            {/* Mobile Peek Horizontal Slider (1 Full Card + Half 2nd Card Peeking, Compact Description + Arrow Controls) */}
+            <div
+              ref={helpTrackRef}
+              onScroll={updateHelpScrollState}
+              className="md:hidden mt-5 flex items-stretch gap-3 overflow-x-auto no-scrollbar snap-x snap-proximity [touch-action:pan-x_pan-y] px-4 pb-2"
+            >
+              {servicesList.map((srv) => {
+                const IconComp = srv.icon;
+                return (
+                  <div
+                    key={srv.num}
+                    className="w-[62vw] min-w-[228px] max-w-[268px] shrink-0 snap-start bg-[#120A21] border border-purple-800/45 rounded-2xl p-4 text-left flex flex-col justify-between gap-3.5 shadow-[0_8px_24px_rgba(0,0,0,0.35)]"
+                  >
+                    <div className="space-y-2.5">
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="w-9 h-9 rounded-xl bg-[#6d28d9] flex items-center justify-center text-white shrink-0">
+                          <IconComp className="w-4 h-4" />
                         </div>
-                      );
-                    })}
+                        <span className="font-hand text-sm font-bold px-2 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] -rotate-2 inline-block truncate max-w-[140px]">
+                          {srv.note}
+                        </span>
+                      </div>
+
+                      <div className="space-y-1">
+                        <h3 className="text-[15px] font-bold tracking-tight text-white leading-snug">
+                          {srv.title}
+                        </h3>
+                        <p className="text-[11px] text-zinc-300/85 leading-snug line-clamp-1">
+                          {srv.desc}
+                        </p>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        srv.num === "01."
+                          ? navigateToPage("health-checker")
+                          : openHireWithService(srv.title)
+                      }
+                      className="inline-flex items-center justify-center gap-1.5 w-full px-3 py-2 rounded-full border border-purple-500/45 bg-purple-950/40 active:bg-[#6d28d9] text-white text-xs font-semibold transition-colors cursor-pointer whitespace-nowrap"
+                    >
+                      <span>{srv.ctaLabel}</span>
+                      <ArrowUpRight className="w-3.5 h-3.5 text-[#c084fc]" />
+                    </button>
                   </div>
-                ))}
-              </div>
+                );
+              })}
             </div>
           </section>
 
@@ -1361,7 +1462,7 @@ export function GeroldHome({
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: "some" }}
               transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
-              className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left space-y-4 sm:space-y-6"
+              className="max-w-[1480px] mx-auto px-4 sm:px-6 lg:px-10 text-left space-y-4 sm:space-y-6"
             >
               <span className="font-hand text-lg sm:text-2xl font-bold px-3.5 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] inline-block -rotate-2 hover:rotate-1 transition-transform duration-200 shadow-sm cursor-default">
                 ways to work with me
@@ -1411,7 +1512,7 @@ export function GeroldHome({
             <div
               ref={servicesTrackRef}
               onScroll={updateServicesScrollState}
-              className="mt-10 sm:mt-12 flex items-stretch gap-5 sm:gap-6 overflow-x-auto no-scrollbar snap-x snap-proximity [touch-action:pan-x_pan-y] px-4 sm:px-6 lg:pl-[max(2rem,calc((100vw-80rem)/2+2rem))] lg:pr-10 pb-4"
+              className="mt-10 sm:mt-12 flex items-stretch gap-5 sm:gap-6 overflow-x-auto no-scrollbar snap-x snap-proximity [touch-action:pan-x_pan-y] px-4 sm:px-6 lg:pl-[max(2.5rem,calc((100vw-92.5rem)/2+2.5rem))] lg:pr-10 pb-4"
             >
               {waysToWorkList.map((srv) => {
                 const handleCardAction = () => {
@@ -1419,6 +1520,8 @@ export function GeroldHome({
                     navigateToPage("websites");
                   } else if (srv.actionType === "graphics") {
                     navigateToPage("graphics");
+                  } else if (srv.actionType === "health_checker") {
+                    navigateToPage("health-checker");
                   } else {
                     openHireWithService(srv.title);
                   }
@@ -1630,7 +1733,7 @@ export function GeroldHome({
             id="resume"
             className="mt-8 sm:mt-12 mx-2 sm:mx-4 lg:mx-6 bg-[#120A21] border border-purple-800/45 text-white rounded-[2rem] sm:rounded-[3rem] py-12 sm:py-20 lg:py-24 scroll-mt-20 relative overflow-x-clip"
           >
-            <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-10 text-left relative z-10">
+            <div className="max-w-[1480px] mx-auto px-4 sm:px-8 lg:px-10 text-left relative z-10">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-12 items-stretch">
                 {/* Left Scrolling Column: Experience, Education, Tech Stack */}
                 <div className="lg:col-span-7 space-y-10 sm:space-y-12 min-w-0">
@@ -1953,7 +2056,7 @@ export function GeroldHome({
             className="mt-8 sm:mt-12 mx-2 sm:mx-4 lg:mx-6"
           >
             <div className="bg-experience-gradient border border-purple-500/35 rounded-[2rem] sm:rounded-[3rem] px-5 sm:px-10 lg:px-14 pt-10 sm:pt-14 lg:pt-16 pb-0 overflow-hidden shadow-[0_24px_60px_rgba(91,33,182,0.28)] relative">
-              <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-end text-left">
+              <div className="max-w-[1480px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-end text-left">
                 {/* Left Column: Hook Tag + Display Headline + Dual CTA Buttons */}
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
@@ -2053,7 +2156,7 @@ export function GeroldHome({
         <main className="min-h-[85vh] overflow-x-clip">
           {/* Subpage Quick Navigation Strip (Replaces 'THE WORK' hero) */}
           <div className="bg-[#0D071E] pt-24 sm:pt-28 pb-2">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-4">
+            <div className="max-w-[1480px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-4">
               <button
                 onClick={() => navigateToPage("home")}
                 className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-[#120a22]/85 hover:bg-[#180e2f] border border-purple-300/30 text-white text-xs font-bold tracking-wide transition-colors cursor-pointer"
@@ -2073,7 +2176,7 @@ export function GeroldHome({
 
           <WebsitePortfolio isHomePage={false} />
 
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+          <div className="max-w-[1480px] mx-auto px-4 sm:px-6 lg:px-8 pb-20">
             <div className="mt-16 pt-10 border-t border-purple-900/40 flex flex-col sm:flex-row items-center justify-between gap-4">
               <button
                 onClick={() => navigateToPage("home")}
@@ -2102,7 +2205,7 @@ export function GeroldHome({
           {/* GRAPHICS PORTFOLIO HERO (#2C1156 Architectural Grid)     */}
           {/* ======================================================== */}
           <section className="bg-work-hero-grid text-white pt-24 sm:pt-28 pb-16 sm:pb-24 relative overflow-x-clip border-b border-purple-400/20">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-10 sm:space-y-12">
+            <div className="max-w-[1480px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-10 sm:space-y-12">
               {/* Subpage Quick Controls */}
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <button
@@ -2205,8 +2308,112 @@ export function GeroldHome({
 
           <GraphicsPortfolio isHomePage={false} />
 
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+          <div className="max-w-[1480px] mx-auto px-4 sm:px-6 lg:px-8 pb-20">
             <div className="mt-16 pt-10 border-t border-purple-900/40 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <button
+                onClick={() => navigateToPage("home")}
+                className="px-6 py-3 rounded-full bg-[#120a22] border border-purple-800/50 text-white text-xs font-bold cursor-pointer"
+              >
+                ← Return to Home
+              </button>
+              <button
+                onClick={() => navigateToPage("websites")}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white text-xs font-bold cursor-pointer"
+              >
+                <span>Explore Websites Portfolio (15+ Sites)</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </main>
+      )}
+
+      {/* ======================================================== */}
+      {/* DEDICATED PAGE: WEBSITE HEALTH CHECKER                   */}
+      {/* ======================================================== */}
+      {currentPage === "health-checker" && (
+        <main className="min-h-[85vh] overflow-x-clip">
+          {/* Subpage Architectural Hero (#2C1156 Grid) */}
+          <section className="bg-work-hero-grid text-white pt-24 sm:pt-28 pb-14 sm:pb-20 relative overflow-x-clip border-b border-purple-400/20">
+            <div className="max-w-[1480px] mx-auto px-4 sm:px-6 lg:px-10 relative z-10 space-y-8 sm:space-y-10">
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <button
+                  onClick={() => navigateToPage("home")}
+                  className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-[#120a22]/75 hover:bg-[#180e2f] border border-purple-300/30 text-white text-xs font-bold tracking-wide transition-colors cursor-pointer"
+                >
+                  <span>← Back to Home</span>
+                </button>
+
+                <button
+                  onClick={() => navigateToPage("websites")}
+                  className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-gradient-to-r from-[#8750f7] to-purple-600 hover:from-purple-500 hover:to-[#8750f7] text-white text-xs font-bold tracking-wide transition-colors cursor-pointer shadow-lg"
+                >
+                  <span>Explore Websites Portfolio (15+)</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              <div className="grid lg:grid-cols-12 gap-8 items-center text-left">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                  className="lg:col-span-8 space-y-5"
+                >
+                  <span className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-[#e9d5ff] block">
+                    FREE LIVE DIAGNOSTIC · SPEED, SEO &amp; SECURITY
+                  </span>
+
+                  <div className="inline-block relative">
+                    <h1 className="font-display text-5xl sm:text-[92px] lg:text-[114px] font-black uppercase tracking-tight leading-[0.88] text-white">
+                      HEALTH CHECKER
+                    </h1>
+                    <svg
+                      viewBox="0 0 360 22"
+                      fill="none"
+                      className="w-[58%] ml-auto mt-2 text-[#e9d5ff]"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M4 16C110 4 245 4 356 13"
+                        stroke="currentColor"
+                        strokeWidth="6"
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                  </div>
+
+                  <p className="text-sm sm:text-lg text-purple-100/90 max-w-2xl leading-relaxed">
+                    Enter any live domain to inspect server response latency (TTFB), render-blocking scripts, technical SEO structure, mobile viewport readiness, and HTTP security headers in real time.
+                  </p>
+                </motion.div>
+
+                <div className="lg:col-span-4 flex justify-start lg:justify-end">
+                  <div className="w-full max-w-[330px] bg-white text-[#120a22] rounded-3xl p-6 sm:p-7 shadow-[0_28px_70px_rgba(7,3,14,0.55)] space-y-3">
+                    <span className="font-mono text-[11px] font-bold uppercase tracking-widest text-zinc-500 block">
+                      LIVE AUDIT ENGINE
+                    </span>
+                    <div className="font-display text-5xl sm:text-6xl font-black text-[#6d28d9] leading-none tabular-nums">
+                      14+ CHECKS
+                    </div>
+                    <p className="text-xs text-zinc-600 leading-relaxed">
+                      Real HTTP &amp; DOM inspection — instant actionable bottlenecks, zero signup required.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <WebsiteHealthChecker
+            standalonePage
+            onRequestFix={(serviceTitle, prefillBrief) =>
+              openHireWithService(serviceTitle, prefillBrief)
+            }
+          />
+
+          <div className="max-w-[1480px] mx-auto px-4 sm:px-6 lg:px-10 pb-20">
+            <div className="pt-8 border-t border-purple-900/40 flex flex-col sm:flex-row items-center justify-between gap-4">
               <button
                 onClick={() => navigateToPage("home")}
                 className="px-6 py-3 rounded-full bg-[#120a22] border border-purple-800/50 text-white text-xs font-bold cursor-pointer"
@@ -2232,7 +2439,7 @@ export function GeroldHome({
         id="contact"
         className="mt-12 sm:mt-16 bg-experience-gradient border-t border-purple-500/30 text-white rounded-t-[2rem] sm:rounded-t-[3rem] pt-14 sm:pt-20 pb-8 px-4 sm:px-6 lg:px-8 relative overflow-x-clip"
       >
-        <div className="max-w-7xl mx-auto space-y-12">
+        <div className="max-w-[1480px] mx-auto space-y-12">
           {/* Top Pre-Footer Conversion Hook */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
