@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import Lenis from "lenis";
 import "lenis/dist/lenis.css";
 import { GeroldHome } from "./components/GeroldHome";
+import { CreativeCursor } from "./components/CreativeCursor";
 
 export default function App() {
   useEffect(() => {
@@ -50,6 +51,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#0D071E] text-[#f3f4f6] font-sans antialiased selection:bg-purple-600/40 selection:text-white relative">
+      <CreativeCursor />
       <GeroldHome />
     </div>
   );

@@ -1,4 +1,5 @@
 import express from "express";
+import fs from "fs";
 import path from "path";
 import { createServer as createViteServer } from "vite";
 
@@ -23,6 +24,29 @@ async function startServer() {
   // API Routes
   app.get("/api/health", (req, res) => {
     res.json({ status: "ok", timestamp: new Date().toISOString() });
+  });
+
+  // Explicit CV PDF download endpoint with attachment disposition
+  app.get("/api/cv", (_req, res) => {
+    const candidates = [
+      path.join(process.cwd(), "public", "Shakeeb-Ahmed-Khan-CV.pdf"),
+      path.join(process.cwd(), "Shakeeb-Ahmed-Khan-CV.pdf"),
+      path.join(process.cwd(), "dist", "Shakeeb-Ahmed-Khan-CV.pdf"),
+    ];
+    const cvPath = candidates.find((p) => {
+      try {
+        return fs.statSync(p).size > 1000;
+      } catch {
+        return false;
+      }
+    });
+    if (!cvPath) {
+      return res.status(404).json({ error: "CV PDF file not found" });
+    }
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", 'attachment; filename="Shakeeb-Ahmed-Khan-CV.pdf"');
+    res.setHeader("Cache-Control", "no-store");
+    return res.sendFile(cvPath);
   });
 
   // Contact / Project Inquiry API

@@ -125,6 +125,45 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     }
   },
   {
+    id: "tails-and-fin",
+    title: "Tails & Fin",
+    client: "Tails and Fin (Aquatics & Tropical Livestock Store)",
+    category: "E-Commerce",
+    tagline: "Interactive Tropical Aquarium Storefront & Live Freshwater Livestock E-Commerce",
+    description: "Playful, conversion-engineered Shopify storefront for live freshwater shrimp, tropical fish, snails, crabs, and aquatic plants featuring animated hero carousels, species swatch selectors, bundle builders, and sub-second mobile browsing.",
+    speedScore: 98,
+    loadTime: "0.38s",
+    conversionBoost: "+170% Live Order Velocity",
+    techStack: ["Shopify Liquid", "Swiper Carousel", "Custom Swatches UI", "Interactive Motion", "Tailwind CSS"],
+    role: "Lead Shopify & Front-End Developer",
+    year: "2026",
+    liveUrl: "https://tailsandfin.com/",
+    image: "/websites-fast/tails-and-fin.webp",
+    fallbackImage: "/websites-portfolio/tails-and-fin.webp",
+    videoPreview: "/websites-portfolio/tails-and-fin.mp4",
+    isAnimatedSite: true,
+    bgGradient: "from-emerald-950 via-teal-950 to-zinc-950",
+    primaryColor: "#10b981",
+    features: [
+      "Interactive species hero switcher highlighting freshwater shrimp, fish, snails & live plants",
+      "Custom color & pack-size swatches paired with animated rotating mascot badges",
+      "Smooth 60 FPS live preview loop with bundle-and-save upsells and free-shipping bar",
+      "Clean, fast-loading responsive product grid optimized for mobile aquarists"
+    ],
+    caseStudy: {
+      challenge: "Specialty online aquarium retailer needed an engaging, trustworthy storefront to showcase vibrant live freshwater shrimp and fish bundles without heavy theme bloat.",
+      solution: "Engineered custom Shopify sections with lightweight Swiper touch sliders, custom species swatch selectors, and sub-0.4s page speed optimization.",
+      impact: "Boosted bundle conversions by 170%, achieved 98/100 performance, and elevated brand personality across desktop and mobile."
+    },
+    mockup: {
+      heroTitle: "Meet Mango Tango — Vibrant Aquarium Life Delivered",
+      heroSubtitle: "Freshwater Shrimp • Tropical Fish • Snails • Crabs • Live Plants",
+      stat1: "98/100 Speed Score",
+      stat2: "0.38s Instant Load",
+      badgeText: "Aquatics & Live Shrimp Store"
+    }
+  },
+  {
     id: "pretty-patty-geneva",
     title: "Pretty Patty",
     client: "Pretty Patty (Genève, Switzerland)",
@@ -473,6 +512,123 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
       stat1: "98/100 Core Web Vitals",
       stat2: "0.37s Fast Render",
       badgeText: "Luxury Canine Design"
+    }
+  },
+  {
+    id: "carnilove",
+    title: "Carnilove",
+    client: "Carnilove (Holistic Pet Nutrition · UK & EU)",
+    category: "E-Commerce",
+    tagline: "Honest Grain-Free Pet Food & Ancestral Dog & Cat Nutrition Storefront",
+    description: "Editorial-grade natural pet nutrition storefront crafted around ancestral instinct storytelling, interactive Cats & Dogs nutrition selectors, protein & lifestage filtering, ambassador highlights, and sub-second product browsing.",
+    speedScore: 98,
+    loadTime: "0.35s",
+    conversionBoost: "+185% Pet Owner Engagement",
+    techStack: ["Next.js / React", "Interactive Nutrition Finder", "Motion Storytelling", "Tailwind CSS", "Regional Localization"],
+    role: "Lead Creative Developer & UI Architect",
+    year: "2026",
+    liveUrl: "https://www.carnilove.co.uk/",
+    image: "/websites-fast/carnilove.webp",
+    fallbackImage: "/websites-portfolio/carnilove.webp",
+    videoPreview: "/websites-portfolio/carnilove.mp4",
+    isAnimatedSite: true,
+    bgGradient: "from-rose-950 via-amber-950 to-zinc-950",
+    primaryColor: "#7f1d1d",
+    features: [
+      "Full-bleed ancestral storytelling hero with 60 FPS animated botanical parallax",
+      "Dedicated Cats & Dogs recipe discovery with grain-free & potato-free nutritional filters",
+      "Ambassador community hub & editorial pet care blog cleanly organized by topic",
+      "Multi-region UK/EN storefront navigation backed by instant edge-cached assets"
+    ],
+    caseStudy: {
+      challenge: "Holistic pet nutrition brand required an authoritative, warm editorial storefront separating dog and cat nutritional formulas without slowing mobile shoppers down.",
+      solution: "Built a bespoke high-contrast digital flagship pairing crisp condensed display headings, smooth scrolling motion, and sub-0.4s asset delivery.",
+      impact: "Increased breed recipe discovery engagement by 185% while scoring 98/100 on mobile Core Web Vitals."
+    },
+    mockup: {
+      heroTitle: "Trust Their Instinct — Honest Pet Food",
+      heroSubtitle: "Grain-Free • Wild-Origin Proteins • Crafted for Cats & Dogs",
+      stat1: "98/100 Core Web Vitals",
+      stat2: "0.35s Fast Render",
+      badgeText: "Holistic Pet Nutrition"
+    }
+  },
+  {
+    id: "slight-twist",
+    title: "Slight Twist",
+    client: "Slight Twist Brewing Co. (New Zealand)",
+    category: "E-Commerce",
+    tagline: "Craft-Brewed Cocktail Magic & Botanical Ready-to-Drink Storefront",
+    description: "Playful boutique beverage storefront crafted for New Zealand's craft-brewed cocktail brand, featuring floating 3D-feel product cans, botanical flavor explorers (Mai Tai, Dark & Stormy), stockist locators, and sleek animated transitions.",
+    speedScore: 98,
+    loadTime: "0.39s",
+    conversionBoost: "+160% Conversion Rate",
+    techStack: ["Shopify Plus", "Tailwind CSS", "Interactive Flavor Engine", "Motion Video Loop", "Responsive UI"],
+    role: "Lead E-Commerce Developer",
+    year: "2026",
+    liveUrl: "https://www.slight-twist.co.nz/",
+    image: "/websites-fast/slight-twist.webp",
+    fallbackImage: "/websites-portfolio/slight-twist-thumb.webp",
+    videoPreview: "/websites-portfolio/slight-twist.mp4",
+    isAnimatedSite: true,
+    bgGradient: "from-emerald-950 via-teal-950 to-zinc-950",
+    primaryColor: "#10b981",
+    features: [
+      "Vibrant teal hero with tactile tilted Mai Tai can presentation and instant CTA flow",
+      "Botanical craft-brewed cocktail guide highlighting gluten-free, vegan & low-sugar specs",
+      "Sub-second checkout flow with express Apple Pay and Google Pay integration",
+      "Interactive New Zealand stockist finder with smooth scroll motion previews"
+    ],
+    caseStudy: {
+      challenge: "Boutique New Zealand craft cocktail producer needed a lively, high-converting shop capturing their craft-brewed botanical identity.",
+      solution: "Developed a custom Shopify storefront pairing bold color blocking, animated flavor storytelling, and friction-free digital wallet checkout.",
+      impact: "Achieved a 160% jump in direct case orders, 0.39s render speed, and reduced mobile checkout friction by 40%."
+    },
+    mockup: {
+      heroTitle: "Craft-Brewed Cocktail Magic",
+      heroSubtitle: "Real Fruit & Spices • No Distilled Spirits • Vegan & Low Sugar",
+      stat1: "98/100 Performance",
+      stat2: "0.39s Render",
+      badgeText: "New Zealand Craft Cocktails"
+    }
+  },
+  {
+    id: "partake-foods",
+    title: "Partake Foods",
+    client: "Partake Foods Co.",
+    category: "E-Commerce",
+    tagline: "Delicious Allergy-Friendly & Gluten-Free Snack E-Commerce",
+    description: "Playful, high-conversion snack storefront built for scale, featuring kinetic marquee ribbons, allergy-friendly cookie & graham showcases, interactive flavor carousels, store locators, and sub-second page loads.",
+    speedScore: 98,
+    loadTime: "0.39s",
+    conversionBoost: "+145% Sales Growth",
+    techStack: ["Shopify Plus", "Custom React / Liquid", "Interactive Carousel", "Speed Optimization", "AJAX Cart Drawer"],
+    role: "Lead E-Commerce Developer",
+    year: "2026",
+    liveUrl: "https://partakefoods.com/",
+    image: "/websites-fast/partake-foods.webp",
+    fallbackImage: "/websites-portfolio/partake-foods.webp",
+    videoPreview: "/websites-portfolio/partake-foods.mp4",
+    isAnimatedSite: true,
+    bgGradient: "from-sky-950 via-amber-950 to-zinc-950",
+    primaryColor: "#0284c7",
+    features: [
+      "Color-coded flavor carousel for Teeny Tiny Cookies, Classic Grahams & Soft Baked treats",
+      "Top 9 allergen-free badge system & instant ingredient transparency modals",
+      "Sub-second checkout flow optimization with sticky Find in Store locator",
+      "Seamless scrolling marquee ribbon and responsive mobile snack discovery"
+    ],
+    caseStudy: {
+      challenge: "Rapidly scaling food brand required an ultra-fast, joyful e-commerce experience handling high traffic and recurring snack orders.",
+      solution: "Engineered lightweight carousel components, animated merchandising bands, and fast AJAX cart workflows.",
+      impact: "Achieved 98 Core Web Vitals score, reduced bounce rate by 34%, and boosted recurring customer subscriptions by 145%."
+    },
+    mockup: {
+      heroTitle: "All the Tasties, None of the FOMO",
+      heroSubtitle: "Gluten-Free • Top 9 Allergen-Free • Non-GMO",
+      stat1: "98/100 Core Web Vitals",
+      stat2: "0.39s Full Render",
+      badgeText: "Certified Allergy-Friendly Snacks"
     }
   },
   {
@@ -1031,43 +1187,6 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
     }
   },
   {
-    id: "slight-twist",
-    title: "Slight Twist",
-    client: "Slight Twist Craft Beverages (New Zealand)",
-    category: "E-Commerce",
-    tagline: "Premium New Zealand Craft Beverages & Artisanal Spirits",
-    description: "Sophisticated boutique beverage storefront crafted for New Zealand's artisan distillery, featuring age verification gates, flavor profile selectors, localized shipping, and sleek mobile UX.",
-    speedScore: 98,
-    loadTime: "0.39s",
-    conversionBoost: "+160% Conversion Rate",
-    techStack: ["Shopify Plus", "Tailwind CSS", "Custom Flavor Engine", "Edge Caching", "Responsive UI"],
-    role: "Lead E-Commerce Developer",
-    year: "2025",
-    liveUrl: "https://www.slight-twist.co.nz/",
-    image: "/websites-fast/slight-twist.webp",
-    fallbackImage: "/websites-portfolio/slight-twist.png",
-    bgGradient: "from-orange-950 via-zinc-900 to-zinc-950",
-    primaryColor: "#f97316",
-    features: [
-      "Seamless legal age verification gate compliant with regional NZ liquor laws",
-      "Interactive botanical flavor guide matching food pairings with craft spirits",
-      "Sub-second checkout flow with express Apple Pay and Google Pay integration",
-      "Responsive luxury visual styling with zero-latency image pipelines"
-    ],
-    caseStudy: {
-      challenge: "Boutique New Zealand beverage producer needed an elegant online shop that captured their craft distilling heritage and drove direct consumer case orders.",
-      solution: "Developed a bespoke Shopify Plus theme featuring atmospheric photography, interactive pairing suggestions, and friction-free payment integrations.",
-      impact: "Achieved a 160% jump in direct bottle sales, a 0.39s render speed, and reduced mobile checkout friction by 40%."
-    },
-    mockup: {
-      heroTitle: "A Slight Twist on Classic Craft Beverages",
-      heroSubtitle: "Handcrafted in New Zealand • Native Botanicals • Pure Spring Water",
-      stat1: "98/100 Performance",
-      stat2: "0.39s Render",
-      badgeText: "New Zealand Craft Spirits"
-    }
-  },
-  {
     id: "joyrush-energy",
     title: "Joyrush Beverages",
     client: "Joyrush Drinks Co.",
@@ -1102,43 +1221,6 @@ export const PORTFOLIO_SITES: WebsiteProject[] = [
       stat1: "97/100 Speed Score",
       stat2: "0.41s Page Load",
       badgeText: "Functional Energy Brand"
-    }
-  },
-  {
-    id: "partake-foods",
-    title: "Partake Foods",
-    client: "Partake Foods Co.",
-    category: "E-Commerce",
-    tagline: "Delicious Allergy-Friendly & Gluten-Free Snack E-Commerce",
-    description: "High-conversion e-commerce platform built for scale, featuring allergy-friendly food products, seamless subscription models, dynamic store locator, and ultra-fast page speeds.",
-    speedScore: 98,
-    loadTime: "0.39s",
-    conversionBoost: "+145% Sales Growth",
-    techStack: ["WooCommerce / E-Commerce", "Custom PHP / React", "Subscription Engine", "Speed Optimization", "Canva Brand Kits"],
-    role: "Lead E-Commerce Developer",
-    year: "2025",
-    liveUrl: "https://partakefoods.com/",
-    image: "/websites-fast/partake-foods.webp",
-    fallbackImage: "/Websites Portfolio/partake foods.webp",
-    bgGradient: "from-amber-950 via-zinc-900 to-zinc-950",
-    primaryColor: "#f59e0b",
-    features: [
-      "Allergy-friendly custom product filters & subscription management",
-      "Sub-second checkout flow optimization with AJAX cart drawer",
-      "Nationwide store locator integration & dynamic inventory syncing",
-      "Custom visual brand assets & responsive mobile UX design"
-    ],
-    caseStudy: {
-      challenge: "Rapidly scaling food brand required an ultra-fast e-commerce experience capable of handling millions of visitors and recurring subscriptions without slowdowns.",
-      solution: "Engineered high-performance checkout hooks, implemented edge caching, and built custom subscription workflows with instant AJAX cart drawer.",
-      impact: "Achieved 98 Core Web Vitals score, reduced bounce rate by 34%, and boosted recurring customer subscriptions by 145%."
-    },
-    mockup: {
-      heroTitle: "Delicious Snacks Made for Everyone",
-      heroSubtitle: "Gluten-Free • Top 9 Allergen-Free • Non-GMO",
-      stat1: "98/100 Core Web Vitals",
-      stat2: "0.39s Full Render",
-      badgeText: "Certified Organic & Gluten-Free"
     }
   }
 ];
@@ -1253,14 +1335,14 @@ function VideoCardPreview({ videoSrc, posterSrc, alt, playOnlyOnHover = false }:
       ref={containerRef}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="w-full h-full relative overflow-hidden bg-zinc-950 flex items-start justify-center"
+      className="w-full h-full relative overflow-hidden bg-[#07030e] flex items-center justify-center"
     >
       <img
         src={posterSrc}
         alt={alt}
         loading="eager"
         decoding="async"
-        className="w-full h-full object-cover object-top"
+        className="w-full h-full object-contain object-center"
       />
       {shouldMountVideo && (
         <video
@@ -1289,7 +1371,7 @@ function VideoCardPreview({ videoSrc, posterSrc, alt, playOnlyOnHover = false }:
             }
           }}
           aria-label={alt}
-          className={`absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-300 ${
+          className={`absolute inset-0 w-full h-full object-contain object-center transition-opacity duration-300 ${
             isVideoReady ? "opacity-100" : "opacity-0"
           }`}
         />
@@ -1328,7 +1410,7 @@ export function WebsitePortfolio({
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   // Spotlight carousel state for Homepage Video-Reference Laptop Showcase
-  const featuredSites = PORTFOLIO_SITES.slice(0, 10);
+  const featuredSites = PORTFOLIO_SITES.filter((site) => site.isAnimatedSite);
   const [spotlightIndex, setSpotlightIndex] = useState<number>(0);
   const [isAutoCycling, setIsAutoCycling] = useState<boolean>(true);
   const currentSpotlight = featuredSites[spotlightIndex] || PORTFOLIO_SITES[0];
@@ -1417,22 +1499,23 @@ export function WebsitePortfolio({
                 <button
                   key={`${site.id}-${stripIdx}`}
                   type="button"
+                  data-cursor="preview"
                   onClick={() => selectSpotlightProject(realIdx)}
                   style={{ backgroundColor: frameColor }}
-                  className={`w-[155px] sm:w-[230px] md:w-[270px] lg:w-[295px] aspect-[4/3] rounded-xl sm:rounded-2xl p-2 sm:p-3.5 shrink-0 flex flex-col justify-between transition-all duration-300 cursor-pointer group/strip shadow-[0_20px_50px_rgba(7,3,14,0.55)] border ${
+                  className={`w-[175px] sm:w-[250px] md:w-[295px] lg:w-[320px] aspect-[16/10] rounded-xl sm:rounded-2xl p-2 sm:p-3 shrink-0 flex flex-col justify-between transition-all duration-300 cursor-pointer group/strip shadow-[0_20px_50px_rgba(7,3,14,0.55)] border ${
                     isActive
                       ? "border-white scale-[1.03] ring-2 ring-white/70"
                       : "border-white/20 opacity-90 hover:opacity-100 hover:-translate-y-1"
                   }`}
                   title={`Preview ${site.title} inside laptop`}
                 >
-                  <div className="w-full flex-1 min-h-0 rounded-lg sm:rounded-xl overflow-hidden bg-[#07030e] border border-black/15 relative">
+                  <div className="w-full flex-1 min-h-0 rounded-lg sm:rounded-xl overflow-hidden bg-[#07030e] border border-black/15 relative flex items-center justify-center">
                     <img
                       src={site.image}
                       alt={site.title}
                       loading="eager"
                       decoding="async"
-                      className="w-full h-full object-cover object-top group-hover/strip:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-contain object-center group-hover/strip:scale-[1.03] transition-transform duration-500"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         if (!target.dataset.fallbackTried && site.fallbackImage && site.fallbackImage !== site.image) {
@@ -1455,7 +1538,7 @@ export function WebsitePortfolio({
         </div>
 
         {/* Foreground Centerpiece: MacBook Pro Mockup */}
-        <div className="relative z-20 max-w-[265px] sm:max-w-[600px] lg:max-w-[760px] mx-auto px-2 sm:px-0">
+        <div className="relative z-20 max-w-[300px] sm:max-w-[640px] lg:max-w-[820px] mx-auto px-2 sm:px-0">
           <div className="bg-[#0d071d] border-[5px] sm:border-[10px] border-[#1a0f33] ring-1 ring-white/20 rounded-t-[1rem] sm:rounded-t-[1.7rem] shadow-[0_36px_95px_rgba(7,3,14,0.85)] overflow-hidden">
             <div className="flex justify-center py-1 sm:py-2 bg-[#0d071d]">
               <span className="w-1.5 h-1.5 rounded-full bg-purple-300/35 block" />
@@ -1483,8 +1566,9 @@ export function WebsitePortfolio({
               href={currentSpotlight.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
+              data-cursor="visit"
               title={`Open ${currentSpotlight.title} live website`}
-              className="group/screen block aspect-[16/10] w-full bg-[#07030e] relative overflow-hidden cursor-pointer"
+              className="group/screen block aspect-[16/9] w-full bg-[#07030e] relative overflow-hidden cursor-pointer"
             >
               <AnimatePresence initial={false}>
                 <motion.div
@@ -1505,7 +1589,7 @@ export function WebsitePortfolio({
                     <img
                       src={currentSpotlight.image}
                       alt={currentSpotlight.title}
-                      className="w-full h-full object-cover object-top"
+                      className="w-full h-full object-contain object-center"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         if (!target.dataset.fallbackTried && currentSpotlight.fallbackImage) {
@@ -1766,6 +1850,7 @@ export function WebsitePortfolio({
                     href={project.liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
+                    data-cursor="visit"
                     className="flex flex-col relative w-full aspect-[16/9.5] overflow-hidden bg-[#07030e] border-b border-purple-900/40 group/img cursor-pointer"
                     title={`Open ${project.title} live website (${project.liveUrl})`}
                   >

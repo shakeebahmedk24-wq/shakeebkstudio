@@ -246,3 +246,32 @@
     animation-duration: 48s;
   }
 }
+
+/* Sculpted Studio SVG Cursors + Soft Halo on Desktop Fine Pointers */
+@media (hover: hover) and (pointer: fine) {
+  html,
+  body {
+    cursor: url("/cursors/studio-default.svg") 4 3, auto;
+  }
+
+  .cursor-default {
+    cursor: url("/cursors/studio-default.svg") 4 3, auto;
+  }
+
+  a,
+  button,
+  [role="button"],
+  summary,
+  label[for],
+  select,
+  .cursor-pointer {
+    cursor: url("/cursors/studio-pointer.svg") 4 3, pointer;
+  }
+
+  input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]),
+  textarea,
+  [contenteditable="true"],
+  .cursor-text {
+    cursor: text;
+  }
+}

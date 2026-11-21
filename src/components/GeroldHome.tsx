@@ -19,6 +19,7 @@ import {
   Briefcase,
   ChevronRight,
   ChevronDown,
+  CornerDownRight,
   Download,
   Star,
   Search,
@@ -292,6 +293,47 @@ export function GeroldHome({
     setShowHireModal(true);
   };
 
+  const handleDownloadCv = async (e?: React.MouseEvent<HTMLAnchorElement>) => {
+    if (e) e.preventDefault();
+    setOpenDesktopDropdown(null);
+    setFullMenuOpen(false);
+
+    const triggerBlobDownload = (buf: ArrayBuffer) => {
+      const blob = new Blob([buf], { type: "application/pdf" });
+      const blobUrl = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = "Shakeeb-Ahmed-Khan-CV.pdf";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
+    };
+
+    try {
+      const endpoints = ["/api/cv", "/Shakeeb-Ahmed-Khan-CV.pdf"];
+      for (const endpoint of endpoints) {
+        const res = await fetch(endpoint, { credentials: "same-origin" });
+        if (!res.ok) continue;
+        const buffer = await res.arrayBuffer();
+        const header = new TextDecoder().decode(buffer.slice(0, 5));
+        if (header.startsWith("%PDF-")) {
+          triggerBlobDownload(buffer);
+          return;
+        }
+      }
+    } catch {
+      // Fallback handled below
+    }
+
+    const fallbackLink = document.createElement("a");
+    fallbackLink.href = "/Shakeeb-Ahmed-Khan-CV.pdf";
+    fallbackLink.download = "Shakeeb-Ahmed-Khan-CV.pdf";
+    document.body.appendChild(fallbackLink);
+    fallbackLink.click();
+    fallbackLink.remove();
+  };
+
   const servicesList = [
     {
       num: "01.",
@@ -498,7 +540,7 @@ export function GeroldHome({
             <img
               src="/Shakeeb_logo_white-removebg-preview-1.png"
               alt="Shakeeb"
-              className="w-[116px] sm:w-auto sm:h-[30px] lg:h-[34px] h-auto object-contain transition-transform duration-200 group-hover:scale-[1.03]"
+              className="w-[116px] sm:w-auto sm:h-[30px] lg:w-[15em] lg:h-auto h-auto object-contain transition-transform duration-200 group-hover:scale-[1.03]"
             />
           </a>
 
@@ -507,12 +549,12 @@ export function GeroldHome({
             ref={dropdownRef}
             className="hidden lg:flex items-center justify-center pointer-events-auto"
           >
-            <nav className="relative h-[52px] xl:h-[54px] bg-white text-[#120a22] rounded-full p-1.5 shadow-[0_14px_38px_rgba(7,3,14,0.34)] flex items-center gap-0.5 xl:gap-1 text-[14px] xl:text-[15px] font-medium">
+            <nav className="relative h-[52px] xl:h-[54px] bg-white text-[#120a22] rounded-full p-1.5 shadow-[0_14px_38px_rgba(7,3,14,0.34)] flex items-center gap-0.5 xl:gap-1 text-[14px] xl:text-[15px] font-normal">
               <button
                 onClick={() => navigateToPage("home")}
-                className={`h-10 xl:h-[42px] px-4 xl:px-5 rounded-full inline-flex items-center justify-center transition-colors cursor-pointer whitespace-nowrap ${
+                className={`h-10 xl:h-[42px] px-4 xl:px-5 rounded-full inline-flex items-center justify-center font-normal transition-colors cursor-pointer whitespace-nowrap ${
                   currentPage === "home"
-                    ? "bg-[#6d28d9] text-white font-semibold shadow-sm"
+                    ? "bg-[#6d28d9] text-white shadow-sm"
                     : "text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6]"
                 }`}
               >
@@ -521,7 +563,7 @@ export function GeroldHome({
 
               <button
                 onClick={() => scrollToSection("resume")}
-                className="h-10 xl:h-[42px] px-4 xl:px-5 rounded-full inline-flex items-center justify-center text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6] transition-colors cursor-pointer whitespace-nowrap"
+                className="h-10 xl:h-[42px] px-4 xl:px-5 rounded-full inline-flex items-center justify-center font-normal text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6] transition-colors cursor-pointer whitespace-nowrap"
               >
                 About
               </button>
@@ -536,16 +578,20 @@ export function GeroldHome({
                   onClick={() =>
                     setOpenDesktopDropdown((prev) => (prev === "services" ? null : "services"))
                   }
-                  className={`h-10 xl:h-[42px] px-4 xl:px-5 rounded-full transition-colors cursor-pointer whitespace-nowrap inline-flex items-center gap-1.5 ${
-                    openDesktopDropdown === "services"
-                      ? "bg-[#6d28d9] text-white font-semibold shadow-sm"
+                  className={`h-10 xl:h-[42px] px-4 xl:px-5 rounded-full font-normal transition-colors cursor-pointer whitespace-nowrap inline-flex items-center gap-1.5 ${
+                    openDesktopDropdown === "services" || currentPage === "health-checker"
+                      ? "bg-[#6d28d9] text-white shadow-sm"
                       : "text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6]"
                   }`}
                 >
                   <span>Services</span>
                   <ChevronDown
                     className={`w-4 h-4 transition-transform duration-200 ${
-                      openDesktopDropdown === "services" ? "rotate-180 text-white" : ""
+                      openDesktopDropdown === "services"
+                        ? "rotate-180 text-white"
+                        : currentPage === "health-checker"
+                        ? "text-white"
+                        : ""
                     }`}
                   />
                 </button>
@@ -557,25 +603,43 @@ export function GeroldHome({
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 6, scale: 0.97 }}
                       transition={{ duration: 0.18, ease: "easeOut" }}
-                      className="absolute left-0 top-full pt-3 w-[300px] z-50"
+                      className="absolute left-0 top-full pt-3 w-[320px] z-50"
                     >
-                      <div className="bg-white rounded-2xl shadow-[0_20px_50px_rgba(7,3,14,0.35)] border border-purple-200/70 p-2 space-y-0.5 text-left">
+                      <div className="bg-white rounded-[20px] shadow-[0_22px_55px_rgba(7,3,14,0.34)] border border-black/5 px-5 py-3.5 text-left">
+                        <button
+                          onClick={() => navigateToPage("health-checker")}
+                          className={`w-full py-2.5 text-[14px] font-normal flex items-center transition-colors duration-200 group/item cursor-pointer text-left ${
+                            currentPage === "health-checker"
+                              ? "text-[#6d28d9]"
+                              : "text-[#120a22] hover:text-[#6d28d9]"
+                          }`}
+                        >
+                          <CornerDownRight
+                            className={`h-3.5 shrink-0 text-[#6d28d9] transition-all duration-200 ease-out ${
+                              currentPage === "health-checker"
+                                ? "w-3.5 mr-2 opacity-100 translate-x-0"
+                                : "w-0 mr-0 opacity-0 -translate-x-1.5 group-hover/item:w-3.5 group-hover/item:mr-2 group-hover/item:opacity-100 group-hover/item:translate-x-0"
+                            }`}
+                          />
+                          <span className="truncate">Website Health Checker</span>
+                          <span className="ml-2 px-1.5 py-[1px] rounded border border-[#6d28d9]/30 bg-[#f5f3ff] text-[#6d28d9] font-mono text-[9.5px] font-bold uppercase tracking-wider shrink-0">
+                            FREE
+                          </span>
+                        </button>
+
                         {servicesList.map((srv) => (
                           <button
                             key={srv.num}
                             onClick={() => {
                               setOpenDesktopDropdown(null);
-                              if (srv.num === "01.") navigateToPage("health-checker");
-                              else scrollToSection("services");
+                              scrollToSection("services");
                             }}
-                            className="w-full px-3.5 py-2.5 rounded-xl text-[13.5px] font-medium text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6] flex items-center justify-between gap-2 transition-colors group/item cursor-pointer text-left"
+                            className="w-full py-2.5 text-[14px] font-normal text-[#120a22] hover:text-[#6d28d9] flex items-center transition-colors duration-200 group/item cursor-pointer text-left"
                           >
-                            <span className="flex items-center gap-2 min-w-0">
-                              <ArrowRight className="w-3.5 h-3.5 text-[#6d28d9] opacity-0 -ml-1 group-hover/item:opacity-100 group-hover/item:ml-0 transition-all shrink-0" />
-                              <span className="truncate">{srv.title}</span>
-                            </span>
+                            <CornerDownRight className="w-0 h-3.5 mr-0 opacity-0 -translate-x-1.5 group-hover/item:w-3.5 group-hover/item:mr-2 group-hover/item:opacity-100 group-hover/item:translate-x-0 text-[#6d28d9] transition-all duration-200 ease-out shrink-0" />
+                            <span className="truncate">{srv.title}</span>
                             {srv.isNew && (
-                              <span className="px-1.5 py-0.5 rounded bg-[#6d28d9] text-white font-mono text-[9px] font-bold uppercase tracking-wider shrink-0">
+                              <span className="ml-2 px-1.5 py-[1px] rounded border border-[#6d28d9]/30 bg-[#f5f3ff] text-[#6d28d9] font-mono text-[9.5px] font-bold uppercase tracking-wider shrink-0">
                                 NEW
                               </span>
                             )}
@@ -597,11 +661,11 @@ export function GeroldHome({
                   onClick={() =>
                     setOpenDesktopDropdown((prev) => (prev === "portfolio" ? null : "portfolio"))
                   }
-                  className={`h-10 xl:h-[42px] px-4 xl:px-5 rounded-full transition-colors cursor-pointer whitespace-nowrap inline-flex items-center gap-1.5 ${
+                  className={`h-10 xl:h-[42px] px-4 xl:px-5 rounded-full font-normal transition-colors cursor-pointer whitespace-nowrap inline-flex items-center gap-1.5 ${
                     openDesktopDropdown === "portfolio" ||
                     currentPage === "websites" ||
                     currentPage === "graphics"
-                      ? "bg-[#6d28d9] text-white font-semibold shadow-sm"
+                      ? "bg-[#6d28d9] text-white shadow-sm"
                       : "text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6]"
                   }`}
                 >
@@ -624,39 +688,51 @@ export function GeroldHome({
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 6, scale: 0.97 }}
                       transition={{ duration: 0.18, ease: "easeOut" }}
-                      className="absolute left-0 top-full pt-3 w-[255px] z-50"
+                      className="absolute left-0 top-full pt-3 w-[265px] z-50"
                     >
-                      <div className="bg-white rounded-2xl shadow-[0_20px_50px_rgba(7,3,14,0.35)] border border-purple-200/70 p-2 space-y-0.5 text-left">
+                      <div className="bg-white rounded-[20px] shadow-[0_22px_55px_rgba(7,3,14,0.34)] border border-black/5 px-5 py-3.5 text-left">
                         <button
                           onClick={() => navigateToPage("websites")}
-                          className="w-full px-3.5 py-2.5 rounded-xl text-[13.5px] font-medium text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6] flex items-center justify-between gap-2 transition-colors group/item cursor-pointer"
+                          className={`w-full py-2.5 text-[14px] font-normal flex items-center transition-colors duration-200 group/item cursor-pointer text-left ${
+                            currentPage === "websites"
+                              ? "text-[#6d28d9]"
+                              : "text-[#120a22] hover:text-[#6d28d9]"
+                          }`}
                         >
-                          <span className="flex items-center gap-2">
-                            <ArrowRight className="w-3.5 h-3.5 text-[#6d28d9] opacity-0 group-hover/item:opacity-100 transition-opacity" />
-                            <span>Websites Portfolio (15+)</span>
-                          </span>
+                          <CornerDownRight
+                            className={`h-3.5 shrink-0 text-[#6d28d9] transition-all duration-200 ease-out ${
+                              currentPage === "websites"
+                                ? "w-3.5 mr-2 opacity-100 translate-x-0"
+                                : "w-0 mr-0 opacity-0 -translate-x-1.5 group-hover/item:w-3.5 group-hover/item:mr-2 group-hover/item:opacity-100 group-hover/item:translate-x-0"
+                            }`}
+                          />
+                          <span>Websites Portfolio (15+)</span>
                         </button>
                         <button
                           onClick={() => navigateToPage("graphics")}
-                          className="w-full px-3.5 py-2.5 rounded-xl text-[13.5px] font-medium text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6] flex items-center justify-between gap-2 transition-colors group/item cursor-pointer"
+                          className={`w-full py-2.5 text-[14px] font-normal flex items-center transition-colors duration-200 group/item cursor-pointer text-left ${
+                            currentPage === "graphics"
+                              ? "text-[#6d28d9]"
+                              : "text-[#120a22] hover:text-[#6d28d9]"
+                          }`}
                         >
-                          <span className="flex items-center gap-2">
-                            <ArrowRight className="w-3.5 h-3.5 text-[#6d28d9] opacity-0 group-hover/item:opacity-100 transition-opacity" />
-                            <span>Graphic Design (40+)</span>
-                          </span>
+                          <CornerDownRight
+                            className={`h-3.5 shrink-0 text-[#6d28d9] transition-all duration-200 ease-out ${
+                              currentPage === "graphics"
+                                ? "w-3.5 mr-2 opacity-100 translate-x-0"
+                                : "w-0 mr-0 opacity-0 -translate-x-1.5 group-hover/item:w-3.5 group-hover/item:mr-2 group-hover/item:opacity-100 group-hover/item:translate-x-0"
+                            }`}
+                          />
+                          <span>Graphic Design (40+)</span>
                         </button>
                         <a
-                          href="/assets/aistudio/Shakeeb_Khan_Website_Developer_CV_75f2e3fe.pdf"
-                          download="Shakeeb_Khan_CV.pdf"
-                          target="_blank"
-                          rel="noreferrer"
-                          onClick={() => setOpenDesktopDropdown(null)}
-                          className="w-full px-3.5 py-2.5 rounded-xl text-[13.5px] font-medium text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6] flex items-center justify-between gap-2 transition-colors group/item cursor-pointer"
+                          href="/Shakeeb-Ahmed-Khan-CV.pdf"
+                          download="Shakeeb-Ahmed-Khan-CV.pdf"
+                          onClick={handleDownloadCv}
+                          className="w-full py-2.5 text-[14px] font-normal text-[#120a22] hover:text-[#6d28d9] flex items-center transition-colors duration-200 group/item cursor-pointer text-left"
                         >
-                          <span className="flex items-center gap-2">
-                            <Download className="w-3.5 h-3.5 text-[#6d28d9]" />
-                            <span>Download Resume PDF</span>
-                          </span>
+                          <CornerDownRight className="w-0 h-3.5 mr-0 opacity-0 -translate-x-1.5 group-hover/item:w-3.5 group-hover/item:mr-2 group-hover/item:opacity-100 group-hover/item:translate-x-0 text-[#6d28d9] transition-all duration-200 ease-out shrink-0" />
+                          <span>Download Resume PDF</span>
                         </a>
                       </div>
                     </motion.div>
@@ -665,19 +741,8 @@ export function GeroldHome({
               </div>
 
               <button
-                onClick={() => navigateToPage("health-checker")}
-                className={`h-10 xl:h-[42px] px-4 xl:px-5 rounded-full inline-flex items-center justify-center transition-colors cursor-pointer whitespace-nowrap ${
-                  currentPage === "health-checker"
-                    ? "bg-[#6d28d9] text-white font-semibold shadow-sm"
-                    : "text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6]"
-                }`}
-              >
-                Health Check
-              </button>
-
-              <button
                 onClick={() => scrollToSection("contact")}
-                className="h-10 xl:h-[42px] px-4 xl:px-5 rounded-full inline-flex items-center justify-center text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6] transition-colors cursor-pointer whitespace-nowrap"
+                className="h-10 xl:h-[42px] px-4 xl:px-5 rounded-full inline-flex items-center justify-center font-normal text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6] transition-colors cursor-pointer whitespace-nowrap"
               >
                 Contact
               </button>
@@ -688,7 +753,7 @@ export function GeroldHome({
           <div className="pointer-events-auto flex items-center gap-2 sm:gap-2.5 shrink-0">
             <button
               onClick={() => openHireWithService("WordPress & WooCommerce Build")}
-              className="h-11 lg:h-[52px] xl:h-[54px] inline-flex items-center gap-2.5 lg:gap-3 pl-1 lg:pl-1.5 pr-4 lg:pr-5 xl:pr-6 bg-white hover:bg-purple-50 text-[#120a22] text-[13px] lg:text-[14px] xl:text-[15px] font-semibold tracking-tight rounded-full transition-colors cursor-pointer whitespace-nowrap shadow-[0_14px_38px_rgba(7,3,14,0.34)]"
+              className="h-11 lg:h-[52px] xl:h-[54px] inline-flex items-center gap-2.5 lg:gap-3 pl-1 lg:pl-1.5 pr-4 lg:pr-5 xl:pr-6 bg-white hover:bg-purple-50 text-[#120a22] text-[13px] lg:text-[14px] xl:text-[15px] font-normal tracking-tight rounded-full transition-colors cursor-pointer whitespace-nowrap shadow-[0_14px_38px_rgba(7,3,14,0.34)]"
             >
               <span className="relative w-9 h-9 lg:w-10 lg:h-10 xl:w-[42px] xl:h-[42px] rounded-full bg-[#6d28d9] shrink-0">
                 <img
@@ -744,7 +809,7 @@ export function GeroldHome({
                 <img
                   src="/Shakeeb_logo_white-removebg-preview-1.png"
                   alt="Shakeeb"
-                  className="w-[116px] sm:w-auto sm:h-[30px] lg:h-[34px] h-auto object-contain"
+                  className="w-[116px] sm:w-auto sm:h-[30px] lg:w-[15em] lg:h-auto h-auto object-contain"
                 />
               </button>
 
@@ -754,7 +819,7 @@ export function GeroldHome({
                     setFullMenuOpen(false);
                     openHireWithService("WordPress & WooCommerce Build");
                   }}
-                  className="h-11 lg:h-[52px] inline-flex items-center gap-2.5 pl-1 lg:pl-1.5 pr-4 lg:pr-5 bg-white hover:bg-purple-50 text-[#120a22] text-[13px] lg:text-[14px] font-semibold tracking-tight rounded-full transition-colors cursor-pointer whitespace-nowrap shadow-lg"
+                  className="h-11 lg:h-[52px] inline-flex items-center gap-2.5 pl-1 lg:pl-1.5 pr-4 lg:pr-5 bg-white hover:bg-purple-50 text-[#120a22] text-[13px] lg:text-[14px] font-normal tracking-tight rounded-full transition-colors cursor-pointer whitespace-nowrap shadow-lg"
                 >
                   <span className="relative w-9 h-9 lg:w-10 lg:h-10 rounded-full bg-[#6d28d9] shrink-0">
                     <img
@@ -857,19 +922,33 @@ export function GeroldHome({
                       transition={{ duration: 0.24 }}
                       className="overflow-hidden pl-4 sm:pl-14 pt-3 pb-2 space-y-2"
                     >
+                      <button
+                        onClick={() => navigateToPage("health-checker")}
+                        className="group/sub flex items-center text-base sm:text-xl font-normal text-[#e9d5ff] hover:text-white transition-colors cursor-pointer text-left"
+                      >
+                        <CornerDownRight
+                          className={`h-4 shrink-0 text-[#e9d5ff] transition-all duration-200 ease-out ${
+                            currentPage === "health-checker"
+                              ? "w-4 mr-2 opacity-100"
+                              : "w-0 mr-0 opacity-0 group-hover/sub:w-4 group-hover/sub:mr-2 group-hover/sub:opacity-100"
+                          }`}
+                        />
+                        <span>Website Health Checker</span>
+                        <span className="ml-2.5 px-2 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] font-mono text-[10px] font-bold uppercase tracking-wider">
+                          FREE
+                        </span>
+                      </button>
+
                       {servicesList.map((srv) => (
                         <button
                           key={srv.num}
-                          onClick={() =>
-                            srv.num === "01."
-                              ? navigateToPage("health-checker")
-                              : scrollToSection("services")
-                          }
-                          className="flex items-center gap-2.5 text-base sm:text-xl font-medium text-purple-100 hover:text-white transition-colors cursor-pointer text-left"
+                          onClick={() => scrollToSection("services")}
+                          className="group/sub flex items-center text-base sm:text-xl font-normal text-purple-100 hover:text-white transition-colors cursor-pointer text-left"
                         >
+                          <CornerDownRight className="w-0 h-4 mr-0 opacity-0 group-hover/sub:w-4 group-hover/sub:mr-2 group-hover/sub:opacity-100 text-[#e9d5ff] transition-all duration-200 ease-out shrink-0" />
                           <span>{srv.title}</span>
                           {srv.isNew && (
-                            <span className="px-2 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] font-mono text-[10px] font-bold uppercase tracking-wider">
+                            <span className="ml-2.5 px-2 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] font-mono text-[10px] font-bold uppercase tracking-wider">
                               NEW
                             </span>
                           )}
@@ -918,38 +997,34 @@ export function GeroldHome({
                     >
                       <button
                         onClick={() => navigateToPage("websites")}
-                        className="block text-base sm:text-xl font-medium text-purple-100 hover:text-white transition-colors cursor-pointer text-left"
+                        className="group/sub flex items-center text-base sm:text-xl font-normal text-purple-100 hover:text-white transition-colors cursor-pointer text-left"
                       >
-                        Websites Portfolio (15+)
+                        <CornerDownRight
+                          className={`h-4 shrink-0 text-[#e9d5ff] transition-all duration-200 ease-out ${
+                            currentPage === "websites"
+                              ? "w-4 mr-2 opacity-100"
+                              : "w-0 mr-0 opacity-0 group-hover/sub:w-4 group-hover/sub:mr-2 group-hover/sub:opacity-100"
+                          }`}
+                        />
+                        <span>Websites Portfolio (15+)</span>
                       </button>
                       <button
                         onClick={() => navigateToPage("graphics")}
-                        className="block text-base sm:text-xl font-medium text-purple-100 hover:text-white transition-colors cursor-pointer text-left"
+                        className="group/sub flex items-center text-base sm:text-xl font-normal text-purple-100 hover:text-white transition-colors cursor-pointer text-left"
                       >
-                        Graphic Design Portfolio (40+)
+                        <CornerDownRight
+                          className={`h-4 shrink-0 text-[#e9d5ff] transition-all duration-200 ease-out ${
+                            currentPage === "graphics"
+                              ? "w-4 mr-2 opacity-100"
+                              : "w-0 mr-0 opacity-0 group-hover/sub:w-4 group-hover/sub:mr-2 group-hover/sub:opacity-100"
+                          }`}
+                        />
+                        <span>Graphic Design Portfolio (40+)</span>
                       </button>
                     </motion.div>
                   )}
                 </AnimatePresence>
               </motion.div>
-
-              {/* HEALTH CHECK */}
-              <motion.button
-                initial={{ opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.34, delay: 0.26, ease: [0.22, 1, 0.36, 1] }}
-                onMouseEnter={() => setHoveredOverlayLink("health-checker")}
-                onMouseLeave={() => setHoveredOverlayLink(null)}
-                onClick={() => navigateToPage("health-checker")}
-                className="group flex items-center gap-3 font-display text-5xl sm:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white hover:text-[#e9d5ff] transition-colors cursor-pointer"
-              >
-                <ArrowUpRight
-                  className={`w-8 h-8 sm:w-12 sm:h-12 text-[#e9d5ff] transition-all duration-200 ${
-                    hoveredOverlayLink === "health-checker" ? "opacity-100 scale-100" : "opacity-0 -ml-10 sm:-ml-14 scale-75"
-                  }`}
-                />
-                <span>HEALTH CHECK</span>
-              </motion.button>
 
               {/* CONTACT */}
               <motion.button
@@ -988,10 +1063,9 @@ export function GeroldHome({
                 <ChevronRight className="w-4 h-4" />
               </button>
               <a
-                href="/assets/aistudio/Shakeeb_Khan_Website_Developer_CV_75f2e3fe.pdf"
-                download="Shakeeb_Khan_CV.pdf"
-                target="_blank"
-                rel="noreferrer"
+                href="/Shakeeb-Ahmed-Khan-CV.pdf"
+                download="Shakeeb-Ahmed-Khan-CV.pdf"
+                onClick={handleDownloadCv}
                 className="px-6 py-3 border border-white/35 hover:border-white text-white text-sm font-semibold rounded-full inline-flex items-center gap-2 transition-colors"
               >
                 <Download className="w-4 h-4" />
@@ -1049,10 +1123,9 @@ export function GeroldHome({
                     </button>
 
                     <a
-                      href="/assets/aistudio/Shakeeb_Khan_Website_Developer_CV_75f2e3fe.pdf"
-                      download="Shakeeb_Khan_CV.pdf"
-                      target="_blank"
-                      rel="noreferrer"
+                      href="/Shakeeb-Ahmed-Khan-CV.pdf"
+                      download="Shakeeb-Ahmed-Khan-CV.pdf"
+                      onClick={handleDownloadCv}
                       className="px-5 sm:px-7 py-3 sm:py-3.5 rounded-full bg-gradient-to-r from-[#8750f7] via-[#6d28d9] to-[#a855f7] hover:brightness-110 text-white text-xs sm:text-sm font-bold inline-flex items-center gap-2 whitespace-nowrap shadow-[0_10px_28px_rgba(7,3,14,0.35)] border border-white/20 transition-all"
                     >
                       <Download className="w-4 h-4 shrink-0" />
@@ -1542,160 +1615,387 @@ export function GeroldHome({
                               { text: "Enquiry form not sending", shift: "translate-x-4 rotate-1" },
                               { text: "Page titles missing", shift: "-translate-x-3 -rotate-1" },
                               { text: "Images far too heavy", shift: "translate-x-5 rotate-1" }
-                            ].map((alert) => (
-                              <div
+                            ].map((alert, i) => (
+                              <motion.div
                                 key={alert.text}
-                                className={`px-3 py-1.5 rounded-lg bg-[#0d071d]/90 border border-white/15 shadow-lg flex items-center gap-2 text-[11px] font-semibold text-white whitespace-nowrap transition-transform duration-300 group-hover:scale-[1.03] ${alert.shift}`}
+                                initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30, scale: 0.9 }}
+                                whileInView={{ opacity: 1, x: 0, scale: 1 }}
+                                viewport={{ once: true, amount: "some" }}
+                                transition={{
+                                  type: "spring",
+                                  stiffness: 240,
+                                  damping: 20,
+                                  delay: 0.08 + i * 0.09
+                                }}
+                                className="will-change-transform"
                               >
-                                <span className="w-4 h-4 rounded-full bg-rose-500 text-white flex items-center justify-center shrink-0">
-                                  <X className="w-2.5 h-2.5 stroke-[3]" />
-                                </span>
-                                <span>{alert.text}</span>
-                              </div>
+                                <div
+                                  className={`px-3 py-1.5 rounded-lg bg-[#0d071d]/90 border border-white/15 shadow-lg flex items-center gap-2 text-[11px] font-semibold text-white whitespace-nowrap transition-transform duration-300 group-hover:scale-[1.03] ${alert.shift}`}
+                                >
+                                  <span className="w-4 h-4 rounded-full bg-rose-500 text-white flex items-center justify-center shrink-0">
+                                    <X className="w-2.5 h-2.5 stroke-[3]" />
+                                  </span>
+                                  <span>{alert.text}</span>
+                                </div>
+                              </motion.div>
                             ))}
                           </div>
                         )}
 
                         {srv.id === "custom-design" && (
-                          <div className="w-[90%] h-[92%] bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col border border-white/30 transition-transform duration-300 group-hover:-translate-y-1">
+                          <motion.div
+                            initial={{ opacity: 0, y: 24, scale: 0.94 }}
+                            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                            viewport={{ once: true, amount: "some" }}
+                            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                            className="w-[90%] h-[92%] bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col border border-white/30 transition-transform duration-300 group-hover:-translate-y-1 will-change-transform"
+                          >
                             <div className="px-2.5 py-1.5 bg-zinc-100 border-b border-zinc-200 flex items-center justify-between">
                               <div className="flex items-center gap-1">
-                                <span className="w-1.5 h-1.5 rounded-full bg-[#ff6b6b]" />
-                                <span className="w-1.5 h-1.5 rounded-full bg-[#ffd93d]" />
-                                <span className="w-1.5 h-1.5 rounded-full bg-[#6bcb77]" />
+                                {["#ff6b6b", "#ffd93d", "#6bcb77"].map((dotColor, dIdx) => (
+                                  <motion.span
+                                    key={dotColor}
+                                    initial={{ scale: 0, opacity: 0 }}
+                                    whileInView={{ scale: 1, opacity: 1 }}
+                                    viewport={{ once: true, amount: "some" }}
+                                    transition={{ duration: 0.25, delay: 0.14 + dIdx * 0.06 }}
+                                    className="w-1.5 h-1.5 rounded-full inline-block"
+                                    style={{ backgroundColor: dotColor }}
+                                  />
+                                ))}
                               </div>
-                              <div className="w-16 h-1.5 rounded-full bg-zinc-300" />
+                              <motion.div
+                                initial={{ scaleX: 0, opacity: 0 }}
+                                whileInView={{ scaleX: 1, opacity: 1 }}
+                                viewport={{ once: true, amount: "some" }}
+                                transition={{ duration: 0.35, delay: 0.2 }}
+                                style={{ originX: 0.5 }}
+                                className="w-16 h-1.5 rounded-full bg-zinc-300"
+                              />
                             </div>
-                            <div className="m-2 rounded-lg bg-[#2e1065] p-2.5 space-y-1.5">
-                              <div className="w-14 h-1.5 rounded-full bg-purple-300/75" />
-                              <div className="w-24 h-2.5 rounded bg-white" />
-                              <div className="w-10 h-2.5 rounded-full bg-[#8750f7]" />
-                            </div>
+                            <motion.div
+                              initial={{ opacity: 0, y: 10 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true, amount: "some" }}
+                              transition={{ duration: 0.38, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
+                              className="m-2 rounded-lg bg-[#2e1065] p-2.5 space-y-1.5"
+                            >
+                              <motion.div
+                                initial={{ scaleX: 0, opacity: 0 }}
+                                whileInView={{ scaleX: 1, opacity: 1 }}
+                                viewport={{ once: true, amount: "some" }}
+                                transition={{ duration: 0.32, delay: 0.26 }}
+                                style={{ originX: 0 }}
+                                className="w-14 h-1.5 rounded-full bg-purple-300/75"
+                              />
+                              <motion.div
+                                initial={{ scaleX: 0, opacity: 0 }}
+                                whileInView={{ scaleX: 1, opacity: 1 }}
+                                viewport={{ once: true, amount: "some" }}
+                                transition={{ duration: 0.36, delay: 0.32 }}
+                                style={{ originX: 0 }}
+                                className="w-24 h-2.5 rounded bg-white"
+                              />
+                              <motion.div
+                                initial={{ scale: 0.7, opacity: 0 }}
+                                whileInView={{ scale: 1, opacity: 1 }}
+                                viewport={{ once: true, amount: "some" }}
+                                transition={{ duration: 0.28, delay: 0.38 }}
+                                style={{ originX: 0 }}
+                                className="w-10 h-2.5 rounded-full bg-[#8750f7]"
+                              />
+                            </motion.div>
                             <div className="px-2 pb-2 grid grid-cols-2 gap-1.5 flex-1">
-                              <div className="rounded-md bg-purple-100/80 border border-purple-200 p-1.5 space-y-1">
+                              <motion.div
+                                initial={{ opacity: 0, y: 12, scale: 0.94 }}
+                                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                                viewport={{ once: true, amount: "some" }}
+                                transition={{ duration: 0.34, delay: 0.34, ease: [0.22, 1, 0.36, 1] }}
+                                className="rounded-md bg-purple-100/80 border border-purple-200 p-1.5 space-y-1"
+                              >
                                 <div className="w-6 h-6 rounded bg-[#6d28d9]/20" />
                                 <div className="w-12 h-1.5 rounded bg-purple-900/30" />
-                              </div>
-                              <div className="rounded-md bg-purple-50 border border-purple-200 p-1.5 space-y-1">
+                              </motion.div>
+                              <motion.div
+                                initial={{ opacity: 0, y: 12, scale: 0.94 }}
+                                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                                viewport={{ once: true, amount: "some" }}
+                                transition={{ duration: 0.34, delay: 0.42, ease: [0.22, 1, 0.36, 1] }}
+                                className="rounded-md bg-purple-50 border border-purple-200 p-1.5 space-y-1"
+                              >
                                 <div className="w-6 h-6 rounded bg-[#8750f7]/25" />
                                 <div className="w-10 h-1.5 rounded bg-purple-900/25" />
-                              </div>
+                              </motion.div>
                             </div>
-                          </div>
+                          </motion.div>
                         )}
 
                         {srv.id === "managed-website" && (
-                          <div className="relative w-[82%] bg-white text-[#120a22] rounded-xl shadow-2xl p-2.5 border border-white/25 transition-transform duration-300 group-hover:-translate-y-1">
-                            <div className="bg-[#6d28d9] text-white text-[9px] font-mono font-bold uppercase tracking-widest py-1 rounded-md text-center mb-2">
+                          <motion.div
+                            initial={{ opacity: 0, y: 24, scale: 0.94 }}
+                            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                            viewport={{ once: true, amount: "some" }}
+                            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                            className="relative w-[82%] bg-white text-[#120a22] rounded-xl shadow-2xl p-2.5 border border-white/25 transition-transform duration-300 group-hover:-translate-y-1 will-change-transform"
+                          >
+                            <motion.div
+                              initial={{ opacity: 0, y: -8 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true, amount: "some" }}
+                              transition={{ duration: 0.32, delay: 0.14 }}
+                              className="bg-[#6d28d9] text-white text-[9px] font-mono font-bold uppercase tracking-widest py-1 rounded-md text-center mb-2"
+                            >
                               THIS MONTH
-                            </div>
-                            <div className="grid grid-cols-7 gap-1 text-[8px] font-mono font-bold text-zinc-400 text-center mb-1">
+                            </motion.div>
+                            <motion.div
+                              initial={{ opacity: 0 }}
+                              whileInView={{ opacity: 1 }}
+                              viewport={{ once: true, amount: "some" }}
+                              transition={{ duration: 0.3, delay: 0.2 }}
+                              className="grid grid-cols-7 gap-1 text-[8px] font-mono font-bold text-zinc-400 text-center mb-1"
+                            >
                               {["S", "M", "T", "W", "T", "F", "S"].map((d, i) => (
                                 <span key={i}>{d}</span>
                               ))}
-                            </div>
-                            <div className="grid grid-cols-7 gap-1 text-[9px] font-mono font-semibold text-zinc-700 text-center">
+                            </motion.div>
+                            <motion.div
+                              initial={{ opacity: 0, y: 6 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true, amount: "some" }}
+                              transition={{ duration: 0.35, delay: 0.24 }}
+                              className="grid grid-cols-7 gap-1 text-[9px] font-mono font-semibold text-zinc-700 text-center"
+                            >
                               {Array.from({ length: 21 }, (_, idx) => {
                                 const day = idx + 1;
                                 const isActiveDay = day === 14;
-                                return (
-                                  <span
+                                return isActiveDay ? (
+                                  <motion.span
                                     key={day}
-                                    className={`py-0.5 rounded-full ${
-                                      isActiveDay
-                                        ? "bg-[#8750f7] text-white font-bold shadow"
-                                        : "text-zinc-700"
-                                    }`}
+                                    initial={{ scale: 0.5, opacity: 0 }}
+                                    whileInView={{ scale: 1, opacity: 1 }}
+                                    viewport={{ once: true, amount: "some" }}
+                                    transition={{
+                                      type: "spring",
+                                      stiffness: 320,
+                                      damping: 16,
+                                      delay: 0.34
+                                    }}
+                                    className="py-0.5 rounded-full bg-[#8750f7] text-white font-bold shadow"
                                   >
+                                    {day}
+                                  </motion.span>
+                                ) : (
+                                  <span key={day} className="py-0.5 rounded-full text-zinc-700">
                                     {day}
                                   </span>
                                 );
                               })}
-                            </div>
-                            <div className="mt-2 flex items-center justify-center">
+                            </motion.div>
+                            <motion.div
+                              initial={{ opacity: 0, y: 8, scale: 0.9 }}
+                              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                              viewport={{ once: true, amount: "some" }}
+                              transition={{ type: "spring", stiffness: 260, damping: 18, delay: 0.4 }}
+                              className="mt-2 flex items-center justify-center"
+                            >
                               <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#ede9fe] text-[#5b21b6] text-[10px] font-bold">
                                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                                 <span>All sorted</span>
                               </span>
-                            </div>
-                          </div>
+                            </motion.div>
+                          </motion.div>
                         )}
 
                         {srv.id === "seo-growth" && (
                           <div className="w-[90%] space-y-1.5 transition-transform duration-300 group-hover:-translate-y-0.5">
-                            <div className="bg-white text-[#120a22] rounded-full px-3 py-1.5 flex items-center gap-2 text-[11px] font-semibold shadow-md">
+                            <motion.div
+                              initial={{ opacity: 0, y: -14, scale: 0.95 }}
+                              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                              viewport={{ once: true, amount: "some" }}
+                              transition={{ duration: 0.35, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
+                              className="bg-white text-[#120a22] rounded-full px-3 py-1.5 flex items-center gap-2 text-[11px] font-semibold shadow-md"
+                            >
                               <Search className="w-3 h-3 text-[#6d28d9] shrink-0" />
                               <span className="truncate">best brand web studio</span>
-                            </div>
-                            <div className="bg-[#0d071d] border border-[#c084fc] rounded-xl px-3 py-2 shadow-lg flex items-center justify-between gap-2">
+                            </motion.div>
+                            <motion.div
+                              initial={{ opacity: 0, y: 16, scale: 0.93 }}
+                              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                              viewport={{ once: true, amount: "some" }}
+                              transition={{ type: "spring", stiffness: 250, damping: 20, delay: 0.16 }}
+                              className="bg-[#0d071d] border border-[#c084fc] rounded-xl px-3 py-2 shadow-lg flex items-center justify-between gap-2"
+                            >
                               <div className="space-y-0.5 text-left">
                                 <div className="text-[11px] font-bold text-white">Your business</div>
                                 <div className="w-24 h-1 rounded-full bg-purple-400/50" />
                               </div>
-                              <span className="px-1.5 py-0.5 rounded bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 font-mono text-[9px] font-bold">
+                              <motion.span
+                                initial={{ scale: 0.5, opacity: 0 }}
+                                whileInView={{ scale: 1, opacity: 1 }}
+                                viewport={{ once: true, amount: "some" }}
+                                transition={{ type: "spring", stiffness: 300, damping: 16, delay: 0.3 }}
+                                className="px-1.5 py-0.5 rounded bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 font-mono text-[9px] font-bold"
+                              >
                                 #1 ↑
-                              </span>
-                            </div>
-                            <div className="bg-white/10 border border-white/15 rounded-lg px-3 py-1.5 text-left text-[10px] text-purple-100/75">
+                              </motion.span>
+                            </motion.div>
+                            <motion.div
+                              initial={{ opacity: 0, y: 12 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true, amount: "some" }}
+                              transition={{ duration: 0.34, delay: 0.26, ease: [0.22, 1, 0.36, 1] }}
+                              className="bg-white/10 border border-white/15 rounded-lg px-3 py-1.5 text-left text-[10px] text-purple-100/75"
+                            >
                               A listings site
-                            </div>
-                            <div className="bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-left text-[10px] text-purple-200/55">
+                            </motion.div>
+                            <motion.div
+                              initial={{ opacity: 0, y: 12 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true, amount: "some" }}
+                              transition={{ duration: 0.34, delay: 0.34, ease: [0.22, 1, 0.36, 1] }}
+                              className="bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-left text-[10px] text-purple-200/55"
+                            >
                               The competitor down the road
-                            </div>
+                            </motion.div>
                           </div>
                         )}
 
                         {srv.id === "branding-copy" && (
-                          <div className="w-[86%] bg-white text-[#120a22] rounded-xl shadow-2xl p-3.5 space-y-3 border border-white/25 text-left transition-transform duration-300 group-hover:-translate-y-1">
+                          <motion.div
+                            initial={{ opacity: 0, y: 24, scale: 0.94 }}
+                            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                            viewport={{ once: true, amount: "some" }}
+                            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                            className="w-[86%] bg-white text-[#120a22] rounded-xl shadow-2xl p-3.5 space-y-3 border border-white/25 text-left transition-transform duration-300 group-hover:-translate-y-1 will-change-transform"
+                          >
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-1.5">
-                                <span className="w-5 h-5 rounded-full bg-[#6d28d9] inline-block" />
-                                <span className="w-3 h-5 rounded-sm bg-[#120a22] inline-block" />
+                                <motion.span
+                                  initial={{ scale: 0, opacity: 0 }}
+                                  whileInView={{ scale: 1, opacity: 1 }}
+                                  viewport={{ once: true, amount: "some" }}
+                                  transition={{ type: "spring", stiffness: 280, damping: 18, delay: 0.14 }}
+                                  className="w-5 h-5 rounded-full bg-[#6d28d9] inline-block"
+                                />
+                                <motion.span
+                                  initial={{ scaleY: 0, opacity: 0 }}
+                                  whileInView={{ scaleY: 1, opacity: 1 }}
+                                  viewport={{ once: true, amount: "some" }}
+                                  transition={{ duration: 0.28, delay: 0.2 }}
+                                  className="w-3 h-5 rounded-sm bg-[#120a22] inline-block"
+                                />
                               </div>
-                              <span className="font-mono text-[8px] font-bold uppercase tracking-widest text-zinc-400">
+                              <motion.span
+                                initial={{ opacity: 0 }}
+                                whileInView={{ opacity: 1 }}
+                                viewport={{ once: true, amount: "some" }}
+                                transition={{ duration: 0.3, delay: 0.22 }}
+                                className="font-mono text-[8px] font-bold uppercase tracking-widest text-zinc-400"
+                              >
                                 BRAND KIT
-                              </span>
+                              </motion.span>
                             </div>
                             <div>
-                              <div className="font-display text-2xl font-black uppercase tracking-tight leading-none text-[#120a22]">
+                              <motion.div
+                                initial={{ opacity: 0, y: 10 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true, amount: "some" }}
+                                transition={{ duration: 0.34, delay: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                                className="font-display text-2xl font-black uppercase tracking-tight leading-none text-[#120a22]"
+                              >
                                 YOUR BRAND.
-                              </div>
+                              </motion.div>
                               <div className="mt-1.5 space-y-1">
-                                <div className="w-4/5 h-1.5 rounded-full bg-zinc-200" />
-                                <div className="w-3/5 h-1.5 rounded-full bg-zinc-200" />
+                                <motion.div
+                                  initial={{ scaleX: 0, opacity: 0 }}
+                                  whileInView={{ scaleX: 1, opacity: 1 }}
+                                  viewport={{ once: true, amount: "some" }}
+                                  transition={{ duration: 0.32, delay: 0.28 }}
+                                  style={{ originX: 0 }}
+                                  className="w-4/5 h-1.5 rounded-full bg-zinc-200"
+                                />
+                                <motion.div
+                                  initial={{ scaleX: 0, opacity: 0 }}
+                                  whileInView={{ scaleX: 1, opacity: 1 }}
+                                  viewport={{ once: true, amount: "some" }}
+                                  transition={{ duration: 0.32, delay: 0.33 }}
+                                  style={{ originX: 0 }}
+                                  className="w-3/5 h-1.5 rounded-full bg-zinc-200"
+                                />
                               </div>
                             </div>
                             <div className="grid grid-cols-4 gap-1.5 pt-1">
-                              <span className="h-6 rounded-md bg-[#120a22]" />
-                              <span className="h-6 rounded-md bg-[#5b21b6]" />
-                              <span className="h-6 rounded-md bg-[#8750f7]" />
-                              <span className="h-6 rounded-md bg-[#e9d5ff]" />
+                              {["#120a22", "#5b21b6", "#8750f7", "#e9d5ff"].map((swatch, swIdx) => (
+                                <motion.span
+                                  key={swatch}
+                                  initial={{ opacity: 0, y: 10, scale: 0.85 }}
+                                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                                  viewport={{ once: true, amount: "some" }}
+                                  transition={{
+                                    duration: 0.3,
+                                    delay: 0.34 + swIdx * 0.05,
+                                    ease: [0.22, 1, 0.36, 1]
+                                  }}
+                                  className="h-6 rounded-md block"
+                                  style={{ backgroundColor: swatch }}
+                                />
+                              ))}
                             </div>
-                          </div>
+                          </motion.div>
                         )}
 
                         {srv.id === "white-label" && (
-                          <div className="w-[90%] h-[90%] bg-[#0d071d] border border-purple-300/35 rounded-xl overflow-hidden shadow-2xl flex flex-col text-left transition-transform duration-300 group-hover:-translate-y-1">
-                            <div className="px-3 py-1.5 bg-[#180e2f] border-b border-purple-500/30 flex items-center justify-between">
+                          <motion.div
+                            initial={{ opacity: 0, y: 24, scale: 0.94 }}
+                            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                            viewport={{ once: true, amount: "some" }}
+                            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                            className="w-[90%] h-[90%] bg-[#0d071d] border border-purple-300/35 rounded-xl overflow-hidden shadow-2xl flex flex-col text-left transition-transform duration-300 group-hover:-translate-y-1 will-change-transform"
+                          >
+                            <motion.div
+                              initial={{ opacity: 0, y: -6 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true, amount: "some" }}
+                              transition={{ duration: 0.3, delay: 0.14 }}
+                              className="px-3 py-1.5 bg-[#180e2f] border-b border-purple-500/30 flex items-center justify-between"
+                            >
                               <span className="font-mono text-[9px] font-bold tracking-widest text-[#e9d5ff]">
                                 HOMEPAGE / DESKTOP
                               </span>
                               <span className="font-mono text-[8px] text-purple-300/75">1440px</span>
-                            </div>
+                            </motion.div>
                             <div className="p-2.5 flex-1 grid grid-cols-12 gap-2">
-                              <div className="col-span-7 rounded-lg bg-[#6d28d9]/35 border border-purple-400/40 p-2 flex flex-col justify-between">
+                              <motion.div
+                                initial={{ opacity: 0, y: 12, scale: 0.94 }}
+                                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                                viewport={{ once: true, amount: "some" }}
+                                transition={{ duration: 0.36, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                                className="col-span-7 rounded-lg bg-[#6d28d9]/35 border border-purple-400/40 p-2 flex flex-col justify-between"
+                              >
                                 <div className="space-y-1">
                                   <div className="w-10 h-1 rounded bg-[#e9d5ff]" />
                                   <div className="w-16 h-2 rounded bg-white" />
                                 </div>
                                 <div className="w-12 h-2 rounded-full bg-[#8750f7]" />
-                              </div>
+                              </motion.div>
                               <div className="col-span-5 flex flex-col gap-1.5">
-                                <div className="flex-1 rounded-lg bg-white/10 border border-white/15" />
-                                <div className="flex-1 rounded-lg bg-white/5 border border-white/10" />
+                                <motion.div
+                                  initial={{ opacity: 0, x: 10 }}
+                                  whileInView={{ opacity: 1, x: 0 }}
+                                  viewport={{ once: true, amount: "some" }}
+                                  transition={{ duration: 0.32, delay: 0.28 }}
+                                  className="flex-1 rounded-lg bg-white/10 border border-white/15"
+                                />
+                                <motion.div
+                                  initial={{ opacity: 0, x: 10 }}
+                                  whileInView={{ opacity: 1, x: 0 }}
+                                  viewport={{ once: true, amount: "some" }}
+                                  transition={{ duration: 0.32, delay: 0.36 }}
+                                  className="flex-1 rounded-lg bg-white/5 border border-white/10"
+                                />
                               </div>
                             </div>
-                          </div>
+                          </motion.div>
                         )}
                       </div>
 
@@ -1968,10 +2268,9 @@ export function GeroldHome({
                           Hire Shakeeb
                         </button>
                         <a
-                          href="/assets/aistudio/Shakeeb_Khan_Website_Developer_CV_75f2e3fe.pdf"
-                          download="Shakeeb_Khan_CV.pdf"
-                          target="_blank"
-                          rel="noreferrer"
+                          href="/Shakeeb-Ahmed-Khan-CV.pdf"
+                          download="Shakeeb-Ahmed-Khan-CV.pdf"
+                          onClick={handleDownloadCv}
                           className="min-h-[44px] py-3 px-5 bg-white/5 hover:bg-purple-900/50 border border-purple-400/35 text-purple-100 text-xs font-bold rounded-full inline-flex items-center justify-center gap-1.5 transition-colors whitespace-nowrap"
                         >
                           <Download className="w-3.5 h-3.5" />
@@ -2477,10 +2776,9 @@ export function GeroldHome({
                 Start Your Project
               </button>
               <a
-                href="/assets/aistudio/Shakeeb_Khan_Website_Developer_CV_75f2e3fe.pdf"
-                download="Shakeeb_Khan_CV.pdf"
-                target="_blank"
-                rel="noreferrer"
+                href="/Shakeeb-Ahmed-Khan-CV.pdf"
+                download="Shakeeb-Ahmed-Khan-CV.pdf"
+                onClick={handleDownloadCv}
                 className="px-6 py-3.5 bg-[#120a22]/60 hover:bg-[#120a22]/85 border border-white/25 text-white text-sm font-semibold rounded-full inline-flex items-center gap-2 transition-colors whitespace-nowrap"
               >
                 <Download className="w-4 h-4" />

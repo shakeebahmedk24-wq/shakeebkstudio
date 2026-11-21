@@ -2193,6 +2193,7 @@ export function GraphicsPortfolio({
                   rotateY: artboardTilt.rotateY
                 }}
                 transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                data-cursor="inspect"
                 onClick={() => openLightboxByProject(currentStudioGraphic)}
                 className="relative bg-[#07030e] border border-purple-400/30 rounded-2xl p-2.5 sm:p-4 shadow-[0_24px_55px_rgba(0,0,0,0.6)] cursor-pointer group/art will-change-transform"
                 title="Click to inspect full artwork in Lightbox"
@@ -2214,17 +2215,17 @@ export function GraphicsPortfolio({
                   {currentStudioGraphic.category} · {currentStudioGraphic.dimensions}
                 </motion.span>
 
-                <div className="aspect-[16/10] w-full rounded-xl overflow-hidden bg-zinc-950 relative">
+                <div className="aspect-[16/10] w-full rounded-xl overflow-hidden bg-[#090414] relative">
                   <AnimatePresence initial={false}>
                     <motion.img
                       key={currentStudioGraphic.id}
-                      initial={{ opacity: 0, scale: 1.04 }}
+                      initial={{ opacity: 0, scale: 0.985 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
                       src={currentStudioGraphic.imageUrl}
                       alt={currentStudioGraphic.title}
-                      className="absolute inset-0 w-full h-full object-cover object-center group-hover/art:scale-[1.03] transition-transform duration-500 [image-rendering:-webkit-optimize-contrast] will-change-[opacity,transform]"
+                      className="absolute inset-0 w-full h-full object-contain object-center p-1.5 sm:p-2.5 group-hover/art:scale-[1.015] transition-transform duration-500 [image-rendering:-webkit-optimize-contrast] will-change-[opacity,transform]"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         if (!target.dataset.fallbackTried && currentStudioGraphic.fallbackUrl) {
@@ -2307,6 +2308,7 @@ export function GraphicsPortfolio({
                     <button
                       key={hex}
                       type="button"
+                      data-cursor="copy"
                       onClick={() => copyToClipboard(hex)}
                       className="group/swatch text-left rounded-xl overflow-hidden bg-[#07030e] border border-purple-700/40 hover:border-white transition-all cursor-pointer"
                       title={`Copy ${hex}`}
@@ -2363,13 +2365,13 @@ export function GraphicsPortfolio({
                     }`}
                     title={`Preview ${item.title}`}
                   >
-                    <div className="aspect-[16/10] w-full rounded-lg overflow-hidden bg-zinc-950">
+                    <div className="aspect-[16/10] w-full rounded-lg overflow-hidden bg-[#090414] p-1">
                       <img
                         src={item.imageUrl}
                         alt={item.title}
                         loading="lazy"
                         decoding="async"
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain object-center"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
                           if (!target.dataset.fallbackTried && item.fallbackUrl) {
@@ -2445,39 +2447,42 @@ export function GraphicsPortfolio({
                   <div>
                     {/* Visual Canvas Mockup Card Container */}
                     <div
+                      data-cursor="inspect"
                       onClick={() => openLightboxByProject(project)}
-                      className="relative aspect-[4/3] sm:aspect-[16/10] overflow-hidden bg-[#07030e] sm:border-b border-purple-900/40 flex flex-col justify-between cursor-pointer group/img"
+                      className="flex flex-col bg-[#090414] border-b border-purple-900/40 cursor-pointer group/img"
                       title="Click to view full artwork in Lightbox Gallery"
                     >
-                      {project.imageUrl && (
-                        <img
-                          src={project.imageUrl}
-                          alt={project.title}
-                          loading={idx < 9 ? "eager" : "lazy"}
-                          decoding="async"
-                          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 [image-rendering:-webkit-optimize-contrast]"
-                          onError={(e) => {
-                            const target = e.target as HTMLImageElement;
-                            if (!target.dataset.fallbackTried && project.fallbackUrl) {
-                              target.dataset.fallbackTried = "true";
-                              target.src = project.fallbackUrl;
-                            } else if (target.dataset.fallbackTried !== "final") {
-                              target.dataset.fallbackTried = "final";
-                              target.src = "/graphics/9d55f6220534229.67c9db72b524d.webp";
-                            }
-                          }}
-                        />
-                      )}
+                      <div className="relative aspect-[4/3] sm:aspect-[16/10] overflow-hidden p-2 sm:p-3 flex items-center justify-center">
+                        {project.imageUrl && (
+                          <img
+                            src={project.imageUrl}
+                            alt={project.title}
+                            loading={idx < 9 ? "eager" : "lazy"}
+                            decoding="async"
+                            className="w-full h-full object-contain object-center group-hover:scale-[1.02] transition-transform duration-500 [image-rendering:-webkit-optimize-contrast]"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              if (!target.dataset.fallbackTried && project.fallbackUrl) {
+                                target.dataset.fallbackTried = "true";
+                                target.src = project.fallbackUrl;
+                              } else if (target.dataset.fallbackTried !== "final") {
+                                target.dataset.fallbackTried = "final";
+                                target.src = "/graphics/9d55f6220534229.67c9db72b524d.webp";
+                              }
+                            }}
+                          />
+                        )}
+                      </div>
 
-                      {/* Subtle Measured Bottom Scrim + Mobile Title */}
-                      <div className="sm:hidden absolute bottom-0 inset-x-0 p-2.5 bg-gradient-to-t from-[#07030e]/95 via-[#07030e]/50 to-transparent z-10">
+                      {/* Clean Mobile Title Strip (Below artwork, no overlapping crop) */}
+                      <div className="sm:hidden px-3 py-2 bg-[#120a22] border-t border-purple-900/35">
                         <span className="text-[11px] font-bold text-white block truncate">
                           {project.title}
                         </span>
                       </div>
 
-                      {/* Desktop Color Palette Swatches Bottom Bar */}
-                      <div className="hidden sm:flex absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-[#07030e]/95 via-[#07030e]/45 to-transparent items-center justify-between z-10 text-[10px] font-mono">
+                      {/* Desktop Color Palette Swatches Strip (Below artwork, no overlapping crop) */}
+                      <div className="hidden sm:flex px-4 py-2.5 bg-[#07030e] border-t border-purple-900/35 items-center justify-between text-[10px] font-mono">
                         <div className="flex gap-1.5">
                           {project.palette.map((color) => (
                             <span
@@ -2488,7 +2493,7 @@ export function GraphicsPortfolio({
                             />
                           ))}
                         </div>
-                        <span className="font-mono text-[10px] text-purple-100 font-semibold bg-[#120a22]/90 border border-purple-700/40 px-2 py-0.5 rounded">
+                        <span className="font-mono text-[10px] text-purple-100 font-semibold bg-[#120a22] border border-purple-700/40 px-2 py-0.5 rounded">
                           {project.dimensions}
                         </span>
                       </div>
