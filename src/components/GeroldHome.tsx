@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { WebsitePortfolio } from "./WebsitePortfolio";
 import { GraphicsPortfolio } from "./GraphicsPortfolio";
 import { WebsiteHealthChecker } from "./WebsiteHealthChecker";
+import { AdsServicePage } from "./AdsServicePage";
 import {
   ArrowLeft,
   ArrowRight,
@@ -41,7 +42,7 @@ export function GeroldHome({
   onNavigateToPortfolio
 }: GeroldHomeProps) {
   const [currentPage, setCurrentPage] = useState<
-    "home" | "websites" | "graphics" | "health-checker"
+    "home" | "websites" | "graphics" | "health-checker" | "ads"
   >(
     initialPortfolioTab === "websites"
       ? "websites"
@@ -186,6 +187,15 @@ export function GeroldHome({
         ) {
           setCurrentPage("health-checker");
           window.scrollTo({ top: 0, behavior: "smooth" });
+        } else if (
+          hash === "#google-meta-ads" ||
+          hash === "#ads" ||
+          hash === "#ads-management" ||
+          hash === "#google-ads" ||
+          hash === "#meta-ads"
+        ) {
+          setCurrentPage("ads");
+          window.scrollTo({ top: 0, behavior: "smooth" });
         } else {
           setCurrentPage("home");
         }
@@ -204,7 +214,7 @@ export function GeroldHome({
   }, []);
 
   const navigateToPage = (
-    page: "home" | "websites" | "graphics" | "health-checker",
+    page: "home" | "websites" | "graphics" | "health-checker" | "ads",
     targetSectionId?: string
   ) => {
     setCurrentPage(page);
@@ -250,6 +260,11 @@ export function GeroldHome({
       else window.scrollTo({ top: 0, behavior: "smooth" });
     } else if (page === "health-checker") {
       window.location.hash = "health-checker";
+      const lenis = (window as any).__lenis;
+      if (lenis && typeof lenis.scrollTo === "function") lenis.scrollTo(0, { immediate: true });
+      else window.scrollTo({ top: 0, behavior: "smooth" });
+    } else if (page === "ads") {
+      window.location.hash = "google-meta-ads";
       const lenis = (window as any).__lenis;
       if (lenis && typeof lenis.scrollTo === "function") lenis.scrollTo(0, { immediate: true });
       else window.scrollTo({ top: 0, behavior: "smooth" });
@@ -579,7 +594,9 @@ export function GeroldHome({
                     setOpenDesktopDropdown((prev) => (prev === "services" ? null : "services"))
                   }
                   className={`h-10 xl:h-[42px] px-4 xl:px-5 rounded-full font-normal transition-colors cursor-pointer whitespace-nowrap inline-flex items-center gap-1.5 ${
-                    openDesktopDropdown === "services" || currentPage === "health-checker"
+                    openDesktopDropdown === "services" ||
+                    currentPage === "health-checker" ||
+                    currentPage === "ads"
                       ? "bg-[#6d28d9] text-white shadow-sm"
                       : "text-[#120a22] hover:bg-[#ede9fe] hover:text-[#5b21b6]"
                   }`}
@@ -589,7 +606,7 @@ export function GeroldHome({
                     className={`w-4 h-4 transition-transform duration-200 ${
                       openDesktopDropdown === "services"
                         ? "rotate-180 text-white"
-                        : currentPage === "health-checker"
+                        : currentPage === "health-checker" || currentPage === "ads"
                         ? "text-white"
                         : ""
                     }`}
@@ -624,6 +641,27 @@ export function GeroldHome({
                           <span className="truncate">Website Health Checker</span>
                           <span className="ml-2 px-1.5 py-[1px] rounded border border-[#6d28d9]/30 bg-[#f5f3ff] text-[#6d28d9] font-mono text-[9.5px] font-bold uppercase tracking-wider shrink-0">
                             FREE
+                          </span>
+                        </button>
+
+                        <button
+                          onClick={() => navigateToPage("ads")}
+                          className={`w-full py-2.5 text-[14px] font-normal flex items-center transition-colors duration-200 group/item cursor-pointer text-left ${
+                            currentPage === "ads"
+                              ? "text-[#6d28d9]"
+                              : "text-[#120a22] hover:text-[#6d28d9]"
+                          }`}
+                        >
+                          <CornerDownRight
+                            className={`h-3.5 shrink-0 text-[#6d28d9] transition-all duration-200 ease-out ${
+                              currentPage === "ads"
+                                ? "w-3.5 mr-2 opacity-100 translate-x-0"
+                                : "w-0 mr-0 opacity-0 -translate-x-1.5 group-hover/item:w-3.5 group-hover/item:mr-2 group-hover/item:opacity-100 group-hover/item:translate-x-0"
+                            }`}
+                          />
+                          <span className="truncate">Google Ads &amp; Meta Ads</span>
+                          <span className="ml-2 px-1.5 py-[1px] rounded border border-[#6d28d9]/30 bg-[#f5f3ff] text-[#6d28d9] font-mono text-[9.5px] font-bold uppercase tracking-wider shrink-0">
+                            NEW
                           </span>
                         </button>
 
@@ -936,6 +974,23 @@ export function GeroldHome({
                         <span>Website Health Checker</span>
                         <span className="ml-2.5 px-2 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] font-mono text-[10px] font-bold uppercase tracking-wider">
                           FREE
+                        </span>
+                      </button>
+
+                      <button
+                        onClick={() => navigateToPage("ads")}
+                        className="group/sub flex items-center text-base sm:text-xl font-normal text-[#e9d5ff] hover:text-white transition-colors cursor-pointer text-left"
+                      >
+                        <CornerDownRight
+                          className={`h-4 shrink-0 text-[#e9d5ff] transition-all duration-200 ease-out ${
+                            currentPage === "ads"
+                              ? "w-4 mr-2 opacity-100"
+                              : "w-0 mr-0 opacity-0 group-hover/sub:w-4 group-hover/sub:mr-2 group-hover/sub:opacity-100"
+                          }`}
+                        />
+                        <span>Google Ads &amp; Meta Ads</span>
+                        <span className="ml-2.5 px-2 py-0.5 rounded bg-[#e9d5ff] text-[#120a22] font-mono text-[10px] font-bold uppercase tracking-wider">
+                          NEW
                         </span>
                       </button>
 
@@ -2729,6 +2784,18 @@ export function GeroldHome({
             </div>
           </div>
         </main>
+      )}
+
+      {/* ======================================================== */}
+      {/* DEDICATED PAGE: GOOGLE ADS & META ADS SERVICE            */}
+      {/* ======================================================== */}
+      {currentPage === "ads" && (
+        <AdsServicePage
+          onBackHome={() => navigateToPage("home")}
+          onOpenHire={openHireWithService}
+          onNavigateWebsites={() => navigateToPage("websites")}
+          onNavigateHealthChecker={() => navigateToPage("health-checker")}
+        />
       )}
 
       {/* ======================================================== */}
